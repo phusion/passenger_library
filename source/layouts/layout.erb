@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <title><%= current_page.data.title || "Phusion Passenger docs" %></title>
+    
+    <%= stylesheet_link_tag "all" %>
+  </head>
+  
+  <body class="<%= page_classes %>">
+    <!-- Main navigation
+    =========================================== -->
+    <header class="navbar navbar-static-top bs-docs-nav" id="top">
+      <div class="container">
+        <div class="navbar-header" role="banner">
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="<%= url_for '/index.html' %>">Phusion Passenger docs</a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav">
+            <li><%= link_to "Get Started", "/start" %></li>
+            <li><%= link_to "Features", "/features" %></li>
+            <li><%= link_to "Deploy to Production", "/production" %></li>
+            <li><%= link_to "Administration", "/administration" %></li>
+            <li><%= link_to "Reference", "/reference" %></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><%= link_to "Support", "/support" %></li>
+            <li><%= link_to "Contact authors", "/contact" %></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <%= yield_content :masthead %>
+
+
+    <div class="container bs-docs-container">
+      <div class="row">
+        <% if content_for?(:sidebar) %>
+          <!-- Content
+          =========================================== -->
+          <div class="col-md-9" role="main">
+            <%= yield %>
+          </div>
+
+          <!-- Page navigation
+          =========================================== -->
+          <div class="col-md-3" role="complementary">
+            <div class="bs-docs-sidebar hidden-print">
+              <ul class="nav bs-docs-sidenav">
+              </ul>
+              <a class="back-to-top" href="#top">
+                <i class="glyphicon glyphicon-chevron-up"></i> Back to top
+              </a>
+            </div>
+          </div>
+        <% else %>
+          <!-- Content
+          =========================================== -->
+          <div class="col-md-offset-2 col-md-8" role="main">
+            <%= yield %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+
+    <!-- Footer
+    =========================================== -->
+    <footer class="bs-docs-footer" role="contentinfo">
+      <div class="container">
+        <div class="bs-docs-social">
+          <ul class="bs-docs-social-buttons">
+            <li>
+              <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=phusion&amp;repo=passenger&amp;type=watch&amp;count=true" width="90" height="20" title="Star on GitHub"></iframe>
+            </li>
+            <li>
+              <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=phusion&amp;repo=passenger&amp;type=fork&amp;count=true" width="90" height="20" title="Fork on GitHub"></iframe>
+            </li>
+            <li>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.phusionpassenger.com" data-count="horizontal" data-via="phusion_nl" data-text="Phusion Passenger">Tweet</a>
+            </li>
+            <li>
+              <a href="https://twitter.com/phusion_nl" class="twitter-follow-button" data-show-count="true">Follow @phusion_nl</a>
+            </li>
+          </ul>
+        </div>
+
+        <p>
+          Documentation licensed under <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY SA 3.0</a>.
+        </p>
+
+        <ul class="bs-docs-footer-links muted">
+          <li>Currently vx.x.x</li>
+          <!--
+          <li>&middot;</li>
+          <li><a href="{{l.url}}">{{l.title}}</a></li>
+          -->
+        </ul>
+      </div>
+    </footer>
+
+    <%= javascript_include_tag "all", :async => true %>
+  </body>
+</html>
