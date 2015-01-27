@@ -1,11 +1,25 @@
+.bs-docs-sidebar.affix-bottom .bs-docs-sidenav,
+.bs-docs-sidebar.affix .bs-docs-sidenav {
+  margin-bottom: 20px;
+}
+
 .bs-docs-masthead {
   padding-top:50px;
   padding-bottom:40px;
   margin-bottom:20px;
+  background-image: url('../images/triangles-purple.jpg');
+  background-size: cover;
+  background-position: top left;
 }
 
 .bs-docs-masthead .version {
   margin-top: 15px;
+  font-size: 160%;
+  color: #d5cae9;
+}
+
+.bs-docs-masthead .version a {
+  color: #d5cae9;
 }
 
 .bs-docs-header h1, .bs-docs-header p {
@@ -33,4 +47,8 @@
   height:50px;
   width:30%;
   background:linear-gradient(135deg, transparent 50px, white 50px);
+}
+
+.label-ruby {
+  background-color: #b94e4b;
 }

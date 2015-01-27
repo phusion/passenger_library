@@ -25,15 +25,15 @@
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
-            <li><%= link_to "Get Started", "/start" %></li>
-            <li><%= link_to "Features", "/features" %></li>
-            <li><%= link_to "Deploy to Production", "/production" %></li>
-            <li><%= link_to "Administration", "/administration" %></li>
-            <li><%= link_to "Reference", "/reference" %></li>
+            <% navbar_section :start do %><%= link_to "Get Started", "/start" %><% end %>
+            <% navbar_section :guides do %><%= link_to "Guides", "/guides" %><% end %>
+            <% navbar_section :production do %><%= link_to "Deploy to Production", "/production" %><% end %>
+            <% navbar_section :admin do %><%= link_to "Administration", "/admin" %><% end %>
+            <% navbar_section :reference do %><%= link_to "Reference", "/reference" %><% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><%= link_to "Support", "/support" %></li>
-            <li><%= link_to "Contact authors", "/contact" %></li>
+            <li><a href="http://www.phusion.nl/contact" target="_blank">Contact authors</a></li>
           </ul>
         </nav>
       </div>
@@ -57,6 +57,7 @@
           <div class="col-md-3" role="complementary">
             <div class="bs-docs-sidebar hidden-print">
               <ul class="nav bs-docs-sidenav">
+                <%= yield_content :sidebar %>
               </ul>
               <a class="back-to-top" href="#top">
                 <i class="glyphicon glyphicon-chevron-up"></i> Back to top
@@ -99,6 +100,7 @@
           Documentation licensed under <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY SA 3.0</a>.
         </p>
 
+        <!-- Based on http://mistic100.github.io/jekyll-bootstrap-doc/ -->
         <ul class="bs-docs-footer-links muted">
           <li>Currently vx.x.x</li>
           <!--

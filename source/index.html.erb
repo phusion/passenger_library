@@ -1,12 +1,13 @@
 ---
-title: Phusion Passenger docs
+title: Phusion Passenger Docs
 ---
 
 <% content_for :masthead do %>
   <div class="bs-docs-masthead" id="content">
     <div class="container">
-      <h1 class="home-title">Phusion Passenger docs</h1>
-      <p class="lead version">Version x.x.x</p>
+      <h1 class="home-title">Phusion Passenger Docs</h1>
+      <p class="lead">Easy, stable and powerful application server for Ruby, Python and Node.js. We've got you covered with world-class documentation.</p>
+      <p class="version">Version <%= CURRENT_VERSION %> &middot; <a href="..">Switch version</a></p>
     </div>
   </div>
 
@@ -20,9 +21,22 @@ title: Phusion Passenger docs
   -->
 <% end %>
 
-<div class="welcome">
-  <h1>Middleman is Watching</h1>
-  <p class="doc">
-    <%= link_to "Read Online Documentation", "http://middlemanapp.com/" %>
-  </p><!-- .doc -->
-</div><!-- .welcome -->
+<section class="bs-docs-section">
+  <%= render_partial "/start/_index.html" %>
+</section>
+
+<section class="bs-docs-section">
+  <%= render_partial "/guides/_index.html" %>
+</section>
+
+<section class="bs-docs-section">
+  <%= render_partial "/production/_index.html" %>
+</section>
+
+<section class="bs-docs-section">
+  <%= render_partial "/admin/_index.html" %>
+</section>
+
+<section class="bs-docs-section">
+  <%= render_partial "/reference/_index.html" %>
+</section>
