@@ -10,4 +10,10 @@ module CustomHelpers
     yield
     concat("</li>")
   end
+
+  def current_page_github_url
+    dir = current_page.path.sub(/(.*)\/.*/, '\1')
+    name = current_page.source_file.sub(/.*[\/\\]/, '')
+    "https://github.com/phusion/passenger/doc/#{dir}/#{name}"
+  end
 end

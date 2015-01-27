@@ -1,8 +1,8 @@
 ---
-title: Getting started with Ruby and Phusion Passenger
-section: start
+title: Ruby + Phusion Passenger introduction
+section: intro
 ---
-# Getting started with Ruby and Phusion Passenger
+# Ruby + Phusion Passenger introduction
 
 Add to your Gemfile:
 

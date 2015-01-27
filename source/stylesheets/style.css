@@ -49,6 +49,15 @@
   background:linear-gradient(135deg, transparent 50px, white 50px);
 }
 
+.edit-on-github {
+  margin-left: 20px;
+  color: #999;
+}
+
+.edit-on-github a {
+  color: #999;
+}
+
 .label-ruby {
   background-color: #b94e4b;
 }
