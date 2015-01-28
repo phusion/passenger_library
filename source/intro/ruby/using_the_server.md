@@ -1,11 +1,10 @@
 ---
-title: Get going
+title: Using the server
 section: intro
 ---
+# Using the server
 
-# Get Phusion Passenger going
-
-<p class="lead">In this tutorial you will learn how to start your application in a Phusion Passenger server.</p>
+<p class="lead">This tutorial teaches you to start your application in a Phusion Passenger server.</p>
 
 ## Updating your gem bundle
 
@@ -15,7 +14,7 @@ Open your Gemfile and add "passenger":
 gem "passenger"
 ~~~
 
-Now open a terminal, go to your application's directory and run bundle install to reinstall your gem bundle:
+Now open a terminal, go to your application's directory and run bundle install to install your gem bundle:
 
     $ cd /path-to-your-app
     $ bundle install
@@ -40,9 +39,13 @@ You are now you are ready to run the Phusion Passenger server. Run:
 
 As you can see in the output, Phusion Passenger is now serving your app on [http://0.0.0.0:3000/](http://0.0.0.0:3000/). So if you go to that URL, you will should see your application.
 
+### No "bundle exec rails server" yet
+
+If you use Rails, then you may be used to using `bundle exec rails server` to start a server. Phusion Passenger currently does not integrate into the `rails server` mechanism, so instead of `bundle exec rails server`, run `bundle exec passenger start` instead.
+
 ## Logs
 
-Phusion Passenger prints its own logs not only to the terminal, but also to a log file. During startup, Phusion Passenger tells you what log file it used. This is typically `log/passenger.XXXX.log`
+Phusion Passenger prints its own logs not only to the terminal, but also to a log file. During startup, Phusion Passenger tells you what log file it used. This is typically `log/passenger.XXXX.log`.
 
 There are also the *application* logs, such as `log/development.log` and `log/production.log`. These logs are completely separate from Phusion Passenger's own logs. If you use Rails, then Phusion Passenger will also print your application logs to the terminal, but it will not print them into Phusion Passenger's log file.
 
@@ -63,8 +66,8 @@ The second way is by starting a seperate terminal, changing the working director
     $ cd /path-to-your-app
     $ passenger stop
 
-## Next steps
+## Next step
 
-Phusion Passenger is a very powerful server that tries to maximize your performance. It also 
+A key feature in Phusion Passenger is [process management](process_management.html). This allows Phusion Passenger to keep your application stable and to maximize performance.
 
-Under the hood, Phusion Passenger manages application processes for you.
+<a href="process_management.html" class="btn btn-primary btn-lg">Continue &raquo;</a>

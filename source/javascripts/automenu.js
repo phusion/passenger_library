@@ -1,33 +1,31 @@
 function autoGenerateMenu() {
   // build side menu
+  var toc = [];
   var html = '';
 
-  $('.bs-docs-section').each(function() {
-    var h1 = $(this).find('h1').first(),
-        h23 = $(this).find('h2[id], h3[id]');
-
-    if (h1.length && h1[0].id) {
-      html+= '<li><a href="#' + h1[0].id +'">'+ h1.text() +'</a>';
-
-      if (h23.length) {
-        html+= '<ul class="nav">';
-        h23.each(function() {
-          html+= '<li><a href="#' + this.id +'">'+ $(this).text() +'</a></li>';
-        });
-        html+= '</ul>';
-      }
-
-      html+= '</li>';
+  $('.bs-docs-section h1[id], .bs-docs-section h2[id], .bs-docs-section h3[id]').each(function() {
+    if (this.nodeName == "H1" || this.nodeName == "H2") {
+      toc.push({ id: this.id, text: $(this).text(), children: [] });
+    } else if (toc.length > 0) {
+      var lastHead = toc[toc.length - 1];
+      lastHead.children.push({ id:  this.id, text: $(this).text() });
     }
   });
 
-  if (html == '') {
-    $('[role=complementary]').hide();
-    $('[role=main]').toggleClass('col-md-9 col-lg-offset-1 col-lg-8  col-md-offset-2 col-md-8');
+  for (var i = 0; i < toc.length; i++) {
+    html += '<li><a href="#' + toc[i].id +'">'+ toc[i].text +'</a>';
+    if (toc[i].children.length > 0) {
+      html += '<ul class="nav">';
+      for (var j = 0; j < toc[i].children.length; j++) {
+        html+= '<li><a href="#' + toc[i].children[j].id +'">' +
+          toc[i].children[j].text +'</a></li>';
+      }
+      html += '</ul>';
+    }
+    html += '</li>';
   }
-  else {
-    $('.bs-docs-sidenav').html(html);
-  }
+
+  $('.bs-docs-sidenav').html(html);
 }
 
 $(document).ready(function() {

@@ -1,14 +1,15 @@
 ---
 title: Phusion Passenger Docs
-home: true
+comments: false
+multisection: true
 ---
 
 <% content_for :masthead do %>
   <div class="bs-docs-masthead" id="content">
     <div class="container">
       <h1 class="home-title">Phusion Passenger Docs</h1>
-      <p class="lead">Easy, stable and powerful application server for Ruby, Python and Node.js. We've got you covered with world-class documentation.</p>
-      <p class="lead"><a href="" class="btn btn-outline-inverse btn-lg">Read introduction</a></p>
+      <p class="lead">Whether you're just starting or planning to scale, we've got you covered with world-class documentation.</p>
+      <p class="lead"><a href="<%= url_for '/intro/ruby/understanding_passenger.html' %>" class="btn btn-outline-inverse btn-lg">Read introduction</a></p>
       <p class="version">Version <%= CURRENT_VERSION %> &middot; <a href="..">Switch version</a></p>
     </div>
   </div>
@@ -28,17 +29,17 @@ home: true
 </section>
 
 <section class="bs-docs-section">
-  <%= render_partial "/guides/_index.html" %>
+  <%= render_partial "/guides/_index.md" %>
 </section>
 
 <section class="bs-docs-section">
-  <%= render_partial "/production/_index.html" %>
+  <%= render_partial "/production/_index.md" %>
 </section>
 
 <section class="bs-docs-section">
-  <%= render_partial "/admin/_index.html" %>
+  <%= render_partial "/admin/_index.md" %>
 </section>
 
 <section class="bs-docs-section">
-  <%= render_partial "/reference/_index.html" %>
+  <%= render_partial "/reference/_index.md" %>
 </section>

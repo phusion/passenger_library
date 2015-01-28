@@ -409,10 +409,11 @@
     "modals.less"
   ],
   "js": [
+    "alert.js",
     "affix.js",
     "collapse.js",
     "scrollspy.js",
     "transition.js"
   ],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=6eb407fa87150df61e70"
+  "customizerUrl": "http://getbootstrap.com/customize/?id=83000c41f8df3900f63e"
 }

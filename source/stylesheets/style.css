@@ -39,6 +39,8 @@
 }
 .bs-docs-sidebar .nav .nav > li > a {
   font-size:14px;
+  line-height: 1.4;
+  margin-bottom: 0.4em;
 }
 .back-top-top {
   font-size:13px;
@@ -76,7 +78,8 @@
 
 .bs-docs-container h1,
 .bs-docs-container h2,
-.bs-docs-container h3 {
+.bs-docs-container h3,
+.bs-docs-container h4 {
   /* Allow anchors to have 'position: absolute' */
   position: relative;
 }
@@ -109,18 +112,44 @@
   line-height: 1.43;
 }
 
-.bs-docs-container p {
+.bs-docs-container h4 {
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-size: 1.25em;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #666;
+}
+
+.bs-docs-container p,
+.bs-docs-container li {
   line-height: 1.6;
+}
+
+.bs-docs-container code {
+  color: #333;
 }
 
 .bs-docs-container pre {
   font-size: 12px;
 }
 
+.bs-docs-container pre code {
+  color: inherit;
+}
+
 @media (min-width: 768px) {
   .bs-docs-container .lead {
     font-size: 20px;
   }
+}
+
+.bs-comments-section {
+  margin-top: 4em;
+}
+
+.alert-info a {
+  text-decoration: underline;
 }
 
 .edit-on-github {
