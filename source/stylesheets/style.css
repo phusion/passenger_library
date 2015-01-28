@@ -1,5 +1,5 @@
 .bs-docs-sidebar {
-  padding-top: 3em;
+  margin-top: 3em;
 }
 
 .bs-docs-sidebar.affix-bottom .bs-docs-sidenav,
@@ -114,16 +114,21 @@
 .edit-on-github {
   margin-left: 20px;
   color: #999;
-  font-size: 1.5em;
+  font-size: 24px;
 }
 
 .edit-on-github a {
   color: #999;
 }
 
+.edit-on-github:hover,
+.edit-on-github a:hover {
+  color: #563d7c;
+}
+
 .edit-on-github .btn-label {
   display: block;
-  font-size: 0.5em;
+  font-size: 12px;
 }
 
 .label-ruby {
