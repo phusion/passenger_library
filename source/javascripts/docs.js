@@ -45,33 +45,6 @@
     setTimeout(function () {
       $('.bs-top').affix()
     }, 100)
-
-    // theme toggler
-    ;(function () {
-      var stylesheetLink = $('#bs-theme-stylesheet')
-      var themeBtn = $('.bs-docs-theme-toggle')
-
-      var activateTheme = function () {
-        stylesheetLink.attr('href', stylesheetLink.attr('data-href'))
-        themeBtn.text('Disable theme preview')
-        localStorage.setItem('previewTheme', true)
-      }
-
-      if (localStorage.getItem('previewTheme')) {
-        activateTheme()
-      }
-
-      themeBtn.click(function () {
-        var href = stylesheetLink.attr('href')
-        if (!href || href.indexOf('data') === 0) {
-          activateTheme()
-        } else {
-          stylesheetLink.attr('href', '')
-          themeBtn.text('Preview theme')
-          localStorage.removeItem('previewTheme')
-        }
-      })
-    })();
   })
 
 }(jQuery);
@@ -121,7 +94,7 @@ function addAnchors(selector) {
     }
     var anchor = '<a class="anchorjs-link" href="#' + elementID + '"><span class="anchorjs-icon"></span></a>';
 
-    elements[i].innerHTML += anchor;
+    elements[i].innerHTML = anchor + elements[i].innerHTML;
   }
 }
 

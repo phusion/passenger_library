@@ -12,8 +12,13 @@ module CustomHelpers
   end
 
   def current_page_github_url
-    dir = current_page.path.sub(/(.*)\/.*/, '\1')
+    path = current_page.path.sub(/\/$/, '')
+    if path.include?("/")
+      dir = path.sub(/(.*)\/.*/, '\1') + "/"
+    else
+      dir = ""
+    end
     name = current_page.source_file.sub(/.*[\/\\]/, '')
-    "https://github.com/phusion/passenger/doc/#{dir}/#{name}"
+    "https://github.com/phusion/passenger/doc/#{dir}#{name}"
   end
 end

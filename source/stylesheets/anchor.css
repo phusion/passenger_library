@@ -26,6 +26,14 @@
  * Link placement and hover behavior.
  */
 .anchorjs-link {
+  position: absolute;
+  margin-left: -1.5em;
+  /* Adds some invisible space betwene the anchor and the heading text so that the anchor doesn't
+   * disappear when the mouse is hovering on the space between the anchor and the text.
+   */
+  padding-right: 0.5em;
+  font-size: 75%;
+  margin-top: 0.3em;
   opacity: 0;
   text-decoration: none !important;
 }
@@ -43,8 +51,8 @@
  * Reasonable default styles.
  * Feel free to override or replace these with your own.
  */
-.anchorjs-link:link    { color: #DFD487; }
-.anchorjs-link:visited { color: #DFD487; }
+.anchorjs-link:link    { color: #666; }
+.anchorjs-link:visited { color: #666; }
 .anchorjs-link:hover   { color: #8063ec; }
 .anchorjs-link:active  { color: #EC7963; }
 

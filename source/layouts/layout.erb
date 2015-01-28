@@ -9,7 +9,7 @@
     <%= stylesheet_link_tag "all" %>
   </head>
   
-  <body class="<%= page_classes %>">
+  <body class="<%= page_classes %> <%= 'automenu' if !content_for?(:sidebar) %>">
     <!-- Main navigation
     =========================================== -->
     <header class="navbar navbar-static-top bs-docs-nav" id="top">
@@ -45,13 +45,13 @@
         <% if content_for?(:sidebar) %>
           <!-- Content
           =========================================== -->
-          <div class="col-md-9" role="main">
+          <div class="col-md-9 col-lg-offset-1 col-lg-8" role="main">
             <%= yield %>
           </div>
 
           <!-- Page navigation
           =========================================== -->
-          <div class="col-md-3" role="complementary">
+          <div class="col-md-3 col-lg-3" role="complementary">
             <div class="bs-docs-sidebar hidden-print">
               <ul class="nav bs-docs-sidenav">
                 <%= yield_content :sidebar %>
@@ -63,8 +63,35 @@
               </p>
               <p class="edit-on-github">
                 <a href="<%=h current_page_github_url %>" class="btn btn-default">
-                  <span class="glyphicon glyphicon-lg glyphicon-pencil" aria-hidden="true"></span><br>
-                  Edit this page<br>on Github
+                  <span class="glyphicon glyphicon-lg glyphicon-pencil" aria-hidden="true"></span>
+                  <span class="btn-label">Edit this page<br>on Github</span>
+                </a>
+              </p>
+            </div>
+          </div>
+        <% elsif !current_page.data.home %>
+          <!-- Content
+          =========================================== -->
+          <div class="col-md-9 col-lg-offset-1 col-lg-8" role="main">
+            <section class="bs-docs-section">
+              <%= yield %>
+            </section>
+          </div>
+
+          <!-- Page navigation
+          =========================================== -->
+          <div class="col-md-3 col-lg-3" role="complementary">
+            <div class="bs-docs-sidebar hidden-print">
+              <ul class="nav bs-docs-sidenav"></ul>
+              <p>
+                <a class="back-to-top" href="#top">
+                  <i class="glyphicon glyphicon-chevron-up"></i> Back to top
+                </a>
+              </p>
+              <p class="edit-on-github">
+                <a href="<%=h current_page_github_url %>" class="btn btn-default">
+                  <span class="glyphicon glyphicon-lg glyphicon-pencil" aria-hidden="true"></span>
+                  <span class="btn-label">Edit this page<br>on Github</span>
                 </a>
               </p>
             </div>
@@ -75,10 +102,10 @@
           <div class="col-md-offset-2 col-md-8" role="main">
             <%= yield %>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-2 bs-docs-sidebar hidden-print" role="complementary">
             <a href="<%=h current_page_github_url %>" class="btn btn-default edit-on-github">
-              <span class="glyphicon glyphicon-lg glyphicon-pencil" aria-hidden="true"></span><br>
-              Edit this page<br>on Github
+              <span class="glyphicon glyphicon-lg glyphicon-pencil" aria-hidden="true"></span>
+              <span class="btn-label">Edit this page<br>on Github</span>
             </a>
           </div>
         <% end %>
