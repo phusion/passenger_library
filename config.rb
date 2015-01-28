@@ -29,32 +29,21 @@
 #  :which_fake_page => "Rendering a fake page with a local variable" }
 
 ###
-# Helpers
-###
 
 require "./lib/custom_helpers"
 helpers CustomHelpers
 
-# Automatic image dimensions on image_tag helper
-# activate :automatic_image_sizes
+set :css_dir, 'stylesheets'
+set :js_dir, 'javascripts'
+set :images_dir, 'images'
+set :markdown_engine, :kramdown
+
+activate :syntax
 
 # Reload the browser automatically whenever files change
 # configure :development do
 #   activate :livereload
 # end
-
-# Methods defined in the helpers block are available in templates
-# helpers do
-#   def some_helper
-#     "Helping"
-#   end
-# end
-
-set :css_dir, 'stylesheets'
-
-set :js_dir, 'javascripts'
-
-set :images_dir, 'images'
 
 # Build-specific configuration
 configure :build do

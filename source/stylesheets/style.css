@@ -18,7 +18,7 @@
 
 .bs-docs-masthead .version {
   margin-top: 15px;
-  font-size: 160%;
+  font-size: 140%;
   color: #d5cae9;
 }
 
@@ -42,6 +42,18 @@
 }
 .back-top-top {
   font-size:13px;
+}
+
+@media (min-width: 768px) {
+  .bs-docs-masthead .lead {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 992px) {
+  .bs-docs-masthead .lead {
+    font-size: 25px;
+  }
 }
 
 #content {

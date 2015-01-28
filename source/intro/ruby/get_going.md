@@ -11,20 +11,18 @@ section: intro
 
 Open your Gemfile and add "passenger":
 
-    gem "passenger"
+~~~ruby
+gem "passenger"
+~~~
 
 Now open a terminal, go to your application's directory and run bundle install to reinstall your gem bundle:
 
     $ cd /path-to-your-app
     $ bundle install
     ...
-    Installing passenger (x.x.x)
+    Installing passenger x.x.x
     ...
-    Done!
-
-### Foo
-
-bar
+    Your bundle is complete!
 
 ## Running the server
 
