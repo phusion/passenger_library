@@ -10,4 +10,4 @@ Congratulations, you've reached the end of the introduction! You may now continu
 
  * [learning about advanced Passenger features](../guides),
  * [deploying your application to production](../production),
- * or [administering Passenger](../administration).
+ * or [administering Passenger](../admin).

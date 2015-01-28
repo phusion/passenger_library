@@ -19,6 +19,6 @@ module CustomHelpers
       dir = ""
     end
     name = current_page.source_file.sub(/.*[\/\\]/, '')
-    "https://github.com/phusion/passenger/doc/#{dir}#{name}"
+    "https://github.com/phusion/passenger/edit/master/doc/#{dir}#{name}"
   end
 end
