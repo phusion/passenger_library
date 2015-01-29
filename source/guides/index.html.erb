@@ -1,5 +1,16 @@
 ---
 title: Guides
 section: guides
+multisection: true
 ---
-<%= render_partial "_index.md" %>
+<section class="bs-docs-section">
+  <%= render_partial "/guides/general/_index.md" %>
+</section>
+
+<section class="bs-docs-section">
+  <%= render_partial "/guides/production/_index.md" %>
+</section>
+
+<section class="bs-docs-section">
+  <%= render_partial "/guides/admin/_index.md" %>
+</section>

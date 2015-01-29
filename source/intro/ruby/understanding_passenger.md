@@ -4,7 +4,7 @@ section: intro
 ---
 # Understanding Phusion Passenger
 
-<p class="lead">We give you a basic understanding of what Phusion Passenger is and how it fits in the stack.</p>
+<p class="lead">We give you a basic understanding of what <a href="https://www.phusionpassenger.com/">Phusion Passenger</a> is and how it fits in the stack.</p>
 
 ### The big picture
 

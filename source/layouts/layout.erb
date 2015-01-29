@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <title><% if current_page.data.title %><%= current_page.data.title %> - <%end %>Phusion Passenger docs</title>
-    
+    <title><% if current_page.data.title %><%= current_page.data.title %> - <%end %>Phusion Passenger Library</title>
     <%= stylesheet_link_tag "all" %>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet" type="text/css">
   </head>
   
   <body class="<%= page_classes %> <%= 'automenu' if !content_for?(:sidebar) %>">
@@ -18,14 +18,22 @@
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
             <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> Navigation
           </button>
-          <a class="navbar-brand" href="<%= url_for '/index.html' %>">Passenger Docs</a>
+          <a class="navbar-brand" href="<%= url_for '/index.html' %>">
+            <span class="navbar-brand-part1">Passenger</span>
+            <span class="navbar-brand-part2">Library</span>
+          </a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
             <% navbar_section :intro do %><%= link_to "Introduction", "/intro" %><% end %>
-            <% navbar_section :guides do %><%= link_to "Guides", "/guides" %><% end %>
-            <% navbar_section :production do %><%= link_to "Deploy to Production", "/production" %><% end %>
-            <% navbar_section :admin do %><%= link_to "Administration", "/admin" %><% end %>
+            <% navbar_dropdown_section :guides, :general, :production, :admin do %>
+              <a href="<%= url_for '/guides' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <% navbar_section :general do %><%= link_to "General", "/guides/general" %><% end %>
+                <% navbar_section :production do %><%= link_to "Production", "/guides/production" %><% end %>
+                <% navbar_section :admin do %><%= link_to "Administration", "/guides/administration" %><% end %>
+              </ul>
+            <% end %>
             <% navbar_section :reference do %><%= link_to "Reference", "/reference" %><% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -104,7 +112,7 @@
           <div class="col-md-9 col-lg-offset-1 col-lg-8 bs-comments-section">
             <div class="bs-callout bs-callout-info" role="alert">
               Got comments or suggestions about the documentation? We'd love to hear from you! Or even better, <a href="<%=h current_page_github_url %>">edit this page and send us a pull request</a>.<br><br>
-              But please <strong>don't post support questions</strong> here. You should consult <a href="https://www.phusionpassenger.com/support">the support resources instead</a>.
+              But please <strong>don't post support questions</strong> here, <em>this is not a support forum</em>. Try <a href="https://www.phusionpassenger.com/support">the support resources</a> instead.
             </div>
 
             <div id="disqus_thread"></div>
@@ -149,6 +157,9 @@
 
         <p>
           Documentation licensed under <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY SA 3.0</a>.
+        </p>
+        <p>
+          Phusion Passenger&reg; is a registered trademark of Hongli Lai and Ninh Bui.
         </p>
 
         <!-- Based on http://mistic100.github.io/jekyll-bootstrap-doc/ -->

@@ -410,10 +410,11 @@
   ],
   "js": [
     "alert.js",
+    "dropdown.js",
     "affix.js",
     "collapse.js",
     "scrollspy.js",
     "transition.js"
   ],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=83000c41f8df3900f63e"
+  "customizerUrl": "http://getbootstrap.com/customize/?id=d68f3875c1484194f571"
 }
