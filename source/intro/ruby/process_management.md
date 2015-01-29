@@ -4,7 +4,9 @@ section: intro
 ---
 # Process management
 
-<p class="lead">Phusion Passenger manages multiple processes in order to maximize stability and performance. Learn what processes are, how Passenger manages them and how that affects you.</p>
+<p class="lead">Phusion Passenger manages multiple processes in order to maximize stability and performance. Learn what processes are, how Passenger manages them and how to use Passenger's command line tools to work with them.</p>
+
+<small>If you already know this, <a href="conclusion.html">skip ahead to Conclusion</a> or <a href="..">go back to the table of contents</a>.</small>
 
 ### What are processes?
 
@@ -136,5 +138,7 @@ In another terminal, run `passenger-status` and obtain the PID of a random proce
 Wait a few seconds, and run `passenger-status` again. Notice that the original process is gone, but that it has been replaced by another one!
 
 ## Next step
+
+Read the conclusion.
 
 <a href="../conclusion.html" class="btn btn-primary btn-lg">Continue &raquo;</a>

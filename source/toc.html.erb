@@ -1,0 +1,39 @@
+---
+title: Table of contents
+section: toc
+multisection: true
+---
+<section class="bs-docs-section">
+  <h1 class="page-title">Get started</h1>
+
+  <ul>
+    <li><%= link_to "For Ruby developers", "/start/ruby.html" %></li>
+    <li><%= link_to "For Node.js developers", "/start/nodejs.html" %></li>
+  </ul>
+</section>
+
+<section class="bs-docs-section">
+  <h1 class="page-title">Introduction</h1>
+
+  <h3>For Ruby developers</h3>
+  <%= render_partial "/intro/ruby/_toc.md" %>
+
+  <h3>For Node.js developers</h3>
+  <%= render_partial "/intro/nodejs/_toc.md" %>
+</section>
+
+<section class="bs-docs-section">
+  <%= render_partial "/guides/_index.md" %>
+</section>
+
+<section class="bs-docs-section">
+  <%= render_partial "/deploy/_index.md" %>
+</section>
+
+<section class="bs-docs-section">
+  <%= render_partial "/admin/_index.md" %>
+</section>
+
+<section class="bs-docs-section">
+  <%= render_partial "/reference/_index.md" %>
+</section>

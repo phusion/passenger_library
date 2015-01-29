@@ -66,8 +66,6 @@
 
 .home-welcome-message {
   margin-top: 3em;
-  padding-left: 1em;
-  border-left: solid 4px #ccc;
   font-family: Lato, sans-serif;
   font-weight: 300;
   font-size: 18px;
@@ -172,11 +170,20 @@
 }
 
 .bs-comments-section {
-  margin-top: 4em;
+  margin-top: 3em;
 }
 
 .bs-comments-section .bs-callout {
   font-size: 14px;
+}
+
+.btn-guide {
+  font-size: 32px;
+}
+
+.btn-guide .btn-label {
+  display: block;
+  font-size: 16px;
 }
 
 .edit-on-github {

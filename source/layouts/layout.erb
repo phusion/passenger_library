@@ -7,6 +7,7 @@
     <title><% if current_page.data.title %><%= current_page.data.title %> - <%end %>Phusion Passenger Library</title>
     <%= stylesheet_link_tag "all" %>
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
   </head>
   
   <body class="<%= page_classes %> <%= 'automenu' if !content_for?(:sidebar) %>">
@@ -25,16 +26,18 @@
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
-            <% navbar_section :intro do %><%= link_to "Introduction", "/intro" %><% end %>
-            <% navbar_dropdown_section :guides, :general, :production, :admin do %>
-              <a href="<%= url_for '/guides' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
+            <% navbar_section :start do %><%= link_to "Start", "/index.html", :anchor => "site_intro" %><% end %>
+            <% navbar_dropdown_section :guides, :intro, :general, :deploy, :admin do %>
+              <a href="<%= url_for '/allguides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <% navbar_section :general do %><%= link_to "General", "/guides/general" %><% end %>
-                <% navbar_section :production do %><%= link_to "Production", "/guides/production" %><% end %>
-                <% navbar_section :admin do %><%= link_to "Administration", "/guides/administration" %><% end %>
+                <% navbar_section :intro do %><%= link_to "Introduction", "/index.html", :anchor => "intro_guides" %><% end %>
+                <% navbar_section :general do %><%= link_to "General guides", "/guides/index.html" %><% end %>
+                <% navbar_section :deploy do %><%= link_to "Deployment &amp; scaling", "/deploy/index.html" %><% end %>
+                <% navbar_section :admin do %><%= link_to "Administration", "/admin/index.html" %><% end %>
               </ul>
             <% end %>
-            <% navbar_section :reference do %><%= link_to "Reference", "/reference" %><% end %>
+            <% navbar_section :reference do %><%= link_to "Reference", "/reference/index.html" %><% end %>
+            <% navbar_section :toc do %><%= link_to "Explore", "/toc.html" %><% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://www.phusionpassenger.com/support" target="_blank">Support</a></li>
@@ -111,8 +114,9 @@
         <div class="row" role="complementary">
           <div class="col-md-9 col-lg-offset-1 col-lg-8 bs-comments-section">
             <div class="bs-callout bs-callout-info" role="alert">
-              Got comments or suggestions about the documentation? We'd love to hear from you! Or even better, <a href="<%=h current_page_github_url %>">edit this page and send us a pull request</a>.<br><br>
-              But please <strong>don't post support questions</strong> here, <em>this is not a support forum</em>. Try <a href="https://www.phusionpassenger.com/support">the support resources</a> instead.
+              Feel free to ask questions about this page, or contribute notes and hints for other readers. Or <a href="<%=h current_page_github_url %>">edit this page and send us a pull request</a>.<br><br>
+
+              Please <strong>don't post questions not directly related to this page</strong>. For general support, please use <a href="https://www.phusionpassenger.com/support">the support resources</a> instead.
             </div>
 
             <div id="disqus_thread"></div>

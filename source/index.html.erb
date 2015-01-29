@@ -1,8 +1,6 @@
 ---
-title: Phusion Passenger Docs
 multisection: true
 ---
-
 <% content_for :masthead do %>
   <div class="bs-docs-masthead" id="content">
     <div class="container">
@@ -11,7 +9,7 @@ multisection: true
         <span class="home-title-name">Passenger Library</span>
       </h1>
       <p class="lead">Whether you're just starting or planning to scale, we've got you covered with world-class documentation.</p>
-      <p class="lead"><a href="<%= url_for '/intro/ruby/understanding_passenger.html' %>" class="btn btn-outline-inverse btn-lg">Read introduction</a></p>
+      <p class="lead"><a href="#site_intro" class="btn btn-outline-inverse btn-lg">Get started</a></p>
       <p class="version">Version <%= CURRENT_VERSION %> &middot; <a href="..">Switch version</a></p>
     </div>
   </div>
@@ -26,26 +24,101 @@ multisection: true
   -->
 <% end %>
 
-<p class="home-welcome-message">
-  Welcome to the Phusion Passenger Library, a comprehensive online resource about Ruby, Python and Node.js deployment, scaling, high availability and more &mdash; through the use of the <a href="https://www.phusionpassenger.com">Phusion Passenger</a> application server. The entire library is <a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">open source</a>. Think anything can be improved? Just <a href="https://github.com/phusion/passenger/tree/master/doc">edit the content on Github</a>.
-</p>
-
-<section class="bs-docs-section">
-  <%= render_partial "/intro/_index.md" %>
+<section id="site_intro" class="site-intro">
+  <p class="home-welcome-message">
+    Welcome to the Phusion Passenger Library, a comprehensive online resource about Ruby, Python and Node.js deployment, administration, scaling, high availability and more &mdash; through the use of the <a href="https://www.phusionpassenger.com">Phusion Passenger</a> application server. The entire library is <a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">open source</a>. Think anything can be improved? Just <a href="https://github.com/phusion/passenger/tree/master/doc">edit the content on Github</a>.
+  </p>
 </section>
 
 <section class="bs-docs-section">
-  <%= render_partial "/guides/general/_index.md" %>
+  <h2>Get started</h2>
+  <p>
+    Get to know Passenger through this short, easy-to-follow tutorial. Get something up and running in only 5 minutes.
+  </p>
+  <a href="<%= url_for '/start/ruby.html' %>" class="btn btn-guide btn-info btn-lg">
+    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+    <span class="btn-label">
+      Getting started<br>
+      for <strong>Ruby</strong> devs
+    </span>
+  </a>
+  <a href="<%= url_for '/start/nodejs.html' %>" class="btn btn-guide btn-info btn-lg">
+    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+    <span class="btn-label">
+      Getting started<br>
+      for <strong>Node.js</strong> devs
+    </span>
+  </a>
+</section>
+
+<section id="intro_guides" class="bs-docs-section">
+  <h2>Introduction</h2>
+  <p>
+    Learn more about what Passenger is, how it fits in the stack and what features it provides.
+    Learn how Passenger helps you during development.
+  </p>
+  <a href="<%= url_for '/intro/ruby/index.html' %>" class="btn btn-guide btn-success">
+    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+    <span class="btn-label">
+      Introduction<br>
+      for <strong>Ruby</strong> devs
+    </span>
+  </a>
+  <a href="<%= url_for '/intro/nodejs/index.html' %>" class="btn btn-guide btn-success">
+    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+    <span class="btn-label">
+      Introduction<br>
+      for <strong>Node.js</strong> devs
+    </span>
+  </a>
 </section>
 
 <section class="bs-docs-section">
-  <%= render_partial "/guides/production/_index.md" %>
+  <h2>General intermediate and advanced guides</h2>
+  <p>
+    Explore our general guides, which are of intermediate and advanced levels. They cover a wide range of topics.
+  </p>
+  <a href="<%= url_for '/guides/index.html' %>" class="btn btn-primary btn-lg">
+    Read the general guides &raquo;
+  </a>
 </section>
 
 <section class="bs-docs-section">
-  <%= render_partial "/guides/admin/_index.md" %>
+  <h2>Deployment &amp; scaling</h2>
+  <p>
+    Learn about setting up servers, deploying Passenger to production, tweaking &amp; tuning and security.
+    Even scaling and high availability are covered.
+  </p>
+  <a href="<%= url_for '/guides/production' %>" class="btn btn-primary btn-lg">
+    Read deployment &amp; scaling guides &raquo;
+  </a>
 </section>
 
 <section class="bs-docs-section">
-  <%= render_partial "/reference/_index.md" %>
+  <h2>Administration</h2>
+  <p>Learn about performing common administration tasks, keeping your applications healthy and analyzing &amp; troubleshooting problems.</p>
+  <a href="<%= url_for '/guides/admin' %>" class="btn btn-primary btn-lg">
+    Read administration guides &raquo;
+  </a>
 </section>
+
+<section class="bs-docs-section">
+  <h2>Explore the full library</h2>
+  <p>
+    <a href="<%= url_for '/toc.html' %>" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+      <span class="btn-label">
+        Table of contents
+      </span>
+    </a>
+
+    <a href="<%= url_for '/reference' %>" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+      <span class="btn-label">
+        Reference
+      </span>
+    </a>
+  </p>
+</section>
+
+<div style="padding-top: 4em"></div><!-- Increase spacing to comments area -->

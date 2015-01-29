@@ -37,28 +37,19 @@ set :css_dir, 'stylesheets'
 set :js_dir, 'javascripts'
 set :images_dir, 'images'
 set :markdown_engine, :kramdown
+set :relative_links, true
 
 activate :syntax
-
-# Reload the browser automatically whenever files change
-# configure :development do
-#   activate :livereload
-# end
+activate :relative_assets
 
 # Build-specific configuration
 configure :build do
   # For example, change the Compass output style for deployment
-  # activate :minify_css
+  activate :minify_css
 
   # Minify Javascript on build
-  # activate :minify_javascript
+  activate :minify_javascript
 
   # Enable cache buster
-  # activate :asset_hash
-
-  # Use relative URLs
-  activate :relative_assets
-
-  # Or use a different image path
-  # set :http_prefix, "/Content/images/"
+  activate :asset_hash
 end

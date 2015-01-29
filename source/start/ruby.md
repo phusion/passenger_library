@@ -1,10 +1,10 @@
 ---
-title: Using the server
-section: intro
+title: Getting started with Ruby + Phusion Passenger
+section: start
 ---
-# Using the server
+# Getting started with Ruby + Phusion Passenger
 
-<p class="lead">This tutorial teaches you to start your application in a Phusion Passenger server.</p>
+<p class="lead">This 5 minute tutorial teaches you to start your application in a Phusion Passenger server. Feel what Passenger is and how it works.</p>
 
 ## Updating your gem bundle
 
@@ -66,8 +66,14 @@ The second way is by starting a seperate terminal, changing the working director
     $ cd /path-to-your-app
     $ passenger stop
 
-## Next step
+## Conclusion
 
-A key feature in Phusion Passenger is [process management](process_management.html). This allows Phusion Passenger to keep your application stable and to maximize performance.
+<img src="../../images/award.png" alt="Achievement unlocked. Image taken from https://openclipart.org/detail/60109/award-symbol-by-sheikh_tuhin">
 
-<a href="process_management.html" class="btn btn-primary btn-lg">Continue &raquo;</a>
+Congratulations! You've passed this tutorial and seen Passenger in action. There are a few things you can do from here:
+
+ * [Read the introductory guide](../../intro/ruby/)<br>
+   Learn more about what Passenger is, how it fits in the stack and what features it provides.
+ * [Deploy your app to production using Passenger](../../deploy/)<br>
+
+...or <a href="..">go back to the front page</a>.

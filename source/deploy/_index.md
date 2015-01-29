@@ -1,4 +1,4 @@
-<h1 class="page-header">Production</h1>
+<h1 class="page-header">Deployment &amp; scaling</h1>
 <p class="lead">Ready to get serious or planning to scale? We've got you covered, no matter which hosting provider or operating system you use.</p>
 
 ### End-to-end walkthroughs

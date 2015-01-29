@@ -4,10 +4,6 @@ section: intro
 ---
 # Understanding Phusion Passenger
 
-<p class="lead">We give you a basic understanding of what <a href="https://www.phusionpassenger.com/">Phusion Passenger</a> is and how it fits in the stack.</p>
-
-### The big picture
-
 You've heard that Phusion Passenger is an "application server", but what is that exactly? Why do you need Passenger to run your Ruby application, and how does it compare to other software?
 
 Well, Ruby web applications typically are not directly able to listen on the Internet. They need a piece of software that provides Internet HTTP transaction handling. That piece of software is the application server.
@@ -59,6 +55,10 @@ Passenger follows the Unix philosophy of doing a small number of things, but doi
 
 ## Next step
 
-Now that you have a basic understanding of what Passenger is, it's time to [start a server and see Passenger in action](using the server.html).
+Now that you've seen Passenger in action and understand what it is, it's time to get acquainted with the basic features.
 
-<a href="using_the_server.html" class="btn btn-primary btn-lg">Continue &raquo;</a>
+A key feature in Phusion Passenger is [process management](process_management.html). This allows Phusion Passenger to keep your application stable and to maximize performance.
+
+<a href="process_management.html" class="btn btn-primary btn-lg">Continue &raquo;</a>
+
+<a href=".">&laquo; Back to table of contents</a>
