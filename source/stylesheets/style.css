@@ -184,6 +184,12 @@
 .btn-guide .btn-label {
   display: block;
   font-size: 16px;
+  color: #2F628E;
+  margin-top: 0.5em;
+}
+
+.btn-guide:hover .btn-label {
+  color: #337ab7;
 }
 
 .edit-on-github {
