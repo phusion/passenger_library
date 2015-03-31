@@ -41,7 +41,12 @@ bundle exec passenger start
 # => ===============================================================
 ~~~
 
-As you can see in the output, Passenger is now serving your app on [http://0.0.0.0:3000/](http://0.0.0.0:3000/). So if you go to that URL, you will should see your application.
+As you can see in the output, Passenger is now serving your app on [http://0.0.0.0:3000/](http://0.0.0.0:3000/). So if you go to that URL, you will should see your application:
+
+~~~bash
+curl http://0.0.0.0:3000/
+# => your app's front page HTML
+~~~
 
 <div class="note">
   <h3 id="no-bundle-exec-rails-server-yet">No "bundle exec rails server" yet</h3>
