@@ -18,7 +18,7 @@ If you Rails, then may be wondering: doesn't the `rails server` command allow th
 
 Unicorn and Puma are application servers, just like Passenger. Because the Ruby community has embraced a standard interface called [Rack](http://rack.github.io/), it is very easy to migrate from one application server to another. If you already use Puma and Unicorn, then switching to Passenger is almost effortless. But the inverse is also true, so there is no vendor lock-in.
 
-Passenger is much easier to use than Unicorn and Puma, and is also much more ambitious and provides [a lot more features](../guides). Unicorn and Puma are very minimalist compared to Passenger, and only provide HTTP transaction handling as well as limited amounts of problem management. In contrast, Passenger automates many of the tasks that you have to do manually when using Unicorn and Puma, has more advanced process management and resource management, supports direct Nginx and Apache integration, has more security features, etc.
+Passenger is much easier to use than Unicorn and Puma, and is also much more ambitious and provides [a lot more features](../../../guides/). Unicorn and Puma are very minimalist compared to Passenger, and only provide HTTP transaction handling as well as limited amounts of problem management. In contrast, Passenger automates many of the tasks that you have to do manually when using Unicorn and Puma, has more advanced process management and resource management, supports direct Nginx and Apache integration, has more security features, etc.
 
 Although Unicorn and Puma speak HTTP, it is not safe to expose them directly on the Internet. This is why in production setups you are supposed to use them in combination with a web server (Nginx, Apache).
 
@@ -41,11 +41,14 @@ Capistrano is not a server that provides HTTP transaction handling, so it does n
 Passenger follows the Unix philosophy of doing a small number of things, but doing them well. So there are a number of things that are (currently) outside Passenger's scope. Passenger may or may not take care of some of these some time in the future.
 
  * **Setting up a server with an operating system**<br>
-   Passenger assumes that you already have a server with an working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.
+   Passenger assumes that you already have a server with an working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.<br>
+   However, the Passenger Library contains excellent [documentation on setting up a server](../../deploy/ruby/).
  * **Installing Ruby**<br>
-   To run Ruby apps on Passenger, you must already have Ruby installed. Passenger doesn't do that for you. Passenger doesn't care how you install Ruby though; you sometimes just need to tell Passenger where Ruby is.
+   To run Ruby apps on Passenger, you must already have Ruby installed. Passenger doesn't do that for you. Passenger doesn't care how you install Ruby though; you sometimes just need to tell Passenger where Ruby is.<br>
+   Having said that, the Passenger Library contains excellent [documentation on installing Ruby during a production deployment](../../deploy/ruby/).
  * **Transferring the application code and files to the server**<br>
-   Passenger does not transfer the application code and files to the server for you. To do this, you should use something like Capistrano. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.
+   Passenger does not transfer the application code and files to the server for you. To do this, you should use something like Capistrano. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.<br>
+   The Passenger Library contains [documentation on automating releases using Capistrano](../../../guides/capistrano.html).
  * **Installing application dependencies**<br>
    Passenger does not install your application's dependencies for you.
  * **Managing the database**<br>

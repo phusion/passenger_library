@@ -6,7 +6,7 @@ section: intro
 
 <p class="lead">Phusion Passenger manages multiple processes in order to maximize stability and performance. Learn what processes are, how Passenger manages them and how to use Passenger's command line tools to work with them.</p>
 
-<small>If you already know this, <a href="conclusion.html">skip ahead to Conclusion</a> or <a href="..">go back to the table of contents</a>.</small>
+<small>If you already know this, <a href="conclusion.html">skip ahead to Conclusion</a> or <a href=".">go back to the table of contents</a>.</small>
 
 ### What are processes?
 
@@ -141,4 +141,4 @@ Wait a few seconds, and run `passenger-status` again. Notice that the original p
 
 Read the conclusion.
 
-<a href="../conclusion.html" class="btn btn-primary btn-lg">Continue &raquo;</a>
+<a href="conclusion.html" class="btn btn-primary btn-lg">Continue &raquo;</a>

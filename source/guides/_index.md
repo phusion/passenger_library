@@ -1,23 +1,23 @@
 <h1 class="page-header">General guides</h1>
-<p class="lead">Learn to use the awesome features in Passenger.</p>
+<p class="lead">These guides, which are of intermediate and advanced levels, cover a wide range of topics.</p>
 
-### Basics
+### Miscellaneous
 
- * Application restarting
  * Application code reloading
  * Static assets serving
- * Process management
  * Environment variables
  * Concurrency model
  * Command line tools
+ * Logs and error reports
 
-### Web technologies support
+### Web technologies
 
  * WebSockets
  * Server Sent Events
 
 ### Optimization & efficiency
 
+ * [Gzip compression]()
  * [Code preloading]()
    <br><small>Reducing memory usage and startup time.</small>
  * [Multithreading]()
@@ -51,7 +51,7 @@
  * NPM integration
  * Automatic process scaling
 
-### Advanced & internals
+### Internals
 
  * Architectural overview
  * Request queuing and load balancing

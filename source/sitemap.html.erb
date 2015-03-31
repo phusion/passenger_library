@@ -1,25 +1,28 @@
 ---
-title: Table of contents
-section: toc
+title: Sitemap
+section: sitemap
 multisection: true
 ---
+<h1 class="page-title">Walkthroughs</h1>
+
 <section class="bs-docs-section">
-  <h1 class="page-title">Get started</h1>
+  <h2>Get started</h2>
 
   <ul>
     <li><%= link_to "For Ruby developers", "/start/ruby.html" %></li>
     <li><%= link_to "For Node.js developers", "/start/nodejs.html" %></li>
   </ul>
-</section>
 
-<section class="bs-docs-section">
-  <h1 class="page-title">Introduction</h1>
+  <h2>Introduction</h2>
 
   <h3>For Ruby developers</h3>
-  <%= render_partial "/intro/ruby/_toc.md" %>
+  <%= render_partial "/walkthroughs/intro/ruby/_toc.md" %>
 
   <h3>For Node.js developers</h3>
-  <%= render_partial "/intro/nodejs/_toc.md" %>
+  <%= render_partial "/walkthroughs/intro/nodejs/_toc.md" %>
+
+  <h2>Deploy to production</h2>
+  ...
 </section>
 
 <section class="bs-docs-section">

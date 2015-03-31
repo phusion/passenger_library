@@ -209,3 +209,35 @@
 .label-ruby {
   background-color: #b94e4b;
 }
+
+
+.info,
+.note {
+  border: none;
+  padding: 1.5em 1.5em 1.5em 64px;
+  margin: 1.5em 0 1.5em 0;
+}
+
+.info > h3:first-child,
+.note > h3:first-child,
+.info > strong:first-child,
+.note > strong:first-child {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 1.2em;
+  font-weight: bold;
+  line-height: 1.43;
+}
+
+.info > p:last-child,
+.note > p:last-child {
+  margin-bottom: 0;
+}
+
+.info {
+  background: #d5e9f6 url(../images/tab_info.gif) no-repeat left top;
+}
+
+.note {
+  background: #fff9d8 url(../images/tab_note.gif) no-repeat left top;
+}
