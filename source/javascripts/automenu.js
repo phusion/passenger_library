@@ -4,11 +4,13 @@ function autoGenerateMenu() {
   var html = '';
 
   $('.bs-docs-section h1[id], .bs-docs-section h2[id], .bs-docs-section h3[id]').each(function() {
-    if (this.nodeName == "H1" || this.nodeName == "H2") {
-      toc.push({ id: this.id, text: $(this).text(), children: [] });
-    } else if (toc.length > 0) {
-      var lastHead = toc[toc.length - 1];
-      lastHead.children.push({ id:  this.id, text: $(this).text() });
+    if (!$(this).hasClass('notoc')) {
+      if (this.nodeName == "H1" || this.nodeName == "H2") {
+        toc.push({ id: this.id, text: $(this).text(), children: [] });
+      } else if (toc.length > 0) {
+        var lastHead = toc[toc.length - 1];
+        lastHead.children.push({ id:  this.id, text: $(this).text() });
+      }
     }
   });
 

@@ -4,11 +4,11 @@ section: start
 ---
 # Getting started with Meteor + Phusion Passenger
 
-<p class="lead">This 5 minute tutorial teaches you to start your application in a Phusion Passenger server. Feel what Passenger is and how it works.</p>
+<p class="lead">This 5 minute tutorial teaches you to start your application in a Phusion Passenger server, in development mode. Feel what Passenger is and how it works.</p>
 
 ## Install Passenger
 
-Visit [the Passenger download page](https://www.phusionpassenger.com/download#open_source). There are tailor-made, polished installation methods for OS X, Debian/Ubuntu, Heroku, etc. :)
+<%= render_partial("_install.html") %>
 
 ## Running the server
 
@@ -23,8 +23,8 @@ It's similar with Passenger. Instead of `meteor run`, you run your app with `pas
 ~~~bash
 passenger start
 # => ======= Phusion Passenger Standalone web server started =======
-# => PID file: /Users/phusion/myapp/tmp/pids/passenger.3000.pid
-# => Log file: /Users/phusion/myapp/log/passenger.3000.log
+# => PID file: /Users/phusion/myapp/passenger.3000.pid
+# => Log file: /Users/phusion/myapp/passenger.3000.log
 # => Environment: development
 # => Accessible via: http://0.0.0.0:3000/
 # => 

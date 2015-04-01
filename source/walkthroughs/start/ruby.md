@@ -4,11 +4,25 @@ section: start
 ---
 # Getting started with Ruby + Phusion Passenger
 
-<p class="lead">This 5 minute tutorial teaches you to start your application in a Phusion Passenger server. Feel what Passenger is and how it works.</p>
+<p class="lead">This 5 minute tutorial teaches you to start your application in a Phusion Passenger server, in development mode. Feel what Passenger is and how it works.</p>
+
+## Preparing the example application
+
+In this tutorial we'll use an example "hello world" application. Clone the one you like.
+
+[Ruby on Rails example](https://github.com/phusion/passenger-ruby-rails-demo):
+
+    git clone https://github.com/phusion/passenger-ruby-rails-demo.git
+    cd passenger-ruby-rails-demo
+
+[Sinatra example](https://github.com/phusion/passenger-ruby-sinatra-demo):
+
+    git clone https://github.com/phusion/passenger-ruby-sinatra-demo.git
+    cd passenger-ruby-sinatra-demo
 
 ## Updating your gem bundle
 
-Open your Gemfile and add "passenger":
+Open your app's Gemfile and add "passenger":
 
 ~~~ruby
 gem "passenger"
@@ -84,7 +98,12 @@ bundle exec passenger stop
 <p class="hidden-xs"><img src="../../images/award.png" alt="Achievement unlocked. Image taken from https://openclipart.org/detail/60109/award-symbol-by-sheikh_tuhin" class="pull-right"></p>
 <p class="visible-xs text-center"><img src="../../images/award.png" alt="Achievement unlocked. Image taken from https://openclipart.org/detail/60109/award-symbol-by-sheikh_tuhin" width="128"></p>
 
-Congratulations! Now that you've passed this tutorial and seen Passenger in action, you may be interested in intermediate-level walkthroughs.
+Congratulations! You've passed this tutorial and seen Passenger in action. You can find the end result of this tutorial in the example application's git repository's `end_result` branch:
+
+ * [Ruby on Rails example: end result](https://github.com/phusion/passenger-ruby-rails-demo/tree/end_result)
+ * [Sinatra example: end result](https://github.com/phusion/passenger-ruby-rails-demo/tree/end_result)
+
+You may now be interested in intermediate-level walkthroughs.
 
 Learn more about Passenger and its features:
 
