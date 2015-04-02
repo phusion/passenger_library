@@ -1,0 +1,35 @@
+The cool thing about Passenger is that it restarts processes that crash! Let's try it out. Tell Passenger to spawn two processes:
+
+~~~bash
+<% if type == :ruby -%>
+bundle exec passenger start --min-instances 2
+<% elsif type == :nodejs -%>
+passenger start --app-type node --startup-file yourapp.js --min-instances 2
+<% elsif type == :iojs -%>
+passenger start --app-type node --nodejs iojs --startup-file yourapp.js --min-instances 2
+<% else -%>
+passenger start --min-instances 2
+<% end -%>
+# => ...
+~~~
+
+In another terminal, run `passenger-status` and obtain the PID of a random process. Then kill that process to simulate a crash.
+
+~~~bash
+<% if type == :ruby -%>
+bundle exec passenger-status
+<% else -%>
+passenger-status
+<% end -%>
+# => ...
+# =>
+# => ----------- Application groups -----------
+# => /Users/phusion/testapp#default:
+# =>   App root: /Users/phusion/testapp
+# =>   Requests in queue: 0
+# =>   * PID: 25012   Sessions: 0       Processed: 2       Uptime: 9s
+# =>     CPU: 0%      Memory  : 14M     Last used: 3s ago
+kill 25012
+~~~
+
+Wait a few seconds, and run `passenger-status` again. Notice that the original process is gone, but that it has been replaced by another one!

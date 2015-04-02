@@ -10,17 +10,13 @@ Well, Ruby web applications typically are not directly able to listen on the Int
 
 The Ruby ecosystem has multiple application servers, all with different features. Passenger is a popular server, and other popular servers include Unicorn and Puma. Because the Ruby community has embraced a standard interface called [Rack](http://rack.github.io/), it is very easy to migrate from one application server to another.
 
-If you Rails, then may be wondering: doesn't the `rails server` command allow the application to listen on the Internet? Yes, but "rails server" is not a real application server by itself. It's merely a thin wrapper that launches your Rails app in an application server.
-
 ## Versus other software
 
 ### Vs Unicorn and Puma
 
-Unicorn and Puma are application servers, just like Passenger. Because the Ruby community has embraced a standard interface called [Rack](http://rack.github.io/), it is very easy to migrate from one application server to another. If you already use Puma and Unicorn, then switching to Passenger is almost effortless. But the inverse is also true, so there is no vendor lock-in.
+Unicorn and Puma are application servers, just like Passenger. If you already use Puma and Unicorn, then switching to Passenger is almost effortless. The inverse is also true, so there is no vendor lock-in.
 
 Passenger is much easier to use than Unicorn and Puma, and is also much more ambitious and provides [a lot more features](../../../guides/). Unicorn and Puma are very minimalist compared to Passenger, and only provide HTTP transaction handling as well as limited amounts of problem management. In contrast, Passenger automates many of the tasks that you have to do manually when using Unicorn and Puma, has more advanced process management and resource management, supports direct Nginx and Apache integration, has more security features, etc.
-
-Although Unicorn and Puma speak HTTP, it is not safe to expose them directly on the Internet. This is why in production setups you are supposed to use them in combination with a web server (Nginx, Apache).
 
 ### Vs "rails server"
 
@@ -50,7 +46,7 @@ Passenger follows the Unix philosophy of doing a small number of things, but doi
    Passenger does not transfer the application code and files to the server for you. To do this, you should use something like Capistrano. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.<br>
    The Passenger Library contains [documentation on automating releases using Capistrano](../../../guides/capistrano.html).
  * **Installing application dependencies**<br>
-   Passenger does not install your application's dependencies for you.
+   Passenger does not install your application's dependencies for you. That job belongs to Capistrano and Bundler.
  * **Managing the database**<br>
    If your application requires a database, then Passenger does not install that database for you, nor does it sets up database accounts and tables for you. They must already be set up by the time you deploy your application to Passenger.
  * **Managing auxiliary daemons and services**<br>
