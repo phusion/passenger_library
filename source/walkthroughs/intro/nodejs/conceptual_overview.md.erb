@@ -1,0 +1,85 @@
+---
+title: Understanding Phusion Passenger
+section: intro
+---
+# Understanding Passenger
+
+Phusion Passenger is an open source **web application server**. It handles HTTP requests, manages processes and resources, and enables administration, monitoring and problem diagnosis.
+
+Passenger is very easy to use, makes deploying in production much easier and is scalable. If you aren't already familiar with the benefits, you can [learn more about them](https://www.phusionpassenger.com/#about).
+
+Passenger supports [multiple programming languages](<%= url_for "/", :anchor => "intro_walkthrough" %>), of which Node.js is one.
+
+**We will cover:**
+
+<ul class="automenu-container"></ul>
+
+## Passenger and Node.js
+
+Node.js apps can speak HTTP through the `http.Server` library.
+
+## How Passenger fits in the stack
+
+When you deploy your web app to production, there are all sorts of components involved. You may have heard of PM2, Forever, Nginx and Cluster. Passenger replaces some components, while collaborating with other components.
+
+In a typical production stack, one would use Nginx as the web server and Passenger as the application server. Passenger integrates with Nginx and manages the application and its resources.
+
+<figure>
+  <img src="<%= url_for 'stack.png' %>">
+  <figcaption>Passenger integrates with Nginx and manages the app's processes and resources.</figcaption>
+</figure>
+
+### A holistic approach
+
+If you've deployed a Node.js app to production before, then you may know that it involves glueing a bunch of different tools together:
+
+ * Nginx as a reverse proxy.
+ * Forever/PM2 to keep your app running and to manage your app's processes.
+ * An init script to start your app at boot.
+ * The Cluster module for multi-core usage.
+
+We dislike having so many moving parts, so Passenger takes more of a holistic approach to the problem. As an application server, Passenger is conceptually like Nginx, Forever/PM2, the init script and the cluster module combined in a single, lightweight, easy-to-use package. Instead needing you to glue different tools together, Passenger takes care of the "gluing together" for you.
+
+The holistic approach saves time and effort.
+
+### Nginx
+
+Nginx is a web server. It provides HTTP transaction handling and serves static files. However, it cannot manage Node.js apps by itself.
+
+People typically connect Node.js apps to Nginx through a reverse proxy setup, but it involves redundant work riddled with boilerplate code. Passenger takes care of this automatically and saves you time and effort.
+
+### Vs PM2 and Forever
+
+### Vs Cluster module
+
+## Important Passenger concepts
+
+ * Integration modes
+ * Process management
+
+## What Passenger doesn't do
+
+Passenger does many things, but some things are currently out of scope.
+
+ * **Setting up a server with an operating system**<br>
+   Passenger assumes that you already have a server with an working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.<br>
+   However, the Passenger Library contains excellent [documentation on setting up a server](../../deploy/nodejs/).
+ * **Installing Node.js**<br>
+   To run Node.js apps on Passenger, you must already have Node.js installed. Passenger doesn't do that for you. Passenger doesn't care how you install Node.js though; you sometimes just need to tell Passenger where Node.js is.<br>
+   However, the Passenger Library contains excellent [documentation on setting up a server](../../deploy/nodejs/).
+ * **Transferring the application code and files to the server**<br>
+   Passenger does not transfer the application code and files to the server for you. To do this, you must use tools like Git, scp, FTP, Capistrano, Fabric, etc. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.
+ * **Installing application dependencies**<br>
+   Passenger does not install your application's dependencies for you.
+ * **Managing the database**<br>
+   If your application requires a database, then Passenger does not install that database for you, nor does it sets up database accounts and tables for you. They must already be set up by the time you deploy your application to Passenger.
+
+## Next step
+
+Now that you've seen Passenger in action and understand what it is, it's time to get acquainted with the basic features.
+
+A key feature in Phusion Passenger is [process management](process_management.html). This allows Phusion Passenger to keep your application stable and to maximize performance.
+
+<a href="process_management.html" class="btn btn-primary btn-lg">Continue &raquo;</a>
+
+<a href=".">&laquo; Back to table of contents</a>

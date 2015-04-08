@@ -6,6 +6,10 @@ section: start
 
 <p class="lead">This 5 minute tutorial teaches you to start your application in a Phusion Passenger server, in development mode. Feel what Passenger is and how it works.</p>
 
+## What is Passenger?
+
+<%= render_partial("_what_is_passenger.md", locals: { language_type: :meteor }) %>
+
 ## Install Passenger
 
 <%= render_partial("_install.html") %>
@@ -68,8 +72,7 @@ passenger stop
 
 ## Conclusion
 
-<p class="hidden-xs"><img src="../../images/award.png" alt="Achievement unlocked. Image taken from https://openclipart.org/detail/60109/award-symbol-by-sheikh_tuhin" class="pull-right"></p>
-<p class="visible-xs text-center"><img src="../../images/award.png" alt="Achievement unlocked. Image taken from https://openclipart.org/detail/60109/award-symbol-by-sheikh_tuhin" width="128"></p>
+<p class="text-center"><img src="../../images/award.png" alt="Achievement unlocked. Image taken from https://openclipart.org/detail/60109/award-symbol-by-sheikh_tuhin" width="128"></p>
 
 Congratulations! Now that you've passed this tutorial and seen Passenger in action, you may be interested in intermediate-level walkthroughs.
 

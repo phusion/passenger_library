@@ -17,7 +17,7 @@ function autoGenerateMenu() {
   for (var i = 0; i < toc.length; i++) {
     html += '<li><a href="#' + toc[i].id +'">'+ toc[i].text +'</a>';
     if (toc[i].children.length > 0) {
-      html += '<ul class="nav">';
+      html += '<ul>';
       for (var j = 0; j < toc[i].children.length; j++) {
         html+= '<li><a href="#' + toc[i].children[j].id +'">' +
           toc[i].children[j].text +'</a></li>';
@@ -28,6 +28,8 @@ function autoGenerateMenu() {
   }
 
   $('.bs-docs-sidenav').html(html);
+  $('.bs-docs-sidenav ul').addClass('nav');
+  $('.automenu-container').html(html);
 }
 
 $(document).ready(function() {
