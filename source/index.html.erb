@@ -13,15 +13,6 @@ multisection: true
       <p class="version">Version <%= CURRENT_VERSION %> &middot; <a href="..">Switch version</a></p>
     </div>
   </div>
-
-  <!--
-  <div class="bs-docs-header" id="content">
-    <div class="container">
-      <h1>{{page.title}}</h1>
-      <p>{{page.description}}</p>
-    </div>
-  </div>
-  -->
 <% end %>
 
 <section id="site_intro" class="site-intro">
@@ -31,83 +22,74 @@ multisection: true
 </section>
 
 <section class="bs-docs-section">
-  <h2>Walkthroughs</h2>
+  <h2 id="walkthroughs">Walkthroughs</h2>
   
-  <h3>Get started</h3>
-  <p>
-    Get to know Passenger through this short, easy-to-follow tutorial. Get something up and running for development, in only 5 minutes.
-  </p>
-  <a href="<%= url_for '/walkthroughs/start/ruby.html' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/ruby.png' %>" width="48" height="48" alt="Ruby">
-    <span class="btn-label">Ruby</span>
-  </a>
-  <a href="<%= url_for '/walkthroughs/start/python.html' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/python.png' %>" width="48" height="48" alt="Python">
-    <span class="btn-label">Python</span>
-  </a>
-  <a href="<%= url_for '/walkthroughs/start/nodejs.html' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/nodejs.png' %>" width="89" height="48" alt="Node.js">
-    <span class="btn-label">Node.js</span>
-  </a>
-  <a href="<%= url_for '/walkthroughs/start/iojs.html' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/iojs.png' %>" width="48" height="48" alt="io.js">
-    <span class="btn-label">io.js</span>
-  </a>
-  <a href="<%= url_for '/walkthroughs/start/meteor.html' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/meteor.png' %>" width="89" height="48" alt="Meteor">
-    <span class="btn-label">Meteor</span>
-  </a>
+  <div class="row">
+    <div class="col-sm-4 site-section-showoff">
+      <a href="<%= url_for "/walkthroughs/start/" %>">
+        <span class="glyphicon glyphicon-sunglasses"></span>
+        <span class="title">Get started</span>
+      </a>
 
-  <!-- <p>
-    Are you a system administrator and not a developer? Read our sysadmin starting guide.
-  </p> -->
+      <p>
+        Get to know Passenger through this short, easy-to-follow tutorial. Get something up and running for development in only 5 minutes.
+      </p>
+      
+      <a href="<%= url_for "/walkthroughs/start/" %>" class="btn btn-default btn-lg visible-xs">
+        Read this
+      </a>
+    </div>
+    <div class="col-sm-4 site-section-showoff">
+      <a href="<%= url_for "/walkthroughs/intro/" %>">
+        <span class="glyphicon glyphicon-picture"></span>
+        <span class="title">Introduction</span>
+      </a>
 
-  <h3 id="intro_walkthrough">Introduction</h3>
-  <p>
-    Learn more about what Passenger is, how it fits in the stack and what features it provides.
-    Learn how Passenger helps you during development.
-  </p>
-  <a href="<%= url_for '/walkthroughs/intro/ruby/index.html' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/ruby.png' %>" width="48" height="48" alt="Ruby">
-    <span class="btn-label">Ruby</span>
-  </a>
-  <a href="<%= url_for '/walkthroughs/intro/python/index.html' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/python.png' %>" width="48" height="48" alt="Python">
-    <span class="btn-label">Python</span>
-  </a>
-  <a href="<%= url_for '/walkthroughs/intro/nodejs/index.html' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/nodejs.png' %>" width="89" height="48" alt="Node.js">
-    <span class="btn-label">Node.js</span>
-  </a>
-  <a href="<%= url_for '/walkthroughs/intro/iojs/index.html' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/iojs.png' %>" width="48" height="48" alt="io.js">
-    <span class="btn-label">io.js</span>
-  </a>
-  <a href="<%= url_for '/walkthroughs/intro/meteor/index.html' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/meteor.png' %>" width="89" height="48" alt="Meteor">
-    <span class="btn-label">Meteor</span>
-  </a>
+      <p>
+        Learn more about what Passenger is, how it fits in the stack and what features it provides.
+        Learn how Passenger helps you during development.
+      </p>
+      
+      <a href="<%= url_for "/walkthroughs/intro/" %>" class="btn btn-default btn-lg visible-xs">
+        Read this
+      </a>
+    </div>
+    <div class="col-sm-4 site-section-showoff">
+      <a href="<%= url_for "/walkthroughs/deploy/" %>">
+        <span class="glyphicon glyphicon-education"></span>
+        <span class="title">Deployment</span>
+      </a>
 
-  <h3 id="deploy_walkthrough">Deploy to production</h3>
-  <p>
-    Learn how to setup a server and how to deploy your app to production. We walk you through from the beginning to the end.
-  </p>
-  <a href="<%= url_for '/walkthroughs/deploy/ruby/' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/ruby.png' %>" width="48" height="48" alt="Ruby">
-    <span class="btn-label">Ruby</span>
-  </a>
-  <a href="<%= url_for '/walkthroughs/deploy/nodejs/' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/nodejs.png' %>" width="89" height="48" alt="Node.js">
-    <span class="btn-label">Node.js</span>
-  </a>
-  <a href="<%= url_for '/walkthroughs/deploy/iojs/' %>" class="btn btn-guide btn-lg">
-    <img src="<%= url_for '/images/iojs.png' %>" width="48" height="48" alt="io.js">
-    <span class="btn-label">io.js</span>
-  </a>
+      <p>
+        Learn how to setup a server and how to deploy your app to production. We walk you through from the beginning to the end.
+      </p>
+      
+      <a href="<%= url_for "/walkthroughs/deploy/" %>" class="btn btn-default btn-lg visible-xs">
+        Read this
+      </a>
+    </div>
+  </div>
+  <div class="row hidden-xs">
+    <div class="col-sm-4 site-section-showoff-aligned-action">
+      <a href="<%= url_for "/walkthroughs/start/" %>" class="btn btn-default btn-lg">
+        Read this
+      </a>
+    </div>
+    <div class="col-sm-4 site-section-showoff-aligned-action">
+      <a href="<%= url_for "/walkthroughs/intro/" %>" class="btn btn-default btn-lg">
+        Read this
+      </a>
+    </div>
+    <div class="col-sm-4 site-section-showoff-aligned-action">
+      <a href="<%= url_for "/walkthroughs/deploy/" %>" class="btn btn-default btn-lg">
+        Read this
+      </a>
+    </div>
+  </div>
 </section>
 
 <section class="bs-docs-section">
-  <h2>Guides</h2>
+  <h2 id="guides">Guides</h2>
   <p>
     Explore our general guides, which are of intermediate and advanced levels. They cover a wide range of topics.
   </p>

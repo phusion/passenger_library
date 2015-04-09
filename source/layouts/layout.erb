@@ -6,8 +6,7 @@
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <title><% if current_page.data.title %><%= current_page.data.title %> - <%end %>Phusion Passenger Library</title>
     <%= stylesheet_link_tag "all" %>
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Open+Sans:400,600" rel="stylesheet" type="text/css">
   </head>
   
   <body class="<%= page_classes %> <%= 'automenu' if !content_for?(:sidebar) %>">
@@ -27,11 +26,11 @@
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
             <% navbar_dropdown_section :walkthroughs, :start, :intro, :deploy_walkthrough do %>
-              <a href="<%= url_for '/walkthroughs/' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
+              <a href="<%= url_for '/' %>#walkthroughs" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <% navbar_section :start do %><%= link_to "Get started", "/", :anchor => "site_intro" %><% end %>
-                <% navbar_section :intro do %><%= link_to "Introduction", "/", :anchor => "intro_walkthrough" %><% end %>
-                <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/", :anchor => "deploy_walkthrough" %><% end %>
+                <% navbar_section :start do %><%= link_to "Get started", "/walkthroughs/start/" %><% end %>
+                <% navbar_section :intro do %><%= link_to "Introduction", "/walkthroughs/intro/" %><% end %>
+                <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/" %><% end %>
               </ul>
             <% end %>
             <% navbar_dropdown_section :guides, :general, :deploy, :admin do %>

@@ -277,6 +277,59 @@ figcaption {
 }
 
 
+.site-section-showoff {
+  text-align: center;
+}
+
+.site-section-showoff .glyphicon {
+  display: block;
+  font-size: 1000%;
+}
+
+.site-section-showoff .title {
+  display: block;
+  font-size: 1.7em;
+  font-weight: bold;
+  margin: 0.5em 0 0.5em 0;
+}
+
+.site-section-showoff p {
+  font-size: small;
+}
+
+.site-section-showoff .btn {
+  margin-bottom: 2em;
+}
+
+.site-section-showoff p,
+.site-section-showoff .btn,
+.site-section-showoff-aligned-action .btn {
+  display: block;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.programming-language-selections {
+  text-align: center;
+  margin: 2em 0 0 0;
+}
+
+.programming-language-selection {
+  display: inline-block;
+  text-align: center;
+  margin-right: 2em;
+  margin-bottom: 2em;
+}
+
+.programming-language-selection-label {
+  display: block;
+  font-size: 1.5em;
+  margin-top: 1em;
+}
+
+
 .info,
 .note {
   border: none;
