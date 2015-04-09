@@ -1,11 +1,11 @@
-The cool thing about Passenger is that it restarts processes that crash! Let's try it out. Tell Passenger to spawn two processes:
+The cool thing about Passenger is that it restarts processes that crash! Let us try it out. Tell Passenger to spawn two processes:
 
 ~~~bash
-<% if type == :ruby -%>
+<% if language_type == :ruby -%>
 bundle exec passenger start --min-instances 2
-<% elsif type == :nodejs -%>
+<% elsif language_type == :nodejs -%>
 passenger start --app-type node --startup-file yourapp.js --min-instances 2
-<% elsif type == :iojs -%>
+<% elsif language_type == :iojs -%>
 passenger start --app-type node --nodejs iojs --startup-file yourapp.js --min-instances 2
 <% else -%>
 passenger start --min-instances 2
@@ -16,7 +16,7 @@ passenger start --min-instances 2
 In another terminal, run `passenger-status` and obtain the PID of a random process. Then kill that process to simulate a crash.
 
 ~~~bash
-<% if type == :ruby -%>
+<% if language_type == :ruby -%>
 bundle exec passenger-status
 <% else -%>
 passenger-status
@@ -32,4 +32,4 @@ passenger-status
 kill 25012
 ~~~
 
-Wait a few seconds, and run `passenger-status` again. Notice that the original process is gone, but that it has been replaced by another one!
+Wait a few seconds, then run `passenger-status` again. Notice that the original process is gone and that it has been replaced by another one!

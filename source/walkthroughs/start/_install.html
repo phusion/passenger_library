@@ -1,82 +1,73 @@
-<p>Select an operating system:</p>
+<p><select id="os_install_select">
+  <option value="none" selected>Please select an operating system</option>
+  <option value="debian">Debian, Ubuntu</option>
+  <option value="osx">Mac OS X</option>
+  <option value="other">Other</option>
+</select></p>
 
-<ul>
-  <li>
-    <a href="#debian" data-toggle="collapse" aria-expanded="false" aria-controls="debian">Debian, Ubuntu</a>
-    <div class="collapse" id="debian">
-      <p><strong>Step 1: Add the Passenger APT repository</strong></p>
-      <p>
-        Install our PGP key and add HTTPS support for APT. Our APT repository is stored on an HTTPS server.
-      </p>
-      <pre class="highlight shell">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
-sudo apt-get install apt-transport-https ca-certificates</pre>
+<div class="install_os" id="install_os_none" style="display: none">
+  <p><small><a href="#windows_not_supported" data-toggle="collapse" aria-expanded="false" aria-controls="windows_not_supported">(Windows is not supported)</a></small></p>
 
-      <p>
-        Create a file <code>/etc/apt/sources.list.d/passenger.list</code> and insert <strong>one of</strong> the following lines, depending on your distribution.
-      </p>
-      <pre class="highlight shell"><code class="c">##### !!!! Only add ONE of these lines, not all of them !!!! #####
-# Ubuntu 14.04</code>
-<code>deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main</code>
-<code class="c"># Ubuntu 12.04</code>
-<code>deb https://oss-binaries.phusionpassenger.com/apt/passenger precise main</code>
-<code class="c"># Ubuntu 10.04</code>
-<code>deb https://oss-binaries.phusionpassenger.com/apt/passenger lucid main</code>
-<code class="c"># Debian 7</code>
-<code>deb https://oss-binaries.phusionpassenger.com/apt/passenger wheezy main</code>
-<code class="c"># Debian 6</code>
-<code>deb https://oss-binaries.phusionpassenger.com/apt/passenger squeeze main</code></pre>
-
-      <p style="margin-top: 2em"><strong>Step 2: Installing the package</strong></p>
-      <p>
-        Install the <code>passenger</code> package.
-      </p>
-      <pre class="highlight shell">sudo apt-get update
-sudo apt-get install passenger</pre>
+  <div class="collapse" id="windows_not_supported">
+    <div class="note">
+      Our apologies to Windows users. Passenger doesn't support Windows. We require a Unix-like operating system.
     </div>
-  </li>
-  <li>
-    <a href="#osx" data-toggle="collapse" aria-expanded="false" aria-controls="osx">Mac OS X</a>
-    <div class="collapse" id="osx">
-      <p>
-        You can install Passenger through <a href="http://brew.sh/">Homebrew</a>:
-      </p>
-      <pre class="highlight shell">brew install passenger</pre>
-    </div>
-  </li>
-  <li>
-    <a href="#other" data-toggle="collapse" aria-expanded="false" aria-controls="other">Other</a>
-    <div class="collapse" id="other">
-      <p><strong>Step 1: Download and extract tarball</strong></p>
-      <p>Download the latest Passenger source tarball.</p>
-      <p><a href="https://www.phusionpassenger.com/latest_stable_tarball" class="btn btn-primary">Download tarball</a></p>
-      <p>
-        Extract the tarball to some place <strong>permanent</strong>. Replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
-      </p>
-      <pre class="highlight shell">tar -xzvf passenger-X.X.X.tar.gz -C /somewhere-permanent</pre>
+  </div>
+</div>
 
-      <p style="margin-top: 2em"><strong>Step 2: Add Passenger to PATH</strong></p>
-      <p>
-        Add the Passenger <code>bin</code> directory to your PATH, so that your shell can locate the Passenger commands.
-      </p>
-      <p>
-        Open your shell's startup file. If you're using bash, this is usually <code>/etc/bashrc</code> or <code>/etc/bash.bashrc</code>. Inside that file, add this to the end:
-      </p>
-      <pre class="highlight shell">PATH=/somewhere-permanent/passenger-X.X.X/bin:$PATH
+<div class="install_os" id="install_os_debian" style="display: none">
+  <p><select id="debian_version_select">
+    <option value="wheezy" selected>Debian 7 (Wheezy)</option>
+    <option value="squeeze">Debian 6 (Squeeze)</option>
+    <option value="trusty">Ubuntu 14.04 (Trusty)</option>
+    <option value="precise">Ubuntu 12.04 (Precise)</option>
+    <option value="lucid">Ubuntu 10.04 (Lucid)</option>
+  </select></p>
+
+  <pre class="highlight shell"><code><span class="c"># Install our PGP key and add HTTPS support for APT</span>
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
+sudo apt-get install apt-transport-https ca-certificates
+
+<span class="c"># Add our APT repository</span>
+sudo sh -c <span class="s1">'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger <span class="debian_codename si"></span> main &gt; /etc/apt/sources.list.d/passenger.list'</span>
+sudo apt-get update
+
+<span class="c"># Install Passenger</span>
+sudo apt-get install passenger</code></pre>
+</div>
+
+<div class="install_os" id="install_os_osx" style="display: none">
+  <p>
+    You can install Passenger through <a href="http://brew.sh/">Homebrew</a>:
+  </p>
+  <pre class="highlight shell">brew install passenger</pre>
+</div>
+
+<div class="install_os" id="install_os_other" style="display: none">
+  <p><strong>Step 1: Download and extract tarball</strong></p>
+  <p>Download the latest Passenger source tarball.</p>
+  <p><a href="https://www.phusionpassenger.com/latest_stable_tarball" class="btn btn-primary">Download tarball</a></p>
+  <p>
+    Extract the tarball to some place <strong>permanent</strong>. Replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
+  </p>
+  <pre class="highlight shell">tar -xzvf passenger-X.X.X.tar.gz -C /somewhere-permanent</pre>
+
+  <p style="margin-top: 2em"><strong>Step 2: Add Passenger to PATH</strong></p>
+  <p>
+    Add the Passenger <code>bin</code> directory to your PATH, so that your shell can locate the Passenger commands.
+  </p>
+  <p>
+    Open your shell's startup file. If you're using bash, this is usually <code>/etc/bashrc</code> or <code>/etc/bash.bashrc</code>. Inside that file, add this to the end:
+  </p>
+  <pre class="highlight shell">PATH=/somewhere-permanent/passenger-X.X.X/bin:$PATH
 export PATH</pre>
-      <p>
-        Again, replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
-      </p>
-      <p>
-        When you're done, restart all your shells so that your new PATH takes effect.
-      </p>
-      <div class="note">
-        Make sure your bashrc is actually included by your bash profile, which might not be the case if you created the user with <code>useradd</code> instead of <code>adduser</code> for example.
-      </div>
-    </div>
-  </li>
-</ul>
-
-<div class="note">
-  <h3 class="notoc">Windows is not supported</h3>
-  <p>Our apologies to Windows users. Passenger doesn't support Windows. We require a Unix-like operating system.</p>
+  <p>
+    Again, replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
+  </p>
+  <p>
+    When you're done, restart all your shells so that your new PATH takes effect.
+  </p>
+  <div class="note">
+    Make sure your bashrc is actually included by your bash profile, which might not be the case if you created the user with <code>useradd</code> instead of <code>adduser</code> for example.
+  </div>
 </div>

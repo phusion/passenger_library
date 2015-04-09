@@ -1,50 +1,4 @@
-.bs-docs-sidebar {
-  margin-top: 3em;
-}
-
-.bs-docs-sidebar.affix-bottom .bs-docs-sidenav,
-.bs-docs-sidebar.affix .bs-docs-sidenav {
-  margin-bottom: 20px;
-}
-
-.bs-docs-masthead {
-  padding-top:50px;
-  padding-bottom:40px;
-  margin-bottom:20px;
-  background-image: url('../images/triangles-purple.jpg');
-  background-size: cover;
-  background-position: top left;
-}
-
-.bs-docs-masthead .version {
-  margin-top: 15px;
-  font-size: 140%;
-  color: #d5cae9;
-}
-
-.bs-docs-masthead .version a {
-  color: #d5cae9;
-}
-
-.bs-docs-header h1, .bs-docs-header p {
-  margin-right:0px;
-}
-
-.bs-docs-sidebar .nav .nav {
-  display: block;
-}
-
-.bs-docs-sidebar .nav > li > a {
-  font-size:15px;
-}
-.bs-docs-sidebar .nav .nav > li > a {
-  font-size:14px;
-  line-height: 1.4;
-  margin-bottom: 0.4em;
-}
-.back-top-top {
-  font-size:13px;
-}
+/***** Navbar ******/
 
 .navbar-brand-part1 {
   font-family: Lato, sans-serif;
@@ -81,6 +35,86 @@
   .bs-docs-masthead .lead {
     font-size: 25px;
   }
+}
+
+
+/***** Masthead *****/
+
+.bs-docs-masthead {
+  padding-top:50px;
+  padding-bottom:40px;
+  margin-bottom:20px;
+  background-image: url('../images/triangles-purple.jpg');
+  background-size: cover;
+  background-position: top left;
+}
+
+.bs-docs-masthead .version {
+  margin-top: 15px;
+  font-size: 140%;
+  color: #d5cae9;
+}
+
+.bs-docs-masthead .version a {
+  color: #d5cae9;
+}
+
+.bs-docs-header h1, .bs-docs-header p {
+  margin-right:0px;
+}
+
+
+/***** Sidebar *****/
+
+.bs-docs-sidebar {
+  margin-top: 3em;
+}
+
+.bs-docs-sidebar.affix-bottom .bs-docs-sidenav,
+.bs-docs-sidebar.affix .bs-docs-sidenav {
+  margin-bottom: 20px;
+}
+
+.bs-docs-container .bs-docs-sidebar h2 {
+  font-weight: normal;
+  font-size: 1.2em;
+  border: none;
+  margin-top: 0.5em;
+  margin-bottom: 0.75em;
+  padding: 0;
+}
+
+.bs-docs-sidebar .nav .nav {
+  display: block;
+}
+
+.bs-docs-sidebar .nav > li > a {
+  font-size:15px;
+}
+.bs-docs-sidebar .nav .nav > li > a {
+  font-size:14px;
+  line-height: 1.4;
+  margin-bottom: 0.4em;
+}
+.back-top-top {
+  font-size:13px;
+}
+.back-to-previous {
+  font-size: small;
+}
+
+
+/***** Content *****/
+
+a {
+  color: #6959A5;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  color: #AD8CD0;
+  text-decoration: none;
 }
 
 #content {
@@ -181,7 +215,7 @@
 figure {
   text-align: center;
   margin: 1em auto 1em auto;
-  max-width: 70%;
+  max-width: 80%;
 }
 
 figure img {
@@ -234,6 +268,12 @@ figcaption {
 
 .label-ruby {
   background-color: #b94e4b;
+}
+
+#os_install_select,
+#debian_version_select {
+  width: 20em;
+  max-width: 100%;
 }
 
 

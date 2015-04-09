@@ -1,0 +1,24 @@
+<%
+  language_type = current_page.data.language_type
+  language_name = current_page.data.language_name
+%>
+
+<a href="<%= url_for "/walkthroughs/" %>" class="back-to-previous">&laquo; Back to all walkthroughs</a>
+
+<h2>Introduction<br>
+<small>for <%= language_name %> devs</small></h2>
+
+<ul class="nav nav-stacked">
+  <% navbar_subsection :beginning do %>
+    <a href="<%= url_for "/walkthroughs/intro/#{language_type}/" %>">1 The Beginning</a>
+  <% end %>
+  <% navbar_subsection :conceptual_overview do %>
+    <a href="<%= url_for "/walkthroughs/intro/#{language_type}/conceptual_overview.html" %>">2 Conceptual overview</a>
+  <% end %>
+  <% navbar_subsection :process_management do %>
+    <a href="<%= url_for "/walkthroughs/intro/#{language_type}/process_management.html" %>">3 Process management</a>
+  <% end %>
+  <% navbar_subsection :conclusion do %>
+    <a href="<%= url_for "/walkthroughs/intro/#{language_type}/conclusion.html" %>">4 Conclusion</a>
+  <% end %>
+</ul>

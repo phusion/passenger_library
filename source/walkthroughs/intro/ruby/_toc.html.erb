@@ -1,0 +1,19 @@
+<a href="<%= url_for "/walkthroughs/" %>" class="back-to-previous">&laquo; Back to all walkthroughs</a>
+
+<h2>Introduction<br>
+<small>for Ruby devs</small></h2>
+
+<ul class="nav nav-stacked">
+  <% navbar_subsection :beginning do %>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/" %>">1 The Beginning</a>
+  <% end %>
+  <% navbar_subsection :conceptual_overview do %>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/conceptual_overview.html" %>">2 Conceptual overview</a>
+  <% end %>
+  <% navbar_subsection :process_management do %>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/process_management.html" %>">3 Process management</a>
+  <% end %>
+  <% navbar_subsection :conclusion do %>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/conclusion.html" %>">4 Conclusion</a>
+  <% end %>
+</ul>

@@ -19,7 +19,7 @@
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
             <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> Navigation
           </button>
-          <a class="navbar-brand" href="<%= url_for '/index.html' %>">
+          <a class="navbar-brand" href="<%= url_for '/' %>">
             <span class="navbar-brand-part1">Passenger</span>
             <span class="navbar-brand-part2">Library</span>
           </a>
@@ -27,23 +27,23 @@
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
             <% navbar_dropdown_section :walkthroughs, :start, :intro, :deploy_walkthrough do %>
-              <a href="<%= url_for '/walkthroughs/index.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
+              <a href="<%= url_for '/walkthroughs/' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <% navbar_section :start do %><%= link_to "Get started", "/index.html", :anchor => "site_intro" %><% end %>
-                <% navbar_section :intro do %><%= link_to "Introduction", "/index.html", :anchor => "intro_walkthrough" %><% end %>
-                <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/index.html", :anchor => "deploy_walkthrough" %><% end %>
+                <% navbar_section :start do %><%= link_to "Get started", "/", :anchor => "site_intro" %><% end %>
+                <% navbar_section :intro do %><%= link_to "Introduction", "/", :anchor => "intro_walkthrough" %><% end %>
+                <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/", :anchor => "deploy_walkthrough" %><% end %>
               </ul>
             <% end %>
             <% navbar_dropdown_section :guides, :general, :deploy, :admin do %>
               <a href="<%= url_for '/allguides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <% navbar_section :general do %><%= link_to "General guides", "/guides/index.html" %><% end %>
-                <% navbar_section :deploy do %><%= link_to "Deployment &amp; scaling", "/deploy/index.html" %><% end %>
-                <% navbar_section :admin do %><%= link_to "Administration", "/admin/index.html" %><% end %>
-                <% navbar_section :indepth do %><%= link_to "In-depth", "/indepth/index.html" %><% end %>
+                <% navbar_section :general do %><%= link_to "General guides", "/guides/" %><% end %>
+                <% navbar_section :deploy do %><%= link_to "Deployment &amp; scaling", "/deploy/" %><% end %>
+                <% navbar_section :admin do %><%= link_to "Administration", "/admin/" %><% end %>
+                <% navbar_section :indepth do %><%= link_to "In-depth", "/indepth/" %><% end %>
               </ul>
             <% end %>
-            <% navbar_section :reference do %><%= link_to "Reference", "/reference/index.html" %><% end %>
+            <% navbar_section :reference do %><%= link_to "Reference", "/reference/" %><% end %>
             <% navbar_section :sitemap do %><%= link_to "Sitemap", "/sitemap.html" %><% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -60,66 +60,36 @@
 
     <div class="container bs-docs-container">
       <div class="row">
-        <% if content_for?(:sidebar) %>
-          <!-- Content
+        <% if has_sidebar? %>
+          <!-- Sidebar
           =========================================== -->
-          <div class="col-md-9 col-lg-offset-1 col-lg-8" role="main">
-            <%= yield %>
-          </div>
-
-          <!-- Page navigation
-          =========================================== -->
-          <div class="col-md-3 col-lg-3" role="complementary">
+          <div class="col-md-3" role="complementary">
             <div class="bs-docs-sidebar hidden-print">
-              <ul class="nav bs-docs-sidenav">
-                <%= yield_content :sidebar %>
-              </ul>
-              <p>
-                <a class="back-to-top" href="#top">
-                  <i class="glyphicon glyphicon-chevron-up"></i> Back to top
-                </a>
-              </p>
-              <p class="edit-on-github">
-                <a href="<%=h current_page_github_url %>" class="btn btn-default">
-                  <span class="glyphicon glyphicon-lg glyphicon-pencil" aria-hidden="true"></span>
-                  <span class="btn-label">Edit this page<br>on Github</span>
-                </a>
-              </p>
+              <%= yield_sidebar_content %>
             </div>
           </div>
-        <% else %>
+
           <!-- Content
           =========================================== -->
-          <div class="col-md-9 col-lg-offset-1 col-lg-8" role="main">
+          <div class="col-md-8" role="main">
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
           </div>
-
-          <!-- Page navigation
+        <% else %>
+          <!-- Content
           =========================================== -->
-          <div class="col-md-3 col-lg-3" role="complementary">
-            <div class="bs-docs-sidebar hidden-print">
-              <ul class="nav bs-docs-sidenav"></ul>
-              <p>
-                <a class="back-to-top" href="#top">
-                  <i class="glyphicon glyphicon-chevron-up"></i> Back to top
-                </a>
-              </p>
-              <p class="edit-on-github">
-                <a href="<%=h current_page_github_url %>" class="btn btn-default">
-                  <span class="glyphicon glyphicon-lg glyphicon-pencil" aria-hidden="true"></span>
-                  <span class="btn-label">Edit this page<br>on Github</span>
-                </a>
-              </p>
-            </div>
+          <div class="col-md-8 col-md-offset-2" role="main">
+            <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
+              <%= yield %>
+            <%= '</section>' if !current_page.data.multisection %>
           </div>
         <% end %>
       </div>
 
       <% if current_page.data.comments != false %>
         <div class="row" role="complementary">
-          <div class="col-md-9 col-lg-offset-1 col-lg-8 bs-comments-section">
+          <div class="<%= comments_section_classes %> bs-comments-section">
             <div class="bs-callout bs-callout-info" role="alert">
               Feel free to ask questions about this page, or contribute notes and hints for other readers. Or <a href="<%=h current_page_github_url %>">edit this page and send us a pull request</a>.<br><br>
 

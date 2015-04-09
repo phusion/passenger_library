@@ -1,6 +1,8 @@
 ---
 title: Introduction conclusion
 section: intro
+subsection: conclusion
+sidebar: _toc.html
 ---
 # Conclusion
 
