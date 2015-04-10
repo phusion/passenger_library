@@ -7,6 +7,10 @@ sidebar: sidebar.html
 
 <p class="lead">This 5 minute tutorial teaches you to start your application in a Phusion Passenger server, in development mode. Feel what Passenger is and how it works.</p>
 
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
 ## What is Passenger?
 
 <%= render_partial("_what_is_passenger.md", locals: { language_type: :meteor }) %>
@@ -73,16 +77,6 @@ passenger stop
 
 ## Conclusion
 
-<p class="text-center"><img src="../../images/award.png" alt="Achievement unlocked. Image taken from https://openclipart.org/detail/60109/award-symbol-by-sheikh_tuhin" width="128"></p>
-
 Congratulations! Now that you've passed this tutorial and seen Passenger in action, you may be interested in intermediate-level walkthroughs.
 
-Learn more about Passenger and its features:
-
-<a href="../intro/meteor/" class="btn btn-primary">Read introduction walkthrough &raquo;</a>
-
-Deploy your app to production:
-
-<a href="../deploy/meteor/" class="btn btn-primary">Read deployment walkthrough &raquo;</a>
-
-...or <a href="../..">go back to the front page</a>.
+<%= render_partial("next_step.html", locals: { language_type: :meteor }) %>

@@ -28,8 +28,8 @@
             <% navbar_dropdown_section :walkthroughs, :start, :intro, :deploy_walkthrough do %>
               <a href="<%= url_for '/' %>#walkthroughs" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <% navbar_section :start do %><%= link_to "Get started", "/walkthroughs/start/" %><% end %>
-                <% navbar_section :intro do %><%= link_to "Introduction", "/walkthroughs/intro/" %><% end %>
+                <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/" %><% end %>
+                <% navbar_section :intro do %><%= link_to "Basics", "/walkthroughs/intro/" %><% end %>
                 <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/" %><% end %>
               </ul>
             <% end %>
