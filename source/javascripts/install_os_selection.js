@@ -5,6 +5,11 @@ function installOsChanged() {
   var selection = $('#os_install_select').val();
   $('.install_os').hide();
   $('#install_os_' + selection).show();
+  if (selection == 'none') {
+  	$('#post_install_check').hide();
+  } else {
+  	$('#post_install_check').show();
+  }
 }
 
 function debianVersionChanged() {

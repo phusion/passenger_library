@@ -62,4 +62,21 @@ module CustomHelpers
       "col-md-8 col-md-offset-2"
     end
   end
+
+  def passenger_command_prefix(locals)
+    if locals[:language_type] == :ruby || current_page.data.language_type == 'ruby'
+      "bundle exec "
+    else
+      ""
+    end
+  end
+
+  def passenger_command_prefix_html(locals)
+    if locals[:language_type] == :ruby || current_page.data.language_type == 'ruby'
+      result = %Q{<span class="prompt">$ </span>cd /path-to-your-app\n}
+      result << %Q{<span class="prompt">$ </span>bundle exec }
+    else
+      %Q{<span class="prompt">$ </span>}
+    end
+  end
 end

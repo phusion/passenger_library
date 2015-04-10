@@ -1,0 +1,82 @@
+<%
+  if locals[:language_type]
+    suffix = "#{locals[:language_type]}/"
+  else
+    suffix = nil
+  end
+%>
+
+<div class="row">
+  <% if quickstart %>
+    <div class="col-sm-4 site-section-showoff">
+      <a href="<%= url_for "/walkthroughs/start/#{suffix}" %>" class="eyecatcher">
+        <span class="glyphicon glyphicon-sunglasses"></span>
+        <span class="title">Quickstart</span>
+      </a>
+
+      <p>
+        Get to know Passenger through this short, easy-to-follow tutorial. Get something up and running for development in only 5 minutes.
+      </p>
+      
+      <a href="<%= url_for "/walkthroughs/start/#{suffix}" %>" class="btn btn-default btn-lg visible-xs">
+        Read this
+      </a>
+    </div>
+  <% end %>
+  <% if basics %>
+    <div class="col-sm-4 site-section-showoff">
+      <a href="<%= url_for "/walkthroughs/intro/#{suffix}" %>" class="eyecatcher">
+        <span class="glyphicon glyphicon-picture"></span>
+        <span class="title">Basics</span>
+      </a>
+
+      <p>
+        Learn what Passenger is, how it fits in the stack, its fundamental concepts and its basic usage.
+        Focuses mainly on development rather than production.
+      </p>
+      
+      <a href="<%= url_for "/walkthroughs/intro/#{suffix}" %>" class="btn btn-default btn-lg visible-xs">
+        Read this
+      </a>
+    </div>
+  <% end %>
+  <% if deployment %>
+    <div class="col-sm-4 site-section-showoff">
+      <a href="<%= url_for "/walkthroughs/deploy/#{suffix}" %>" class="eyecatcher">
+        <span class="glyphicon glyphicon-education"></span>
+        <span class="title">Deployment</span>
+      </a>
+
+      <p>
+        Learn how easy it is to setup a server and how to deploy your app to production. No worries, we walk you through from the beginning to the end.
+      </p>
+      
+      <a href="<%= url_for "/walkthroughs/deploy/#{suffix}" %>" class="btn btn-default btn-lg visible-xs">
+        Read this
+      </a>
+    </div>
+  <% end %>
+</div>
+<div class="row hidden-xs">
+  <% if quickstart %>
+    <div class="col-sm-4 site-section-showoff-aligned-action">
+      <a href="<%= url_for "/walkthroughs/start/#{suffix}" %>" class="btn btn-default btn-lg">
+        Read this
+      </a>
+    </div>
+  <% end %>
+  <% if basics %>
+    <div class="col-sm-4 site-section-showoff-aligned-action">
+      <a href="<%= url_for "/walkthroughs/intro/#{suffix}" %>" class="btn btn-default btn-lg">
+        Read this
+      </a>
+    </div>
+  <% end %>
+  <% if deployment %>
+    <div class="col-sm-4 site-section-showoff-aligned-action">
+      <a href="<%= url_for "/walkthroughs/deploy/#{suffix}" %>" class="btn btn-default btn-lg">
+        Read this
+      </a>
+    </div>
+  <% end %>
+</div>

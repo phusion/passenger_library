@@ -1,19 +1,31 @@
 <a href="<%= url_for "/" %>#walkthroughs" class="back-to-previous">&laquo; Back to all walkthroughs</a>
 
-<h2>Introduction<br>
+<h2>Basics<br>
 <small>for Ruby devs</small></h2>
 
 <ul class="nav nav-stacked">
   <% navbar_subsection :beginning do %>
     <a href="<%= url_for "/walkthroughs/intro/ruby/" %>">1 The beginning</a>
   <% end %>
-  <% navbar_subsection :conceptual_overview do %>
-    <a href="<%= url_for "/walkthroughs/intro/ruby/conceptual_overview.html" %>">2 Conceptual overview</a>
+  <% navbar_subsection :fundamental_concepts do %>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/fundamental_concepts.html" %>">2 Fundamental concepts</a>
+  <% end %>
+  <% navbar_subsection :help do %>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/help.html" %>">3 Help!</a>
+  <% end %>
+  <% navbar_subsection :installation do %>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/installation.html" %>">4 Installation</a>
+  <% end %>
+  <% navbar_subsection :passenger_command do %>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/passenger_command.html" %>">5 The 'passenger' command</a>
   <% end %>
   <% navbar_subsection :process_management do %>
-    <a href="<%= url_for "/walkthroughs/intro/ruby/process_management.html" %>">3 Process management</a>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/process_management.html" %>">6 Process management</a>
+  <% end %>
+  <% navbar_subsection :reloading_code do %>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/reloading_code.html" %>">7 Reloading code</a>
   <% end %>
   <% navbar_subsection :conclusion do %>
-    <a href="<%= url_for "/walkthroughs/intro/ruby/conclusion.html" %>">4 Conclusion</a>
+    <a href="<%= url_for "/walkthroughs/intro/ruby/conclusion.html" %>">8 Summary and conclusion</a>
   <% end %>
 </ul>

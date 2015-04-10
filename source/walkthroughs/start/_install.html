@@ -73,3 +73,10 @@ sudo apt-get install passenger</code></pre>
     Make sure your bashrc is actually included by your bash profile, which might not be the case if you created the user with <code>useradd</code> instead of <code>adduser</code> for example.
   </div>
 </div>
+
+<div id="post_install_check" style="display: none">
+  <p>After installation, please validate the install as follows:</p>
+  <pre class="highlight shell"><span class="prompt">$ </span>passenger-config validate-install
+<span class="output"> * Checking whether this Phusion Passenger install is in PATH... ✓
+ * Checking whether there are no other Phusion Passenger installations... ✓</span></pre>
+</div>
