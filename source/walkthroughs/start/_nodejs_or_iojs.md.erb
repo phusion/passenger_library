@@ -1,5 +1,9 @@
 <p class="lead">This 5 minute tutorial teaches you to start your application in a Phusion Passenger server, in development mode. Feel what Passenger is and how it works.</p>
 
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
 ## What is Passenger?
 
 <%= render_partial("_what_is_passenger.md", locals: { language_type: type }) %>
@@ -12,40 +16,33 @@
 
 You normally run your app like this, right?
 
-<% if type == :nodejs %>
-~~~bash
-node yourapp.js
-~~~
+<% if type == :nodejs -%>
+<pre class="highlight"><span class="prompt">$ </span>node yourapp.js</pre>
 <% else %>
-~~~bash
-iojs yourapp.js
-~~~
+<pre class="highlight"><span class="prompt">$ </span>iojs yourapp.js</pre>
 <% end %>
 
 It's similar with Passenger. Instead of `<%= command %>`, you run your app with `passenger start`, but with a few extra command line options:
 
-~~~bash
+<pre class="highlight">
 <% if type == :nodejs -%>
-passenger start --app-type node --startup-file yourapp.js
+<span class="prompt">$ </span>passenger start --app-type node --startup-file yourapp.js
 <% else -%>
-passenger start --app-type node --nodejs iojs --startup-file yourapp.js
+<span class="prompt">$ </span>passenger start --app-type node --nodejs iojs --startup-file yourapp.js
 <% end -%>
-# => ======= Phusion Passenger Standalone web server started =======
-# => PID file: /Users/phusion/myapp/passenger.3000.pid
-# => Log file: /Users/phusion/myapp/passenger.3000.log
-# => Environment: development
-# => Accessible via: http://0.0.0.0:3000/
-# => 
-# => You can stop Phusion Passenger Standalone by pressing Ctrl-C.
-# => ===============================================================
-~~~
+<span class="output">======= Phusion Passenger Standalone web server started =======
+PID file: /Users/phusion/myapp/passenger.3000.pid
+Log file: /Users/phusion/myapp/passenger.3000.log
+Environment: development
+Accessible via: http://0.0.0.0:3000/
+
+You can stop Phusion Passenger Standalone by pressing Ctrl-C.
+===============================================================</span></pre>
 
 As you can see in the output, Passenger is now serving your app on [http://0.0.0.0:3000/](http://0.0.0.0:3000/). So if you go to that URL, you will should see your application:
 
-~~~bash
-curl http://0.0.0.0:3000/
-# => your app's front page HTML
-~~~
+<pre class="highlight"><span class="prompt">$ </span>curl http://0.0.0.0:3000/
+<span class="output">...your app's front page HTML...</span></pre>
 
 ## Passenger is polyglot
 
@@ -80,23 +77,21 @@ There may also be *application* logs, generated either by your app or by the fra
 
 There are two ways to stop the server. The first is by pressing Ctrl-C in the terminal.
 
-~~~bash
+<pre class="highlight">
 <% if type == :nodejs -%>
-passenger start --app-type node --startup-file yourapp.js
+<span class="prompt">$ </span>passenger start --app-type node --startup-file yourapp.js
 <% else -%>
-passenger start --app-type node --nodejs iojs --startup-file yourapp.js
+<span class="prompt">$ </span>passenger start --app-type node --nodejs iojs --startup-file yourapp.js
 <% end -%>
-# => ...
-# => (press Ctrl-C here)
-# => Stopping web server... done!
-~~~
+<span class="output">...
+(press Ctrl-C here)
+Stopping web server... done!</span>
+</pre>
 
 The second way is by starting a seperate terminal, changing the working directory to your application, and running `passenger stop`:
 
-~~~bash
-cd /path-to-your-app
-passenger stop
-~~~
+<pre class="highlight"><span class="prompt">$ </span>cd /path-to-your-app
+<span class="prompt">$ </span>passenger stop</pre>
 
 ## Conclusion
 
