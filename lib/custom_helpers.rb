@@ -71,9 +71,12 @@ module CustomHelpers
     end
   end
 
-  def passenger_command_prefix_html(locals)
+  def passenger_command_prefix_html(locals, options = {})
     if locals[:language_type] == :ruby || current_page.data.language_type == 'ruby'
-      result = %Q{<span class="prompt">$ </span>cd /path-to-your-app\n}
+      result = ""
+      if options.fetch(:cd, true)
+        result << %Q{<span class="prompt">$ </span>cd /path-to-your-app\n}
+      end
       result << %Q{<span class="prompt">$ </span>bundle exec }
     else
       %Q{<span class="prompt">$ </span>}

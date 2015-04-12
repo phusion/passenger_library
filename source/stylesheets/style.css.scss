@@ -231,8 +231,25 @@ a:focus {
   margin-top: 3em;
 }
 
-.bs-comments-section .bs-callout {
-  font-size: 14px;
+.bs-comments-section-alert {
+  border: dashed 2px #EDE4EF;
+  font-family: Lato, sans-serif;
+  font-size: 12pt;
+  color: #898091;
+  background-color: #FAF1FC;
+  text-align: center;
+  margin: 2em 0;
+  padding: 2em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bs-comments-section-alert > h3 {
+  margin-top: 0;
+  color: #79727F;
+}
+
+.bs-comments-section-alert > p {
+  margin-bottom: 0;
 }
 
 
@@ -366,7 +383,8 @@ figcaption {
 
 
 .info,
-.note {
+.note,
+.warning {
   border: none;
   padding: 1.5em 1.5em 1.5em 64px;
   margin: 1.5em 0 1.5em 0;
@@ -374,8 +392,10 @@ figcaption {
 
 .info > h3:first-child,
 .note > h3:first-child,
+.warning > h3:first-child,
 .info > strong:first-child,
-.note > strong:first-child {
+.note > strong:first-child,
+.warning > strong:first-child {
   margin-top: 0;
   margin-bottom: 16px;
   font-size: 1.2em;
@@ -384,7 +404,8 @@ figcaption {
 }
 
 .info > p:last-child,
-.note > p:last-child {
+.note > p:last-child,
+.warning > p:last-child {
   margin-bottom: 0;
 }
 
@@ -394,4 +415,8 @@ figcaption {
 
 .note {
   background: #fff9d8 url(../images/tab_note.gif) no-repeat left top;
+}
+
+.warning {
+  background: #f9d9d8 url(../images/tab_red.gif) no-repeat left top;
 }

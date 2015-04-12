@@ -25,11 +25,11 @@
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
-            <% navbar_dropdown_section :walkthroughs, :start, :intro, :deploy_walkthrough do %>
+            <% navbar_dropdown_section :walkthroughs, :start, :basics, :deploy_walkthrough do %>
               <a href="<%= url_for '/' %>#walkthroughs" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/" %><% end %>
-                <% navbar_section :intro do %><%= link_to "Basics", "/walkthroughs/intro/" %><% end %>
+                <% navbar_section :basics do %><%= link_to "Basics", "/walkthroughs/basics/" %><% end %>
                 <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/" %><% end %>
               </ul>
             <% end %>
@@ -43,7 +43,6 @@
               </ul>
             <% end %>
             <% navbar_section :reference do %><%= link_to "Reference", "/reference/" %><% end %>
-            <% navbar_section :sitemap do %><%= link_to "Sitemap", "/sitemap.html" %><% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://www.phusionpassenger.com/support" target="_blank">Support</a></li>
@@ -89,10 +88,9 @@
       <% if current_page.data.comments != false %>
         <div class="row" role="complementary">
           <div class="<%= comments_section_classes %> bs-comments-section">
-            <div class="bs-callout bs-callout-info" role="alert">
-              Feel free to ask questions about this page, or contribute notes and hints for other readers. Or <a href="<%=h current_page_github_url %>">edit this page and send us a pull request</a>.<br><br>
-
-              Please <strong>don't post questions not directly related to this page</strong>. For general support, please use <a href="https://www.phusionpassenger.com/support">the support resources</a> instead.
+            <div class="bs-comments-section-alert" role="alert">
+              <h3 class="notoc">Thank you for reading. Have any tips for us? :-)</h3>
+              <p>Please feel free to contribute by <a href="<%=h current_page_github_url %>">editing this page</a> or by posting tips, notes and feedback below.</p>
             </div>
 
             <div id="disqus_thread"></div>

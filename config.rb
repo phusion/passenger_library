@@ -41,6 +41,7 @@ set :relative_links, true
 
 activate :syntax
 activate :relative_assets
+activate :livereload, :port => 35730
 
 # Build-specific configuration
 configure :build do

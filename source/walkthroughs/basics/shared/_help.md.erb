@@ -1,0 +1,59 @@
+<p class="lead">We have done our best to make Passenger user-friendly, but it is still possible for users to get stuck or to need help. So before we continue, we will teach you how to get help.</p>
+
+<a name="help_option"></a>
+
+## The `--help` option
+
+Although this Library is a good source of information on using Passenger, you do not have to consult this Library for everything. Passenger is **self-documenting**: every Passenger command supports the `--help` option, which will provide you with basic information about the command, its behavior and its syntax.
+
+Here is an example of `passenger --help`:
+
+<pre class="highlight"><%= passenger_command_prefix_html(locals) %>passenger --help
+<span class="output">Phusion Passenger Standalone, the easiest way to run web apps.
+
+Available commands:
+
+  passenger start      Start Phusion Passenger Standalone.
+  passenger stop       Stop a Phusion Passenger instance.
+  passenger status     Show the status of a running Phusion Passenger instance.
+
+Run 'passenger &lt;COMMAND&gt; --help' for more information about each command.</span></pre>
+
+Many Passenger commands support subcommands. These subcommands, too, support `--help`. The above output already suggested that you can run `passenger start --help`:
+
+<pre class="highlight"><%= passenger_command_prefix_html(locals) %>passenger start --help
+<span class="output">Usage: passenger start [DIRECTORY] [OPTIONS]
+Starts Phusion Passenger Standalone and serve one or more web applications.
+
+Server options:
+    -a, --address HOST               Bind to the given address.
+                                     Default: 0.0.0.0
+    -p, --port NUMBER                Use the given port number. Default: 3000
+...</span></pre>
+
+So if you want to know what a command does and whether its behavior can be modified, please do not hestitate to pass `--help`.
+
+## Where to get support
+
+If you are stuck with a problem, please don not hesitate to contact one of the support resources. Passenger has a friendly community of users who look out for each other. We -- Passenger's authors -- are also ready to help you whenever we can.
+
+[Community discussion forum](http://groups.google.com/group/phusion-passenger)
+: Post a message here if you are experiencing problems. Support on this forum is provided by the community on a best-effort basis, so sometimes a bit of patience will help.
+
+[Github issue tracker](https://github.com/phusion/passenger/issues)
+: If you are experiencing a problem that you believe is a bug, please report it here.
+
+[Security vulnerabilities email address](mailto:security@phusion.nl)
+: Please report security vulnerabilities to [security@phusion.nl](mailto:security@phusion.nl). We will do our best to respond to you as quickly as we can, so please do not disclose the vulnerability until then.
+
+[Priority support for Enterprise customers](mailto:support@phusion.nl)
+: If you are a [Passenger Enterprise](https://www.phusionpassenger.com/enterprise) customer, then you are eligible for basic priority support. Please email [support@phusion.nl](mailto:support@phusion.nl), mentioning your order reference.
+
+  For most customers, this basic priority support has a response time of 3 working days, with a maximum of 1 support incident per month. Please consult your contract for the exact support level that you are eligible for.
+
+[Premium support contracts](https://www.phusionpassenger.com/commercial_support)
+: We also provide premium support contracts for those who desire higher support levels, for example 24x7 phone support with a response time of 1 hour.
+
+## Next step
+
+Getting help on Passenger is easy. Quick documentation is available through the `--help` command line option. And wen you are stuck, we have plenty of support resources such as the community discussion forum.

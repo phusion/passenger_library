@@ -1,0 +1,3 @@
+Passenger restarts processes that crash, load balances traffic between processes and scales processes up and down in order to handle more traffic or to conserve resources. All this is handled automatically with little action required from the user.
+
+Next, we'll cover code reloading. During development you will want code changes to take effect as soon as possible. We'll look at how Passenger helps you and how it relates to existing code reloading features provided by Ruby frameworks.

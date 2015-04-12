@@ -1,0 +1,34 @@
+The easiest way to see Passenger handling multiple processes is by passing `--min-instances 2`. This tells Passenger to keep at least 2 processes around. The default value for this option is 1, which is why in the previous step you only saw 1 process.
+
+Stop your previous Passenger instance. In the terminal where `passenger start` is running, press Ctrl-C:
+
+<pre class="highlight"><%= passenger_command_prefix_html(locals, :cd => false) %>passenger start
+<span class="output">...
+(press Ctrl-C here)
+Stopping web server... done!</span></pre>
+
+Then re-run Passenger with `--min-instances 2`:
+
+<pre class="highlight"><%= passenger_command_prefix_html(locals, :cd => false) %>passenger start --min-instances 2</pre>
+
+Switch to the second terminal again and run `passenger-status` again:
+
+<pre class="highlight"><%= passenger_command_prefix_html(locals) %>passenger-status
+<span class="output">Version : 5.0.6
+Date    : 2015-04-14 21:57:30 +0100
+Instance: 25002
+----------- General information -----------
+Max pool size : 6
+Processes     : 2
+Requests in top-level queue : 0
+
+----------- Application groups -----------
+/Users/phusion/testapp#default:
+  App root: /Users/phusion/testapp
+  Requests in queue: 0
+  * PID: 25015   Sessions: 0       Processed: 2       Uptime: 9s
+    CPU: 0%      Memory  : 14M     Last used: 3s ago
+  * PID: 25016   Sessions: 0       Processed: 0       Uptime: 9s
+    CPU: 0%      Memory  : 14M     Last used: 3s ago</span></pre>
+
+As you can see, there are now two processes, namely PID 25015 and 25016.
