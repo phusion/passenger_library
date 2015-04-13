@@ -1,0 +1,29 @@
+# Reloading code
+
+<p class="lead">When developing a web application, you will often want your code changes to take effect as soon as possible. In this section we will discuss code reloading mechanisms that Passenger makes available, and how they compares to code reloading mechanisms provided by web frameworks.</p>
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Introduction
+
+Some frameworks -- for example [Sails JS](http://sailsjs.org/) with its [sails-hook-autoload](https://github.com/sgress454/sails-hook-autoreload) -- provide built-in code reloading mechanisms. They usually work by polling files changes and re-evaluating those files. Such mechanisms are much faster than restarting the server. Restarting the server may take a few seconds, but builtin reloading take a few miliseconds. But they have a drawback too: not all code can be reloaded, especially initialization-related code.
+
+Most frameworks do not provide a code reloading mechanism at all, requiring you to restart the server after every code change. Needless to say, performing a restart after every change is cumbersome.
+
+Passenger provides a number of restarting mechanisms to make life easier for you, in case the builtin web framework code reloading isn't good enough for you (if it exists at all).
+
+## passenger-config restart-app
+
+<%= render_partial("../shared/reloading_code/restart_app.md", locals: locals) %>
+
+## tmp/always_restart.txt
+
+<%= render_partial("../shared/reloading_code/always_restart.md", locals: locals) %>
+
+## Conclusion
+
+Congratulations, you have almost reached the conclusion of this basics walkthrough. Next, we will teach you how to get help in case you need it.
+
+<a href="help.html" class="btn btn-primary btn-lg">Continue &raquo;</a>
