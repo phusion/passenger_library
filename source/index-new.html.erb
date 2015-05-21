@@ -1,0 +1,72 @@
+---
+multisection: true
+---
+<% content_for :masthead do %>
+  <div class="bs-docs-masthead" id="content">
+    <div class="container">
+      <h1 class="home-title">
+        <span class="home-title-brand">Phusion</span>
+        <span class="home-title-name">Passenger Library</span>
+      </h1>
+      <p class="lead">Whether you're just starting or planning to scale, we've got you covered with world-class documentation.</p>
+      <p class="lead"><a href="#site_intro" class="btn btn-outline-inverse btn-lg">Get started</a></p>
+      <!-- <p class="version">Version <%= CURRENT_VERSION %> &middot; <a href="..">Switch version</a></p> -->
+    </div>
+  </div>
+<% end %>
+
+<section id="site_intro" class="site-intro">
+  <p class="home-welcome-message">
+    Welcome to the Phusion Passenger Library, a comprehensive online resource about Ruby, Python and Node.js deployment, administration, scaling, high availability and more &mdash; through the use of the <a href="https://www.phusionpassenger.com">Phusion Passenger</a> application server. The entire library is <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">open source</a>. Think anything can be improved? Just <a href="https://github.com/phusion/passenger_library">edit the content on Github</a>.
+  </p>
+</section>
+
+<section class="bs-docs-section">
+  <h2 id="walkthroughs">Walkthroughs</h2>
+  
+  <%= render_partial("/walkthroughs/index.html", locals: { quickstart: true, basics: true, deployment: true }) %>
+</section>
+
+<section class="bs-docs-section">
+  <h2 id="guides">Guides</h2>
+  <p>
+    Explore our general guides, which are of intermediate and advanced levels. They cover a wide range of topics.
+  </p>
+  <a href="<%= url_for '/guides/index.html' %>" class="btn btn-primary btn-lg">
+    Read the general guides &raquo;
+  </a>
+
+  <h3 id="deploy_and_scaling">Deployment &amp; scaling</h3>
+  <p>
+    Learn about setting up servers, deploying Passenger to production, tweaking &amp; tuning and security.
+    Even scaling and high availability are covered.
+  </p>
+  <a href="<%= url_for '/guides/production' %>" class="btn btn-primary btn-lg">
+    Read deployment &amp; scaling guides &raquo;
+  </a>
+
+  <h3>Administration</h3>
+  <p>Learn about performing common administration tasks, keeping your applications healthy and analyzing &amp; troubleshooting problems.</p>
+  <a href="<%= url_for '/guides/admin' %>" class="btn btn-primary btn-lg">
+    Read administration guides &raquo;
+  </a>
+</section>
+
+<section class="bs-docs-section">
+  <h2>Explore the full library</h2>
+  <p>
+    <a href="<%= url_for '/sitemap.html' %>" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+      <span class="btn-label">
+        Sitemap
+      </span>
+    </a>
+
+    <a href="<%= url_for '/reference' %>" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+      <span class="btn-label">
+        Reference
+      </span>
+    </a>
+  </p>
+</section>

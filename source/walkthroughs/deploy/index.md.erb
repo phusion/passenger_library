@@ -1,0 +1,43 @@
+---
+title: Deploying to production
+section: deploy_walkthrough
+---
+# Deploying to production
+
+When you want to deploy Passenger to production, you can choose from several integration modes. Each mode has its own documentation, covering *installation*, *usage*, *troubleshooting* and more.
+
+### Nginx integration mode
+
+In this mode, Passenger integrates directly into Nginx as an Nginx module. You operate Passenger mostly through Nginx and through Nginx configuration files. The Nginx integration mode is, along with the Standalone mode, highly optimized for performance.
+
+[Read the documentation for the Nginx integration mode >>](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html)
+
+### Apache integration mode
+
+In this mode, Passenger integrates directly into Apache as an Apache module. You operate Passenger mostly through Apache and through Apache configuration files.
+
+[Read the documentation for the Apache integration mode >>](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html)
+
+### Standalone mode
+
+In this mode, Passenger operates as a fully-featured, secure standalone HTTP server. You do not need to have an existing web server like Apache or Nginx. This mode is ideal...
+
+ * ...if you are not familiar with Apache or Nginx
+ * ...when you want to quickly start up a server without editing configuration files (e.g. during development)
+ * ...or when you want to decouple the web server from the application server, by setting up reverse proxies.
+
+Along with the Nginx mode, the Standalone mode is highly optimized for performance.
+
+[Read the documentation for the Standalone integration mode >>](https://www.phusionpassenger.com/documentation/Users%20guide%20Standalone.html)
+
+## Troubleshooting
+
+When you run Passenger in production, there are times when you can run into trouble. If that happens, please refer to one of the troubleshooting guides:
+
+ * [**Nginx** mode troubleshooting](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#troubleshooting)
+ * [**Apache** mode troubleshooting](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#troubleshooting)
+ * [**Standalone** mode troubleshooting](https://www.phusionpassenger.com/documentation/Users%20guide%20Standalone.html#troubleshooting)
+
+## Where to get support
+
+Need support? Please refer to our [support page](https://www.phusionpassenger.com/support).

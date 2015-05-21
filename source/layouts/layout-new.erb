@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <title><% if current_page.data.title %><%= current_page.data.title %> - <%end %>Passenger Walkthroughs</title>
+    <title><% if current_page.data.title %><%= current_page.data.title %> - <%end %>Phusion Passenger Library</title>
     <%= stylesheet_link_tag "all" %>
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Open+Sans:400,600" rel="stylesheet" type="text/css">
   </head>
@@ -20,17 +20,31 @@
           </button>
           <a class="navbar-brand" href="<%= url_for '/' %>">
             <span class="navbar-brand-part1">Passenger</span>
-            <span class="navbar-brand-part2">Walkthroughs</span>
+            <span class="navbar-brand-part2">Library</span>
           </a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
-            <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/" %><% end %>
-            <% navbar_section :basics do %><%= link_to "Basics", "/walkthroughs/basics/" %><% end %>
-            <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/" %><% end %>
+            <% navbar_dropdown_section :walkthroughs, :start, :basics, :deploy_walkthrough do %>
+              <a href="<%= url_for '/walkthroughs/' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/" %><% end %>
+                <% navbar_section :basics do %><%= link_to "Basics", "/walkthroughs/basics/" %><% end %>
+                <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/" %><% end %>
+              </ul>
+            <% end %>
+            <% navbar_dropdown_section :guides, :general, :deploy, :admin do %>
+              <a href="<%= url_for '/allguides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <% navbar_section :general do %><%= link_to "General guides", "/guides/" %><% end %>
+                <% navbar_section :deploy do %><%= link_to "Deployment &amp; scaling", "/deploy/" %><% end %>
+                <% navbar_section :admin do %><%= link_to "Administration", "/admin/" %><% end %>
+                <% navbar_section :indepth do %><%= link_to "In-depth", "/indepth/" %><% end %>
+              </ul>
+            <% end %>
+            <% navbar_section :reference do %><%= link_to "Reference", "/reference/" %><% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://www.phusionpassenger.com/">Back to Passenger homepage</a></li>
             <li><a href="https://www.phusionpassenger.com/support" target="_blank">Support</a></li>
             <li><a href="http://www.phusion.nl/contact" target="_blank">Contact</a></li>
           </ul>

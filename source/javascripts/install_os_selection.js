@@ -14,7 +14,25 @@ function installOsChanged() {
 
 function debianVersionChanged() {
   var selection = $('#debian_version_select').val();
-  $('.debian_codename').text(selection);
+  if (selection == 'other') {
+    $('.supported_debian_instructions').hide();
+    $('.unsupported_debian_instructions').show();
+  } else {
+    $('.supported_debian_instructions').show();
+    $('.unsupported_debian_instructions').hide();
+    $('.debian_codename').text(selection);
+
+    var name = $('#debian_version_select option[value=' + selection + ']').text();
+    if (name.match(/ubuntu/i) && !name.match(/LTS/)) {
+      $('.limited_package_support_for_non_lts_ubuntu').show();
+    } else {
+      $('.limited_package_support_for_non_lts_ubuntu').hide();
+    }
+  }
+}
+
+function showTarballInstallationInstructions() {
+  $('#os_install_select').val('other');
 }
 
 $(document).ready(function() {

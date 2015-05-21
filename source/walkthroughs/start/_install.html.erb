@@ -17,16 +17,19 @@
 
 <div class="install_os" id="install_os_debian" style="display: none">
   <p><select id="debian_version_select">
-    <option value="wheezy" selected>Debian 7 (Wheezy)</option>
+    <option value="jessie" selected>Debian 8 (Jessie)</option>
+    <option value="wheezy">Debian 7 (Wheezy)</option>
     <option value="squeeze">Debian 6 (Squeeze)</option>
-    <option value="trusty">Ubuntu 14.04 (Trusty)</option>
-    <option value="precise">Ubuntu 12.04 (Precise)</option>
-    <option value="lucid">Ubuntu 10.04 (Lucid)</option>
+    <option value="vivid">Ubuntu 15.04 (Vivid)</option>
+    <option value="trusty">Ubuntu 14.04 LTS (Trusty)</option>
+    <option value="precise">Ubuntu 12.04 LTS (Precise)</option>
+    <option value="other">Other</option>
   </select></p>
 
-  <p>You can install Passenger through APT:</p>
+  <div class="supported_debian_instructions">
+    <p>You can install Passenger through APT:</p>
 
-  <pre class="highlight shell"><code><span class="c unselectable"># Install our PGP key and add HTTPS support for APT</span>
+    <pre class="highlight shell"><code><span class="c unselectable"># Install our PGP key and add HTTPS support for APT</span>
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
 sudo apt-get install apt-transport-https ca-certificates
 
@@ -36,6 +39,23 @@ sudo apt-get update
 
 <span class="c unselectable"># Install Passenger</span>
 sudo apt-get install passenger</code></pre>
+    
+    <%= render_partial("postinstall_check.html") %>
+
+    <div class="note" class="limited_package_support_for_non_lts_ubuntu" style="display: none">
+      <h3 class="notoc">Limited package support for non-LTS Ubuntu versions</h3>
+      <p>
+        You have selected a non-Long Term Support version of Ubuntu. We only provide .deb packages for non-LTS Ubuntu versions until the next Ubuntu version comes out. Ubuntu versions come out every 6 months.
+      </p>
+      <p>
+        So when the next Ubuntu version is released, you must upgrade your system to that new Ubuntu version. Otherwise you won't receive Passenger updates in the form of .deb packages from us anymore.
+      </p>
+    </div>
+  </div>
+
+  <div class="unsupported_debian_instructions note">
+    Is your Debian or Ubuntu version not listed? Then sorry, we do not provide packages for this version at the moment. Please follow the <a href="javascript:void(showTarballInstallationInstructions())">generic installation instructions through tarball</a>.
+  </div>
 </div>
 
 <div class="install_os" id="install_os_osx" style="display: none">
@@ -43,6 +63,7 @@ sudo apt-get install passenger</code></pre>
     You can install Passenger through <a href="http://brew.sh/">Homebrew</a>:
   </p>
   <pre class="highlight shell"><span class="prompt">$ </span>brew install passenger</pre>
+  <%= render_partial("postinstall_check.html") %>
 </div>
 
 <div class="install_os" id="install_os_other" style="display: none">
@@ -72,11 +93,7 @@ sudo apt-get install passenger</code></pre>
   <div class="note">
     Make sure your bashrc is actually included by your bash profile, which might not be the case if you created the user with <code>useradd</code> instead of <code>adduser</code> for example.
   </div>
-</div>
 
-<div id="post_install_check" style="display: none">
-  <p>After installation, please validate the install as follows:</p>
-  <pre class="highlight shell"><span class="prompt">$ </span>passenger-config validate-install
-<span class="output"> * Checking whether this Phusion Passenger install is in PATH... ✓
- * Checking whether there are no other Phusion Passenger installations... ✓</span></pre>
+  <p style="margin-top: 2em"><strong>Step 3: Validate installation</strong></p>
+  <%= render_partial("postinstall_check.html") %>
 </div>
