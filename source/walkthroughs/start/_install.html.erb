@@ -1,6 +1,7 @@
 <p><select id="os_install_select">
   <option value="none" selected>Please select an operating system</option>
   <option value="debian">Debian, Ubuntu</option>
+  <option value="redhat">Red Hat, CentOS</option>
   <option value="osx">Mac OS X</option>
   <option value="other">Other</option>
 </select></p>
@@ -53,8 +54,35 @@ sudo apt-get install passenger</code></pre>
     </div>
   </div>
 
-  <div class="unsupported_debian_instructions note">
+  <div class="unsupported_debian_instructions">
     Is your Debian or Ubuntu version not listed? Then sorry, we do not provide packages for this version at the moment. Please follow the <a href="javascript:void(showTarballInstallationInstructions())">generic installation instructions through tarball</a>.
+  </div>
+</div>
+
+<div class="install_os" id="install_os_redhat" style="display: none">
+  <p><select id="redhat_version_select">
+    <option value="el7" selected>Red Hat 7 / CentOS 7</option>
+    <option value="el6">Red Hat 6 / CentOS 6</option>
+    <option value="other">Other</option>
+  </select></p>
+
+  <div class="supported_redhat_instructions">
+    <p>You can install Passenger through YUM:</p>
+
+    <pre class="highlight shell"><code><span class="c unselectable"># Install <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> and other other prerequisites</span>
+sudo yum install epel-release pygpgme curl
+
+<span class="c unselectable"># Add our <span class="redhat_distro_name"></span> YUM repository</span>
+sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+
+<span class="c unselectable"># Install Passenger</span>
+sudo yum install passenger</code></pre>
+
+    <%= render_partial("postinstall_check.html") %>
+  </div>
+
+  <div class="unsupported_redhat_instructions">
+    Is your Red Hat or CentOS version not listed? Then sorry, we do not provide packages for this version at the moment. Please follow the <a href="javascript:void(showTarballInstallationInstructions())">generic installation instructions through tarball</a>.
   </div>
 </div>
 

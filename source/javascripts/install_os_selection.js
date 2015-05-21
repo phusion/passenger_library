@@ -31,13 +31,27 @@ function debianVersionChanged() {
   }
 }
 
+function redhatVersionChanged() {
+  var selection = $('#redhat_version_select').val();
+  if (selection == 'other') {
+    $('.supported_redhat_instructions').hide();
+    $('.unsupported_redhat_instructions').show();
+  } else {
+    $('.supported_redhat_instructions').show();
+    $('.unsupported_redhat_instructions').hide();
+  }
+  $('.redhat_distro_name').text(selection);
+}
+
 function showTarballInstallationInstructions() {
-  $('#os_install_select').val('other');
+  $('#os_install_select').val('other').change();
 }
 
 $(document).ready(function() {
   $('#os_install_select').change(installOsChanged);
   $('#debian_version_select').change(debianVersionChanged);
+  $('#redhat_version_select').change(redhatVersionChanged);
   installOsChanged();
   debianVersionChanged();
+  redhatVersionChanged();
 });
