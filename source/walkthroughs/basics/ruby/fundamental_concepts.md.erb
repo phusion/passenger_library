@@ -41,9 +41,9 @@ In a typical production stack, one would use Nginx or Apache as the web server, 
 
 ### Nginx and Apache
 
-Nginx and Apache are web servers. They provide HTTP transaction handling and serve static files. However, they are not Ruby application servers and cannot run Ruby applications. That is why Nginx and Apache are used in combination with an application server, such as Passenger.
+Nginx and Apache are web servers. They provide HTTP transaction handling and serve static files. However, they are not Ruby application servers and cannot run Ruby applications directly. That is why Nginx and Apache are used in combination with an application server, such as Passenger.
 
-Application servers make it possible for Ruby apps to speak HTTP. Ruby apps (and frameworks like Rails) can't do that by themselves. On the other hand, application servers typically aren't as good as Nginx and Apache at handling HTTP requests. That's why, in production environments, application servers are used in combination with Nginx or Apache.
+Application servers make it possible for Ruby apps to speak HTTP. Ruby apps (and frameworks like Rails) can't do that by themselves. On the other hand, application servers typically aren't as good as Nginx and Apache at handling HTTP requests. The devil is in the details: Nginx and Apache are better at handling I/O security, HTTP concurrency management, connection timeouts, etc. That's why, in production environments, application servers are used in combination with Nginx or Apache.
 
 ### Capistrano
 
