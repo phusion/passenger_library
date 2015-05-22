@@ -1,0 +1,28 @@
+<a href="<%= url_for "/" %>#walkthroughs" class="back-to-previous">&laquo; Back to all walkthroughs</a>
+
+<h2>Basics<br>
+<small>for Meteor developers</small></h2>
+
+<ul class="nav nav-stacked">
+  <% navbar_subsection :beginning do %>
+    <a href="<%= url_for "/walkthroughs/basics/meteor/" %>">1 The beginning</a>
+  <% end %>
+  <% navbar_subsection :fundamental_concepts do %>
+    <a href="<%= url_for "/walkthroughs/basics/meteor/fundamental_concepts.html" %>">2 Fundamental concepts</a>
+  <% end %>
+  <% navbar_subsection :installation do %>
+    <a href="<%= url_for "/walkthroughs/basics/meteor/installation.html" %>">3 Installation</a>
+  <% end %>
+  <% navbar_subsection :passenger_command do %>
+    <a href="<%= url_for "/walkthroughs/basics/meteor/passenger_command.html" %>">4 The 'passenger' command</a>
+  <% end %>
+  <% navbar_subsection :process_management do %>
+    <a href="<%= url_for "/walkthroughs/basics/meteor/process_management.html" %>">5 Process management</a>
+  <% end %>
+  <% navbar_subsection :help do %>
+    <a href="<%= url_for "/walkthroughs/basics/meteor/help.html" %>">6 Help!</a>
+  <% end %>
+  <% navbar_subsection :conclusion do %>
+    <a href="<%= url_for "/walkthroughs/basics/meteor/conclusion.html" %>">7 Summary and conclusion</a>
+  <% end %>
+</ul>

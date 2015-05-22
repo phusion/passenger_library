@@ -1,6 +1,17 @@
+---
+title: Reloading code
+section: basics
+subsection: reloading_code
+sidebar: _toc.html
+---
+<%
+  locals[:language_type] = :python
+  locals[:language_name] = "Python"
+%>
+
 # Reloading code
 
-<p class="lead">When developing a web application, you will often want your code changes to take effect as soon as possible. In this section we will discuss code reloading mechanisms that Passenger makes available, and how they compare to code reloading mechanisms provided by web frameworks.</p>
+<p class="lead">When developing a web application, you will often want your code changes to take effect as soon as possible. In this section we will discuss code reloading mechanisms that Passenger makes available, and how they compare to code reloading mechanisms provided by Python web frameworks.</p>
 
 **Table of contents**
 
@@ -8,7 +19,7 @@
 
 ## Introduction
 
-Some frameworks -- for example [Sails JS](http://sailsjs.org/) with its [sails-hook-autoload](https://github.com/sgress454/sails-hook-autoreload) -- provide built-in code reloading mechanisms. They usually work by polling files changes and re-evaluating those files. Such mechanisms are much faster than restarting the server. Restarting the server may take a few seconds, but builtin reloading take a few miliseconds. But they have a drawback too: not all code can be reloaded, especially initialization-related code.
+Some frameworks provide built-in code reloading mechanisms. They usually work by polling files changes and re-evaluating those files. Such mechanisms are much faster than restarting the server. Restarting the server may take a few seconds, but builtin reloading take a few miliseconds. But they have a drawback too: not all code can be reloaded, especially initialization-related code.
 
 Most frameworks do not provide a code reloading mechanism at all, requiring you to restart the server after every code change. Needless to say, performing a restart after every change is cumbersome.
 

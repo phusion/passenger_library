@@ -1,0 +1,18 @@
+If you are stuck with a problem, please do not hesitate to contact one of the support resources. Passenger has a friendly community of users who look out for each other. We -- Passenger's authors -- are also ready to help you whenever we can.
+
+[Community discussion forum](http://groups.google.com/group/phusion-passenger)
+: Post a message here if you are experiencing problems. Support on this forum is provided by the community on a best-effort basis, so sometimes a bit of patience will help.
+
+[Github issue tracker](https://github.com/phusion/passenger/issues)
+: If you are experiencing a problem that you believe is a bug, please report it here.
+
+[Security vulnerabilities email address](mailto:security@phusion.nl)
+: Please report security vulnerabilities to [security@phusion.nl](mailto:security@phusion.nl). We will do our best to respond to you as quickly as we can, so please do not disclose the vulnerability until then.
+
+[Priority support for Enterprise customers](mailto:support@phusion.nl)
+: If you are a [Passenger Enterprise](https://www.phusionpassenger.com/enterprise) customer, then you are eligible for basic priority support. Please email [support@phusion.nl](mailto:support@phusion.nl), mentioning your order reference.
+
+  For most customers, this basic priority support has a response time of 3 working days, with a maximum of 1 support incident per month. Please consult your contract for the exact support level that you are eligible for.
+
+[Premium support contracts](https://www.phusionpassenger.com/commercial_support)
+: We also provide premium support contracts for those who desire higher support levels, for example 24x7 phone support with a response time of 1 hour.
