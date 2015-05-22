@@ -421,3 +421,34 @@ figcaption {
 .warning {
   background: #f9d9d8 url(../images/tab_red.gif) no-repeat left top;
 }
+
+.image-float-right {
+  float: right;
+  margin: 0 0 1em 1em;
+}
+
+#integration_mode_selector {
+  margin: 2em 0;
+
+  .nav li {
+    text-align: center;
+  }
+
+  .nav .name {
+    font-size: 150%;
+    font-weight: bold;
+  }
+
+  .tab-pane {
+    margin: 0;
+    padding: 1em;
+    border: solid 1px #ddd;
+    border-top: none;
+    font-size: 90%;
+  }
+
+  .tab-pane > p:first-child,
+  .tab-pane > p.first {
+    margin-top: 0;
+  }
+}

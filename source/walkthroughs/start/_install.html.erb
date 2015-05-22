@@ -41,7 +41,7 @@ sudo apt-get update
 <span class="c unselectable"># Install Passenger</span>
 sudo apt-get install passenger</code></pre>
     
-    <%= render_partial("postinstall_check.html") %>
+    <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
 
     <div class="note" class="limited_package_support_for_non_lts_ubuntu" style="display: none">
       <h3 class="notoc">Limited package support for non-LTS Ubuntu versions</h3>
@@ -78,7 +78,7 @@ sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phus
 <span class="c unselectable"># Install Passenger</span>
 sudo yum install passenger</code></pre>
 
-    <%= render_partial("postinstall_check.html") %>
+    <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
   </div>
 
   <div class="unsupported_redhat_instructions">
@@ -91,7 +91,7 @@ sudo yum install passenger</code></pre>
     You can install Passenger through <a href="http://brew.sh/">Homebrew</a>:
   </p>
   <pre class="highlight shell"><span class="prompt">$ </span>brew install passenger</pre>
-  <%= render_partial("postinstall_check.html") %>
+  <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
 </div>
 
 <div class="install_os" id="install_os_other" style="display: none">
@@ -123,5 +123,5 @@ sudo yum install passenger</code></pre>
   </div>
 
   <p style="margin-top: 2em"><strong>Step 3: Validate installation</strong></p>
-  <%= render_partial("postinstall_check.html") %>
+  <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
 </div>
