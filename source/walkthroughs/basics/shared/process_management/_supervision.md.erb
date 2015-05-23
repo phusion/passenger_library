@@ -1,3 +1,6 @@
+<%
+locals[:app_name] ||= "testapp"
+%>
 The cool thing about Passenger is that it restarts processes that crash! This way you have to worry less about application bugs taking the website down.
 
 Let us try it out by killing the second process, simulating a crash:
@@ -6,7 +9,7 @@ Let us try it out by killing the second process, simulating a crash:
 
 In our example, the second process's PID is 25016. The PIDs will be different on your machine, so be sure to substitute 25015 with an appropriate value.
 
-Wait 5 seconds, then run `passenger-status. Notice that process 25016 is gone and that it has been replaced by 25017!
+Wait 5 seconds, then run `passenger-status`. Notice that process 25016 is gone and that it has been replaced by 25017!
 
 <pre class="highlight"><%= passenger_command_prefix_html(locals, cd: false) %>passenger-status
 <span class="output">Version : 5.0.6
@@ -18,8 +21,8 @@ Processes     : 2
 Requests in top-level queue : 0
 
 ----------- Application groups -----------
-/Users/phusion/testapp#default:
-  App root: /Users/phusion/testapp
+/Users/phusion/<%= locals[:app_name] %>#default:
+  App root: /Users/phusion/<%= locals[:app_name] %>
   Requests in queue: 0
   * PID: 25015   Sessions: 0       Processed: 2       Uptime: 45s
     CPU: 0%      Memory  : 14M     Last used: 45s ago

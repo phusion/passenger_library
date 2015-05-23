@@ -1,8 +1,20 @@
-<p class="lead">The <code>passenger</code> command starts or stops a Passenger server in <a href="fundamental_concepts.html#multiple-integration-modes">Standalone mode</a>. In this section we'll teach you how to use this command.</p>
+<%
+locals[:app_name] ||= "myapp"
+%>
+
+<p class="lead">The <code>passenger</code> command starts or stops a Passenger server in <a href="fundamental_concepts.html#multiple-integration-modes">Standalone mode</a>. In this section we will teach you how to use this command.</p>
 
 **Table of contents**
 
 <ol class="toc-container"><li>Loading...</li></ol>
+
+<% if locals[:has_sample_app] %>
+## Enter sample app
+
+Ensure that you have prepared a sample application as described in [the previous step](preparing_sample_app.html), and that your command line prompt is inside that directory.
+
+<pre class="highlight"><span class="prompt">$ </span>cd <%= locals[:app_name] %></pre>
+<% end %>
 
 ## Starting a server
 
@@ -12,34 +24,49 @@ You begin using Passenger Standalone by starting a Passenger Standalone server. 
 
 <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger start
 <span class="output">======= Phusion Passenger Standalone web server started =======
-PID file: /Users/phusion/myapp/tmp/pids/passenger.3000.pid
-Log file: /Users/phusion/myapp/log/passenger.3000.log
-Environment: development
-Accessible via: http://0.0.0.0:3000/
+PID file: /Users/phusion/<%= locals[:app_name] %>/tmp/pids/passenger.3000.pid   <span class="label label-info">1</span>
+Log file: /Users/phusion/<%= locals[:app_name] %>/log/passenger.3000.log        <span class="label label-info">2</span>
+Environment: development                     <span class="label label-info">3</span>
+Accessible via: http://0.0.0.0:3000/         <span class="label label-info">4</span>
 
 You can stop Phusion Passenger Standalone by pressing Ctrl-C.
-===============================================================</span></pre>
+===============================================================
+<% if language_type == :meteor -%>
+App 85125 stdout: [[[[[ ~/myapp ]]]]]   <span class="label label-info">5</span>
+App 85125 stdout:
+App 85125 stdout: => Started proxy.
+App 85125 stdout: => Started MongoDB.
+App 85125 stdout: => Started your app.
+App 85125 stdout:
+App 85125 stdout: => App running at: http://localhost:9822/  <span class="label label-info">6</span><% end %></span></pre>
 
 During startup, Passenger prints its runtime parameters to the console. There are several things you see here:
 
- * Passenger has created a PID file. The PID file contains the process ID of the Passenger instance, and allows other `passenger` subcommands to know which process to operate on.
- * Passenger has created a log file. We'll talk about logging later.
+ 1. Passenger has created a PID file. The PID file contains the process ID of the Passenger instance, and allows other `passenger` subcommands to know which process to operate on.
+ 2. Passenger has created a log file. We will talk about logging later.
 <% if language_type == :nodejs -%>
- * Passenger has started your app under the `development` environment. This means that it has set the environment variable `NODE_ENV` to the value `development`.
+ 3. Passenger has started your app under the `development` environment. This means that it has set the environment variable `NODE_ENV` to the value `development`.
 
    Various Node.js web frameworks -- for example Connect.js and Sails.js -- use the value of one of this environment variable to adjust their behavior.
 <% elsif language_type == :ruby -%>
- * Passenger has started your app under the `development` environment. This means that it has set the environment variables `RAILS_ENV` and `RACK_ENV` to the value `development`.
+ 3. Passenger has started your app under the `development` environment. This means that it has set the environment variables `RAILS_ENV` and `RACK_ENV` to the value `development`.
 
    Various Ruby web frameworks -- in particular Rails -- use the value of one of these environment variables to [adjust their behavior](http://guides.rubyonrails.org/configuring.html#rails-environment-settings).
+<% else -%>
+ 3. Passenger has started your app under the `development` environment. This means that it has set the environment variable `PASSENGER_APP_ENV` to the value `development`.
+<% end -%>
+ 4. Passenger is serving your app on [http://0.0.0.0:3000/](http://0.0.0.0:3000/).
+<% if language_type == :meteor -%>
+ 5. Internally, Passenger runs your Meteor app by invoking the command `meteor run`. You can see the output of that command in the lines that are marked with "App xxx stdout". The xxx is the PID of the `meteor run` command.
+ 6. `meteor run` starts its own server at http://localhost:9822/. But that is not the URL you should visit. Passenger listens on its own port, manages Meteor, and forwards requests to Meteor through the address http://localhost:9822/. So you should **ignore this line**.
 <% end -%>
 
-Finally, Passenger is serving your app on [http://0.0.0.0:3000/](http://0.0.0.0:3000/). So if you go to that URL, you will should see your application:
+If you go to http://0.0.0.0:3000/, you will see your application:
 
 <pre class="highlight"><span class="prompt">$ </span>curl http://0.0.0.0:3000/
 <span class="output">...your app's front page HTML...</span></pre>
 
-All of these parameters can be customized. We'll talk about customization later.
+All of these parameters can be customized. We will talk about customization later.
 
 <% if language_type == :ruby %>
   <div class="note">
@@ -71,6 +98,8 @@ Passenger handles all of these logs as follows:
 
 ## Stopping the server
 
+If you stop Passenger, Passenger will stop your app.
+
 There are two ways to stop the server. The first is by pressing Ctrl-C in the terminal. The second way is by running `passenger stop`.
 
 ### Ctrl-C
@@ -90,8 +119,13 @@ Let us also try out the `passenger stop` command. First, start Passenger up agai
 
 Open a seperate terminal, change the working directory to your application, and run `passenger stop`.
 
+<% if locals[:has_sample_app] %>
+<pre class="highlight"><span class="prompt">$ </span>cd ~/<%= locals[:app_name] %>
+<span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger stop</pre>
+<% else %>
 <pre class="highlight"><span class="prompt">$ </span>cd /path-to-your-app
 <span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger stop</pre>
+<% end %>
 
 When you switch back to the first terminal, you should see that Passenger has indeed stopped.
 
@@ -105,8 +139,8 @@ Here is an example invocation:
 
 <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger start --port 4000 --log-file awesome.log
 <span class="output">======= Phusion Passenger Standalone web server started =======
-PID file: /Users/phusion/myapp/tmp/pids/passenger.4000.pid
-Log file: /Users/phusion/myapp/awesome.log
+PID file: /Users/phusion/<%= locals[:app_name] %>/tmp/pids/passenger.4000.pid
+Log file: /Users/phusion/<%= locals[:app_name] %>/awesome.log
 Environment: development
 Accessible via: http://0.0.0.0:4000/
 

@@ -36,6 +36,6 @@ You can verify that it works by querying Passenger's version number:
 
 Installing Passenger in development is as easy as adding it to your Gemfile.
 
-Next, we'll consider the `passenger` command, which is responsible for starting and stopping Passenger in its Standalone mode.
+Next, we will consider the `passenger` command, which is responsible for starting and stopping Passenger in its Standalone mode.
 
 <a href="passenger_command.html" class="btn btn-primary btn-lg">Continue &raquo;</a>
