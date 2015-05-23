@@ -18,7 +18,7 @@
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
             <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> Navigation
           </button>
-          <a class="navbar-brand" href="<%= url_for '/' %>">
+          <a class="navbar-brand" href="<%= url_for '/index.html' %>">
             <span class="navbar-brand-part1">Passenger</span>
             <span class="navbar-brand-part2">Library</span>
           </a>
@@ -28,21 +28,21 @@
             <% navbar_dropdown_section :walkthroughs, :start, :basics, :deploy_walkthrough do %>
               <a href="<%= url_for '/walkthroughs/' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/" %><% end %>
-                <% navbar_section :basics do %><%= link_to "Basics", "/walkthroughs/basics/" %><% end %>
-                <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/" %><% end %>
+                <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
+                <% navbar_section :basics do %><%= link_to "Basics", "/walkthroughs/basics/index.html" %><% end %>
+                <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
               </ul>
             <% end %>
             <% navbar_dropdown_section :guides, :general, :deploy, :admin do %>
               <a href="<%= url_for '/allguides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <% navbar_section :general do %><%= link_to "General guides", "/guides/" %><% end %>
-                <% navbar_section :deploy do %><%= link_to "Deployment &amp; scaling", "/deploy/" %><% end %>
-                <% navbar_section :admin do %><%= link_to "Administration", "/admin/" %><% end %>
-                <% navbar_section :indepth do %><%= link_to "In-depth", "/indepth/" %><% end %>
+                <% navbar_section :general do %><%= link_to "General guides", "/guides/index.html" %><% end %>
+                <% navbar_section :deploy do %><%= link_to "Deployment &amp; scaling", "/deploy/index.html" %><% end %>
+                <% navbar_section :admin do %><%= link_to "Administration", "/admin/index.html" %><% end %>
+                <% navbar_section :indepth do %><%= link_to "In-depth", "/indepth/index.html" %><% end %>
               </ul>
             <% end %>
-            <% navbar_section :reference do %><%= link_to "Reference", "/reference/" %><% end %>
+            <% navbar_section :reference do %><%= link_to "Reference", "/reference/index.html" %><% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://www.phusionpassenger.com/support" target="_blank">Support</a></li>

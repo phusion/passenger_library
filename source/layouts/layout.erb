@@ -18,16 +18,16 @@
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
             <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> Navigation
           </button>
-          <a class="navbar-brand" href="<%= url_for '/' %>">
+          <a class="navbar-brand" href="<%= url_for '/index.html' %>">
             <span class="navbar-brand-part1">Passenger</span>
             <span class="navbar-brand-part2">Walkthroughs</span>
           </a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
-            <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/" %><% end %>
-            <% navbar_section :basics do %><%= link_to "Basics", "/walkthroughs/basics/" %><% end %>
-            <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/" %><% end %>
+            <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
+            <% navbar_section :basics do %><%= link_to "Basics", "/walkthroughs/basics/index.html" %><% end %>
+            <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://www.phusionpassenger.com/">Back to Passenger homepage</a></li>

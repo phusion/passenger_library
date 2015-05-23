@@ -3,14 +3,14 @@
   language_name = current_page.data.language_name
 %>
 
-<a href="<%= url_for "/" %>#walkthroughs" class="back-to-previous">&laquo; Back to all walkthroughs</a>
+<a href="<%= url_for "/index.html" %>#walkthroughs" class="back-to-previous">&laquo; Back to all walkthroughs</a>
 
 <h2>Basics<br>
 <small>for <%= language_name %> developers</small></h2>
 
 <ul class="nav nav-stacked">
   <% navbar_subsection :beginning do %>
-    <a href="<%= url_for "/walkthroughs/basics/#{language_type}/" %>">1 The beginning</a>
+    <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">1 The beginning</a>
   <% end %>
   <% navbar_subsection :fundamental_concepts do %>
     <a href="<%= url_for "/walkthroughs/basics/#{language_type}/fundamental_concepts.html" %>">2 Fundamental concepts</a>
