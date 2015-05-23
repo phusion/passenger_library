@@ -95,7 +95,7 @@ sudo yum install passenger</code></pre>
 </div>
 
 <div class="install_os" id="install_os_other" style="display: none">
-  <p><strong>Step 1: Download and extract tarball</strong></p>
+  <h3 class="notoc">Step 1: Download and extract tarball</h3>
   <p>Download the latest Passenger source tarball.</p>
   <p><a href="https://www.phusionpassenger.com/latest_stable_tarball" class="btn btn-primary">Download tarball</a></p>
   <p>
@@ -103,15 +103,41 @@ sudo yum install passenger</code></pre>
   </p>
   <pre class="highlight shell"><span class="prompt">$ </span>tar -xzvf passenger-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span></pre>
 
-  <p style="margin-top: 2em"><strong>Step 2: Add Passenger to PATH</strong></p>
+  <h3 class="notoc">Step 2: Install Ruby</h3>
+  <p>
+    Passenger supports multiple languages and its core is written in C++, but its installer and administration tools are written in Ruby, so you must install Ruby.
+  </p>
+  <p>
+    Even though Ruby is required, Ruby will normally not be loaded during normal operation unless you deploy a Ruby web application on Passenger. Passenger's dependency on Ruby is very minimal. See <a href="https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#relationship_with_ruby">Passenger and its relationship with Ruby</a> for details.
+  </p>
+  <dl>
+    <dt>Debian, Ubuntu</dt>
+    <dd><pre>sudo apt-get update
+sudo apt-get install ruby rake</pre></dd>
+    <dt>Red Hat, CentOS, ScientificLinux, Amazon Linux</dt>
+    <dd>
+      Enable <a href="http://fedoraproject.org/wiki/EPEL">EPEL</a>, then run as root:
+      <pre>yum install ruby rubygem-rake</pre>
+    </dd>
+    <dt>Mac OS X</dt>
+    <dd>
+      No action needed. Ruby is installed by default.
+    </dd>
+    <dt>Other operating systems</dt>
+    <dd>
+      Install Ruby from <a href="http://www.ruby-lang.org/">the Ruby website</a>.
+    </dd>
+  </dl>
+
+  <h3 class="notoc">Step 3: Add Passenger to PATH</h3>
   <p>
     Add the Passenger <code>bin</code> directory to your PATH, so that your shell can locate the Passenger commands.
   </p>
   <p>
     Open your shell's startup file. If you're using bash, this is usually <code>/etc/bashrc</code> or <code>/etc/bash.bashrc</code>. Inside that file, add this to the end:
   </p>
-  <pre class="highlight shell"><span class="prompt">$ </span>PATH=<span class="o">/somewhere-permanent</span>/passenger-<span class="o">X.X.X</span>/bin:$PATH
-<span class="prompt">$ </span>export PATH</pre>
+  <pre class="highlight shell">PATH=<span class="o">/somewhere-permanent</span>/passenger-<span class="o">X.X.X</span>/bin:$PATH
+export PATH</pre>
   <p>
     Again, replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
   </p>
@@ -122,6 +148,6 @@ sudo yum install passenger</code></pre>
     Make sure your bashrc is actually included by your bash profile, which might not be the case if you created the user with <code>useradd</code> instead of <code>adduser</code> for example.
   </div>
 
-  <p style="margin-top: 2em"><strong>Step 3: Validate installation</strong></p>
+  <h3 class="notoc">Step 4: Validate installation</h3>
   <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
 </div>

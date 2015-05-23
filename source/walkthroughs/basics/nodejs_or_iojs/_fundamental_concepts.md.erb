@@ -82,11 +82,11 @@ and SockJS through the use of sticky sessions. These technologies do not work we
 Passenger does many things, but some things are currently out of scope.
 
  * **Setting up a server with an operating system**<br>
-   Passenger assumes that you already have a server with an working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.<br>
-   However, the Passenger Library contains excellent [documentation on setting up a server](../../deploy/<%= language_type %>/).
+   Passenger assumes that you already have a server with an working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.<!-- TODO: <br>
+   However, the Passenger Library contains excellent [documentation on setting up a server](../../deploy/<%= language_type %>/). -->
  * **Installing <%= language_name %>**<br>
-   To run <%= language_name %> apps on Passenger, you must already have <%= language_name %> installed. Passenger does not do that for you. Passenger does not care how you install <%= language_name %> though; you sometimes just need to tell Passenger where <%= language_name %> is.<br>
-   However, the Passenger Library contains excellent [documentation on setting up a server](../../deploy/<%= language_type %>/).
+   To run <%= language_name %> apps on Passenger, you must already have <%= language_name %> installed. Passenger does not do that for you. Passenger does not care how you install <%= language_name %> though; you sometimes just need to tell Passenger where <%= language_name %> is.<!-- TODO: <br>
+   However, the Passenger Library contains excellent [documentation on setting up a server](../../deploy/<%= language_type %>/). -->
  * **Transferring the application code and files to the server**<br>
    Passenger does not transfer the application code and files to the server for you. To do this, you must use tools like Git, scp, FTP, Capistrano, Fabric, etc. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.
  * **Installing application dependencies**<br>
