@@ -41,7 +41,6 @@
 
     <%= yield_content :masthead %>
 
-
     <div class="container bs-docs-container">
       <div class="row">
         <% if has_sidebar? %>
@@ -56,6 +55,7 @@
           <!-- Content
           =========================================== -->
           <div class="col-md-8" role="main">
+            <div class="alert alert-info">This documentation is new and is a <em>work in progress</em>. There may be inaccuracies. Please let us know if you find any.</div>
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
@@ -64,6 +64,7 @@
           <!-- Content
           =========================================== -->
           <div class="col-md-8 col-md-offset-2" role="main">
+            <div class="alert alert-info">This documentation is new and is a <em>work in progress</em>. There may be inaccuracies. Please let us know if you find any.</div>
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
