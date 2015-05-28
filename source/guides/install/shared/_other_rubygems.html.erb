@@ -1,0 +1,8 @@
+<div class="generic_install generic_install_rubygems">
+  <% if enterprise %>
+    <%= render_partial("/guides/install/shared/enterprise_preamble.html", locals: locals) %>
+    <% heading_counter = 2 %>
+  <% else %>
+    <% heading_counter = 0 %>
+  <% end %>
+</div>

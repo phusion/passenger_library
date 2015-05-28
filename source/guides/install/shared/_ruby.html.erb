@@ -1,0 +1,40 @@
+<p>
+  Passenger supports multiple languages and its core is written in C++, but its installer and administration tools are written in Ruby, so you must install Ruby.
+</p>
+<p>
+  Even though Ruby is required, Ruby will normally not be loaded during normal operation unless you deploy a Ruby web application on Passenger. Passenger's dependency on Ruby is very minimal. See <a href="https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#relationship_with_ruby">Passenger and its relationship with Ruby</a> for details.
+</p>
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>Debian, Ubuntu</th>
+    <td>
+      <pre class="highlight">sudo apt-get update
+sudo apt-get install ruby rake</pre>
+    </td>
+  </tr>
+  <tr>
+    <th>Red Hat, CentOS, ScientificLinux, Amazon Linux</th>
+    <td>
+      Enable <a href="http://fedoraproject.org/wiki/EPEL">EPEL</a>, then run as root:
+      <pre class="highlight">yum install ruby rubygem-rake</pre>
+    </td>
+  </tr>
+  <tr>
+    <th>Arch Linux</th>
+    <td>
+      <pre class="highlight">sudo pacman -S ruby</pre>
+    </td>
+  </tr>
+  <tr>
+    <th>Mac OS X</th>
+    <td>
+      No action needed. Ruby is installed by default.
+    </td>
+  </tr>
+  <tr>
+    <th>Other operating systems</th>
+    <td>
+      Install Ruby from <a href="http://www.ruby-lang.org/">the Ruby website</a>.
+    </td>
+  </tr>
+</table>

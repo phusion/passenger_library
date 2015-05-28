@@ -4,12 +4,40 @@
 function installOsChanged() {
   var selection = $('#os_install_select').val();
   $('.install_os').hide();
-  $('#install_os_' + selection).show();
-  if (selection == 'none') {
-  	$('#post_install_check').hide();
-  } else {
-  	$('#post_install_check').show();
+  $('.install_os_' + selection).show();
+
+  var subselection;
+  if (selection == 'debian') {
+    subselection = $('#debian_version_select').val();
+    debianVersionChanged();
+  } else if (selection == 'redhat') {
+    subselection = $('#redhat_version_select').val();
+    redhatVersionChanged();
+  } else if (selection == 'other') {
+    subselection = $('#generic_install_method_select').val();
+    genericInstallationMethodChanged();
   }
+
+  if (selection == 'other') {
+    if (subselection == 'none') {
+      $('.install_os_none').show();
+    } else {
+      $('.install_os_any').show();
+    }
+  } else if (selection != 'none') {
+    if (subselection == 'other') {
+      $('.install_os_not_supported').show();
+    } else {
+      $('.install_os_any').show();
+    }
+  }
+
+  /* if (selection != 'none' && (selection != 'other' || subselection != 'none')) {
+    console.log('show');
+    $('.install_os_any').show();
+  } */
+
+  autoGenerateMenu();
 }
 
 function debianVersionChanged() {
@@ -40,18 +68,30 @@ function redhatVersionChanged() {
     $('.supported_redhat_instructions').show();
     $('.unsupported_redhat_instructions').hide();
   }
+  if (selection == 'el6') {
+    $('.el6').show();
+    $('.no_el6').hide();
+  } else {
+    $('.el6').hide();
+    $('.no_el6').show();
+  }
   $('.redhat_distro_name').text(selection);
 }
 
-function showTarballInstallationInstructions() {
+function genericInstallationMethodChanged() {
+  var selection = $('#generic_install_method_select').val();
+  $('.generic_install').hide();
+  $('.generic_install_' + selection).show();
+}
+
+function showGenericInstallationInstructions() {
   $('#os_install_select').val('other').change();
 }
 
 $(document).ready(function() {
   $('#os_install_select').change(installOsChanged);
-  $('#debian_version_select').change(debianVersionChanged);
-  $('#redhat_version_select').change(redhatVersionChanged);
+  $('#debian_version_select').change(installOsChanged);
+  $('#redhat_version_select').change(installOsChanged);
+  $('#generic_install_method_select').change(installOsChanged);
   installOsChanged();
-  debianVersionChanged();
-  redhatVersionChanged();
 });

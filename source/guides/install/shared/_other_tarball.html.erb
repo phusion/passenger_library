@@ -1,0 +1,55 @@
+<div class="generic_install generic_install_tarball">
+  <% if enterprise %>
+    <%= render_partial("/guides/install/shared/enterprise_preamble.html", locals: locals) %>
+    <% heading_counter = 2 %>
+  <% else %>
+    <% heading_counter = 0 %>
+  <% end %>
+
+  <% heading_counter += 1 %>
+  <% if enterprise %>
+    <h3>Step <%= heading_counter %>: download tarball, upload to server and extract</h3>
+  <% else %>
+    <h3>Step <%= heading_counter %>: download and extract tarball</h3>
+    <p>Download the latest Passenger source tarball.</p>
+    <p>
+      <a href="https://www.phusionpassenger.com/latest_stable_tarball" class="btn btn-primary">
+        <span class="glyphicon glyphicon-download"></span>
+        Download tarball
+      </a>
+    </p>
+    <p>
+      Extract the tarball to some place <strong>permanent</strong>. Replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
+    </p>
+    <pre class="highlight shell"><span class="prompt">$ </span>tar -xzvf passenger-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span></pre>
+  <% end %>
+
+  <% heading_counter += 1 %>
+  <h3>Step <%= heading_counter %>: install Ruby</h3>
+  <%= render_partial("/guides/install/shared/ruby.html") %>
+
+  <% heading_counter += 1 %>
+  <h3>Step <%= heading_counter %>: add Passenger to PATH</h3>
+  <p>
+    Add the Passenger <code>bin</code> directory to your PATH, so that your shell can locate the Passenger commands.
+  </p>
+  <p>
+    Open your shell's startup file. If you're using bash, this is usually <code>/etc/bashrc</code> or <code>/etc/bash.bashrc</code>. Inside that file, add this to the end:
+  </p>
+  <pre class="highlight shell">PATH=<span class="o">/somewhere-permanent</span>/passenger-<span class="o">X.X.X</span>/bin:$PATH
+export PATH</pre>
+  <p>
+    Again, replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
+  </p>
+  <p>
+    When you're done, restart all your shells so that your new PATH takes effect.
+  </p>
+  <div class="note">
+    Make sure your bashrc is actually included by your bash profile, which might not be the case if you created the user with <code>useradd</code> instead of <code>adduser</code> for example.
+  </div>
+
+  <% heading_counter += 1 %>
+  <h3>Step <%= heading_counter %>: validate installation</h3>
+  <%= render_partial("/guides/install/shared/postinstall_check.html",
+        locals: locals.merge(web_server_process_name: "apache2")) %>
+</div>

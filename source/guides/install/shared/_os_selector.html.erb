@@ -1,0 +1,42 @@
+<p><select id="os_install_select">
+  <option value="none" selected>Please select an operating system</option>
+  <option value="debian">Debian, Ubuntu</option>
+  <option value="redhat">Red Hat, CentOS</option>
+  <% if !enterprise %>
+    <%# Passenger Enterprise cannot be installed via Homebrew %>
+    <option value="osx">Mac OS X</option>
+  <% end %>
+  <option value="other">Other</option>
+</select></p>
+
+<div class="install_os install_os_debian" style="display: none">
+  <p><select id="debian_version_select">
+    <%= debian_version_selection_options %>
+    <option value="other">Other</option>
+  </select></p>
+</div>
+
+<div class="install_os install_os_redhat" style="display: none">
+  <p><select id="redhat_version_select">
+    <%= redhat_version_selection_options %>
+    <option value="other">Other</option>
+  </select></p>
+</div>
+
+<div class="install_os install_os_other" style="display: none">
+  <p><select id="generic_install_method_select">
+    <option value="none" selected>Please select an installation method</option>
+    <option value="rubygems">RubyGems</option>
+    <option value="tarball">Tarball</option>
+  </select></p>
+</div>
+
+<div class="install_os install_os_none" style="display: none">
+  <p><small><a href="#windows_not_supported" data-toggle="collapse" aria-expanded="false" aria-controls="windows_not_supported">(Windows is not supported)</a></small></p>
+
+  <div class="collapse" id="windows_not_supported">
+    <div class="note">
+      Our apologies to Windows users. Passenger doesn't support Windows. We require a Unix-like operating system.
+    </div>
+  </div>
+</div>

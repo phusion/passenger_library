@@ -1,0 +1,38 @@
+<h3 id="<%= id_prefix %>license_key">Step 1: download and install your license key</h3>
+<p>
+  Before you can install Passenger Enterprise, you need to download and install your license key. This is a regular file that you need to copy to your production server.
+</p>
+<p>
+  Please <a href="https://www.phusionpassenger.com/orders" target="_blank">login to the Passenger Enterprise Customer Area</a>.
+</p>
+<figure>
+  <img src="<%= url_for '/guides/install/shared/enterprise_customer_area.png' %>" width="300" class="img-thumbnail">
+  <figcaption>Customer Area login screen</figcaption>
+</figure>
+<p>
+  Click on the button to download the license key.
+</p>
+<figure>
+  <img src="<%= url_for '/guides/install/shared/license_key.png' %>" width="300" class="img-thumbnail">
+  <figcaption>License key download button in the Customer Area</figcaption>
+</figure>
+<p>
+  The license key will be downloaded to your local computer. Copy this license key file to your production server, for example using <code>scp</code>:
+</p>
+<pre class="highlight"><span class="prompt">local-computer$ </span>cd /path-to-your-local-computer-download-folder
+<span class="prompt">local-computer$ </span>scp passenger-enterprise-license admin@yourserver.com:</pre>
+<p>
+  Finally, login to your production server and save the file as <code>/etc/passenger-enterprise-license</code>:
+</p>
+<pre class="highlight"><span class="prompt">local-computer$ </span>ssh admin@yourserver.com
+<span class="prompt">production-server$ </span>sudo mv passenger-enterprise-license /etc/passenger-enterprise-license
+<span class="prompt">production-server$ </span>chmod 644 /etc/passenger-enterprise-license</pre>
+
+<h3 id="<%= id_prefix %>download_token">Step 2: obtain your download token</h3>
+<p>
+  Your download token is needed in order to install Passenger Enterprise. In the Customer Area, find your download token and copy it to your clipboard.
+</p>
+<figure>
+  <img src="<%= url_for '/guides/install/shared/download_token.png' %>" width="300" class="img-thumbnail">
+  <figcaption>Exhibit of the download token in the Customer Area</figcaption>
+</figure>

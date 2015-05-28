@@ -313,7 +313,8 @@ figcaption {
 
 #os_install_select,
 #debian_version_select,
-#redhat_version_select {
+#redhat_version_select,
+#generic_install_method_select {
   width: 20em;
   max-width: 100%;
 }
@@ -424,6 +425,7 @@ figcaption {
 
 .image-float-right {
   float: right;
+  text-align: center;
   margin: 0 0 1em 1em;
 }
 

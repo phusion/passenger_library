@@ -1,5 +1,19 @@
 CURRENT_VERSION = "5.0.0"
 
+SUPPORTED_DEBIAN_VERSIONS = {
+  "jessie"  => "Debian 8",
+  "wheezy"  => "Debian 7",
+  "squeeze" => "Debian 6",
+  "vivid"   => "Ubuntu 15.04",
+  "trusty"  => "Ubuntu 14.04 LTS",
+  "precise" => "Ubuntu 12.04 LTS"
+}
+
+SUPPORTED_REDHAT_VERSIONS = {
+  "el7" => "Red Hat 7 / CentOS 7",
+  "el6" => "Red Hat 6 / CentOS 6"
+}
+
 module CustomHelpers
   def navbar_section(id)
     if current_page.data.section == id.to_s
@@ -81,5 +95,27 @@ module CustomHelpers
     else
       %Q{<span class="prompt">$ </span>}
     end
+  end
+
+  def debian_version_selection_options
+    result = ""
+    maybe_selected = " selected"
+    SUPPORTED_DEBIAN_VERSIONS.each_pair do |codename, name|
+      stylized_codename = codename.dup
+      stylized_codename[0..0] = stylized_codename[0..0].upcase
+      result << %Q{<option value="#{codename}"#{maybe_selected}>#{name} (#{stylized_codename})</option>}
+      maybe_selected = nil
+    end
+    result
+  end
+
+  def redhat_version_selection_options
+    result = ""
+    maybe_selected = " selected"
+    SUPPORTED_REDHAT_VERSIONS.each_pair do |version, name|
+      result << %Q{<option value="#{version}"#{maybe_selected}>#{name}</option>}
+      maybe_selected = nil
+    end
+    result
   end
 end

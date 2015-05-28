@@ -1,4 +1,8 @@
 function autoGenerateMenu() {
+  if (!$(document.body).hasClass('automenu')) {
+    return;
+  }
+
   // build side menu
   var toc = [];
   var html = '';
@@ -8,7 +12,7 @@ function autoGenerateMenu() {
   }
 
   $('.bs-docs-section h1[id], .bs-docs-section h2[id], .bs-docs-section h3[id]').each(function() {
-    if (!$(this).hasClass('notoc')) {
+    if (!$(this).hasClass('notoc') && $(this).is(':visible')) {
       if (this.nodeName == "H1" || this.nodeName == "H2") {
         toc.push({
           id:   this.id,
@@ -47,7 +51,5 @@ function autoGenerateMenu() {
 }
 
 $(document).ready(function() {
-  if ($(document.body).hasClass('automenu')) {
-    autoGenerateMenu();
-  }
+  autoGenerateMenu();
 });
