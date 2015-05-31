@@ -1,0 +1,20 @@
+---
+title: Integration modes
+section: indepth
+---
+# Integration modes
+
+As explained in [the basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>), Passenger collaborates with other components. This is why Passenger supports multiple *integration modes*. Each integration mode is designed for easy collaboration with a different component.
+
+During development, you will usually want to use the Standalone mode because it's the most convenient in that context. But in production you may want to think about which integration mode to pick.
+
+<%= render_partial("/walkthroughs/basics/shared/integration_modes.md", locals: { intro: false }) %>
+
+## See also
+
+ * [Installing Passenger (open source edition) in production with Nginx](<%= url_for '/guides/install/passenger_nginx/index.html' %>)
+ * [Installing Passenger (open source edition) in production with Apache](<%= url_for '/guides/install/passenger_apache/index.html' %>)
+ * [Installing Passenger (open source edition) in production using its Standalone mode](<%= url_for '/guides/install/passenger_standalone/index.html' %>)
+ * [Installing Passenger Enterprise in production with Nginx](<%= url_for '/guides/install/passenger_enterprise_nginx/index.html' %>)
+ * [Installing Passenger Enterprise in production with Apache](<%= url_for '/guides/install/passenger_enterprise_apache/index.html' %>)
+ * [Installing Passenger Enterprise in production using its Standalone mode](<%= url_for '/guides/install/passenger_enterprise_standalone/index.html' %>)

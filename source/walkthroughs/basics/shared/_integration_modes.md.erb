@@ -1,21 +1,32 @@
-As you've read earlier, Passenger collaborates with other components. This is why Passenger supports multiple *integration modes*. Each integration mode is optimized for collaboration with a different component.
+<%
+if locals[:language_type]
+  quickstart_url = url_for("/walkthroughs/start/#{language_type}.html")
+else
+  quickstart_url = url_for("/walkthroughs/start/index.html")
+end
+%>
+<% if locals.fetch(:intro, true) %>
+As you've read earlier, Passenger collaborates with other components. This is why Passenger supports multiple *integration modes*. Each integration mode is designed for easy collaboration with a different component.
 
 Throughout the rest of this basics walkthrough, we will cover the Standalone mode only. The Nginx and Apache integration modes are covered in the [deployment walkthrough](<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>). <!-- TODO: , as well as in the various [guides](<%= url_for '/guides/index.html' %>). -->
+<% end %>
 
 <figure>
-  <img src="../shared/integration_modes.png">
+  <img src="<%= url_for '/walkthroughs/basics/shared/integration_modes.png' %>">
   <figcaption>Passenger's supported integration modes. In the Standalone modes, Passenger uses a builtin web server. In the Nginx/Apache integration modes, Passenger integrates with Nginx or Apache.</figcaption>
 </figure>
 
 The supported integration modes are:
 
  * **Standalone mode**<br>
-   The Standalone mode is what you've experienced in the [Getting Started](<%= url_for "/walkthroughs/start/#{language_type}.html" %>) tutorial. You start Passenger through the `passenger start` command.
-   <% if language_type == :ruby -%>
+   The Standalone mode is what you've experienced in the [Quickstart](<%= quickstart_url %>) tutorial. You start Passenger through the `passenger start` command.
+   <% if locals[:language_type] == :ruby -%>
    In this mode, Passenger behaves somewhat like "rails server".
+   <% elsif locals[:language_type].nil? -%>
+   If you are a Ruby user, then in this mode Passenger behaves somewhat like "rails server".
    <% end -%>
 
-   In this mode, Passenger doesn't collaborate with other components, hence the name. Because of this, the Standalone mode is the easiest mode to get started with. We recommend this mode for use during development. That said, this mode is 
+   In this mode, Passenger doesn't collaborate with other components, hence the name. Because of this, the Standalone mode is the easiest mode to get started with. We recommend this mode for use during development. That said, this mode is
    also fit for production.
 
  * **Nginx integration mode**<br>
