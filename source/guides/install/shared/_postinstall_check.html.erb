@@ -1,5 +1,8 @@
-<p>After installation, please validate the install by running <code>sudo passenger-config validate-install</code>. For example:</p>
-<pre class="highlight shell"><span class="prompt">$ </span>sudo passenger-config validate-install
+<%
+sudo = locals[:sudo] || "sudo"
+%>
+<p>After installation, please validate the install by running <code><%= sudo %> passenger-config validate-install</code>. For example:</p>
+<pre class="highlight shell"><span class="prompt">$ </span><%= sudo %> passenger-config validate-install
 <span class="output"> * Checking whether this Phusion Passenger install is in PATH... ✓
  * Checking whether there are no other Phusion Passenger installations... ✓</span></pre>
 <p>
@@ -10,9 +13,9 @@
 <% if type == "apache" %>
 <!-- ******** Apache ******** -->
 <p>
-  Finally, check whether Apache has started the Passenger core processes. Run <code>sudo passenger-memory-stats</code>. You should see Apache processes as well as Passenger processes. For example:
+  Finally, check whether Apache has started the Passenger core processes. Run <code><%= sudo %> passenger-memory-stats</code>. You should see Apache processes as well as Passenger processes. For example:
 </p>
-<pre class="highlight shell"><span class="prompt">$ </span>sudo passenger-memory-stats
+<pre class="highlight shell"><span class="prompt">$ </span><%= sudo %> passenger-memory-stats
 <span class="output">Version: 5.0.8
 Date   : 2015-05-28 08:46:20 +0200
 
@@ -37,9 +40,9 @@ PID    VMSize    Private   Name
 <% elsif type == "nginx" %>
 <!-- ******** Nginx ******** -->
 <p>
-  Finally, check whether Nginx has started the Passenger core processes. Run <code>sudo passenger-memory-stats</code>. You should see Nginx processes as well as Passenger processes. For example:
+  Finally, check whether Nginx has started the Passenger core processes. Run <code><%= sudo %> passenger-memory-stats</code>. You should see Nginx processes as well as Passenger processes. For example:
 </p>
-<pre class="highlight shell"><span class="prompt">$ </span>sudo passenger-memory-stats
+<pre class="highlight shell"><span class="prompt">$ </span><%= sudo %> passenger-memory-stats
 <span class="output">Version: 5.0.8
 Date   : 2015-05-28 08:46:20 +0200
 ...

@@ -41,7 +41,7 @@ end
 
     <% if enterprise %>
       <%= render_partial("/guides/install/shared/enterprise_preamble.html", locals: locals) %>
-      <div class="alert alert-info" role="alert">From this point on, all commands that you run are supposed to be run on the production server, not on your local computer.</div>
+      <div class="alert alert-info" role="alert" style="margin: 4em 0">From this point on, all commands that you run are supposed to be run on the production server, not on your local computer.</div>
     <% end %>
 
     <% if enterprise %>
@@ -131,13 +131,22 @@ http {
       <h3 id="<%= id_prefix %>update_regularly">Step 4: update regularly</h3>
     <% end %>
     <p>
-      <%= web_server_name %> updates, Passenger updates and system updates are delivered through the APT package manager regularly. You should run the following command regularly to keep them up to date:
+      <% if type != "standalone" %>
+        <%= web_server_name %> updates,
+      <% end %>
+      Passenger updates and system updates are delivered through the APT package manager regularly. You should run the following command regularly to keep them up to date:
     </p>
     <pre class="highlight"><span class="prompt">$ </span>sudo apt-get update
 <span class="prompt">$ </span>sudo apt-get upgrade</pre>
-    <p>
-      You do not need to restart <%= web_server_name %> or Passenger after an update, and you also do not need to modify any configuration files after an update. That is all taken care of automatically for you by APT.
-    </p>
+    <% if type != "standalone" %>
+      <p>
+        You do not need to restart <%= web_server_name %> or Passenger after an update, and you also do not need to modify any configuration files after an update. That is all taken care of automatically for you by APT.
+      </p>
+    <% else %>
+      <p>
+        After an update, you should restart all your Passenger instances so that the updates take effect.
+      </p>
+    <% end %>
   </div>
 
   <div class="unsupported_debian_instructions">

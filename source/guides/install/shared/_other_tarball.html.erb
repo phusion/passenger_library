@@ -1,16 +1,36 @@
 <div class="generic_install generic_install_tarball">
+  <% if type == "nginx" %>
+    <h3 id="<%= id_prefix %>note_about_nginx">Before you begin: a note about Nginx</h3>
+    <%= render_partial("/guides/install/shared/nginx_preamble.md", locals: locals) %>
+  <% end %>
+
   <% if enterprise %>
-    <%= render_partial("/guides/install/shared/enterprise_preamble.html", locals: locals) %>
-    <% heading_counter = 2 %>
+    <%= render_partial("/guides/install/shared/enterprise_preamble.html",
+          locals: locals.merge(instruct_download_token: false)) %>
+    <% heading_counter = 1 %>
   <% else %>
     <% heading_counter = 0 %>
   <% end %>
 
   <% heading_counter += 1 %>
   <% if enterprise %>
-    <h3>Step <%= heading_counter %>: download tarball, upload to server and extract</h3>
+    <h3 id="<%= id_prefix %>download_extract">Step <%= heading_counter %>: download tarball, upload to server and extract</h3>
+    <p>
+      Go to the "Files" section in the Customer Area and download the tar.gz file of the Passenger Enterprise version you want. Copy that file to your production server, for example using <code>scp</code>:
+    </p>
+    <pre class="highlight"><span class="prompt">local-computer$ </span>cd /path-to-your-local-computer-download-folder
+<span class="prompt">local-computer$ </span>scp passenger-enterprise-server-<span class="o">X.X.X</span>.tar.gz admin@yourserver.com:</pre>
+    <p>(Replace X.X.X with the Passenger Enterprise version)</p>
+
+    <p>
+      On your production server, extract the tarball to some place <strong>permanent</strong> and enter that directory. Replace <code>/somewhere-permanent</code> with an actual directory path.
+    </p>
+    <pre class="highlight shell"><span class="prompt">production-server$ </span>tar -xzvf passenger-enterprise-server-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span>
+<span class="prompt">production-server$ </span>cd <span class="o">/somewhere-permanent</span></pre>
+
+    <div class="alert alert-info" role="alert" style="margin: 4em 0">From this point on, all commands that you run are supposed to be run on the production server, not on your local computer.</div>
   <% else %>
-    <h3>Step <%= heading_counter %>: download and extract tarball</h3>
+    <h3 id="<%= id_prefix %>download_extract">Step <%= heading_counter %>: download and extract tarball</h3>
     <p>Download the latest Passenger source tarball.</p>
     <p>
       <a href="https://www.phusionpassenger.com/latest_stable_tarball" class="btn btn-primary">
@@ -19,27 +39,34 @@
       </a>
     </p>
     <p>
-      Extract the tarball to some place <strong>permanent</strong>. Replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
+      Extract the tarball to some place <strong>permanent</strong> and enter that directory. Replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
     </p>
-    <pre class="highlight shell"><span class="prompt">$ </span>tar -xzvf passenger-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span></pre>
+    <pre class="highlight shell"><span class="prompt">$ </span>tar -xzvf passenger-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span>
+<span class="prompt">$ </span>cd <span class="o">/somewhere-permanent</span></pre>
   <% end %>
 
   <% heading_counter += 1 %>
-  <h3>Step <%= heading_counter %>: install Ruby</h3>
+  <h3 id="<%= id_prefix %>install_ruby">Step <%= heading_counter %>: install Ruby</h3>
   <%= render_partial("/guides/install/shared/ruby.html") %>
 
+  <% if type == "nginx" %>
+    <% heading_counter += 1 %>
+    <h3 id="<%= id_prefix %>uninstall_existing">Step <%= heading_counter %> (optional): uninstall the OS-installed Nginx</h3>
+    <%= render_partial("/guides/install/shared/uninstall_nginx_os_package.html", locals: locals) %>
+  <% end %>
+
   <% heading_counter += 1 %>
-  <h3>Step <%= heading_counter %>: add Passenger to PATH</h3>
+  <h3 id="<%= id_prefix %>add_path">Step <%= heading_counter %>: add Passenger to PATH</h3>
   <p>
     Add the Passenger <code>bin</code> directory to your PATH, so that your shell can locate the Passenger commands.
   </p>
   <p>
-    Open your shell's startup file. If you're using bash, this is usually <code>/etc/bashrc</code> or <code>/etc/bash.bashrc</code>. Inside that file, add this to the end:
+    Open your shell's system-wide startup file. If you're using bash, this is usually <code>/etc/bashrc</code> or <code>/etc/bash.bashrc</code>. Inside that file, add this to the end:
   </p>
   <pre class="highlight shell">PATH=<span class="o">/somewhere-permanent</span>/passenger-<span class="o">X.X.X</span>/bin:$PATH
 export PATH</pre>
   <p>
-    Again, replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
+    Again, replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with the actual directory path.
   </p>
   <p>
     When you're done, restart all your shells so that your new PATH takes effect.
@@ -48,8 +75,49 @@ export PATH</pre>
     Make sure your bashrc is actually included by your bash profile, which might not be the case if you created the user with <code>useradd</code> instead of <code>adduser</code> for example.
   </div>
 
+  <% if type == "apache" %>
+    <% heading_counter += 1 %>
+    <h3 id="<%= id_prefix %>install_module">Step <%= heading_counter %>: run the Passenger Apache module installer</h3>
+    <p>
+      Run the Passenger Apache module installer and follow the on-screen instructions:
+    </p>
+    <pre class="highlight"><span class="prompt">$ </span>passenger-install-apache-module</pre>
+  <% elsif type == "nginx" %>
+    <% heading_counter += 1 %>
+    <h3 id="<%= id_prefix %>install_module">Step <%= heading_counter %>: run the Passenger Nginx module installer</h3>
+    <p>
+      Run the Passenger Nginx module installer and follow the on-screen instructions:
+    </p>
+    <pre class="highlight"><span class="prompt">$ </span>passenger-install-nginx-module</pre>
+  <% end %>
+
   <% heading_counter += 1 %>
-  <h3>Step <%= heading_counter %>: validate installation</h3>
+  <h3 id="<%= id_prefix %>validate_install">Step <%= heading_counter %>: validate installation</h3>
   <%= render_partial("/guides/install/shared/postinstall_check.html",
         locals: locals.merge(web_server_process_name: "apache2")) %>
+
+  <% if type == "nginx" %>
+    <h2 id="<%= id_prefix %>using_nginx">Using Nginx</h2>
+    <%= render_partial("/guides/install/shared/using_nginx.html", locals: locals) %>
+  <% end %>
+
+  <h2 id="<%= id_prefix %>faq">FAQ</h2>
+  <% if type == "nginx" %>
+    <%= render_partial("/guides/install/shared/nginx_faq.html", locals: locals) %>
+  <% end %>
+  <% if enterprise %>
+    <h3 id="<%= id_prefix %>auto_download_tarball">How do I automate the downloading of the tarball?</h3>
+    <p>
+      You can use HTTP basic authentication.
+    </p>
+    <p>
+      In the Customer Area, right-click on the download button for the tarball and click "Copy link URL". That is the URL for the tarball. You can automate the download of that tarball by using <code>download</code> as the HTTP username and your download key as the HTTP password.
+    </p>
+    <p>
+      Here is an example using curl:
+    </p>
+    <pre class="highlight"><span class="prompt">$ </span>unset HISTFILE
+<span class="prompt">$ </span>curl --fail -L -o passenger-enterprise-server-5.0.8.tar.gz -u download:<span class="si">YOUR_DOWNLOAD_KEY</span> 'https://www.phusionpassenger.com/orders/download?dir=5.0.8&amp;file=passenger-enterprise-server-5.0.8.tar.gz'</pre>
+  <% end %>
+  <%= render_partial("/guides/install/shared/source_compilation_faq.html", locals: locals) %>
 </div>

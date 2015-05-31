@@ -1,8 +1,113 @@
-<div class="generic_install generic_install_rubygems">
+<div class="generic_install generic_install_rubygems<%= class_suffix %>">
+  <% if type == "nginx" %>
+    <h3 id="<%= id_prefix %>note_about_nginx">Before you begin: a note about Nginx</h3>
+    <%= render_partial("/guides/install/shared/nginx_preamble.md", locals: locals) %>
+  <% end %>
+
   <% if enterprise %>
     <%= render_partial("/guides/install/shared/enterprise_preamble.html", locals: locals) %>
+    <div class="alert alert-info" role="alert" style="margin: 4em 0">From this point on, all commands that you run are supposed to be run on the production server, not on your local computer.</div>
     <% heading_counter = 2 %>
   <% else %>
     <% heading_counter = 0 %>
   <% end %>
+
+  <% heading_counter += 1 %>
+  <h3 id="<%= id_prefix %>install_gem">Step <%= heading_counter %>: install gem</h3>
+  <% if enterprise %>
+    <p>Add the Passenger Enterprise gem server to your RubyGems source list:</p>
+    <pre class="highlight">unset HISTFILE
+gem source --add https://download:<span class="si">YOUR_DOWNLOAD_TOKEN</span>@www.phusionpassenger.com/enterprise_gems/</pre>
+    <p>Substitute <code>YOUR_DOWNLOAD_TOKEN</code> with the one you found in the Customer Area. And notice the <strong>trailing slash</strong> in the URL! It is very important.</p>
+    <p>Finally, install Passenger Enterprise gem with:</p>
+    <pre class="highlight">gem install passenger-enterprise-server --no-rdoc --no-ri</pre>
+    <p>The <code>--no-rdoc --no-ri</code> argument isn't really necessary, but it makes installation faster by skipping generation of API documentation.</p>
+
+    <div class="note">
+      Did any of the previous commands abort with a "permission denied" error? Then re-run that command with
+      <% if rvm %>
+        <code>rvmsudo</code>.
+
+        <p>
+          Since you are using RVM, don't use <code>sudo</code>! Always use <code>rvmsudo</code> instead! <a href="https://rvm.io/integration/sudo">Learn more about rvmsudo at the RVM website.</a>
+        </p>
+      <% else %>
+        <code>sudo</code>.
+      <% end %>
+    </div>
+  <% else %>
+    <p>Install the Passenger gem with:</p>
+    <pre class="highlight">gem install passenger --no-rdoc --no-ri</pre>
+    <p>The <code>--no-rdoc --no-ri</code> argument isn't really necessary, but it makes installation faster by skipping generation of API documentation.</p>
+
+    <div class="note">
+      Did <code>gem install</code> abort with a "permission denied" error? Then re-run it with
+      <% if rvm %>
+        <code>rvmsudo</code>.
+
+        <p>
+          Since you are using RVM, don't use <code>sudo</code>! Always use <code>rvmsudo</code> instead! <a href="https://rvm.io/integration/sudo">Learn more about rvmsudo at the RVM website.</a>
+        </p>
+      <% else %>
+        <code>sudo</code>.
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if type == "apache" %>
+    <% heading_counter += 1 %>
+    <h3 id="<%= id_prefix %>install_gem">Step <%= heading_counter %>: run the Passenger Apache module installer</h3>
+    <p>
+      Run the Passenger Apache module installer and follow the on-screen instructions:
+    </p>
+    <pre class="highlight">passenger-install-apache2-module</pre>
+
+    <p>At the end of the installation process, you will be asked to copy and paste a configuration snippet (containing <code>LoadModule</code>, <code>PassengerRoot</code>, etc.) into your Apache configuration file.</p>
+    <p>Different operating systems and Apache installations have different conventions with regard to where the Apache configuration file is and how it is organized. Please read <a href="<%= url_for '/indepth/working_with_the_apache_config_file.html' %>">Working with the Apache configuration file</a> if you're not familiar with it. That page is especially of interest for OS X Server &gt;= 10.8 users because the configuration file may not be at a surprising location.</p>
+  <% elsif type == "nginx" %>
+    <% heading_counter += 1 %>
+    <h3 id="<%= id_prefix %>uninstall_existing">Step <%= heading_counter %> (optional): uninstall the OS-installed Nginx</h3>
+    <%= render_partial("/guides/install/shared/uninstall_nginx_os_package.html", locals: locals) %>
+
+    <% heading_counter += 1 %>
+    <h3 id="<%= id_prefix %>install_gem">Step <%= heading_counter %>: run the Passenger Nginx module installer</h3>
+    <p>
+      Run the Passenger Nginx module installer and follow the on-screen instructions:
+    </p>
+    <pre class="highlight"><span class="prompt">$ </span>passenger-install-nginx-module</pre>
+  <% end %>
+
+  <% heading_counter += 1 %>
+  <h3 id="<%= id_prefix %>validate_install">Step <%= heading_counter %>: validate installation</h3>
+  <%= render_partial("/guides/install/shared/postinstall_check.html",
+        locals: locals.merge(web_server_process_name: "apache2",
+        sudo: rvm ? "rvmsudo" : "sudo")) %>
+
+  <% if type == "nginx" %>
+    <h2 id="<%= id_prefix %>using_nginx">Using Nginx</h2>
+    <%= render_partial("/guides/install/shared/using_nginx.html", locals: locals) %>
+  <% end %>
+
+  <h2 id="<%= id_prefix %>faq">FAQ</h2>
+  <% if rvm %>
+    <h3 id="<%= id_prefix %>multiple_ruby">I have multiple Ruby versions or gemsets. Does it matter which one I use to install Passenger with?</h3>
+    <p>
+      Not really. Passenger doesn't care which Ruby you used to install it; it can still serve Ruby apps with any Ruby version, as long as you tell Passenger which Ruby interpreter you want to use.
+    </p>
+    <!-- TODO: fix link -->
+    <% if type == "apache" %>
+      <p>You tell Passenger which Ruby interpreter to use for a specific app, by using the <a href="https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerRuby">PassengerRuby</a> directive. This can be customized on a per-application basis.</p>
+    <% elsif type == "nginx" %>
+      <p>You tell Passenger which Ruby interpreter to use for a specific app, by using the <a href="https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerRuby">passenger_ruby</a> directive. This can be customized on a per-application basis.</p>
+    <% else %>
+      <p>You tell Passenger which Ruby interpreter to use by using the <code>--ruby</code> command line option.</p>
+    <% end %>
+    <p>
+      Please also read <a href="<%= url_for 'indepth/relationship_with_ruby.html' %>">Passenger and its relationship with Ruby</a>. In particular, read the RVM-related caveats.
+    </p>
+  <% end %>
+  <% if type == "nginx" %>
+    <%= render_partial("/guides/install/shared/nginx_faq.html", locals: locals) %>
+  <% end %>
+  <%= render_partial("/guides/install/shared/source_compilation_faq.html", locals: locals) %>
 </div>

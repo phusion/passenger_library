@@ -1,8 +1,8 @@
 <%
 if type == "apache" || type == "nginx"
-  web_server_title_suffix = "and #{web_server_name}"
+  web_server_title_suffix = " and #{web_server_name}"
 else
-  web_server_title_suffix = "Standalone"
+  web_server_title_suffix = " Standalone"
 end
 %>
 
@@ -11,20 +11,22 @@ end
 </div>
 
 <div class="install_os install_os_any" style="display: none">
-  <p>Congratulations, you are now done with installing Passenger + <%= web_server_name %>. :-)</p>
-  <p>You may now want to proceed with deploying an application on Passenger + <%= web_server_name %>:</p>
+  <p>
+    Congratulations, you are now done with installing Passenger<%= web_server_title_suffix %>. :-)
+  </p>
+  <p>You may now want to proceed with deploying an application on Passenger<%= web_server_title_suffix %>:</p>
   <ul>
-    <li><a href="<%= url_for "/guides/deploy/#{type}/ruby.html" %>">Deploying a Ruby app in production on Passenger <%= web_server_title_suffix %></a></li>
-    <li><a href="<%= url_for "/guides/deploy/#{type}/python.html" %>">Deploying a Python app in production on Passenger <%= web_server_title_suffix %></a></li>
-    <li><a href="<%= url_for "/guides/deploy/#{type}/nodejs.html" %>">Deploying a Node.js app in production on Passenger <%= web_server_title_suffix %></a></li>
-    <li><a href="<%= url_for "/guides/deploy/#{type}/meteor.html" %>">Deploying a Meteor app in production on Passenger <%= web_server_title_suffix %></a></li>
+    <li><a href="<%= url_for "/guides/deploy/#{type}/ruby.html" %>">Deploying a Ruby app in production on Passenger<%= web_server_title_suffix %></a></li>
+    <li><a href="<%= url_for "/guides/deploy/#{type}/python.html" %>">Deploying a Python app in production on Passenger<%= web_server_title_suffix %></a></li>
+    <li><a href="<%= url_for "/guides/deploy/#{type}/nodejs.html" %>">Deploying a Node.js app in production on Passenger<%= web_server_title_suffix %></a></li>
+    <li><a href="<%= url_for "/guides/deploy/#{type}/meteor.html" %>">Deploying a Meteor app in production on Passenger<%= web_server_title_suffix %></a></li>
   </ul>
 
   <p>See also:</p>
   <ul>
-    <li>Automating the installation of Passenger + <%= web_server_name %></li>
-    <li>Upgrading Passenger + <%= web_server_name %></li>
-    <li>Uninstalling Passenger + <%= web_server_name %></li>
-    <li class="install_os install_os_debian">Setting up automated, unattended Passenger + <%= web_server_name %> upgrades on Debian or Ubuntu</li>
+    <li>Upgrading Passenger<%= web_server_title_suffix %></li>
+    <li>Uninstalling Passenger<%= web_server_title_suffix %></li>
+    <li class="install_os install_os_debian">Setting up automated, unattended Passenger upgrades on Debian or Ubuntu</li>
+    <li>Installing older versions of Passenger</li>
   </ul>
 </div>

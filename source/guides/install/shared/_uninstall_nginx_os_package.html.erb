@@ -1,0 +1,22 @@
+<p>
+  As explained earlier in <a href="#<%= id_prefix %>note_about_nginx">the introductory notes</a>, you are about to install a new Nginx installation from source. If you already installed Nginx before, using the operating system's package manager, then we recommend that you uninstall that in order to avoid possible confusion caused by having multiple parallel Nginx installations. Of course, you don't <em>have</em> to remove the OS-installed version as long as you know what you're doing.
+</p>
+<p>
+  Here are some examples of how you can uninstall the OS-installed version:
+</p>
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>Debian, Ubuntu</th>
+    <td>
+      <pre class="highlight">sudo apt-get purge nginx nginx-full nginx-light nginx-naxsi nginx-common
+rm -rf /etc/nginx</pre>
+    </td>
+  </tr>
+  <tr>
+    <th>Red Hat, CentOS, Fedora, Scientific Linux, Amazon Linux</th>
+    <td>
+      <pre class="highlight">sudo yum remove nginx
+rm -rf /etc/nginx</pre>
+    </td>
+  </tr>
+</table>

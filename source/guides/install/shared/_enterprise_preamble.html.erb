@@ -1,4 +1,7 @@
-<h3 id="<%= id_prefix %>license_key">Step 1: download and install your license key</h3>
+<% step_counter = locals[:step_counter] || 0 %>
+
+<% step_counter += 1 %>
+<h3 id="<%= id_prefix %>license_key">Step <%= step_counter %>: download and install your license key</h3>
 <p>
   Before you can install Passenger Enterprise, you need to download and install your license key. This is a regular file that you need to copy to your production server.
 </p>
@@ -28,11 +31,14 @@
 <span class="prompt">production-server$ </span>sudo mv passenger-enterprise-license /etc/passenger-enterprise-license
 <span class="prompt">production-server$ </span>chmod 644 /etc/passenger-enterprise-license</pre>
 
-<h3 id="<%= id_prefix %>download_token">Step 2: obtain your download token</h3>
-<p>
-  Your download token is needed in order to install Passenger Enterprise. In the Customer Area, find your download token and copy it to your clipboard.
-</p>
-<figure>
-  <img src="<%= url_for '/guides/install/shared/download_token.png' %>" width="300" class="img-thumbnail">
-  <figcaption>Exhibit of the download token in the Customer Area</figcaption>
-</figure>
+<% if locals.fetch(:instruct_download_token, true) %>
+  <% step_counter += 1 %>
+  <h3 id="<%= id_prefix %>download_token">Step <%= step_counter %>: obtain your download token</h3>
+  <p>
+    Your download token is needed in order to install Passenger Enterprise. In the Customer Area, find your download token and copy it to your clipboard.
+  </p>
+  <figure>
+    <img src="<%= url_for '/guides/install/shared/download_token.png' %>" width="300" class="img-thumbnail">
+    <figcaption>Exhibit of the download token in the Customer Area</figcaption>
+  </figure>
+<% end %>

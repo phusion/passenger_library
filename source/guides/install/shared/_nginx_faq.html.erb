@@ -1,0 +1,36 @@
+<h3 id="<%= id_prefix %>nginx_add_modules">How do I install Nginx with additional modules?</h3>
+<p>
+  Short answer: you can install Passenger as a normal Nginx module.
+</p>
+<p>
+  Long answer: if you have ever installed an add-on module for Nginx, then you know that it involves the following steps:
+</p>
+<ol>
+  <li>Download the Nginx source code.</li>
+  <li>Run the Nginx <code>configure</code> script with <code>--add-module</code> parameters, like this: <code>./configure --prefix=/somewhere --add-module=/path-to-your-module</code></li>
+  <li>Run <code>make &amp;&amp; sudo make install</code> to compile and install Nginx.</li>
+</ol>
+<p>
+  This is actually exactly what <code>passenger-install-nginx-module</code> does under the hood. It compiles Nginx with <code>--add-module=/path-to-passenger-module</code>.
+</p>
+<p>
+  The value for <code>/path-to-passenger-module</code> can be obtained with the command:
+</p>
+<pre class="highlight"><span class="prompt">$ </span>passenger-config --nginx-addon-dir</pre>
+<p>
+  Here is a full example that shows, given an Nginx source directory, how you can install Nginx with Passenger enabled as well as any other Nginx module you want:
+</p>
+<pre class="highlight"><span class="prompt">$ </span>cd /path-to-nginx-source-dir
+<span class="prompt">$ </span>./configure --prefix=/opt/nginx \
+  --add-module=$(passenger-config --nginx-addon-dir) \
+  --add-module=/path-to-some-nginx-module
+<span class="prompt">$ </span>make
+<span class="prompt">$ </span>sudo make install</pre>
+
+<h3 id="<%= id_prefix %>nginx_add_modules">The installer is interactive. How do I install in an automated, non-interactive manner?</h3>
+<p>
+  The installer accepts various command line parameters for adjusting its interactiveness. The most common way to run the installer non-interactively is by passing <code>--auto --auto-download</code>. See <code>--help</code> for more information.
+</p>
+</p>
+  Alternatively, you can <a href="#<%= id_prefix %>nginx_add_modules">install Passenger as a normal Nginx module</a>.
+</p>
