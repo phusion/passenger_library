@@ -6,9 +6,36 @@ section: indepth
 
 As explained in [the basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>), Passenger collaborates with other components. This is why Passenger supports multiple *integration modes*. Each integration mode is designed for easy collaboration with a different component.
 
+On this page we will explain the differences between the modes, and advise you on how to choose a mode.
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## The modes explained
+
 During development, you will usually want to use the Standalone mode because it's the most convenient in that context. But in production you may want to think about which integration mode to pick.
 
-<%= render_partial("/walkthroughs/basics/shared/integration_modes.md", locals: { intro: false }) %>
+<%= render_partial("/walkthroughs/basics/shared/integration_modes.md", locals: { context: :standalone }) %>
+
+## Which mode should you choose?
+
+Here are some tips on how to decide on a mode.
+
+Do you host multiple apps on a single server?
+: Choose either the Apache or the Nginx integration mode.
+
+Using WebSockets?
+: Choose the Nginx integration mode or the Standalone mode. WebSockets don't work so well over Apache.
+
+Are you already familiar with Nginx or Apache?
+: Choose the integration mode for that web server.
+
+Are you a hardcore ops guy or sysadmin with lots of experience, and do you want maximum control over your architecture while understanding how exactly every component works?
+: Choose the Standalone mode.
+
+Still can't decide?
+: Choose the Nginx mode. It's what most people use.
 
 ## See also
 
