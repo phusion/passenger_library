@@ -23,10 +23,9 @@
     <p>(Replace X.X.X with the Passenger Enterprise version)</p>
 
     <p>
-      On your production server, extract the tarball to some place <strong>permanent</strong> and enter that directory. Replace <code>/somewhere-permanent</code> with an actual directory path.
+      On your production server, extract the tarball to some place <strong>permanent</strong>. Replace <code>/somewhere-permanent</code> with the actual directory path that you want to extract to. <code>/opt</code> is usually a good directory.
     </p>
-    <pre class="highlight shell"><span class="prompt">production-server$ </span>tar -xzvf passenger-enterprise-server-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span>
-<span class="prompt">production-server$ </span>cd <span class="o">/somewhere-permanent</span></pre>
+    <pre class="highlight shell"><span class="prompt">production-server$ </span>tar -xzvf passenger-enterprise-server-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span></pre>
 
     <div class="alert alert-info" role="alert" style="margin: 4em 0">From this point on, all commands that you run are supposed to be run on the production server, not on your local computer.</div>
   <% else %>
@@ -39,10 +38,9 @@
       </a>
     </p>
     <p>
-      Extract the tarball to some place <strong>permanent</strong> and enter that directory. Replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
+      Extract the tarball to some place <strong>permanent</strong>. Replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with the actual directory path that you want to extract to. <code>/opt</code> is usually a good directory.
     </p>
-    <pre class="highlight shell"><span class="prompt">$ </span>tar -xzvf passenger-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span>
-<span class="prompt">$ </span>cd <span class="o">/somewhere-permanent</span></pre>
+    <pre class="highlight shell"><span class="prompt">$ </span>tar -xzvf passenger-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span></pre>
   <% end %>
 
   <% heading_counter += 1 %>
