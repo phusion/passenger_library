@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <title><% if current_page.data.title %><%= current_page.data.title %> - <%end %>Passenger Walkthroughs</title>
+    <title><% if page_title %><%= page_title %> - <%end %>Passenger Walkthroughs</title>
     <%= stylesheet_link_tag "all" %>
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Open+Sans:400,600" rel="stylesheet" type="text/css">
   </head>
-  
-  <body class="<%= page_classes %> <%= 'automenu' if !content_for?(:sidebar) %>">
+
+  <body class="<%= page_classes %>">
     <!-- Main navigation
     =========================================== -->
     <header class="navbar navbar-static-top bs-docs-nav" id="top">

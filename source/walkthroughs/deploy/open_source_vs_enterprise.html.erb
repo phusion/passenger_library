@@ -1,0 +1,42 @@
+---
+title: Open source vs Enterprise
+section: deploy_walkthrough
+subsection: open_source_vs_enterprise
+---
+<% content_for(:sidebar) { render_partial("_toc.html", locals: locals) } %>
+
+<h1>Open source vs Enterprise</h1>
+
+<p>
+  Are you using Passenger open source, or are you using Passenger Enterprise? We need to know this because the rest of this walkthrough depends on it.
+</p>
+
+<p>
+  <% spec = deployment_walkthrough_next_step_after_selecting_passenger_edition(locals.merge(edition_type: :oss)) %>
+  <a href="<%= spec[:url] %>" class="btn btn-primary btn-large" style="margin-right: 2em">I am using the open source edition</a>
+
+  <% spec = deployment_walkthrough_next_step_after_selecting_passenger_edition(locals.merge(edition_type: :enterprise)) %>
+  <a href="<%= spec[:url] %>" class="btn btn-success btn-large">I am using the Enterprise edition</a>
+</p>
+
+<p>
+  <small><em><strong>Hint:</strong> if you don't remember buying the Enterprise edition, then you are probably using the open source edition.</em></small>
+</p>
+
+<h3>More information</h3>
+
+<p>
+  Passenger is available in an open source edition, which you can get at no cost. In the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics walkthrough</a>, you have worked with the open source edition.
+</p>
+
+<p>
+  Passenger is also available in a paid <a href="https://www.phusionpassenger.com/enterprise">Enterprise edition</a> (named <a href="https://www.phusionpassenger.com/enterprise">Passenger Enterprise</a>) that has more features than the open source edition. It also comes with basic support. We (Phusion, the company who made Passenger) make our living by selling Passenger Enterprise licenses. Open source development is made possible by profits from Passenger Enterprise.
+</p>
+
+<p>
+  While the paid version is the most feature-complete, the open source edition is very good as well and stands on its own. We would very much appreciate it if you support us by buying the Enterprise edition, but buying is completely optional.
+</p>
+<p>
+  You should know that we put all our <strong>heart and soul</strong> into making both the open source and the Enterprise version high-quality products that we can be proud of.
+</p>
+

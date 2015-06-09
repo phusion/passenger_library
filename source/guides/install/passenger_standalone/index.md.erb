@@ -18,6 +18,9 @@ locals[:enterprise] = false
 
 <%= render_partial("../shared/intro.md", locals: locals) %>
 
+This guide is NOT for Ruby apps!
+: Are you deploying Ruby apps? Check out [the Ruby-specific Standalone installation guide](<%= url_for 'ruby.html' %>).
+
 <h2 class="notoc">Select operating system</h2>
 
 <%= render_partial("../shared/os_selector.html", locals: locals) %>
@@ -31,6 +34,9 @@ locals[:enterprise] = false
 
 <div class="install_os install_os_none" style="display: none">
   <p>Please select an operating system from the above dropdown.</p>
+</div>
+<div class="install_os install_os_any alert alert-warning" style="display: none">
+  Remember, this installation guide is <em>not for Ruby apps</em>! Are you deploying Ruby apps? Check out <a href="<%= url_for 'ruby.html' %>">the Ruby-specific Standalone installation guide</a>.
 </div>
 
 <%= render_partial("../shared/install.html", locals: locals) %>

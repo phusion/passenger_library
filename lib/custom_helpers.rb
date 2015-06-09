@@ -15,6 +15,10 @@ SUPPORTED_REDHAT_VERSIONS = {
 }
 
 module CustomHelpers
+  def page_title
+    current_page.data.title || @page_title
+  end
+
   def navbar_section(id)
     if current_page.data.section == id.to_s
       concat("<li class=\"active\">")

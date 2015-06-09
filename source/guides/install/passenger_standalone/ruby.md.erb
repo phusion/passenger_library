@@ -1,0 +1,30 @@
+---
+title: Installing Passenger (open source edition) in production using its Standalone mode, for Ruby apps
+---
+<%
+locals[:type] = "standalone"
+locals[:enterprise] = false
+-%>
+# Installing Passenger (open source edition) in production using its Standalone mode, for Ruby apps
+
+### Introduction
+
+<div class="image-float-right hidden-xs">
+  <p><img src="<%= url_for '/images/passenger.png' %>" alt="Passenger"></p>
+</div>
+<div class="visible-xs" style="text-align: center">
+  <img src="<%= url_for '/images/passenger.png' %>" alt="Passenger">
+</div>
+
+<%= render_partial("../shared/intro.md", locals: locals) %>
+
+This guide is for Ruby apps only!
+: Not deploying Ruby apps? Check out [the non-Ruby Standalone installation guide](<%= url_for 'index.html' %>).
+
+## Installation guide
+
+<%= render_partial("../shared/standalone_ruby.md", locals: locals) %>
+
+## Conclusion
+
+<%= render_partial("../shared/conclusion.html", locals: locals) %>

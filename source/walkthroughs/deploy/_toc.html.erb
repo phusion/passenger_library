@@ -1,0 +1,79 @@
+<% step = 0 %>
+<a href="<%= url_for "/index.html" %>#walkthroughs" class="back-to-previous">&laquo; Back to all walkthroughs</a>
+
+<h2>Deploy to production<br>
+<small>for <%= language_name %> developers</small></h2>
+
+<ul class="nav nav-stacked">
+  <% navbar_subsection :intro do %>
+    <% step += 1 %>
+    <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>">
+      <% if available_infrastructures(locals).size > 1 %>
+        <%= step %> Select infrastructure
+        <% if locals[:infrastructure_type] %>
+          <br><small>Chosen: <%= infrastructure_name %></small>
+        <% end %>
+      <% else %>
+        <%= step %> Introduction
+      <% end %>
+    </a>
+  <% end %>
+
+  <% if locals[:infrastructure_type] %>
+    <% if available_integration_modes(locals).size > 1 %>
+      <% navbar_subsection :integration_mode do %>
+        <% step += 1 %>
+        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/integration_mode.html" %>">
+          <%= step %> Pick integration mode
+          <% if locals[:integration_mode_type] %>
+            <br><small>Chosen: <%= integration_mode_name %></small>
+          <% end %>
+        </a>
+      <% end %>
+    <% end %>
+
+    <% if locals[:integration_mode_type] %>
+      <% navbar_subsection :open_source_vs_enterprise do %>
+        <% step += 1 %>
+        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/open_source_vs_enterprise.html" %>">
+          <%= step %> Open source vs Enterprise
+          <% if locals[:edition_type] %>
+            <br><small>Chosen: <%= edition_name %></small>
+          <% end %>
+        </a>
+      <% end %>
+
+      <% if locals[:edition_type] %>
+        <% if needs_install_passenger?(locals) %>
+          <% navbar_subsection :install_passenger do %>
+            <% step += 1 %>
+            <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_passenger.html" %>">
+              <%= step %> Install Passenger
+            </a>
+          <% end %>
+        <% end %>
+
+        <% navbar_subsection :deploy_app do %>
+          <% step += 1 %>
+          <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/deploy_app.html" %>">
+            <%= step %> Deploy app
+          </a>
+        <% end %>
+
+        <% navbar_subsection :conclusion do %>
+          <% step += 1 %>
+          <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/conclusion.html" %>">
+            <%= step %> Conclusion
+          </a>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% elsif (spec = deployment_walkthrough_next_step_after_selecting_infrastructure(locals)) %>
+    <% navbar_subsection(spec[:subsection]) do %>
+      <% step += 1 %>
+      <a href="<%= spec[:url] %>">
+        <%= step %> <%= spec[:title] %>
+      </a>
+    <% end %>
+  <% end %>
+</ul>

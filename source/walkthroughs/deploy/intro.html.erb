@@ -1,0 +1,34 @@
+---
+title: Deploying a Ruby app with Passenger to a Linux/Unix production server
+section: deploy_walkthrough
+subsection: intro
+---
+<% content_for(:sidebar) { render_partial("_toc.html", locals: locals) } %>
+
+<h1>Deploying a <%= language_name %> app with Passenger to production</h1>
+<p>
+  <a href="https://www.phusionpassenger.com/">Passenger</a> is an open source <strong>web application server</strong> for <%= language_name %>. It handles HTTP requests, manages processes and resources, and enables administration, monitoring and problem diagnosis. Passenger is very easy to use, makes deploying in production much easier and is scalable.
+</p>
+
+<p>
+  This walkthrough teaches you step-by-step how to install <%= language_name %> and Passenger in a production environment. This walkthrough is also applicable if you are using <a href="https://www.phusionpassenger.com/enterprise">Passenger Enterprise</a>.
+</p>
+
+<p>
+  Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics walkthrough</a>.
+</p>
+
+<% if (spec = deployment_walkthrough_next_step_after_selecting_infrastructure(locals)) %>
+  <p>Ready to get started?</p>
+  <p><a href="<%= spec[:url] %>" class="btn btn-large btn-primary">Next step: <%= spec[:long_title] %> &raquo;</a></p>
+<% else %>
+  <p>
+    Please start by picking the hosting provider or infrastructure that you are on.
+  </p>
+  <ul>
+    <% available_infrastructures(locals).each do |infra_spec| %>
+      <% spec = deployment_walkthrough_next_step_after_selecting_infrastructure(locals.merge(infra_spec)) %>
+      <li><a href="<%= spec[:url] %>"><%= infra_spec[:infrastructure_long_name] %> &raquo;</a></li>
+    <% end %>
+  </ul>
+<% end %>

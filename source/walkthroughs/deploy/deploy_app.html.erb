@@ -1,0 +1,18 @@
+---
+section: deploy_walkthrough
+subsection: deploy_app
+---
+<%
+if edition_type == :oss
+  passenger_title = "Passenger (open source)"
+else
+  passenger_title = "Passenger Enterprise"
+end
+@page_title = "Deploying the #{language_name} application on a #{infrastructure_name} production server with #{passenger_title} in #{integration_mode_name} mode"
+content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
+%>
+
+<h1>Deploying the <%= language_name %> application on a <%= infrastructure_name %> production server<br>
+<small>with <%= passenger_title %> in <%= integration_mode_name %> mode</h1>
+
+TODO

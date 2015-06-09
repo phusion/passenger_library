@@ -1,0 +1,34 @@
+As you have learned in [the basics walkthrough](<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>), Passenger supports [multiple web server integration modes](<%= url_for "/walkthroughs/basics/#{language_type}/fundamental_concepts.html#multiple-integration-modes" %>).
+
+<figure>
+  <img src="<%= url_for '/walkthroughs/basics/shared/integration_modes.png' %>">
+  <figcaption>Passenger's supported integration modes. In the Standalone modes, Passenger uses a builtin web server. In the Nginx/Apache integration modes, Passenger integrates with Nginx or Apache.</figcaption>
+</figure>
+
+During development, you will usually want to use the Standalone mode because it's the most convenient in that context. But in production you may want to think about which integration mode to pick.
+
+Which one will you pick?
+
+<div class="row">
+  <div class="col-md-4"><a href="apache/open_vs_enterprise.html.erb"></a></div>
+</div>
+<a href=""></a>
+
+## Which mode should you choose?
+
+Here are some tips on how to decide on a mode.
+
+Do you host multiple apps on a single server?
+: Choose either the Apache or the Nginx integration mode.
+
+Using WebSockets?
+: Choose the Nginx integration mode or the Standalone mode. WebSockets don't work so well over Apache.
+
+Are you already familiar with Nginx or Apache?
+: Choose the integration mode for that web server.
+
+Are you a hardcore ops guy or sysadmin with lots of experience, and do you want maximum control over your architecture while understanding how exactly every component works?
+: Choose the Standalone mode.
+
+Still can't decide?
+: Choose the Nginx mode. It's what most people use.
