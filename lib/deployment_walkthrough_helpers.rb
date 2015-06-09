@@ -16,13 +16,17 @@ module DeploymentWalkthroughHelpers
       language_name: "Ruby",
       language_has_install_instructions: true },
     { language_type: :python,
-      language_name: "Python" },
+      language_name: "Python",
+      language_has_install_instructions: true },
     { language_type: :nodejs,
-      language_name: "Node.js" },
+      language_name: "Node.js",
+      language_has_install_instructions: false },
     { language_type: :iojs,
-      language_name: "io.js" },
+      language_name: "io.js",
+      language_has_install_instructions: false },
     { language_type: :meteor,
-      language_name: "Meteor" }
+      language_name: "Meteor",
+      language_has_install_instructions: false }
   ]
   DEPLOYMENT_WALKTHROUGH_INFRASTRUCTURES = [
     { infrastructure_type: :aws,
@@ -34,11 +38,14 @@ module DeploymentWalkthroughHelpers
     { infrastructure_type: :heroku,
       infrastructure_name: "Heroku",
       infrastructure_name_with_determiner: "a Heroku",
-      infrastructure_long_name: "Heroku" },
+      infrastructure_long_name: "Heroku",
+      infrastructure_has_launch_instructions: false,
+      infrastructure_needs_install_language_runtime: false },
     { infrastructure_type: :ownserver,
       infrastructure_name: "Linux/Unix",
       infrastructure_name_with_determiner: "a Linux/Unix",
       infrastructure_long_name: "Any hosting provider or infrastructure running Linux/Unix",
+      infrastructure_has_launch_instructions: false,
       infrastructure_needs_install_language_runtime: true }
   ]
   PASSENGER_EDITIONS = [
@@ -63,7 +70,9 @@ module DeploymentWalkthroughHelpers
 
 
   def available_integration_modes(locals)
-    if locals[:infrastructure_type] == :heroku
+    if !locals.has_key?(:infrastructure_type)
+      nil
+    elsif locals[:infrastructure_type] == :heroku
       [{ integration_mode_type: :standalone,
          integration_mode_name: "Standalone" }]
     else
@@ -76,13 +85,27 @@ module DeploymentWalkthroughHelpers
     end
   end
 
+  def needs_pick_integration_mode?(locals)
+    if !locals.has_key?(:infrastructure_type)
+      nil
+    else
+      available_integration_modes(locals).size > 1
+    end
+  end
+
   def needs_install_passenger?(locals)
-    locals[:integration_mode_type] != :standalone
+    if locals.has_key?(:integration_mode_type)
+      locals[:integration_mode_type] != :standalone
+    else
+      nil
+    end
   end
 
 
   def needs_install_language_runtime?(locals)
-    if locals[:infrastructure_needs_install_language_runtime]
+    if !locals[:infrastructure_type]
+      nil
+    elsif locals[:infrastructure_needs_install_language_runtime]
       language_type = locals[:language_type]
       spec = DEPLOYMENT_WALKTHROUGH_LANGUAGES.find { |spec| spec[:language_type] == language_type }
       spec[:language_has_install_instructions]
@@ -119,7 +142,7 @@ module DeploymentWalkthroughHelpers
     integration_mode_type = locals[:integration_mode_type]
     edition_type = locals[:edition_type]
     if needs_launch_server?(locals)
-      { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/launch_server.html"),
+      { url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/launch_server.html"),
         title: "Launch a server",
         long_title: "Launching a server",
         subsection: :launch_server }
@@ -135,7 +158,7 @@ module DeploymentWalkthroughHelpers
     edition_type = locals[:edition_type]
     if needs_install_language_runtime?(locals)
       language_name = locals[:language_name]
-      { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_language_runtime.html"),
+      { url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_language_runtime.html"),
         title: "Install #{language_name}",
         long_title: "Installing #{language_name}",
         subsection: :install_language_runtime }

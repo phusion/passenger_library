@@ -600,9 +600,6 @@ body {
   font-weight: 500;
   color: #c6c6c6;
 }
-.bs-docs-sidebar .nav > li > span > small {
-  font-weight: normal;
-}
 
 /* Nav: second level (shown on .active) */
 .bs-docs-sidebar .nav .nav {

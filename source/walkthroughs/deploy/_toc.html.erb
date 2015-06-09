@@ -1,8 +1,4 @@
-<%
-step = 0
-conclusion_reached = false
-show_steps_preview_disclaimer = false
-%>
+<% step = 0 %>
 <a href="<%= url_for "/index.html" %>#walkthroughs" class="back-to-previous">&laquo; Back to all walkthroughs</a>
 
 <h2>Deploy to production<br>
@@ -23,8 +19,11 @@ show_steps_preview_disclaimer = false
     </a>
   <% end %>
 
-  <% if locals[:infrastructure_type] %>
-    <% if available_integration_modes(locals).size > 1 %>
+  <% if needs_pick_integration_mode?(locals) != false %>
+    <% if needs_pick_integration_mode?(locals).nil? || locals[:infrastructure_type].nil? %>
+      <% step += 1 %>
+      <li><span><%= step %> Pick integration mode</span></li>
+    <% else %>
       <% navbar_subsection :integration_mode do %>
         <% step += 1 %>
         <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/integration_mode.html" %>">
@@ -35,91 +34,86 @@ show_steps_preview_disclaimer = false
         </a>
       <% end %>
     <% end %>
+  <% end %>
 
-    <% if locals[:integration_mode_type] %>
-      <% navbar_subsection :open_source_vs_enterprise do %>
-        <% step += 1 %>
-        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/open_source_vs_enterprise.html" %>">
-          <%= step %> Open source vs Enterprise
-          <% if locals[:edition_type] %>
-            <br><small>Chosen: <%= edition_name %></small>
-          <% end %>
-        </a>
-      <% end %>
-
-      <% if locals[:edition_type] %>
-        <% if needs_launch_server?(locals) %>
-          <% navbar_subsection :launch_server do %>
-            <% step += 1 %>
-            <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/launch_server.html" %>">
-              <%= step %> Launch a server
-            </a>
-          <% end %>
-        <% end %>
-
-        <% if needs_install_language_runtime?(locals) %>
-          <% navbar_subsection :install_language_runtime do %>
-            <% step += 1 %>
-            <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/needs_install_language_runtime.html" %>">
-              <%= step %> Install <%= language_name %>
-            </a>
-          <% end %>
-        <% end %>
-
-        <% if needs_install_passenger?(locals) %>
-          <% navbar_subsection :install_passenger do %>
-            <% step += 1 %>
-            <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_passenger.html" %>">
-              <%= step %> Install Passenger
-            </a>
-          <% end %>
-        <% end %>
-
-        <% navbar_subsection :deploy_app do %>
-          <% step += 1 %>
-          <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/deploy_app.html" %>">
-            <%= step %> Deploy app
-          </a>
-        <% end %>
-
-        <% navbar_subsection :conclusion do %>
-          <%
-          step += 1
-          conclusion_reached = true
-          %>
-          <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/conclusion.html" %>">
-            <%= step %> Conclusion
-          </a>
-        <% end %>
-      <% end %>
-    <% end %>
-
-    <% if !conclusion_reached %>
-      <% show_steps_preview_disclaimer = true %>
-      <li><span>...</span></li>
-    <% end %>
-  <% elsif (spec = deployment_walkthrough_next_step_after_selecting_infrastructure(locals)) %>
-    <% show_steps_preview_disclaimer = true %>
-    <% navbar_subsection(spec[:subsection]) do %>
+  <% if !locals[:infrastructure_type] || !locals[:integration_mode_type] %>
+    <% step += 1 %>
+    <li><span><%= step %> Open source vs Enterprise</span></li>
+  <% else %>
+    <% navbar_subsection :open_source_vs_enterprise do %>
       <% step += 1 %>
-      <a href="<%= spec[:url] %>">
-        <%= step %> <%= spec[:title] %>
+      <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/open_source_vs_enterprise.html" %>">
+        <%= step %> Open source vs Enterprise
+        <% if locals[:edition_type] %>
+          <br><small>Chosen: <%= edition_name %></small>
+        <% end %>
       </a>
     <% end %>
-    <li><span>...</span></li>
-    <li><span>8 Conclusion</span></li>
+  <% end %>
+
+  <% if needs_launch_server?(locals) != false %>
+    <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? || needs_launch_server?(locals).nil? %>
+      <% step += 1 %>
+      <li><span><%= step %> Launch a server</span></li>
+    <% else %>
+      <% navbar_subsection :launch_server do %>
+        <% step += 1 %>
+        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/launch_server.html" %>">
+          <%= step %> Launch a server
+        </a>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if needs_install_language_runtime?(locals) != false %>
+    <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? || needs_install_language_runtime?(locals).nil? %>
+      <% step += 1 %>
+      <li><span><%= step %> Install <%= language_name %></span></li>
+    <% else %>
+      <% navbar_subsection :install_language_runtime do %>
+        <% step += 1 %>
+        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/needs_install_language_runtime.html" %>">
+          <%= step %> Install <%= language_name %>
+        </a>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if needs_install_passenger?(locals) != false %>
+    <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? || needs_install_passenger?(locals).nil? %>
+      <% step += 1 %>
+      <li><span><%= step %> Install Passenger</span></li>
+    <% else %>
+      <% navbar_subsection :install_passenger do %>
+        <% step += 1 %>
+        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_passenger.html" %>">
+          <%= step %> Install Passenger
+        </a>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? %>
+    <% step += 1 %>
+    <li><span><%= step %> Deploy app</span></li>
   <% else %>
-    <% show_steps_preview_disclaimer = true %>
-    <li><span>2 Pick integration mode</span></li>
-    <li><span>3 Open source vs Enterprise</span></li>
-    <li><span>4 Launch a server</span></li>
-    <li><span>5 Install <%= language_name %></span></li>
-    <li><span>6 Install Passenger</span></li>
-    <li><span>7 Deploy app</span></li>
-    <li><span>8 Conclusion</span></li>
+    <% navbar_subsection :deploy_app do %>
+      <% step += 1 %>
+      <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/deploy_app.html" %>">
+        <%= step %> Deploy app
+      </a>
+    <% end %>
+  <% end %>
+
+  <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? %>
+    <% step += 1 %>
+    <li><span><%= step %> Conclusion</span></li>
+  <% else %>
+    <% navbar_subsection :conclusion do %>
+      <% step += 1 %>
+      <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/conclusion.html" %>">
+        <%= step %> Conclusion
+      </a>
+    <% end %>
   <% end %>
 </ul>
-
-<% if show_steps_preview_disclaimer %>
-  <p class="text-muted"><small>The exact steps depend on the choices you make.</small></p>
-<% end %>
