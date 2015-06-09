@@ -15,15 +15,25 @@ subsection: intro
 </p>
 
 <p>
-  Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics walkthrough</a>.
+  A few things you should be aware of first:
 </p>
+
+<ul>
+  <li>
+    Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics walkthrough</a>.
+  </li>
+  <li>
+    This walkthrough assumes that you are deploying <a href="<%= url_for("/walkthroughs/start/#{language_type}.html") %>#preparing-the-example-application">the example app from the quickstart</a>. If you are following this walkthrough to deploy your own app, then please be aware that it may not work 100% because your app may have custom dependencies or other requirements that this walkthrough can't take account of.
+  </li>
+</ul>
 
 <% if (spec = deployment_walkthrough_next_step_after_selecting_infrastructure(locals)) %>
   <p>Ready to get started?</p>
   <p><a href="<%= spec[:url] %>" class="btn btn-large btn-primary">Next step: <%= spec[:long_title] %> &raquo;</a></p>
 <% else %>
+  <h2>Ready to get started?</h2>
   <p>
-    Please start by picking the hosting provider or infrastructure that you are on.
+    Please start by picking the hosting provider or infrastructure that you want to deploy to.
   </p>
   <ul>
     <% available_infrastructures(locals).each do |infra_spec| %>

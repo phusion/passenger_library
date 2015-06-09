@@ -1,6 +1,7 @@
 # Introduction, select infrastructure
 # Select integration mode
 # Open source vs Enterprise
+# Launch a server
 # Install Passenger
 # Deploying the app
 # Automating deployments
@@ -14,11 +15,18 @@ module DeploymentWalkthroughHelpers
     { language_type: :meteor, language_name: "Meteor" }
   ]
   DEPLOYMENT_WALKTHROUGH_INFRASTRUCTURES = [
+    { infrastructure_type: :aws,
+      infrastructure_name: "AWS",
+      infrastructure_name_with_determiner: "an AWS",
+      infrastructure_long_name: "Amazon Web Services",
+      infrastructure_has_launch_instructions: true },
     { infrastructure_type: :heroku,
       infrastructure_name: "Heroku",
+      infrastructure_name_with_determiner: "a Heroku",
       infrastructure_long_name: "Heroku" },
     { infrastructure_type: :ownserver,
       infrastructure_name: "Linux/Unix",
+      infrastructure_name_with_determiner: "a Linux/Unix",
       infrastructure_long_name: "Any hosting provider or infrastructure running Linux/Unix" }
   ]
   PASSENGER_EDITIONS = [
@@ -37,6 +45,10 @@ module DeploymentWalkthroughHelpers
     end
   end
 
+  def needs_launch_server?(locals)
+    locals[:infrastructure_has_launch_instructions]
+  end
+
 
   def available_integration_modes(locals)
     if locals[:infrastructure_type] == :heroku
@@ -52,8 +64,8 @@ module DeploymentWalkthroughHelpers
     end
   end
 
-  def needs_install_passenger?(integration_mode)
-    integration_mode != :standalone
+  def needs_install_passenger?(locals)
+    locals[:integration_mode_type] != :standalone
   end
 
 
@@ -79,6 +91,21 @@ module DeploymentWalkthroughHelpers
   end
 
   def deployment_walkthrough_next_step_after_selecting_passenger_edition(locals)
+    language_type = locals[:language_type]
+    infrastructure_type = locals[:infrastructure_type]
+    integration_mode_type = locals[:integration_mode_type]
+    edition_type = locals[:edition_type]
+    if needs_launch_server?(locals)
+      { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/launch_server.html"),
+        title: "Launching a server",
+        long_title: "Launching a server",
+        subsection: :launch_server }
+    else
+      deployment_walkthrough_next_step_after_launching_server(locals)
+    end
+  end
+
+  def deployment_walkthrough_next_step_after_launching_server(locals)
     language_type = locals[:language_type]
     infrastructure_type = locals[:infrastructure_type]
     integration_mode_type = locals[:integration_mode_type]

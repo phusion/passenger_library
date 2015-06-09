@@ -69,6 +69,13 @@ DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |lang_spec|
         prefix = "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}"
         locals = lang_spec.merge(infra_spec).merge(integration_mode_spec).merge(edition_spec)
 
+        if needs_launch_server?(locals)
+          # Launch a server
+          proxy "#{prefix}/launch_server.html",
+            "/walkthroughs/deploy/launch_server.html",
+            locals: locals
+        end
+
         if needs_install_passenger?(locals)
           # Install Passenger
           proxy "#{prefix}/install_passenger.html",
@@ -93,6 +100,7 @@ end
 ignore "/walkthroughs/deploy/intro.html"
 ignore "/walkthroughs/deploy/integration_mode.html"
 ignore "/walkthroughs/deploy/open_source_vs_enterprise.html"
+ignore "/walkthroughs/deploy/launch_server.html"
 ignore "/walkthroughs/deploy/install_passenger.html"
 ignore "/walkthroughs/deploy/deploy_app.html"
 ignore "/walkthroughs/deploy/conclusion.html"

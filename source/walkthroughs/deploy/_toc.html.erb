@@ -45,6 +45,15 @@
 
       <% if locals[:edition_type] %>
         <% if needs_install_passenger?(locals) %>
+          <% navbar_subsection :launch_server do %>
+            <% step += 1 %>
+            <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/launch_server.html" %>">
+              <%= step %> Launch a server
+            </a>
+          <% end %>
+        <% end %>
+
+        <% if needs_install_passenger?(locals) %>
           <% navbar_subsection :install_passenger do %>
             <% step += 1 %>
             <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_passenger.html" %>">

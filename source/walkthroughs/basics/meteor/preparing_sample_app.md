@@ -10,7 +10,7 @@ sidebar: toc.html
 
 ## Create the app
 
-Let us create an example Meteor app directory structure in your home directory. We use the builtin Meteor leaderboard example app.
+Let us create an example Meteor app directory structure in your home directory. We use the builtin Meteor leaderboard example app. If you have already done this as part of the [quickstart](../../start/meteor.html), feel free to skip to ["Create an app package"](#create-an-app-package).
 
 <pre class="highlight"><span class="prompt">$ </span>cd ~
 <span class="prompt">$ </span>meteor create --example leaderboard
