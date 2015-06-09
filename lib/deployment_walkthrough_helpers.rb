@@ -95,7 +95,7 @@ module DeploymentWalkthroughHelpers
 
   def needs_install_passenger?(locals)
     if locals.has_key?(:integration_mode_type)
-      locals[:integration_mode_type] != :standalone
+      locals[:language_type] != :ruby || locals[:integration_mode_type] != :standalone
     else
       nil
     end
@@ -103,14 +103,12 @@ module DeploymentWalkthroughHelpers
 
 
   def needs_install_language_runtime?(locals)
-    if !locals[:infrastructure_type]
-      nil
-    elsif locals[:infrastructure_needs_install_language_runtime]
+    if locals[:infrastructure_needs_install_language_runtime] == false # and not nil
+      false
+    else
       language_type = locals[:language_type]
       spec = DEPLOYMENT_WALKTHROUGH_LANGUAGES.find { |spec| spec[:language_type] == language_type }
       spec[:language_has_install_instructions]
-    else
-      false
     end
   end
 

@@ -1,0 +1,94 @@
+<%
+output ||= {}
+step = locals[:initial_step] || 1
+%>
+
+### <%= step %> Push your code to a Git repository
+
+We want to transfer our application's code to the server. The easiest way to do that is via Git.
+
+If you have already setup a Git repository, push your application's code to that repository:
+
+<pre class="highlight"><span class="prompt">$ </span>git push</pre>
+
+If you have not already setup a Git repository, go to [Github](https://github.com/), create a repository and push your application's code there.
+
+<% step += 1 %>
+### <%= step %> Login to your server, create a user for the app
+
+Login to your server with SSH:
+
+<% if infrastructure_type == :aws %>
+  <pre class="highlight"><span class="prompt">$ </span>ssh -i yourkeyfile.pem adminuser@yourserver.com</pre>
+<% else %>
+  <pre class="highlight"><span class="prompt">$ </span>ssh adminuser@yourserver.com</pre>
+<% end %>
+
+Replace `adminuser` with the name of an account with administrator privileges or sudo privileges.
+<% if infrastructure_type == :aws -%>
+  This is usually `ubuntu`, `admin`, `ec2-user` or `root`.
+<% end %>
+
+Now that you have logged in, you should create an operating system user account for your app. For security reasons, it is a good idea to run each app under its own user account, in order to limit the damage that security vulnerabilities in the app can do.
+
+You should give the user account the same name as your app. But for demonstration purposes, this tutorial names the user account `myappuser`. We also ensure that that user has your SSH key installed.
+
+<pre class="highlight"><span class="prompt">$ </span>sudo adduser <span class="o">myappuser</span>
+<span class="prompt">$ </span>sudo sh -c <span class="s">"cat $HOME/.ssh/authorized_keys >> ~<span class="o">myappuser</span>/.ssh/authorized_keys"</span>
+<span class="prompt">$ </span>sudo chown <span>myappuser:</span> ~<span class="o">myappuser</span>/.ssh/authorized_keys</pre>
+
+<% step += 1 %>
+### <%= step %> Pull code
+
+You need to pick a location in which to permanently store your application's code. A good location is `/var/www/APP_NAME`. Let's create that directory.
+
+<pre class="highlight"><span class="prompt">$ </span>sudo mkdir /var/www/<span class="o">myapp</span>
+<span class="prompt">$ </span>sudo chown <span class="o">myappuser</span>: /var/www/<span class="o">myapp</span></pre>
+
+Replace `myapp` and `myappuser` with your app's name and your app user account's name.
+
+Now let us pull the code from Git:
+
+<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
+<span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone <span class="o">git://github.com/username/myapp.git</span> code</pre>
+
+Your app's code now lives on the server at `/var/www/myapp`.
+
+<% step += 1 %>
+### <%= step %> Login as the app's user
+
+Login under the application's user account:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H bash -l</pre>
+
+<% if language_type == :ruby %>
+If you are using RVM, make sure that you activate the Ruby version that you want to run your app under. For example:
+
+<pre class="highlight"><span class="prompt">$ </span>rvm use ruby-2.2.1</pre>
+<% end %>
+
+<% step += 1 %>
+### <%= step %> Install app dependencies
+
+Your application has various dependencies.
+<% if language_type == :ruby -%>
+They must be installed. Most of these dependencies are gems in your Gemfile, managed by Bundler. You can install them by running `bundle install` in your app's directory:
+
+<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
+<span class="prompt">$ </span>bundle install</pre>
+
+Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
+<% else -%>
+Please install them now, before Passenger is started.
+
+How to install your app's dependencies is an application-specific procedure, so it is outside this walkthrough's scope.
+<% end %>
+
+<% if language_type == :ruby %>
+<% step += 1 %>
+### <%= step %> Compile Rails assets (optional) and run database migrations
+
+
+<% end %>
+
+<% output[:step] = step %>

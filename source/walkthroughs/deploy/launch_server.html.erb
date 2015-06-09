@@ -6,4 +6,4 @@ subsection: launch_server
 <%= render_partial("launch_server/#{infrastructure_type}.md", locals: locals) %>
 
 <% spec = deployment_walkthrough_next_step_after_launching_server(locals) %>
-<a href="<%= spec[:url] %>" class="btn btn-primary btn-large">Continue: <%= spec[:title] %> &raquo;</a>
+<a href="<%= spec[:url] %>" class="btn btn-primary btn-lg">Continue: <%= spec[:title] %> &raquo;</a>

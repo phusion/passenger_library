@@ -13,10 +13,10 @@ subsection: open_source_vs_enterprise
 
 <p>
   <% spec = deployment_walkthrough_next_step_after_selecting_passenger_edition(locals.merge(edition_type: :oss)) %>
-  <a href="<%= spec[:url] %>" class="btn btn-primary btn-large" style="margin-right: 2em">I am using the open source edition</a>
+  <a href="<%= spec[:url] %>" class="btn btn-primary btn-lg" style="margin-top: 1em; margin-right: 2em">I am using the open source edition</a>
 
   <% spec = deployment_walkthrough_next_step_after_selecting_passenger_edition(locals.merge(edition_type: :enterprise)) %>
-  <a href="<%= spec[:url] %>" class="btn btn-success btn-large">I am using the Enterprise edition</a>
+  <a href="<%= spec[:url] %>" class="btn btn-success btn-lg" style="margin-top: 1em">I am using the Enterprise edition</a>
 </p>
 
 <p>

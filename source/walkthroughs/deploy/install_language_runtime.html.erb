@@ -6,4 +6,4 @@ subsection: install_language_runtime
 <%= render_partial("install_language_runtime/#{language_type}.md", locals: locals) %>
 
 <% spec = deployment_walkthrough_next_step_after_install_language_runtime(locals) %>
-<a href="<%= spec[:url] %>" class="btn btn-primary btn-large">Continue: <%= spec[:title] %> &raquo;</a>
+<a href="<%= spec[:url] %>" class="btn btn-primary btn-lg">Continue: <%= spec[:title] %> &raquo;</a>

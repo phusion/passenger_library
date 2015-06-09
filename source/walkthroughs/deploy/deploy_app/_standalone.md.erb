@@ -1,0 +1,76 @@
+<div>
+  <p><strong>Table of contents</strong></p>
+  <ol class="toc-container"><li>Loading...</li></ol>
+</div>
+
+## Steps
+
+<% if language_type == :ruby %>
+### 1 Add "passenger" to your gem bundle
+
+Open your Gemfile. Remove lines that look like one of these:
+
+~~~ruby
+gem "unicorn"
+gem "thin"
+gem "puma"
+~~~
+
+Make sure the following line exists:
+
+~~~ruby
+gem "passenger"
+~~~
+
+When you are done, install your gem bundle and commit the changes:
+
+<pre class="highlight"><span class="prompt">$ </span>bundle install
+<span class="prompt">$ </span>git commit -a -m "Use Phusion Passenger"</pre>
+<% end %>
+
+<% output = {} %>
+<%= render_partial("/walkthroughs/deploy/deploy_app/preparations.md", locals: locals.merge(initial_step: 2, output: output)) %>
+<% step = output[:step] %>
+
+<% step += 1 %>
+### <%= step %> Start Passenger Standalone
+
+While in your application's code directory, start Passenger on port 80:
+
+<pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger start --port 80 --daemonize</pre>
+
+You should now be able to access your app through the server's host name! Try running this from your local computer. Replace `yourserver.com` with your server's hostname.
+
+<pre class="highlight"><span class="prompt">$ </span>curl http://yourserver.com/
+<span class="output">...your app's front page HTML...</span></pre>
+
+<% step += 1 %>
+### <%= step %> Make sure Passenger Standalone starts on system boot
+
+Passenger is now runing and serving your app, but that only lasts until you reboot your server. So you must configure your server to start Passenger Standalone on system boot.
+
+The easiest way to do that is to add it to the file `/etc/rc.local`. This script is called during system boot. Here is an example of what you may want to add to `/etc/rc.local`. If there is an `exit` command in rc.local, make sure you add these before the exit command.
+
+~~~bash
+# If you installed Phusion Passenger from tarball, add its `bin` directory to PATH.
+#export PATH=/path-to-passenger/bin:$PATH
+
+# Change working directory to your webapp.
+cd /var/www/myapp/code
+
+# Start Passenger Standalone in daemonized mode. Passenger will be started as
+# root when run from this file, so we also tell it to drop its privileges to a
+# normal user. Replace 'myappuser' with your app's user account name.
+<% if language_type == :ruby -%>
+# Replace '2.2.1' with the Ruby version you want your app to run under.
+/usr/local/rvm/bin/rvm-exec ruby-2.2.1 <%= passenger_command_prefix(locals) %>passenger start --port 80 --daemonize --user myappuser
+# If you are not using RVM, use this command instead:
+#<%= passenger_command_prefix(locals) %>passenger start --port 80 --daemonize --user myappuser
+<% else -%>
+<%= passenger_command_prefix(locals) %>passenger start --port 80 --daemonize --user myappuser
+<% end -%>
+~~~
+
+## Next step
+
+Congratulations, you have successfully deployed your app!

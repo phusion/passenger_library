@@ -1,0 +1,43 @@
+### Add "passenger" to your gem bundle
+
+Open your Gemfile. Remove lines that look like one of these:
+
+~~~ruby
+gem "unicorn"
+gem "thin"
+gem "puma"
+~~~
+
+Make sure the following line exists:
+
+~~~ruby
+gem "passenger"
+~~~
+
+When you are done, install your gem bundle with:
+
+<pre class="highlight"><span class="prompt">$ </span>bundle install</pre>
+
+### Updating your Procfile
+
+Open your app's Procfile, or create one if you don't already have one. Remove lines that like one of these:
+
+    web: bundle exec ruby web.rb -p $PORT
+    web: bundle exec unicorn -p $PORT
+    web: bundle exec puma -p $PORT
+    web: bundle exec thin start -p $PORT
+
+Insert:
+
+    web: bundle exec passenger start -p $PORT --max-pool-size 3
+
+### Pushing the code to Heroku
+
+Commit and deploy to Heroku:
+
+<pre class="highlight"><span class="prompt">$ </span>git commit -a -m "Switch to Phusion Passenger"
+<span class="prompt">$ </span>git push heroku master</pre>
+
+### Next step
+
+Congratulations, you have now deployed your app with Passenger to Heroku!
