@@ -1,0 +1,125 @@
+<% @page_title = "Installing Ruby with RVM" %>
+<h1>Installing Ruby <small>with RVM</small></h1>
+
+Before you can deploy your app on the production server, you need to install Ruby. In this walkthrough we recommend that you use [Ruby Version Manager (RVM)](https://rvm.io/) for this purpose. RVM is a tool for installing and managing multiple Ruby versions.
+
+There are other ways to install Ruby, e.g. through yum, apt-get, source tarball, rbenv and chruby. You *can* use one of those other installation methods if you so wish, and this walkthrough will work fine even if you installed Ruby using one of those other installation methods. But the one that we recommend in this walkthrough is RVM, because in our opinion it is the easiest option.
+
+<% spec = deployment_walkthrough_next_step_after_install_language_runtime(locals) %>
+If you have already installed Ruby, then you [can skip to the next step](<%= spec[:url] %>).
+
+## Prepare the system
+
+<% if locals[:infrastructure_has_launch_instructions] %>
+  <pre class="highlight"><span class="prompt">$ </span>sudo apt-get update
+<span class="prompt">$ </span>sudo apt-get install curl</pre>
+<% else %>
+  <p>Ensure that curl and gpg are installed.</p>
+
+  <table class="table table-bordered table-striped">
+    <tr>
+      <td>
+        Debian, Ubuntu
+      </td>
+      <td>
+        <pre class="highlight">sudo apt-get update
+sudo apt-get install curl gpg</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
+      </td>
+      <td>
+        <pre class="highlight">sudo yum install curl gpg</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Mac OS X
+      </td>
+      <td>
+        You don't have to do anything. They are already installed.
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+## Install RVM
+
+Run the following commands on your production server to install RVM:
+
+<pre class="highlight"><span class="prompt">$ </span>gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+<span class="prompt">$ </span>curl -sSL https://get.rvm.io | sudo bash -s stable
+<span class="prompt">$ </span>sudo usermod -a -G rvm `whoami`</pre>
+
+When done, **relogin to your server** to activate RVM. This is important: if you don't relogin, RVM doesn't work.
+
+## Install the Ruby version you want
+
+Usually, installing the latest Ruby version will suffice. If you are deploying <a href="<%= url_for("/walkthroughs/start/#{language_type}.html") %>#preparing-the-example-application">the example app from the quickstart</a>, then that example application works with all Ruby versions.
+
+However, if you are deploying your own app, then your app may have a specific Ruby version requirement.
+
+To install the latest version of Ruby, run:
+
+<pre class="highlight"><span class="prompt">$ </span>rvm install ruby
+<span class="prompt">$ </span>rvm --default use ruby</pre>
+
+To install a specific version of Ruby, run:
+
+<pre class="highlight"><span class="prompt">$ </span>rvm install ruby-<span class="si">X.X.X</span>
+<span class="prompt">$ </span>rvm --default use ruby-<span class="si">X.X.X</span></pre>
+
+Replace X.X.X with the Ruby version you want.
+
+## Optional: install Node.js if you're using Rails
+
+If you are using Rails, then you must install Node.js. This is because Rails's asset pipeline compiler requires a Javascript runtime. The Node.js version does not matter.
+
+If you do not use Rails then you can skip this paragraph.
+
+To install Node.js:
+
+<% if locals[:infrastructure_has_launch_instructions] %>
+  <pre class="highlight"><span class="prompt">$ </span>sudo apt-get install nodejs
+<span class="prompt">$ </span>sudo ln -sf /usr/bin/nodejs /usr/local/bin/node</pre>
+<% else %>
+  <table class="table table-bordered table-striped">
+    <tr>
+      <td>
+        Debian, Ubuntu
+      </td>
+      <td>
+        <pre class="highlight">sudo apt-get install nodejs
+sudo ln -sf /usr/bin/nodejs /usr/local/bin/node</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
+      </td>
+      <td>
+        <pre class="highlight">sudo yum install nodejs</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Other operating systems
+      </td>
+      <td>
+        Please install Node.js from <a href="http://www.nodejs.org/">www.nodejs.org</a>.
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+## Heads-up: sudo vs rvmsudo
+
+One thing you should be aware of when using RVM, is that you should use `rvmsudo` instead of `sudo`. This is because RVM works by manipulating environment variables. However, sudo nukes all environment variables for security reasons, which intereferes with RVM.
+
+[Visit the RVM website to learn more about rvmsudo.](https://rvm.io/integration/sudo)
+
+## Conclusion
+
+Congratulations, you have installed Ruby on your production server!

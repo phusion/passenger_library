@@ -76,6 +76,13 @@ DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |lang_spec|
             locals: locals
         end
 
+        if needs_install_language_runtime?(locals)
+          # Install language runtime
+          proxy "#{prefix}/install_language_runtime.html",
+            "/walkthroughs/deploy/install_language_runtime.html",
+            locals: locals
+        end
+
         if needs_install_passenger?(locals)
           # Install Passenger
           proxy "#{prefix}/install_passenger.html",
@@ -101,6 +108,7 @@ ignore "/walkthroughs/deploy/intro.html"
 ignore "/walkthroughs/deploy/integration_mode.html"
 ignore "/walkthroughs/deploy/open_source_vs_enterprise.html"
 ignore "/walkthroughs/deploy/launch_server.html"
+ignore "/walkthroughs/deploy/install_language_runtime.html"
 ignore "/walkthroughs/deploy/install_passenger.html"
 ignore "/walkthroughs/deploy/deploy_app.html"
 ignore "/walkthroughs/deploy/conclusion.html"

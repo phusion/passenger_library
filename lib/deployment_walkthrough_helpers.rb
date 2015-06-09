@@ -1,25 +1,36 @@
+# Chapters:
+#
 # Introduction, select infrastructure
 # Select integration mode
 # Open source vs Enterprise
 # Launch a server
+# Install language runtime
 # Install Passenger
 # Deploying the app
 # Automating deployments
 # Conclusion
+
 module DeploymentWalkthroughHelpers
   DEPLOYMENT_WALKTHROUGH_LANGUAGES = [
-    { language_type: :ruby, language_name: "Ruby" },
-    { language_type: :python, language_name: "Python" },
-    { language_type: :nodejs, language_name: "Node.js" },
-    { language_type: :iojs, language_name: "io.js" },
-    { language_type: :meteor, language_name: "Meteor" }
+    { language_type: :ruby,
+      language_name: "Ruby",
+      language_has_install_instructions: true },
+    { language_type: :python,
+      language_name: "Python" },
+    { language_type: :nodejs,
+      language_name: "Node.js" },
+    { language_type: :iojs,
+      language_name: "io.js" },
+    { language_type: :meteor,
+      language_name: "Meteor" }
   ]
   DEPLOYMENT_WALKTHROUGH_INFRASTRUCTURES = [
     { infrastructure_type: :aws,
       infrastructure_name: "AWS",
       infrastructure_name_with_determiner: "an AWS",
       infrastructure_long_name: "Amazon Web Services",
-      infrastructure_has_launch_instructions: true },
+      infrastructure_has_launch_instructions: true,
+      infrastructure_needs_install_language_runtime: true },
     { infrastructure_type: :heroku,
       infrastructure_name: "Heroku",
       infrastructure_name_with_determiner: "a Heroku",
@@ -27,7 +38,8 @@ module DeploymentWalkthroughHelpers
     { infrastructure_type: :ownserver,
       infrastructure_name: "Linux/Unix",
       infrastructure_name_with_determiner: "a Linux/Unix",
-      infrastructure_long_name: "Any hosting provider or infrastructure running Linux/Unix" }
+      infrastructure_long_name: "Any hosting provider or infrastructure running Linux/Unix",
+      infrastructure_needs_install_language_runtime: true }
   ]
   PASSENGER_EDITIONS = [
     { edition_type: :oss, edition_name: "open source" },
@@ -69,6 +81,17 @@ module DeploymentWalkthroughHelpers
   end
 
 
+  def needs_install_language_runtime?(locals)
+    if locals[:infrastructure_needs_install_language_runtime]
+      language_type = locals[:language_type]
+      spec = DEPLOYMENT_WALKTHROUGH_LANGUAGES.find { |spec| spec[:language_type] == language_type }
+      spec[:language_has_install_instructions]
+    else
+      false
+    end
+  end
+
+
   def deployment_walkthrough_next_step_after_selecting_infrastructure(locals)
     if locals[:infrastructure_type] || available_infrastructures(locals).size == 1
       language_type = locals[:language_type]
@@ -106,6 +129,21 @@ module DeploymentWalkthroughHelpers
   end
 
   def deployment_walkthrough_next_step_after_launching_server(locals)
+    language_type = locals[:language_type]
+    infrastructure_type = locals[:infrastructure_type]
+    integration_mode_type = locals[:integration_mode_type]
+    edition_type = locals[:edition_type]
+    if needs_install_language_runtime?(locals)
+      { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/standalone/#{edition_type}/install_language_runtime.html"),
+        title: "Installing #{language_type}",
+        long_title: "Installing #{language_type}",
+        subsection: :install_language_runtime }
+    else
+      deployment_walkthrough_next_step_after_install_language_runtime(locals)
+    end
+  end
+
+  def deployment_walkthrough_next_step_after_install_language_runtime(locals)
     language_type = locals[:language_type]
     infrastructure_type = locals[:infrastructure_type]
     integration_mode_type = locals[:integration_mode_type]

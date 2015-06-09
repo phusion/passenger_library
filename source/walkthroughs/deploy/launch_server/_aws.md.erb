@@ -1,6 +1,9 @@
 <% @page_title = "Launching a server on Amazon Web Services" %>
 # Launching a server on Amazon Web Services
 
+<% spec = deployment_walkthrough_next_step_after_launching_server(locals) %>
+If you have already launched an Amazon EC2 server, then you can [skip to the next step](<%= spec[:url] %>).
+
 <div class="row row-instruction">
   <div class="col-md-6">
     <p>
@@ -126,13 +129,35 @@
     <a href="<%= url_for("/walkthroughs/deploy/launch_server/ec2_connect.png") %>" target="_blank"><img src="<%= url_for("/walkthroughs/deploy/launch_server/ec2_connect.png") %>" class="img-thumbnail"></a>
   </div>
 </div>
-<p>
-  Note that the SSH command may fail with a <em>"Warning: unprotected private key file"</em> error. This is because the permission of your private key file is too open. In that case, you can fix it by restricting the permissions on the key file:
-</p>
-<pre class="highlight"><span class="prompt">$ </span>chmod 600 ~/Downloads/yourkey.pem</pre>
-<p>
-  Depending on which AMI you picked, you may also get a "permission denied" error. This is because the connection instructions on some AMIs are wrong. Some AMIs disallow login as "root" and instead want you to login with another username, but didn't edit their connection instructions to tell you that. So if you find that you can't login, try logging in with the username "admin", "ec2-user" or "ubuntu".
-</p>
+
+<div class="note">
+  <h3 class="notoc">Problems logging in?</h3>
+  <p>
+    Note that the SSH command may fail with a <em>"Warning: unprotected private key file"</em> error. This is because the permission of your private key file is too open. In that case, you can fix it by restricting the permissions on the key file:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span>chmod 600 ~/Downloads/yourkey.pem</pre>
+  <p>
+    Depending on which AMI you picked, you may also get a "permission denied" error. This is because the connection instructions on some AMIs are wrong. Some AMIs disallow login as "root" and instead want you to login with another username, but didn't edit their connection instructions to tell you that. So if you find that you can't login, try logging in with the username "admin", "ec2-user" or "ubuntu".
+  </p>
+</div>
+
+<div class="row row-instruction">
+  <div class="col-md-6">
+    <p>
+      After following the instructions on the Connect screen, you should be dropped into a shell prompt on your server.
+    </p>
+  </div>
+  <div class="col-md-6">
+    <pre class="highlight" style="word-wrap: initial"><span class="prompt">$ </span>ssh -i default.pem ubuntu@52.24.195.216
+<span class="output">The authenticity of host '52.24.195.216 (52.24.195.216)' can't be established.
+RSA key fingerprint is 2d:d3:68:ca:82:9a:95:b9:34:4c:23:8d:3e:05:95:fe.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '52.24.195.216' (RSA) to the list of known hosts.
+Welcome to Ubuntu 14.04.2 LTS (GNU/Linux 3.13.0-48-generic x86_64)</span>
+
+<span class="s">ubuntu@ip-172-31-45-45:~$</span></pre>
+  </div>
+</div>
 
 ## Next step
 
