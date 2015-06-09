@@ -1,6 +1,7 @@
 <%
 step = 0
 conclusion_reached = false
+show_steps_preview_disclaimer = false
 %>
 <a href="<%= url_for "/index.html" %>#walkthroughs" class="back-to-previous">&laquo; Back to all walkthroughs</a>
 
@@ -94,9 +95,11 @@ conclusion_reached = false
     <% end %>
 
     <% if !conclusion_reached %>
+      <% show_steps_preview_disclaimer = true %>
       <li><span>...</span></li>
     <% end %>
   <% elsif (spec = deployment_walkthrough_next_step_after_selecting_infrastructure(locals)) %>
+    <% show_steps_preview_disclaimer = true %>
     <% navbar_subsection(spec[:subsection]) do %>
       <% step += 1 %>
       <a href="<%= spec[:url] %>">
@@ -106,7 +109,8 @@ conclusion_reached = false
     <li><span>...</span></li>
     <li><span>8 Conclusion</span></li>
   <% else %>
-    <li><span>2 Integration mode</span></li>
+    <% show_steps_preview_disclaimer = true %>
+    <li><span>2 Pick integration mode</span></li>
     <li><span>3 Open source vs Enterprise</span></li>
     <li><span>4 Launch a server</span></li>
     <li><span>5 Install <%= language_name %></span></li>
@@ -115,3 +119,7 @@ conclusion_reached = false
     <li><span>8 Conclusion</span></li>
   <% end %>
 </ul>
+
+<% if show_steps_preview_disclaimer %>
+  <p class="text-muted"><small>The exact steps depend on the choices you make.</small></p>
+<% end %>

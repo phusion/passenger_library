@@ -120,7 +120,7 @@ module DeploymentWalkthroughHelpers
     edition_type = locals[:edition_type]
     if needs_launch_server?(locals)
       { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/launch_server.html"),
-        title: "Launching a server",
+        title: "Launch a server",
         long_title: "Launching a server",
         subsection: :launch_server }
     else
@@ -134,9 +134,10 @@ module DeploymentWalkthroughHelpers
     integration_mode_type = locals[:integration_mode_type]
     edition_type = locals[:edition_type]
     if needs_install_language_runtime?(locals)
+      language_name = locals[:language_name]
       { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_language_runtime.html"),
-        title: "Installing #{language_type}",
-        long_title: "Installing #{language_type}",
+        title: "Install #{language_name}",
+        long_title: "Installing #{language_name}",
         subsection: :install_language_runtime }
     else
       deployment_walkthrough_next_step_after_install_language_runtime(locals)
