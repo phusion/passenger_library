@@ -1,7 +1,7 @@
 # Chapters:
 #
 # Introduction, select infrastructure
-# Select integration mode
+# Pick integration mode
 # Open source vs Enterprise
 # Launch a server
 # Install language runtime
@@ -134,7 +134,7 @@ module DeploymentWalkthroughHelpers
     integration_mode_type = locals[:integration_mode_type]
     edition_type = locals[:edition_type]
     if needs_install_language_runtime?(locals)
-      { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/standalone/#{edition_type}/install_language_runtime.html"),
+      { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_language_runtime.html"),
         title: "Installing #{language_type}",
         long_title: "Installing #{language_type}",
         subsection: :install_language_runtime }
