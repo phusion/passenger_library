@@ -8,7 +8,6 @@ function autoGenerateMenu() {
   }
 
   $('.bs-docs-section h1[id], .bs-docs-section h2[id], .bs-docs-section h3[id]').each(function() {
-    console.log(this);
     if (!$(this).hasClass('notoc') && $(this).is(':visible')) {
       if (this.nodeName == "H1" || this.nodeName == "H2") {
         toc.push({

@@ -1,7 +1,27 @@
-<%= render_partial("/walkthroughs/deploy/deploy_app/preparations.md", locals: locals) %>
+<%= render_partial("/walkthroughs/deploy/deploy_app/app_details_form.html", locals: locals) %>
 
-### 7 Add Nginx configuration file
+<div>
+  <p><strong>Table of contents</strong></p>
+  <ol class="toc-container"><li>Loading...</li></ol>
+</div>
 
-### 8 Restart Nginx
+<% if language_type == :ruby %>
+  <div class="app_details app_details_rails" style="display: none">
+    <%= render_partial("/walkthroughs/deploy/deploy_app/nginx_instructions.md",
+          locals: locals.merge(id_prefix: "rails_", web_framework: "rails")) %>
+  </div>
+  <div class="app_details app_details_nonrails" style="display: none">
+    <%= render_partial("/walkthroughs/deploy/deploy_app/nginx_instructions.md",
+          locals: locals.merge(id_prefix: "nonrails_", web_framework: "nonrails")) %>
+  </div>
+  <div class="app_details">
+    Loading...
+  </div>
+<% else %>
+  <%= render_partial("/walkthroughs/deploy/deploy_app/nginx_instructions.md",
+        locals: locals.merge(id_prefix: "")) %>
+<% end %>
 
-### 9 Test drive
+## Next step
+
+Congratulations, you have successfully deployed your app!

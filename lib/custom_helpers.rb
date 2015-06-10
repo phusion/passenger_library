@@ -1,4 +1,5 @@
 CURRENT_VERSION = "5.0.0"
+LATEST_RUBY_VERSION = "2.2.1"
 
 SUPPORTED_DEBIAN_VERSIONS = {
   "jessie"  => "Debian 8",
@@ -15,6 +16,22 @@ SUPPORTED_REDHAT_VERSIONS = {
 }
 
 module CustomHelpers
+  def globals
+    @globals ||= {}
+  end
+
+  def h2(id_prefix, title)
+    "<h2 id=\"#{id_prefix}#{slug(title)}\">#{title}</h2>"
+  end
+
+  def h3(id_prefix, title)
+    "<h3 id=\"#{id_prefix}#{slug(title)}\">#{title}</h3>"
+  end
+
+  def slug(title)
+    title.sub(/^[0-9]+(\.[0-9])*/, "").scan(/[a-z0-9]+/i).join("-").downcase
+  end
+
   def page_title
     current_page.data.title || @page_title
   end

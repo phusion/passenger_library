@@ -1,0 +1,236 @@
+<%
+web_framework ||= nil
+id_prefix = locals[:id_prefix]
+header_step = 0
+%>
+
+<% if language_type == :ruby && (integration_mode_type == :standalone || web_framework == :rails) %>
+<!-- Section: Update your gem bundle -->
+
+<% header_step += 1 %>
+<% if web_framework == "rails" %>
+  <%= h2(id_prefix, "#{header_step} Update your gem bundle") %>
+
+  We need to ensure that "passenger" is in your Gemfile.
+
+  Your Rails app needs a database in production. For demonstration purposes, this walkthrough uses sqlite as database because it's the easiest to setup. So we need to ensure that "sqlite3" is in the Gemfile.
+<% else %>
+  <%= h2(id_prefix, "#{header_step} Add \"passenger\" to your gem bundle") %>
+
+  We need to ensure that "passenger" is in your Gemfile.
+<% end %>
+
+On your local computer, open your app's Gemfile. Remove lines that look like one of these:
+
+~~~ruby
+gem "unicorn"
+gem "thin"
+gem "puma"
+~~~
+
+<% if web_framework == "rails" %>
+Make sure the following lines exists:
+
+~~~ruby
+gem "passenger"
+gem "sqlite3"
+~~~
+
+Note that the `sqlite3` gem may be located inside a `development` group, like this:
+
+~~~ruby
+group :development do
+  gem "sqlite3"
+end
+
+# -OR-
+
+gem "sqlite3", groups: [:development]
+~~~
+
+Since we are going to use sqlite3 in production in this walkthrough, we need to ensure that this gem is moved outside the `development` group, like this:
+
+~~~ruby
+gem "sqlite3"
+~~~
+<% else %>
+Make sure the following line exists:
+
+~~~ruby
+gem "passenger"
+~~~
+<% end %>
+
+When you are done, install your gem bundle and commit the changes:
+
+<pre class="highlight"><span class="prompt">$ </span>bundle install
+<span class="prompt">$ </span>git commit -a -m "Use Phusion Passenger"</pre>
+<% end %>
+
+<!-- Section: transferring the app code to the server -->
+
+<%
+header_step += 1
+substep = 0
+%>
+<%= h2(id_prefix, "#{header_step} Transferring the app code to the server") %>
+
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Push your code to a Git repository") %>
+
+We want to transfer our application's code to the server. The easiest way to do that is via Git.
+
+If you have already setup a Git repository, push your application's code to that repository by running this on your local computer:
+
+<pre class="highlight"><span class="prompt">$ </span>git push</pre>
+
+If you have not already setup a Git repository, go to [Github](https://github.com/), create a repository and push your application's code there.
+
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Login to your server, create a user for the app") %>
+
+Login to your server with SSH:
+
+<% if infrastructure_type == :aws %>
+  <pre class="highlight"><span class="prompt">$ </span>ssh -i yourkeyfile.pem adminuser@yourserver.com</pre>
+<% else %>
+  <pre class="highlight"><span class="prompt">$ </span>ssh adminuser@yourserver.com</pre>
+<% end %>
+
+Replace `adminuser` with the name of an account with administrator privileges or sudo privileges.
+<% if infrastructure_type == :aws -%>
+  This is usually `ubuntu`, `admin`, `ec2-user` or `root`.
+<% end %>
+
+<div class="alert alert-info">Starting from this point, unless stated otherwise, all commands that we instruct you to run should be run on the server, not on your local computer!</div>
+
+Now that you have logged in, you should create an operating system user account for your app. For security reasons, it is a good idea to run each app under its own user account, in order to limit the damage that security vulnerabilities in the app can do.
+
+You should give the user account the same name as your app. But for demonstration purposes, this tutorial names the user account `myappuser`. We also ensure that that user has your SSH key installed.
+
+<pre class="highlight"><span class="prompt">$ </span>sudo adduser <span class="o">myappuser</span>
+<span class="prompt">$ </span>sudo sh -c <span class="s">"cat $HOME/.ssh/authorized_keys >> ~<span class="o">myappuser</span>/.ssh/authorized_keys"</span>
+<span class="prompt">$ </span>sudo chown <span>myappuser:</span> ~<span class="o">myappuser</span>/.ssh/authorized_keys</pre>
+
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Pull code") %>
+
+You need to pick a location in which to permanently store your application's code. A good location is `/var/www/APP_NAME`. Let's create that directory.
+
+<pre class="highlight"><span class="prompt">$ </span>sudo mkdir /var/www/<span class="o">myapp</span>
+<span class="prompt">$ </span>sudo chown <span class="o">myappuser</span>: /var/www/<span class="o">myapp</span></pre>
+
+Replace `myapp` and `myappuser` with your app's name and your app user account's name.
+
+Now let us pull the code from Git:
+
+<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
+<span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone <span class="o">git://github.com/username/myapp.git</span> code</pre>
+
+Your app's code now lives on the server at `/var/www/myapp`.
+
+
+<!-- Section: Preparing the app's environment -->
+
+<%
+header_step += 1
+substep = 0
+%>
+<%= h2(id_prefix, "#{header_step} Preparing the app's environment") %>
+
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Login as the app's user") %>
+
+All subsequent instructions must be run under the application's user account. While logged into your server, login under the application's user account as follows:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H bash -l</pre>
+
+<% if language_type == :ruby %>
+  <div class="app_details app_details_rvm">
+    <p>
+      Since you are using RVM, make sure that you activate the Ruby version that you want to run your app under. For example:
+    </p>
+    <pre class="highlight"><span class="prompt">$ </span>rvm use ruby-<%= LATEST_RUBY_VERSION %></pre>
+  </div>
+<% end %>
+
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Install app dependencies") %>
+
+Your application has various dependencies.
+<% if language_type == :ruby -%>
+They must be installed. Most of these dependencies are gems in your Gemfile, managed by Bundler. You can install them by running `bundle install` in your app's directory:
+
+<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
+<span class="prompt">$ </span>bundle install</pre>
+
+Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
+<% elsif language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+They must be installed. Most of these dependencies are Javascript libraries, managed by npm. You can install them by running `npm install` in your app's directory:
+
+<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
+<span class="prompt">$ </span>npm install</pre>
+
+Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
+<% else -%>
+Please install them now, before Passenger is started.
+
+How to install your app's dependencies is an application-specific procedure, so it is outside this walkthrough's scope.
+<% end %>
+
+<% if web_framework == "rails" %>
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Configure database.yml and secrets.yml") %>
+
+Since your Rails app probably needs a database, you need to edit config/database.yml. For demonstration purposes, we will setup your app with an SQLite database because that is the easiest.
+
+Open the file:
+
+<pre class="highlight"><span class="prompt">$ </span>nano config/database.yml</pre>
+
+Insert:
+
+~~~yaml
+production:
+  adapter: sqlite3
+  database: db/production.sqlite3
+~~~
+
+Rails also needs a unique secret key with which to encrypt its sessions. Starting from Rails 4, this secret key is stored in config/secrets.yml. But first, we need to generate a secret key. Run:
+
+<pre class="highlight"><span class="prompt">$ </span>bundle exec rake secret
+<span class="output">...</span></pre>
+
+This command will output a secret key. Copy that value to your clipboard. Next, open config/secrets.yml:
+
+<pre class="highlight"><span class="prompt">$ </span>nano config/secrets.yml</pre>
+
+Look for this:
+
+~~~yaml
+production:
+  secret_key_base: <%= "<" + "%=" %>ENV["SECRET_KEY_BASE"]<%= "%" + ">" %>
+~~~
+
+Replace it with:
+
+<pre class="highlight"><span class="s">production</span><span class="pi">:</span>
+  <span class="s">secret_key_base</span><span class="pi">:</span> <span class="o">the value that you copied from 'rake secret'</span></pre>
+
+To prevent other users on the system from reading sensitive information belonging to your app, let's tighten the security on the configuration directory and the database directory:
+
+<pre class="highlight"><span class="prompt">$ </span>chmod 700 config db</pre>
+
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Compile Rails assets and run database migrations") %>
+
+Run the following command to compile assets for the Rails asset pipeline, and to run database migrations:
+
+<pre class="highlight"><span class="prompt">$ </span>bundle exec rake assets:precompile db:migrate</pre>
+<% end %>
+
+<%
+result ||= {}
+result[:header_step] = header_step
+result[:substep] = substep
+%>

@@ -1,0 +1,26 @@
+<% if language_type == :ruby %>
+<h3 class="notoc">Please tell us a bit about your app</h3>
+
+<p>
+  With this information, we can provide you with the most accurate instructions.
+</p>
+
+<form class="app_details_form">
+  <div>
+    <label style="font-weight: normal">
+      <input type="checkbox" name="app_details_rails" value="1" checked>
+      My app is a Rails app
+    </label>
+  </div>
+  <div>
+    <label style="font-weight: normal">
+      <input type="checkbox" name="app_details_rvm" value="1"
+        <% if infrastructure_has_launch_instructions %>
+          checked
+        <% end %>
+      >
+      I use RVM on my server
+    </label>
+  </div>
+</form>
+<% end %>

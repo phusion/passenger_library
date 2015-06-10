@@ -1,0 +1,79 @@
+<%=
+result = {}
+output = render_partial("/walkthroughs/deploy/deploy_app/preamble.md", locals: locals.merge(result: result))
+header_step = result[:header_step]
+output
+%>
+
+<%
+header_step += 1
+substep = 0
+%>
+<%= h2(id_prefix, "#{header_step} Starting the app in Passenger") %>
+
+Now that you are done with transferring your app's code to the server and setting up an environment for your app, it is time to start your app in Passenger.
+
+While following these instructions, please make sure you are [logged in under your app's user account](#<%= id_prefix %>login-as-the-app-s-user), and that your shell is in the application's code directory (e.g. `/var/www/myapp/code`).
+
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Create a Passenger config file") %>
+
+Since this is a production environment, we need to customize Passenger a little bit. Create a file named `Passengerfile.json`:
+
+<pre class="highlight"><span class="prompt">$ </span>nano Passengerfile.json</pre>
+
+Insert:
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="c1">// Run the app in a production environment. The default value is "development".</span>
+  <span class="s2">"environment"</span><span class="p">:</span> <span class="s2">"production"</span><span class="p">,</span>
+  <span class="c1">// Run Passenger on port 80, the standard HTTP port.</span>
+  <span class="s2">"port"</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
+  <span class="c1">// Tell Passenger to daemonize into the background.</span>
+  <span class="s2">"daemonize"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="c1">// Tell Passenger to run the app as the given user. Only has effect</span>
+  <span class="c1">// if Passenger was started with root privileges.</span>
+  <span class="s2">"user"</span><span class="p">:</span> <span class="s2">"myappuser"</span>
+<span class="p">}</span></pre>
+
+Replace `myappuser` with your app's user account name.
+
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Start Passenger Standalone") %>
+
+While in your application's code directory, start Passenger on port 80:
+
+<pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger start --port 80 --daemonize</pre>
+
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Test drive") %>
+
+You should now be able to access your app through the server's host name! Try running this from your local computer. Replace `yourserver.com` with your server's hostname.
+
+<pre class="highlight"><span class="prompt">$ </span>curl http://yourserver.com/
+<span class="output">...your app's front page HTML...</span></pre>
+
+<% substep += 1 %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Make sure Passenger Standalone starts on system boot") %>
+
+Passenger is now runing and serving your app, but that only lasts until you reboot your server. So you must configure your server to start Passenger Standalone on system boot.
+
+The easiest way to do that is to add it to the file `/etc/rc.local`. This script is called during system boot. Here is an example of what you may want to add to `/etc/rc.local`. If there is an `exit` command in rc.local, make sure you add these before the exit command.
+
+<pre class="highlight"><span class="c"># If you installed Phusion Passenger from tarball, add its `bin` directory to PATH.
+#export PATH=/path-to-passenger/bin:$PATH
+
+# Change working directory to your webapp.</span>
+<span class="nb">cd</span> /var/www/myapp/code
+
+<span class="c"># Start Passenger Standalone in daemonized mode. Passenger will be started as
+# root when run from this file, so we also tell it to drop its privileges to a
+# normal user.</span>
+<% if language_type == :ruby -%>
+<span class="app_details app_details_rvm"><span class="c"># Replace '<%= LATEST_RUBY_VERSION %>' with the Ruby version you want your app to run under.</span>
+/usr/local/rvm/bin/rvm-exec ruby-<%= LATEST_RUBY_VERSION %> \
+  <%= passenger_command_prefix(locals) %>passenger start</span><span class="app_details app_details_nonrvm"><%= passenger_command_prefix(locals) %>passenger start</span>
+<% else -%>
+<%= passenger_command_prefix(locals) %>passenger start
+<% end -%>
+</pre>
