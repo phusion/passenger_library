@@ -59,7 +59,16 @@ end
       <h3 class="no_el6" id="<%= id_prefix %>install_packages">Step 1: install Passenger packages</h3>
     <% end %>
     <p>
-      You can install Passenger through YUM.
+      These commands will install Passenger
+      <% if type == "apache" %>
+        + Apache
+      <% elsif type == "nginx" %>
+        + Nginx
+      <% end %>
+      through Phusion's YUM repository.
+      <% if type == "nginx" %>
+        If you already had Nginx installed, then these commands will upgrade Nginx to Phusion's version (with Passenger compiled in).
+      <% end %>
       <% if enterprise %>
         Replace <code>YOUR_DOWNLOAD_TOKEN</code> with the download token you obtained earlier.
       <% end %>
