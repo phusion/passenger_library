@@ -54,6 +54,80 @@ module DeploymentWalkthroughHelpers
   ]
 
 
+  def define_deployment_walkthrough_pages
+    DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |lang_spec|
+      language_type = lang_spec[:language_type]
+      locals = lang_spec
+
+      # Introduction, select infrastructure
+      yield "/walkthroughs/deploy/#{language_type}/index.html",
+        "/walkthroughs/deploy/intro.html",
+        locals: lang_spec
+
+      available_infrastructures(locals).each do |infra_spec|
+        infrastructure_type = infra_spec[:infrastructure_type]
+        prefix = "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}"
+        locals = lang_spec.merge(infra_spec)
+
+        # Pick integration mode
+        if available_integration_modes(locals).size > 1
+          yield "#{prefix}/integration_mode.html",
+            "/walkthroughs/deploy/integration_mode.html",
+            locals: locals
+        end
+
+        available_integration_modes(locals).each do |integration_mode_spec|
+          integration_mode_type = integration_mode_spec[:integration_mode_type]
+          prefix = "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}"
+          locals = lang_spec.merge(infra_spec).merge(integration_mode_spec)
+
+          # Open source vs Enterprise
+          yield "#{prefix}/open_source_vs_enterprise.html",
+            "/walkthroughs/deploy/open_source_vs_enterprise.html",
+            locals: locals
+
+          PASSENGER_EDITIONS.each do |edition_spec|
+            edition_type = edition_spec[:edition_type]
+            prefix = "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}"
+            locals = lang_spec.merge(infra_spec).merge(integration_mode_spec).merge(edition_spec)
+
+            if needs_launch_server?(locals)
+              # Launch a server
+              yield "#{prefix}/launch_server.html",
+                "/walkthroughs/deploy/launch_server.html",
+                locals: locals
+            end
+
+            if needs_install_language_runtime?(locals)
+              # Install language runtime
+              yield "#{prefix}/install_language_runtime.html",
+                "/walkthroughs/deploy/install_language_runtime.html",
+                locals: locals
+            end
+
+            if needs_install_passenger?(locals)
+              # Install Passenger
+              yield "#{prefix}/install_passenger.html",
+                "/walkthroughs/deploy/install_passenger.html",
+                locals: locals
+            end
+
+            # Deploy app
+            yield "#{prefix}/deploy_app.html",
+              "/walkthroughs/deploy/deploy_app.html",
+              locals: locals
+
+            # Conclusion
+            yield "#{prefix}/conclusion.html",
+              "/walkthroughs/deploy/conclusion.html",
+              locals: locals
+          end
+        end
+      end
+    end
+  end
+
+
   def infrastructure_supported?(locals)
     locals[:language_type] == :ruby || locals[:infrastructure_type] != :heroku
   end
