@@ -106,9 +106,12 @@ There are two ways to stop the server. The first is by pressing Ctrl-C in the te
 
 Let us try out the Ctrl-C method. Go to the terminal where the Passenger server was started, and press Ctrl-C there. You should see that it stops.
 
-<pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger start
-<span class="output">...
-(press Ctrl-C here)
+<pre class="highlight"><span class="c"># This is what you typed before:
+$ <%= passenger_command_prefix(locals) %>passenger start
+...</span>
+
+<span class="c"># Now press Ctrl-C:</span>
+<span class="output">^C
 Stopping web server... done!</span></pre>
 
 ### 'passenger stop'

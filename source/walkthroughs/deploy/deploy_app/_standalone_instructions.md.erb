@@ -25,6 +25,21 @@ Since this is a production environment, we need to customize Passenger a little 
 Insert:
 
 <pre class="highlight javascript"><span class="p">{</span>
+<% if language_type == :python -%>
+  <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
+  <span class="c1">// Replace "passenger_wsgi.py" with your app's WSGI entry point file.</span>
+  <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"wsgi"</span><span class="p">,</span>
+  <span class="s2">"startup_file"</span><span class="p">:</span> <span class="o">"passenger_wsgi.py"</span><span class="p">,</span>
+<% elsif language_type == :nodejs || language_type == :iojs -%>
+  <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
+  <span class="c1">// Replace "app.js" with your app's entry point file.</span>
+  <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
+  <span class="s2">"startup_file"</span><span class="p">:</span> <span class="o">"app.js"</span><span class="p">,</span>
+<% elsif language_type == :meteor -%>
+  <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
+  <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
+  <span class="s2">"startup_file"</span><span class="p">:</span> <span class="s2">"main.js"</span><span class="p">,</span>
+<% end -%>
   <span class="c1">// Run the app in a production environment. The default value is "development".</span>
   <span class="s2">"environment"</span><span class="p">:</span> <span class="s2">"production"</span><span class="p">,</span>
   <span class="c1">// Run Passenger on port 80, the standard HTTP port.</span>
