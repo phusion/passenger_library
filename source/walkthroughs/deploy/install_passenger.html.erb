@@ -16,38 +16,26 @@ locals[:type] = integration_mode_type.to_s
 locals[:web_server_name] = integration_mode_name
 %>
 
-<h1>Installing <%= passenger_title %> + <%= integration_mode_name %> on <%= infrastructure_name_with_determiner %> production server
-<small>for <%= language_name %> apps</small></h1>
+<h1>Installing <%= passenger_title %> + <%= integration_mode_name %> on <%= infrastructure_name_with_determiner %> production server<br>
+<small>for <%= language_name %> apps + <%= os_config_description %></small></h1>
 
-<h2 class="notoc">Select operating system</h2>
+<div class="info">
+  This page describes the installation of Passenger through the following operating system configuration: <strong style="font-size: 120%"><%= os_config_description %></strong>. Not the configuration you are looking for? <a href="../install_passenger_main.html">Go back to the operating system selection menu.</a>
+</div>
 
-<%= render_partial("/guides/install/shared/os_selector.html", locals: locals) %>
-
-<div class="install_os install_os_any" style="display: none">
+<div>
   <p><strong>Table of contents</strong></p>
-  <ol class="toc-container"><li>Loading...</li></ol>
+  <ul class="toc-container"><li>Loading...</li></ul>
 </div>
 
-<h2>Installation guide</h2>
-
-<div class="install_os install_os_none" style="display: none">
-  <p>Please select an operating system from the above dropdown.</p>
-</div>
-
-<%= render_partial("/guides/install/shared/install.html", locals: locals) %>
+<%= render_partial("/guides/install/shared/#{os_config_class}.html",
+      locals: locals.merge(menu_selection_url: "../install_passenger_main.html")) %>
 
 <h2>Next step</h2>
+<p>
+  Now that you have installed Passenger, you are ready to deploy your <%= language_name %> application on the production server!
+</p>
 
-<div class="install_os install_os_none install_os_not_supported" style="display: none">
-  <p>Please select an operating system from the above dropdown.</p>
-</div>
-
-<div class="install_os install_os_any" style="display: none">
-  <p>
-    Now that you have installed Passenger, you are ready to deploy your <%= language_name %> application on the production server!
-  </p>
-
-  <p>
-    <a href="deploy_app.html" class="btn btn-primary btn-lg">Continue: Deploy app &raquo;</a>
-  </p>
-</div>
+<p>
+  <a href="deploy_app.html" class="btn btn-primary btn-lg">Continue: Deploy app &raquo;</a>
+</p>

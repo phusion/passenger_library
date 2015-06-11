@@ -1,179 +1,155 @@
 <%
 case type
 when "apache"
-  if enterprise
-    packages = "mod_passenger_enterprise"
-  else
+  if edition_type == :oss
     packages = "mod_passenger"
+    packages_title = "Passenger + Apache module"
+  else
+    packages = "mod_passenger_enterprise"
+    packages_title = "Passenger Enterprise + Apache module"
   end
 when "nginx"
-  if enterprise
-    packages = "nginx passenger-enterprise"
-  else
+  if edition_type == :oss
     packages = "nginx passenger"
+    packages_title = "Passenger Nginx"
+  else
+    packages = "nginx passenger-enterprise"
+    packages_title = "Passenger Enterprise + Nginx"
   end
 else
-  if enterprise
-    packages = "passenger-enterprise"
-  else
+  if edition_type == :oss
     packages = "passenger"
+    packages_title = "Passenger"
+  else
+    packages = "passenger-enterprise"
+    packages_title = "Passenger Enterprise"
   end
 end
+
+step = 0
 %>
-<div class="install_os install_os_redhat" style="display: none">
-  <div class="supported_redhat_instructions">
-    <% if enterprise %>
-      <%= render_partial("/guides/install/shared/enterprise_preamble.html", locals: locals) %>
-      <div class="alert alert-info" role="alert" style="margin: 4em 0">From this point on, all commands that you run are supposed to be run on the production server, not on your local computer.</div>
-    <% end %>
 
-    <div class="el6">
-      <% if enterprise %>
-        <h3 id="<%= id_prefix %>upgrade_kernel_or_disable_selinux">Step 3 (optional): upgrade your kernel, or disable SELinux</h3>
-      <% else %>
-        <h3 id="<%= id_prefix %>upgrade_kernel_or_disable_selinux">Step 1 (optional): upgrade your kernel, or disable SELinux</h3>
-      <% end %>
-      <p>The first thing you need to do is to check on two things:</p>
-      <ol>
-        <li>Which kernel version are you running? You can find out by running <code>uname -r</code>.</li>
-        <li>Is SELinux enabled? You can find out by running <code>grep SELINUX /etc/selinux/config</code>. If it says "enforcing" or "permissive", then SELinux is enabled. If it says "disabled", then SELinux is disabled.</li>
-      </ol>
+<% if edition_type == :enterprise %>
+  <%=
+  result = {}
+  output = render_partial("/guides/install/shared/enterprise_preamble.html", locals: locals.merge(result: result))
+  step = result[:step]
+  output
+  %>
+  <div class="alert alert-info" role="alert" style="margin: 4em 0">From this point on, all commands that you run are supposed to be run on the production server, not on your local computer.</div>
+<% end %>
 
-      <p>If SELinux is enabled, then Passenger requires kernel &gt;= 2.6.39. If your kernel is not recent enough, then there are two things you can do:</p>
-      <ol>
-        <li>
-          Disable SELinux completely. Edit <code>/etc/selinux/config</code>, set <code>SELINUX=disabled</code> and reboot. Note that merely setting SELinux to permissive mode is not enough.
-          <p>-OR-</p>
-        </li>
-        <li>Upgrade your kernel to at least 2.6.39.</li>
-      </ol>
+<% if os_config_type == :el6 %>
+  <% step += 1 %>
+  <h2>Step <%= step %>: upgrade your kernel, or disable SELinux</h2>
+  <% if step == 1 %>
+    <p>The first thing you need to do is to check on two things:</p>
+  <% else %>
+    <p>You need to check on two things:</p>
+  <% end %>
+  <ol>
+    <li>Which kernel version are you running? You can find out by running <code>uname -r</code>.</li>
+    <li>Is SELinux enabled? You can find out by running <code>grep SELINUX /etc/selinux/config</code>. If it says "enforcing" or "permissive", then SELinux is enabled. If it says "disabled", then SELinux is disabled.</li>
+  </ol>
 
-      <p>If your kernel version was already at least 2.6.39, or if SELinux was already disabled, then you can skip to the next step.</p>
-    </div>
+  <p>If SELinux is enabled, then Passenger requires kernel &gt;= 2.6.39. If your kernel is not recent enough, then there are two things you can do:</p>
+  <ol>
+    <li>
+      Disable SELinux completely. Edit <code>/etc/selinux/config</code>, set <code>SELINUX=disabled</code> and reboot. Note that merely setting SELinux to permissive mode is not enough.
+      <p>-OR-</p>
+    </li>
+    <li>Upgrade your kernel to at least 2.6.39.</li>
+  </ol>
 
-    <% if enterprise %>
-      <h3 class="el6" id="<%= id_prefix %>install_packages_el6">Step 4: install Passenger packages</h3>
-      <h3 class="no_el6" id="<%= id_prefix %>install_packages">Step 3: install Passenger packages</h3>
-    <% else %>
-      <h3 class="el6" id="<%= id_prefix %>install_packages_el6">Step 2: install Passenger packages</h3>
-      <h3 class="no_el6" id="<%= id_prefix %>install_packages">Step 1: install Passenger packages</h3>
-    <% end %>
-    <p>
-      These commands will install Passenger
-      <% if type == "apache" %>
-        + Apache
-      <% elsif type == "nginx" %>
-        + Nginx
-      <% end %>
-      through Phusion's YUM repository.
-      <% if type == "nginx" %>
-        If you already had Nginx installed, then these commands will upgrade Nginx to Phusion's version (with Passenger compiled in).
-      <% end %>
-      <% if enterprise %>
-        Replace <code>YOUR_DOWNLOAD_TOKEN</code> with the download token you obtained earlier.
-      <% end %>
-    </p>
+  <p>If your kernel version was already at least 2.6.39, or if SELinux was already disabled, then you can <a href="#install_packages">skip to the next subsection</a>.</p>
+<% end %>
 
-    <pre class="highlight shell"><code><span class="c unselectable"># Install <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> and other other prerequisites</span>
+<% step += 1 %>
+<h2 id="install_packages">Step <%= step %>: install Passenger packages</h2>
+<p>
+  These commands will install Passenger <%= packages_title %> through Phusion's YUM repository.
+  <% if integration_mode_type == :nginx %>
+    If you already had Nginx installed, then these commands will upgrade Nginx to Phusion's version (with Passenger compiled in).
+  <% end %>
+  <% if edition_type == :enterprise %>
+    Replace <code>YOUR_DOWNLOAD_TOKEN</code> with the download token you obtained earlier.
+  <% end %>
+</p>
+
+<pre class="highlight shell"><code><span class="c unselectable"># Install <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> and other other prerequisites</span>
 sudo yum install epel-release pygpgme curl
 
-<span class="c unselectable"># Add our <span class="redhat_distro_name"></span> YUM repository</span>
-<% if enterprise -%>
+<span class="c unselectable"># Add our <span class="redhat_distro_name"><%= os_config_type %></span> YUM repository</span>
+<% if edition_type == :oss -%>
+sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+<% else -%>
 unset HISTFILE
 sudo curl --fail -sSL -u download:<span class="si">YOUR_DOWNLOAD_TOKEN</span> -o /etc/yum.repos.d/passenger.repo https://www.phusionpassenger.com/enterprise_yum/el-passenger-enterprise.repo
 sudo chown root: /etc/yum.repos.d/passenger.repo
 sudo chmod 600 /etc/yum.repos.d/passenger.repo
-<% else -%>
-sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 <% end -%>
 
-<span class="c unselectable"># Install Passenger</span>
+<span class="c unselectable"># Install <%= packages_title %></span>
 sudo yum install <%= packages %></code></pre>
 
-    <% if type == "apache" %>
-      <% if enterprise %>
-        <h3 class="el6" id="<%= id_prefix %>restart_apache_el6">Step 5: restart Apache</h3>
-        <h3 class="no_el6" id="<%= id_prefix %>restart_apache">Step 4: restart Apache</h3>
-      <% else %>
-        <h3 class="el6" id="<%= id_prefix %>restart_apache_el6">Step 3: restart Apache</h3>
-        <h3 class="no_el6" id="<%= id_prefix %>restart_apache">Step 2: restart Apache</h3>
-      <% end %>
-      <p>
-        Now that the Passenger Apache module is installed, restart Apache to ensure that Passenger is activated:
-      </p>
-      <pre class="highlight"><span class="prompt">$</span> sudo service httpd restart</pre>
-    <% elsif type == "nginx" %>
-      <% if enterprise %>
-        <h3 class="el6" id="<%= id_prefix %>enable_module_el6">Step 5: enable the Passenger Nginx module and restart Nginx</h3>
-        <h3 class="no_el6" id="<%= id_prefix %>enable_module">Step 4: enable the Passenger Nginx module and restart Nginx</h3>
-      <% else %>
-        <h3 class="el6" id="<%= id_prefix %>enable_module_el6">Step 3: enable the Passenger Nginx module and restart Nginx</h3>
-        <h3 class="no_el6" id="<%= id_prefix %>enable_module">Step 2: enable the Passenger Nginx module and restart Nginx</h3>
-      <% end %>
-      <p>
-        Edit <code>/etc/nginx/conf.d/passenger.conf</code> and uncomment <code>passenger_root</code>, <code>passenger_ruby</code> and <code>passenger_instance_registry_dir</code>. For example, you may see this:
-      </p>
-      <pre class="highlight"># passenger_root /some-filename/locations.ini;
+<% if type == "apache" %>
+  <% step += 1 %>
+  <h2>Step <%= step %>: restart Apache</h2>
+  <p>
+    Now that the Passenger Apache module is installed, restart Apache to ensure that Passenger is activated:
+  </p>
+  <pre class="highlight"><span class="prompt">$</span> sudo service httpd restart</pre>
+<% elsif type == "nginx" %>
+  <% step += 1 %>
+  <h2>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h2>
+  <p>
+    Edit <code>/etc/nginx/conf.d/passenger.conf</code> and uncomment <code>passenger_root</code>, <code>passenger_ruby</code> and <code>passenger_instance_registry_dir</code>. For example, you may see this:
+  </p>
+  <pre class="highlight"># passenger_root /some-filename/locations.ini;
 # passenger_ruby /usr/bin/ruby;
 # passenger_instance_registry_dir /var/run/passenger-instreg;</pre>
-      <p>Remove the '#' characters, like this:</p>
-      <pre class="highlight">passenger_root /some-filename/locations.ini;
+  <p>Remove the '#' characters, like this:</p>
+  <pre class="highlight">passenger_root /some-filename/locations.ini;
 passenger_ruby /usr/bin/ruby;
 passenger_instance_registry_dir /var/run/passenger-instreg;</pre>
 
-      <div class="note">
-        <p>If you don't see a commented version of <code>passenger_root</code> or <code>passenger_instance_registry_dir</code> inside passenger.conf, then you need to insert them yourself.</p>
-        <p>Run <code>passenger-config --root</code>. It will tell output some path. For example:</p>
-        <pre class="highlight"><span class="prompt">$ </span>passenger-config --root
+  <div class="note">
+    <p>If you don't see a commented version of <code>passenger_root</code> or <code>passenger_instance_registry_dir</code> inside passenger.conf, then you need to insert them yourself.</p>
+    <p>Run <code>passenger-config --root</code>. It will tell output some path. For example:</p>
+    <pre class="highlight"><span class="prompt">$ </span>passenger-config --root
 <span class="output">/some-filename/locations.ini</span></pre>
 
-        <p>Insert a <code>passenger_root</code> configuration option into /etc/nginx/conf.d/passenger.conf using the value you obtained. Ensure that <code>passenger_instance_registry_dir</code> is set to /var/run/passenger-instreg. For example:</p>
-        <pre class="highlight">passenger_root <span class="s">/some-filename/locations.ini</span>;
+    <p>Insert a <code>passenger_root</code> configuration option into /etc/nginx/conf.d/passenger.conf using the value you obtained. Ensure that <code>passenger_instance_registry_dir</code> is set to /var/run/passenger-instreg. For example:</p>
+    <pre class="highlight">passenger_root <span class="s">/some-filename/locations.ini</span>;
 passenger_instance_registry_dir /var/run/passenger-instreg;</pre>
-      </div>
-
-      <p>
-        When you are finished with this step, restart Nginx:
-      </p>
-      <pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart</pre>
-    <% end %>
-
-    <% if enterprise %>
-      <h3 class="el6" id="<%= id_prefix %>check_installation_el6">Step 6: check installation</h3>
-      <h3 class="no_el6" id="<%= id_prefix %>check_installation">Step 5: check installation</h3>
-    <% else %>
-      <h3 class="el6" id="<%= id_prefix %>check_installation_el6">Step 4: check installation</h3>
-      <h3 class="no_el6" id="<%= id_prefix %>check_installation">Step 3: check installation</h3>
-    <% end %>
-    <%= render_partial("/guides/install/shared/postinstall_check.html",
-          locals: locals.merge(web_server_process_name: "httpd")) %>
-
-    <% if enterprise %>
-      <h3 class="el6" id="<%= id_prefix %>update_regularly_el6">Step 7: update regularly</h3>
-      <h3 class="no_el6" id="<%= id_prefix %>update_regularly">Step 6: update regularly</h3>
-    <% else %>
-      <h3 class="el6" id="<%= id_prefix %>update_regularly_el6">Step 5: update regularly</h3>
-      <h3 class="no_el6" id="<%= id_prefix %>update_regularly">Step 4: update regularly</h3>
-    <% end %>
-    <p>
-      <% if type != "standalone" %>
-        <%= web_server_name %> updates,
-      <% end %>
-      Passenger updates and system updates are delivered through the YUM package manager regularly. You should run the following command regularly to keep them up to date:
-    </p>
-    <pre class="highlight"><span class="prompt">$ </span>sudo yum update</pre>
-    <% if type != "standalone" %>
-      <p>
-        After an update, you should restart <%= web_server_name %>. Doing so will automatically restart Passenger too.
-      </p>
-    <% else %>
-      <p>
-        After an update, you should restart all your Passenger instances so that the updates take effect.
-      </p>
-    <% end %>
   </div>
 
-  <div class="unsupported_redhat_instructions">
-    Is your Red Hat or CentOS version not listed? Then sorry, we do not provide packages for this version at the moment. Please follow the <a href="javascript:void(showGenericInstallationInstructions())">generic installation instructions</a>.
-  </div>
-</div>
+  <p>
+    When you are finished with this step, restart Nginx:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart</pre>
+<% end %>
+
+<% step += 1 %>
+<h2>Step <%= step %>: check installation</h2>
+<%= render_partial("/guides/install/shared/postinstall_check.html",
+      locals: locals.merge(apache_process_name: "httpd")) %>
+
+<% step += 1 %>
+<h2>Step <%= step %>: update regularly</h2>
+<p>
+  <% if integration_mode_type != :standalone %>
+    <%= web_server_name %> updates,
+  <% end %>
+  Passenger updates and system updates are delivered through the YUM package manager regularly. You should run the following command regularly to keep them up to date:
+</p>
+<pre class="highlight"><span class="prompt">$ </span>sudo yum update</pre>
+<% if integration_mode_type != :standalone %>
+  <p>
+    After an update, you should restart <%= web_server_name %>. Doing so will automatically restart Passenger too.
+  </p>
+<% else %>
+  <p>
+    After an update, you should restart all your Passenger instances so that the updates take effect.
+  </p>
+<% end %>

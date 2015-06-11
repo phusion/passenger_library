@@ -6,15 +6,17 @@ function installOsChanged() {
   $('.install_os').hide();
   $('.install_os_' + selection).show();
 
-  var subselection;
+  var subselection, target;
   if (selection == 'debian') {
-    subselection = $('#debian_version_select').val();
+    subselection = target = $('#debian_version_select').val();
     debianVersionChanged();
   } else if (selection == 'redhat') {
-    subselection = $('#redhat_version_select').val();
+    subselection = target = $('#redhat_version_select').val();
     redhatVersionChanged();
+  } else if (selection == 'osx') {
+    target = 'osx';
   } else if (selection == 'other') {
-    subselection = $('#generic_install_method_select').val();
+    subselection = target = $('#generic_install_method_select').val();
     genericInstallationMethodChanged();
   }
 
@@ -23,19 +25,16 @@ function installOsChanged() {
       $('.install_os_none').show();
     } else {
       $('.install_os_any').show();
+      updateOsSelectionContinueButton(target);
     }
   } else if (selection != 'none') {
     if (subselection == 'other') {
       $('.install_os_not_supported').show();
     } else {
       $('.install_os_any').show();
+      updateOsSelectionContinueButton(target);
     }
   }
-
-  /* if (selection != 'none' && (selection != 'other' || subselection != 'none')) {
-    console.log('show');
-    $('.install_os_any').show();
-  } */
 
   autoGenerateMenu();
 }
@@ -82,6 +81,15 @@ function genericInstallationMethodChanged() {
   var selection = $('#generic_install_method_select').val();
   $('.generic_install').hide();
   $('.generic_install_' + selection).show();
+}
+
+function updateOsSelectionContinueButton(target) {
+  var button = $('.install_os_continue');
+  var url = location.href.replace(/#.*/, "").replace(/(.+)\/.*/, function() {
+    return arguments[1] + "/";
+  });
+  url += target + "/" + button.data('next-page');
+  button.attr('href', url);
 }
 
 function showGenericInstallationInstructions() {

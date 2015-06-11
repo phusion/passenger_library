@@ -106,16 +106,36 @@ module DeploymentWalkthroughHelpers
             end
 
             if needs_install_passenger?(locals)
-              # Install Passenger
-              yield "#{prefix}/install_passenger.html",
-                "/walkthroughs/deploy/install_passenger.html",
+              # Install Passenger: menu
+              yield "#{prefix}/install_passenger_main.html",
+                "/walkthroughs/deploy/install_passenger_main.html",
                 locals: locals
+
+              available_os_configs(locals).each do |os_config_spec|
+                os_config = os_config_spec[:os_config_type]
+
+                # Install Passenger: specific OS configuration
+                yield "#{prefix}/#{os_config}/install_passenger.html",
+                  "/walkthroughs/deploy/install_passenger.html",
+                  locals: locals.merge(os_config_spec)
+              end
             end
 
-            # Deploy app
-            yield "#{prefix}/deploy_app.html",
-              "/walkthroughs/deploy/deploy_app.html",
+            # Deploy app: menu
+            yield "#{prefix}/deploy_app_main.html",
+              "/walkthroughs/deploy/deploy_app_main.html",
               locals: locals
+
+            if needs_install_passenger?(locals)
+              available_os_configs(locals).each do |os_config_spec|
+                os_config = os_config_spec[:os_config_type]
+
+                # Deploy app: specific OS configuration
+                yield "#{prefix}/#{os_config}/deploy_app.html",
+                  "/walkthroughs/deploy/deploy_app.html",
+                  locals: locals.merge(os_config_spec)
+              end
+            end
 
             # Conclusion
             yield "#{prefix}/conclusion.html",
@@ -187,6 +207,57 @@ module DeploymentWalkthroughHelpers
   end
 
 
+  # Be sure to also update guides/install/shared/_os_selector.html.erb
+  def available_os_configs(locals)
+    result = [
+      { os_config_type: :tarball,
+        os_config_class: :tarball,
+        os_config_name: "source tarball",
+        os_config_description: "generic installation through source tarball" }
+    ]
+    if locals[:language_type] == :ruby
+      result << {
+        os_config_type: :rubygems_rvm,
+        os_config_class: :rubygems,
+        os_config_name: "RubyGems (with RVM)",
+        os_config_description: "generic installation through RubyGems (with RVM)"
+      }
+      result << {
+        os_config_type: :rubygems_norvm,
+        os_config_class: :rubygems,
+        os_config_name: "RubyGems (without RVM)",
+        os_config_description: "generic installation through RubyGems (without RVM)"
+      }
+    end
+    if locals[:edition_type] != :enterprise
+      # Passenger Enterprise cannot be installed via Homebrew
+      result << {
+        os_config_type: :osx,
+        os_config_class: :osx,
+        os_config_name: "Mac OS X",
+        os_config_description: "Mac OS X"
+      }
+    end
+    SUPPORTED_DEBIAN_VERSIONS.each_pair do |codename, name|
+      result << {
+        os_config_type: codename.to_sym,
+        os_config_class: :debian,
+        os_config_name: name,
+        os_config_description: name
+      }
+    end
+    SUPPORTED_REDHAT_VERSIONS.each_pair do |distro_class, name|
+      result << {
+        os_config_type: distro_class.to_sym,
+        os_config_class: :redhat,
+        os_config_name: name,
+        os_config_description: name
+      }
+    end
+    result
+  end
+
+
   def deployment_walkthrough_next_step_after_selecting_infrastructure(locals)
     if locals[:infrastructure_type] || available_infrastructures(locals).size == 1
       language_type = locals[:language_type]
@@ -245,12 +316,12 @@ module DeploymentWalkthroughHelpers
     integration_mode_type = locals[:integration_mode_type]
     edition_type = locals[:edition_type]
     if language_type == :ruby && integration_mode_type == :standalone
-      { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/standalone/#{edition_type}/deploy_app.html"),
+      { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/standalone/#{edition_type}/deploy_app_main.html"),
         title: "Deploying the app",
         long_title: "Deploying the application",
         subsection: :deploy_app }
     else
-      { url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_passenger.html"),
+      { url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_passenger_main.html"),
         title: "Install Passenger",
         long_title: "Installing Passenger on the production server",
         subsection: :install_passenger }

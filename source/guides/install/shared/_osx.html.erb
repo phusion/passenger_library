@@ -1,33 +1,36 @@
-<div class="install_os install_os_osx" style="display: none">
-  <% if enterprise %>
-    <%= render_partial("/guides/install/shared/enterprise_preamble.html", locals: locals) %>
-    <div class="alert alert-info" role="alert" style="margin: 4em 0">From this point on, all commands that you run are supposed to be run on the production server, not on your local computer.</div>
-    <% heading_counter = 2 %>
-  <% else %>
-    <% heading_counter = 0 %>
-  <% end %>
+<% step = 0 %>
 
-  <% heading_counter += 1 %>
-  <h3 id="<%= id_prefix %>install_passenger">Step <%= heading_counter %>: install Passenger package</h3>
-  <p>
-    You can install Passenger through <a href="http://brew.sh/">Homebrew</a>:
-  </p>
-  <% if type == "nginx" %>
-    <pre class="highlight shell"><span class="prompt">$ </span>brew install nginx --with-passenger</pre>
-  <% else %>
-    <pre class="highlight shell"><span class="prompt">$ </span>brew install passenger</pre>
-  <% end %>
-  <p>
-    Not using Homebrew? Please follow the <a href="javascript:void(showGenericInstallationInstructions())">generic installation instructions</a>.
-  </p>
+<% if edition_type == :enterprise %>
+  <%=
+  result = {}
+  output = render_partial("/guides/install/shared/enterprise_preamble.html", locals: locals.merge(result: result))
+  step = result[:step]
+  output
+  %>
+  <div class="alert alert-info" role="alert" style="margin: 4em 0">From this point on, all commands that you run are supposed to be run on the production server, not on your local computer.</div>
+<% end %>
 
-  <% if type == "apache" %>
-    <% heading_counter += 1 %>
-    <h3 id="<%= id_prefix %>enable_module">Step <%= heading_counter %>: enable the Passenger Apache module and restart Apache</h3>
-    <p>
-      Passenger is now installed, but it still needs to be enabled inside Apache. Run <code>brew info passenger</code> and follow the instructions in the "Caveats" section:
-    </p>
-    <pre class="highlight shell"><span class="prompt">$ </span>brew info passenger
+<% step += 1 %>
+<h3>Step <%= step %>: install Passenger package</h3>
+<p>
+  You can install Passenger through <a href="http://brew.sh/">Homebrew</a>:
+</p>
+<% if integration_mode_type == :nginx %>
+  <pre class="highlight shell"><span class="prompt">$ </span>brew install nginx --with-passenger</pre>
+<% else %>
+  <pre class="highlight shell"><span class="prompt">$ </span>brew install passenger</pre>
+<% end %>
+<p>
+  Not using Homebrew? Please <a href="<%= menu_selection_url %>">go back to the operating system selection menu</a> and choose "Other" as operating system</a>.
+</p>
+
+<% if integration_mode_type == :apache %>
+  <% step += 1 %>
+  <h3>Step <%= step %>: enable the Passenger Apache module and restart Apache</h3>
+  <p>
+    Passenger is now installed, but it still needs to be enabled inside Apache. Run <code>brew info passenger</code> and follow the instructions in the "Caveats" section:
+  </p>
+  <pre class="highlight shell"><span class="prompt">$ </span>brew info passenger
 <span class="output">...
 ==&gt; Caveats
 ...
@@ -35,26 +38,26 @@
 To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
 (...more instructions that you should follow...)</span></pre>
 
-    <p>When you are done following the instructions, restart Apache:</p>
-    <pre class="highlight shell"><span class="prompt">$ </span>sudo apachectl restart</pre>
+  <p>When you are done following the instructions, restart Apache:</p>
+  <pre class="highlight shell"><span class="prompt">$ </span>sudo apachectl restart</pre>
 
-    <div class="note">
-      <h3 class="notoc">Running OS X Server &gt;= 10.8 Mountain Lion with Web Services?</h3>
-      <p>
-        If you are running a sufficiently recent version of OS X Server (i.e. not the desktop version), and at the same time you are using the Web Services feature, then:
-      </p>
-      <ul>
-        <li>The configuration file you need to create is not /etc/apache2/other/passenger.conf (despite what Homebrew tells you), but /Library/Server/Web/Config/apache2/httpd_server_app.conf.</li>
-        <li>Do not use <code>apachectl</code> to restart Apache. Use the Web Services administration panel to restart Apache.</li>
-      </ul>
-    </div>
-  <% elsif type == "nginx" %>
-    <% heading_counter += 1 %>
-    <h3 id="<%= id_prefix %>enable_module">Step <%= heading_counter %>: enable the Passenger Nginx module and restart Nginx</h3>
+  <div class="note">
+    <h3 class="notoc">Running OS X Server &gt;= 10.8 Mountain Lion with Web Services?</h3>
     <p>
-      Passenger is now installed, but it still needs to be enabled inside Nginx. Run <code>brew info nginx --with-passenger</code> and follow the instructions in the "Caveats" section:
+      If you are running a sufficiently recent version of OS X Server (i.e. not the desktop version), and at the same time you are using the Web Services feature, then:
     </p>
-    <pre class="highlight shell"><span class="prompt">$ </span>brew info nginx --with-passenger
+    <ul>
+      <li>The configuration file you need to create is not /etc/apache2/other/passenger.conf (despite what Homebrew tells you), but /Library/Server/Web/Config/apache2/httpd_server_app.conf.</li>
+      <li>Do not use <code>apachectl</code> to restart Apache. Use the Web Services administration panel to restart Apache.</li>
+    </ul>
+  </div>
+<% elsif integration_mode_type == :nginx %>
+  <% step += 1 %>
+  <h3>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h3>
+  <p>
+    Passenger is now installed, but it still needs to be enabled inside Nginx. Run <code>brew info nginx --with-passenger</code> and follow the instructions in the "Caveats" section:
+  </p>
+  <pre class="highlight shell"><span class="prompt">$ </span>brew info nginx --with-passenger
 <span class="output">...
 ==&gt; Caveats
 ...
@@ -62,13 +65,12 @@ To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.co
 To activate Phusion Passenger, ...
 (...more instructions that you should follow...)</span></pre>
 
-    <p>When you are done following the instructions, restart Nginx:</p>
-    <pre class="highlight shell"><span class="prompt">$ </span>sudo launchctl unload /usr/local/opt/nginx/*.plist
+  <p>When you are done following the instructions, restart Nginx:</p>
+  <pre class="highlight shell"><span class="prompt">$ </span>sudo launchctl unload /usr/local/opt/nginx/*.plist
 <span class="prompt">$ </span>sudo launchctl load /usr/local/opt/nginx/*.plist</pre>
-  <% end %>
+<% end %>
 
-  <% heading_counter += 1 %>
-  <h3 id="<%= id_prefix %>check_installation">Step <%= heading_counter %>: check installation</h3>
-  <%= render_partial("/guides/install/shared/postinstall_check.html",
-        locals: locals.merge(web_server_process_name: "apache2")) %>
-</div>
+<% step += 1 %>
+<h3>Step <%= step %>: check installation</h3>
+<%= render_partial("/guides/install/shared/postinstall_check.html",
+      locals: locals.merge(apache_process_name: "apache2")) %>

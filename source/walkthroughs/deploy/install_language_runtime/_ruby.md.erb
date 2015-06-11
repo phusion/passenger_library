@@ -8,6 +8,11 @@ There are other ways to install Ruby, e.g. through yum, apt-get, source tarball,
 <% spec = deployment_walkthrough_next_step_after_install_language_runtime(locals) %>
 If you have already installed Ruby, then you [can skip to the next step](<%= spec[:url] %>).
 
+<div>
+  <p><strong>Table of contents</strong></p>
+  <ol class="toc-container"><li>Loading...</li></ol>
+</div>
+
 ## Prepare the system
 
 Ensure that curl and gpg are installed.
@@ -106,10 +111,10 @@ sudo ln -sf /usr/bin/nodejs /usr/local/bin/node</pre>
 
 ## Heads-up: sudo vs rvmsudo
 
-One thing you should be aware of when using RVM, is that you should use `rvmsudo` instead of `sudo`. This is because RVM works by manipulating environment variables. However, sudo nukes all environment variables for security reasons, which intereferes with RVM.
+One thing you should be aware of when using RVM, is that you should use `rvmsudo` instead of `sudo` when executing Ruby-related commands. This is because RVM works by manipulating environment variables. However, sudo nukes all environment variables for security reasons, which intereferes with RVM.
 
 [Visit the RVM website to learn more about rvmsudo.](https://rvm.io/integration/sudo)
 
-## Conclusion
+## Next step
 
 Congratulations, you have installed Ruby on your production server!
