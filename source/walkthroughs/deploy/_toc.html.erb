@@ -86,12 +86,16 @@
     <% else %>
       <% navbar_subsection :install_passenger do %>
         <% step += 1 %>
-        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_passenger_main.html" %>">
-          <%= step %> Install Passenger
-          <% if locals[:os_config_type] %>
+        <% if locals[:os_config_type] %>
+          <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/#{os_config_type}/install_passenger.html" %>">
+            <%= step %> Install Passenger
             <br><small>Chosen: <%= os_config_name %></small>
-          <% end %>
-        </a>
+          </a>
+        <% else %>
+          <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_passenger_main.html" %>">
+            <%= step %> Install Passenger
+          </a>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
@@ -102,12 +106,16 @@
   <% else %>
     <% navbar_subsection :deploy_app do %>
       <% step += 1 %>
-      <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/deploy_app_main.html" %>">
-        <%= step %> Deploy app
-        <% if locals[:os_config_type] %>
+      <% if locals[:os_config_type] %>
+        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/#{os_config_type}/deploy_app.html" %>">
+          <%= step %> Deploy app
           <br><small>Chosen: <%= os_config_name %></small>
-        <% end %>
-      </a>
+        </a>
+      <% else %>
+        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/deploy_app_main.html" %>">
+          <%= step %> Deploy app
+        </a>
+      <% end %>
     <% end %>
   <% end %>
 

@@ -13,46 +13,76 @@ substep = 0
 
 Now that you are done with transferring your app's code to the server and setting up an environment for your app, it is time to configure Apache so that Passenger knows how to serve your app.
 
+<% if needs_login_as_app_user_to_prepare_environment?(locals) %>
+<% substep += 1 %>
+<%= h3(nil, "#{header_step}.#{substep} Go back to the admin account") %>
+
+You have previously logged into your app's user account in order to prepare the app's environment. That user does not have sudo access. In the next subsections, you need to edit configuration files, for which sudo access is needed. So you need to switch back to the admin account.
+
+This can be done by simply exiting the shell that was logged into the app's user account. You will then be dropped back to the admin account. For example:
+
+<pre class="highlight"><span class="c"># This is what you previously ran:</span>
+<span class="output">admin$ sudo -u myappuser -H bash -l
+myappuser$ ...</span>
+
+<span class="c"># Type `exit` to go back to the account you were before</span>
+<span class="prompt">myappuser$ </span>exit
+<span class="prompt">admin$</span> _</pre>
+<% end %>
+
 <% substep += 1 %>
 <%= h3(nil, "#{header_step}.#{substep} Edit Apache configuration file") %>
 
-We need to edit the Apache configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Apache (and Passenger) where your app is located.
+<% if os_config_class == :debian || os_config_class == :redhat %>
+  <p>
+    We need to create an Apache configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Apache (and Passenger) where your app is located.
+  </p>
+  <pre class="highlight"><span style="prompt">$ </span>sudo nano /etc/nginx/sites-enabled/<span class="o">myapp</span>.conf</pre>
+  <p>
+    Replace <code>myapp</code> with your app's name.
+  </p>
+  <p>
+    Put this inside the file:
+  </p>
+<% else %>
+  <p>
+    We need to edit your Apache configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Apache (and Passenger) where your app is located.
+  </p>
+  <p>
+    Open your Apache configuration file. For example:
+  </p>
+  <pre class="highlight"><span style="prompt">$ </span>sudo nano /etc/apache2/apache2.conf</pre>
+  <p>
+    Don't know where your Apache configuration file is? Read <a href="<%= url_for "/indepth/working_with_the_apache_config_file.html" %>">Working with the Apache configuration file</a>.
+  </p>
+  <p>
+    Let us add a virtual host entry at the end of that file. At the end of the file, insert:
+  </p>
+<% end %>
 
-Open your Apache configuration file as follows:
+<% if language_type == :python %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
 
-<table class="table table-bordered table-striped">
-  <tr>
-    <td>Debian, Ubuntu</td>
-    <td>
-      <p>Create a new Apache config file for your app:</p>
-      <pre class="highlight"><span style="prompt">$ </span>nano /etc/apache2/sites-enabled/<span class="o">myapp</span>.conf</pre>
-      <p>Replace <code>myapp</code> with your app's name.</p>
-    </td>
-  </tr>
-  <tr>
-    <td>Red Hat, CentOS, Fedora, Scientific Linux, Amazon Linux</td>
-    <td>
-      <p>Create a new Apache config file for your app:</p>
-      <pre class="highlight"><span style="prompt">$ </span>nano /etc/httpd/sites-enabled/<span class="o">myapp</span>.conf</pre>
-      <p>Replace <code>myapp</code> with your app's name.</p>
-    </td>
-  </tr>
-  <tr>
-    <td>Other operating systems</td>
-    <td>
-      <p>Open your Apache config file. We will add a virtual host entry at the end of that file. The file is probably located in one of these locations:</p>
-      <ul>
-        <li>/etc/apache2/httpd.conf</li>
-        <li>/etc/apache2/apache2.conf</li>
-        <li>/etc/httpd/httpd.conf</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+    <span class="c"># Tell Apache and Passenger where your app's code directory is</span>
+    DocumentRoot <span class="o">/var/www/myapp/code</span>/public
+    PassengerAppRoot <span class="o">/var/www/myapp/code</span>
 
-Insert:
+    <span class="c"># Tell Passenger that your app is a <%= language_name %> app</span>
+    PassengerAppType python
+    PassengerStartupFile <span class="o">passenger_wsgi.py</span>
 
-<% if language_type == :nodejs || language_type == :iojs %>
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache >= 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name, replace `/var/www/myapp/code` with your application's code directory path and replace `passenger_wsgi.py` with your app's WSGI entry point file.
+<% elsif language_type == :nodejs || language_type == :iojs %>
   <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName <span class="o">yourserver.com</span>
 

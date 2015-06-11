@@ -15,7 +15,7 @@
   <div>
     <label style="font-weight: normal">
       <input type="checkbox" name="app_details_rvm" value="1"
-        <% if infrastructure_has_launch_instructions %>
+        <% if deployment_walkthrough_probably_using_rvm?(locals) %>
           checked
         <% end %>
       >

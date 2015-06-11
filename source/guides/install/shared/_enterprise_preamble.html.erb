@@ -30,11 +30,28 @@ end
   The license key will be downloaded to your local computer. Copy this license key file to your production server, for example using <code>scp</code>:
 </p>
 <pre class="highlight"><span class="prompt">local-computer$ </span>cd /path-to-your-local-computer-download-folder
-<span class="prompt">local-computer$ </span>scp passenger-enterprise-license admin@yourserver.com:</pre>
+<% if locals[:infrastructure_type] == :aws -%>
+<span class="prompt">local-computer$ </span>scp -i <span class="o">your_ec2_key.pem</span> passenger-enterprise-license <span class="o">adminuser</span>@yourserver.com:
+<% else -%>
+<span class="prompt">local-computer$ </span>scp passenger-enterprise-license <span class="o">adminuser</span>@yourserver.com:
+<% end -%></pre>
+
+<p>
+  Replace <code>adminuser</code> with the name of an account with administrator privileges or sudo privileges.
+  <% if infrastructure_type == :aws -%>
+    This is usually <code>admin</code>, <code>ec2-user</code>, <code>root</code> or <code>ubuntu</code>.
+  <% end %>
+</p>
+
 <p>
   Finally, login to your production server and save the file as <code>/etc/passenger-enterprise-license</code>:
 </p>
-<pre class="highlight"><span class="prompt">local-computer$ </span>ssh admin@yourserver.com
+<pre class="highlight">
+<% if locals[:infrastructure_type] == :aws -%>
+<span class="prompt">local-computer$ </span>ssh -i <span class="o">your_ec2_key.pem</span> <span class="o">adminuser</span></span>@yourserver.com
+<% else -%>
+<span class="prompt">local-computer$ </span>ssh <span class="o">adminuser</span>@yourserver.com
+<% end -%>
 <span class="prompt">production-server$ </span>sudo mv passenger-enterprise-license /etc/passenger-enterprise-license
 <span class="prompt">production-server$ </span>chmod 644 /etc/passenger-enterprise-license</pre>
 

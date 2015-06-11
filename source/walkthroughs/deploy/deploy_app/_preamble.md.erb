@@ -92,14 +92,14 @@ If you have not already setup a Git repository, go to [Github](https://github.co
 Login to your server with SSH:
 
 <% if infrastructure_type == :aws %>
-  <pre class="highlight"><span class="prompt">$ </span>ssh -i yourkeyfile.pem adminuser@yourserver.com</pre>
+  <pre class="highlight"><span class="prompt">$ </span>ssh -i <span class="o">your_ec2_key.pem</span> <span class="o">adminuser</span>@yourserver.com</pre>
 <% else %>
-  <pre class="highlight"><span class="prompt">$ </span>ssh adminuser@yourserver.com</pre>
+  <pre class="highlight"><span class="prompt">$ </span>ssh <span class="o">adminuser</span>@yourserver.com</pre>
 <% end %>
 
 Replace `adminuser` with the name of an account with administrator privileges or sudo privileges.
 <% if infrastructure_type == :aws -%>
-  This is usually `ubuntu`, `admin`, `ec2-user` or `root`.
+  This is usually `admin`, `ec2-user`, `root` or `ubuntu`.
 <% end %>
 
 <div class="alert alert-info">Starting from this point, unless stated otherwise, all commands that we instruct you to run should be run on the server, not on your local computer!</div>
@@ -138,6 +138,7 @@ substep = 0
 %>
 <%= h2(id_prefix, "#{header_step} Preparing the app's environment") %>
 
+<% if needs_login_as_app_user_to_prepare_environment?(locals) %>
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Login as the app's user") %>
 
@@ -153,6 +154,7 @@ All subsequent instructions must be run under the application's user account. Wh
     <pre class="highlight"><span class="prompt">$ </span>rvm use ruby-<%= LATEST_RUBY_VERSION %></pre>
   </div>
 <% end %>
+<% end %>
 
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Install app dependencies") %>
@@ -163,6 +165,12 @@ They must be installed. Most of these dependencies are gems in your Gemfile, man
 
 <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
 <span class="prompt">$ </span>bundle install</pre>
+
+Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
+<% elsif language_type == :python -%>
+They must be installed. Most of these dependencies are Python libraries. A common way to install Python libraries is through `pip`. For example, if your application depends on Flask:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo pip install flask</pre>
 
 Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
 <% elsif language_type == :nodejs || language_type == :iojs || language_type == :meteor %>

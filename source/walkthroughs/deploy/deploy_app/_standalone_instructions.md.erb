@@ -41,9 +41,9 @@ Replace `myappuser` with your app's user account name.
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Start Passenger Standalone") %>
 
-While in your application's code directory, start Passenger on port 80:
+While in your application's code directory, start Passenger. As configured, it will start on port 80 and will daemonize into the background.
 
-<pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger start --port 80 --daemonize</pre>
+<pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger start</pre>
 
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Test drive") %>
@@ -56,7 +56,7 @@ You should now be able to access your app through the server's host name! Try ru
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Make sure Passenger Standalone starts on system boot") %>
 
-Passenger is now runing and serving your app, but that only lasts until you reboot your server. So you must configure your server to start Passenger Standalone on system boot.
+Passenger is now running and serving your app, but that only lasts until you reboot your server. So you must configure your server to start Passenger Standalone on system boot.
 
 The easiest way to do that is to add it to the file `/etc/rc.local`. This script is called during system boot. Here is an example of what you may want to add to `/etc/rc.local`. If there is an `exit` command in rc.local, make sure you add these before the exit command.
 

@@ -37,7 +37,11 @@
     Go to the "Files" section in the Customer Area and download the tar.gz file of the Passenger Enterprise version you want. Copy that file to your production server, for example using <code>scp</code>:
   </p>
   <pre class="highlight"><span class="prompt">local-computer$ </span>cd /path-to-your-local-computer-download-folder
-<span class="prompt">local-computer$ </span>scp passenger-enterprise-server-<span class="o">X.X.X</span>.tar.gz admin@yourserver.com:</pre>
+<% if locals[:infrastructure_type] == :aws -%>
+<span class="prompt">local-computer$ </span>scp -i <span class="o">your_ec2_key.pem</span> passenger-enterprise-server-<span class="o">X.X.X</span>.tar.gz <span class="o">adminuser</span>@yourserver.com:
+<% else -%>
+<span class="prompt">local-computer$ </span>scp passenger-enterprise-server-<span class="o">X.X.X</span>.tar.gz admin@yourserver.com:
+<% end -%></pre>
   <p>(Replace X.X.X with the Passenger Enterprise version)</p>
 
   <p>
@@ -113,7 +117,7 @@ export PATH</pre>
       locals: locals.merge(apache_process_name: "apache2")) %>
 
 <% if integration_mode_type == :nginx %>
-  <h2>Using Nginx</h2>
+  <h2 id="using_nginx">Using Nginx</h2>
   <%= render_partial("/guides/install/shared/using_nginx.html", locals: locals) %>
 <% end %>
 

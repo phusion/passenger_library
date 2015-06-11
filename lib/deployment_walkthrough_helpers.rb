@@ -206,6 +206,10 @@ module DeploymentWalkthroughHelpers
     end
   end
 
+  def needs_login_as_app_user_to_prepare_environment?(locals)
+    locals[:language_type] != :python
+  end
+
 
   # Be sure to also update guides/install/shared/_os_selector.html.erb
   def available_os_configs(locals)
@@ -257,6 +261,11 @@ module DeploymentWalkthroughHelpers
     result
   end
 
+
+  def deployment_walkthrough_probably_using_rvm?(locals)
+    (locals[:infrastructure_has_launch_instructions] && !locals[:os_config_type] != :rubygems_norvm) ||
+      locals[:os_config_type] == :rubygems_rvm
+  end
 
   def deployment_walkthrough_next_step_after_selecting_infrastructure(locals)
     if locals[:infrastructure_type] || available_infrastructures(locals).size == 1

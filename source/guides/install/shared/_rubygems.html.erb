@@ -90,7 +90,7 @@
       sudo: os_config_type == :rubygems_rvm ? "rvmsudo" : "sudo")) %>
 
 <% if integration_mode_type == :nginx %>
-  <h2>Using Nginx</h2>
+  <h2 id="using_nginx">Using Nginx</h2>
   <%= render_partial("/guides/install/shared/using_nginx.html", locals: locals) %>
 <% end %>
 
