@@ -2,6 +2,12 @@
 web_framework ||= nil
 id_prefix = locals[:id_prefix]
 header_step = 0
+
+if edition_type == :oss
+  gem_name = "passenger"
+else
+  gem_name = "passenger-enterprise-server"
+end
 %>
 
 <% if language_type == :ruby && (integration_mode_type == :standalone || web_framework == :rails) %>
@@ -11,13 +17,26 @@ header_step = 0
 <% if web_framework == "rails" %>
   <%= h2(id_prefix, "#{header_step} Update your gem bundle") %>
 
-  We need to ensure that "passenger" is in your Gemfile.
+  We need to ensure that "<%= gem_name %>" is in your Gemfile.
 
   Your Rails app needs a database in production. For demonstration purposes, this walkthrough uses sqlite as database because it's the easiest to setup. So we need to ensure that "sqlite3" is in the Gemfile.
 <% else %>
-  <%= h2(id_prefix, "#{header_step} Add \"passenger\" to your gem bundle") %>
+  <%= h2(id_prefix, "#{header_step} Add \"#{gem_name}\" to your gem bundle") %>
 
-  We need to ensure that "passenger" is in your Gemfile.
+  We need to ensure that "<%= gem_name %>" is in your Gemfile.
+<% end %>
+
+<% if edition_type == :enterprise %>
+  <%=
+  result2 = {}
+  output = render_partial("/guides/install/shared/enterprise_preamble.html",
+    locals: locals.merge(result: result2, heading_level: 3, step_format: "#{header_step}.%s"))
+  substep = result2[:step]
+  output
+  %>
+
+  <% substep += 1 %>
+  <%= h3(id_prefix, "#{header_step}.#{substep} Edit Gemfile and commit") %>
 <% end %>
 
 On your local computer, open your app's Gemfile. Remove lines that look like one of these:
@@ -32,7 +51,10 @@ gem "puma"
 Make sure the following lines exists:
 
 ~~~ruby
-gem "passenger"
+<% if edition_type == :enterprise -%>
+source "https://download:#{your_download_token}@www.phusionpassenger.com/enterprise_gems"
+<% end -%>
+gem "<%= gem_name %>"
 gem "sqlite3"
 ~~~
 
@@ -57,7 +79,10 @@ gem "sqlite3"
 Make sure the following line exists:
 
 ~~~ruby
-gem "passenger"
+<% if edition_type == :enterprise -%>
+source "https://download:#{your_download_token}@www.phusionpassenger.com/enterprise_gems"
+<% end -%>
+gem "<%= gem_name %>"
 ~~~
 <% end %>
 
