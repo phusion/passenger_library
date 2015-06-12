@@ -33,6 +33,16 @@ Finally, return to the original `leaderboard` app directory:
 
 <pre class="highlight"><span class="prompt">$ </span>cd ../../../../leaderboard</pre>
 
+<div class="info">
+  <h3 class="notoc">Meteor package and MongoDB</h3>
+  <p>
+    During development, the Meteor runtime takes care of starting MongoDB for you. MongoDB is the database engine that Meteor uses.
+  </p>
+  <p>
+    But a packaged Meteor app does not start MongoDB for you. Instead, a packaged Meteor app expects that MongoDB is already running somewhere, and that you tell the app where that MongoDB instance is. In the <a href="process_management.html">Process management</a> section we will show you how to run MongoDB separately and how to tell your app where MongoDB is.
+  </p>
+</div>
+
 ## Next step
 
 Next, we will introduce you to the `passenger` command, which starts your app in Passenger.

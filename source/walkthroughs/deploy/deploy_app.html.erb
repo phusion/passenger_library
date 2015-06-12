@@ -21,6 +21,7 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
   This page describes the deployment of a <%= language_name %> app, assuming that Passenger was installed through the following operating system configuration: <strong style="font-size: 120%"><%= os_config_description %></strong>. Is this not how Passenger was installed? <a href="../deploy_app_main.html">Go back to the operating system selection menu.</a>
 </div>
 
+<%= render_partial("/walkthroughs/deploy/deploy_app/intro.md", locals: locals) %>
 <%= render_partial("/walkthroughs/deploy/deploy_app/#{integration_mode_type}.md", locals: locals) %>
 
 <a href="../conclusion.html" class="btn btn-primary btn-lg">Continue: Conclusion &raquo;</a>

@@ -98,18 +98,61 @@ When you are done, install your gem bundle and commit the changes:
 header_step += 1
 substep = 0
 %>
-<%= h2(id_prefix, "#{header_step} Transferring the app code to the server") %>
+<% if language_type == :meteor %>
+  <%= h2(id_prefix, "#{header_step} Transferring the Meteor package to the server") %>
 
-<% substep += 1 %>
-<%= h3(id_prefix, "#{header_step}.#{substep} Push your code to a Git repository") %>
+  <% substep += 1 %>
+  <%= h3(id_prefix, "#{header_step}.#{substep} Build package") %>
 
-We want to transfer our application's code to the server. The easiest way to do that is via Git.
+  <p>
+    To deploy your Meteor app to production, we need to create a <em>packaged</em> version of it. A packaged Meteor app contains the Meteor runtime and various other necessary things for running a Meteor app in production.
+  </p>
 
-If you have already setup a Git repository, push your application's code to that repository by running this on your local computer:
+  <p>
+    Inside your application's code directory, on your local computer, use the <code>meteor build</code> command to create a package directory.
+  </p>
 
-<pre class="highlight"><span class="prompt">$ </span>git push</pre>
+  <pre class="highlight"><span class="prompt">$ </span>meteor build package.tar.gz</pre>
 
-If you have not already setup a Git repository, go to [Github](https://github.com/), create a repository and push your application's code there.
+  <% substep += 1 %>
+  <%= h3(id_prefix, "#{header_step}.#{substep} Upload package to the server") %>
+
+  <p>
+    Copy the package to your production server, for example using <code>scp</code>:
+  </p>
+
+  <% if locals[:infrastructure_type] == :aws %>
+    <pre class="highlight"><span class="prompt">local-computer$ </span>scp -i <span class="o">your_ec2_key.pem</span> package.tar.gz <span class="o">adminuser</span>@yourserver.com:</pre>
+  <% else %>
+    <pre class="highlight"><span class="prompt">local-computer$ </span>scp package.tar.gz <span class="o">adminuser</span>@yourserver.com:</pre>
+  <% end %>
+
+  <p>
+    Replace <code>adminuser</code> with the name of an account with administrator privileges or sudo privileges.
+    <% if infrastructure_type == :aws -%>
+      This is usually <code>admin</code>, <code>ec2-user</code>, <code>root</code> or <code>ubuntu</code>.
+    <% end %>
+  </p>
+<% else %>
+  <%= h2(id_prefix, "#{header_step} Transferring the app code to the server") %>
+
+  <% substep += 1 %>
+  <%= h3(id_prefix, "#{header_step}.#{substep} Push your code to a Git repository") %>
+
+  <p>
+    We want to transfer our application's code to the server. The easiest way to do that is via Git.
+  </p>
+
+  <p>
+    If you have already setup a Git repository, push your application's code to that repository by running this on your local computer:
+  </p>
+
+  <pre class="highlight"><span class="prompt">$ </span>git push</pre>
+
+  <p>
+    If you have not already setup a Git repository, go to <a href="https://github.com/">Github</a>, create a repository and push your application's code there.
+  </p>
+<% end %>
 
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Login to your server, create a user for the app") %>
@@ -138,21 +181,39 @@ You should give the user account the same name as your app. But for demonstratio
 <span class="prompt">$ </span>sudo chown <span>myappuser:</span> ~<span class="o">myappuser</span>/.ssh/authorized_keys</pre>
 
 <% substep += 1 %>
-<%= h3(id_prefix, "#{header_step}.#{substep} Pull code") %>
+<% if language_type == :meteor -%>
+  <%= h3(id_prefix, "#{header_step}.#{substep} Extract package") %>
 
-You need to pick a location in which to permanently store your application's code. A good location is `/var/www/APP_NAME`. Let's create that directory.
+  <p>
+    You need extract the package to a permanent location on the server. A good location is <code>/var/www/APP_NAME</code>. Let's create that directory.
+  </p>
 
-<pre class="highlight"><span class="prompt">$ </span>sudo mkdir /var/www/<span class="o">myapp</span>
+  <p>TODO</p>
+<% else -%>
+  <%= h3(id_prefix, "#{header_step}.#{substep} Pull code") %>
+
+  <p>
+    You need to pick a location in which to permanently store your application's code. A good location is <code>/var/www/APP_NAME</code>. Let's create that directory.
+  </p>
+
+  <pre class="highlight"><span class="prompt">$ </span>sudo mkdir /var/www/<span class="o">myapp</span>
 <span class="prompt">$ </span>sudo chown <span class="o">myappuser</span>: /var/www/<span class="o">myapp</span></pre>
 
-Replace `myapp` and `myappuser` with your app's name and your app user account's name.
+  <p>
+    Replace <code>myapp</code> and <code>myappuser</code> with your app's name and your app user account's name.
+  </p>
 
-Now let us pull the code from Git:
+  <p>
+    Now let us pull the code from Git:
+  </p>
 
-<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
+  <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
 <span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone <span class="o">git://github.com/username/myapp.git</span> code</pre>
 
-Your app's code now lives on the server at `/var/www/myapp`.
+  <p>
+    Your app's code now lives on the server at <code>/var/www/myapp</code>.
+  </p>
+<% end %>
 
 
 <!-- Section: Preparing the app's environment -->

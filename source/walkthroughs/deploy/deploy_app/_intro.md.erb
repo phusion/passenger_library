@@ -1,0 +1,28 @@
+<p>
+  On this page you will learn how you can deploy your app to a server
+  <% if needs_install_passenger?(locals) %>
+    that is running Passenger.
+  <% else %>
+    together with Passenger.
+  <% end %>
+  You can either follow these instructions with your own app, or you can use
+  <% if language_type == :ruby %>
+    <% git_url = "https://github.com/phusion/passenger-ruby-rails-demo.git" %>
+    <a href="https://github.com/phusion/passenger-ruby-rails-demo">the sample Rails app</a> we prepared.
+  <% elsif language_type == :python %>
+    <% git_url = "https://github.com/phusion/passenger-python-flask-demo.git" %>
+    <a href="https://github.com/phusion/passenger-python-flask-demo">the sample Flask app</a> we prepared.
+  <% elsif language_type == :nodejs || language_type == :iojs %>
+    <% git_url = "https://github.com/phusion/passenger-nodejs-connect-demo.git" %>
+    <a href="https://github.com/phusion/passenger-nodejs-connect-demo">the sample Connect.js app</a> we prepared.
+  <% elsif language_type == :meteor %>
+    <% git_url = "https://github.com/phusion/passenger-meteor-leaderboard-demo.git" %>
+    <a href="https://github.com/phusion/passenger-meteor-leaderboard-demo">the sample Meteor app</a> we prepared.
+  <% else %>
+    <% raise "No sample app known for #{language_name}" %>
+  <% end %>
+</p>
+<p>
+  If you wish to use our sample app, clone it from Github as follows:
+</p>
+<pre class="highlight"><span class="prompt">$ </span>git clone <%= git_url %></pre>

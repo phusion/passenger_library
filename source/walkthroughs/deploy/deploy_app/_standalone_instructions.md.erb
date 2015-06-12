@@ -75,15 +75,18 @@ Passenger is now running and serving your app, but that only lasts until you reb
 
 The easiest way to do that is to add it to the file `/etc/rc.local`. This script is called during system boot. Here is an example of what you may want to add to `/etc/rc.local`. If there is an `exit` command in rc.local, make sure you add these before the exit command.
 
-<pre class="highlight"><span class="c"># If you installed Phusion Passenger from tarball, add its `bin` directory to PATH.
-#export PATH=/path-to-passenger/bin:$PATH
+<pre class="highlight">
+<% if locals[:os_config_type] == :tarball %>
+<span class="c"># Since you installed Phusion Passenger from tarball, add its `bin` directory to PATH.</span>
+<span class="nb">export</span> <span class="nv">PATH</span>=<span class="o">/path-to-passenger</span>/bin:<span class="nv">$PATH</span>
 
-# Change working directory to your webapp.</span>
-<span class="nb">cd</span> /var/www/myapp/code
+<% end -%>
+<span class="c"># Change working directory to your webapp.</span>
+<span class="nb">cd</span> /var/www/<span class="o">myapp</span>/code
 
 <span class="c"># Start Passenger Standalone in daemonized mode. Passenger will be started as
-# root when run from this file, so we also tell it to drop its privileges to a
-# normal user.</span>
+# root when run from this file, but Passengerfile.json tells it to drop its
+# privileges to a normal user.</span>
 <% if language_type == :ruby -%>
 <span class="app_details app_details_rvm"><span class="c"># Replace '<%= LATEST_RUBY_VERSION %>' with the Ruby version you want your app to run under.</span>
 /usr/local/rvm/bin/rvm-exec ruby-<%= LATEST_RUBY_VERSION %> \
