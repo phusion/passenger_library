@@ -8,6 +8,12 @@ if edition_type == :oss
 else
   gem_name = "passenger-enterprise-server"
 end
+
+if language_type == :meteor
+  app_dirname = "bundle"
+else
+  app_dirname = "code"
+end
 %>
 
 <% if language_type == :ruby && (integration_mode_type == :standalone || web_framework == :rails) %>
@@ -114,6 +120,16 @@ substep = 0
 
   <pre class="highlight"><span class="prompt">$ </span>meteor build package.tar.gz</pre>
 
+  <div class="note">
+    <h3 class="notoc">"meteor build" deprecated?</h3>
+    <p>
+      Meteor will probably tell you that <code>meteor build</code> is deprecated in favor of <code>meteor package</code>. Please ignore that message, because for the purpose of running a Meteor web application on Passenger, only `meteor build` does what we want.
+    </p>
+    <p>
+      `meteor build` builds a packaged web application, in the form of a Node.js web app with the Meteor runtime included. `meteor package` is a more comprehensive tool that not only does what `meteor build` does, but also builds iOS and Android app packages. However, Passenger is a web application server, but iOS and Android packages are not relevant to us, which is why we recommend using `meteor build` instead of `meteor package`.
+    </p>
+  </div>
+
   <% substep += 1 %>
   <%= h3(id_prefix, "#{header_step}.#{substep} Upload package to the server") %>
 
@@ -121,11 +137,13 @@ substep = 0
     Copy the package to your production server, for example using <code>scp</code>:
   </p>
 
+  <div>
   <% if locals[:infrastructure_type] == :aws %>
     <pre class="highlight"><span class="prompt">local-computer$ </span>scp -i <span class="o">your_ec2_key.pem</span> package.tar.gz <span class="o">adminuser</span>@yourserver.com:</pre>
   <% else %>
     <pre class="highlight"><span class="prompt">local-computer$ </span>scp package.tar.gz <span class="o">adminuser</span>@yourserver.com:</pre>
   <% end %>
+  </div>
 
   <p>
     Replace <code>adminuser</code> with the name of an account with administrator privileges or sudo privileges.
@@ -185,15 +203,31 @@ You should give the user account the same name as your app. But for demonstratio
   <%= h3(id_prefix, "#{header_step}.#{substep} Extract package") %>
 
   <p>
-    You need extract the package to a permanent location on the server. A good location is <code>/var/www/APP_NAME</code>. Let's create that directory.
+    You need extract the package to a permanent location on the server. A good location is <code>/var/www/APP_NAME</code>. Let us create that directory.
   </p>
 
-  <p>TODO</p>
+  <pre class="highlight"><span class="prompt">$ </span>sudo mkdir /var/www/<span class="o">myapp</span>
+<span class="prompt">$ </span>sudo chown <span class="o">myappuser</span>: /var/www/<span class="o">myapp</span></pre>
+
+  <p>
+    Replace <code>myapp</code> and <code>myappuser</code> with your app's name and your app user account's name.
+  </p>
+
+  <p>
+    Now let us extract the package:
+  </p>
+
+  <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
+<span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone <span class="o">tar xzf ~/package.tar.gz</span></pre>
+
+  <p>
+    Your extract app package directory now lives on the server at <code>/var/www/myapp/bundle</code>.
+  </p>
 <% else -%>
   <%= h3(id_prefix, "#{header_step}.#{substep} Pull code") %>
 
   <p>
-    You need to pick a location in which to permanently store your application's code. A good location is <code>/var/www/APP_NAME</code>. Let's create that directory.
+    You need to pick a location in which to permanently store your application's code. A good location is <code>/var/www/APP_NAME</code>. Let us create that directory.
   </p>
 
   <pre class="highlight"><span class="prompt">$ </span>sudo mkdir /var/www/<span class="o">myapp</span>
@@ -211,7 +245,7 @@ You should give the user account the same name as your app. But for demonstratio
 <span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone <span class="o">git://github.com/username/myapp.git</span> code</pre>
 
   <p>
-    Your app's code now lives on the server at <code>/var/www/myapp</code>.
+    Your app's code now lives on the server at <code>/var/www/myapp</code>/code.
   </p>
 <% end %>
 
@@ -242,6 +276,18 @@ All subsequent instructions must be run under the application's user account. Wh
 <% end %>
 <% end %>
 
+<% if language_type == :meteor %>
+  <% substep += 1 %>
+  <%= h3(id_prefix, "#{header_step}.#{substep} Install MongoDB") %>
+
+  <p>
+    During development, the Meteor runtime takes care of starting MongoDB for you. MongoDB is the database engine that Meteor uses. But a packaged Meteor app does not start MongoDB for you. Instead, a packaged Meteor app expects that MongoDB is already running somewhere, and that you tell the app where that MongoDB instance is.
+  </p>
+  <p>
+    Please install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
+  </p>
+<% end %>
+
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Install app dependencies") %>
 
@@ -259,13 +305,20 @@ They must be installed. Most of these dependencies are Python libraries. A commo
 <pre class="highlight"><span class="prompt">$ </span>sudo pip install flask</pre>
 
 Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
-<% elsif language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+<% elsif language_type == :nodejs || language_type == :iojs %>
 They must be installed. Most of these dependencies are Javascript libraries, managed by npm. You can install them by running `npm install` in your app's directory:
 
 <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
 <span class="prompt">$ </span>npm install</pre>
 
 Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
+<% elsif language_type == :meteor %>
+They must be installed. Most of these dependencies are Javascript libraries, managed by npm. You can install them by running `npm install` in your app's directory:
+
+<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/bundle
+<span class="prompt">$ </span>npm install</pre>
+
+Your app may also depend on services, such as Redis etc. With the exception of MongoDB, Installing services that your app depends on is outside of this walkthrough's scope.
 <% else -%>
 Please install them now, before Passenger is started.
 

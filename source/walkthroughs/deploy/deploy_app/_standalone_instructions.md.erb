@@ -1,3 +1,11 @@
+<%
+if language_type == :meteor
+  app_dirname = "bundle"
+else
+  app_dirname = "code"
+end
+%>
+
 <%=
 result = {}
 output = render_partial("/walkthroughs/deploy/deploy_app/preamble.md", locals: locals.merge(result: result))
@@ -13,7 +21,12 @@ substep = 0
 
 Now that you are done with transferring your app's code to the server and setting up an environment for your app, it is time to start your app in Passenger.
 
-While following these instructions, please make sure you are [logged in under your app's user account](#<%= id_prefix %>login-as-the-app-s-user), and that your shell is in the application's code directory (e.g. `/var/www/myapp/code`).
+While following these instructions, please make sure you are [logged in under your app's user account](#<%= id_prefix %>login-as-the-app-s-user), and that your shell is in the application's
+<% if language_type == :meteor -%>
+package directory (e.g. `/var/www/myapp/bundle`).
+<% else -%>
+code directory (e.g. `/var/www/myapp/code`).
+<% end -%>
 
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Create a Passenger config file") %>
@@ -30,15 +43,27 @@ Insert:
   <span class="c1">// Replace "passenger_wsgi.py" with your app's WSGI entry point file.</span>
   <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"wsgi"</span><span class="p">,</span>
   <span class="s2">"startup_file"</span><span class="p">:</span> <span class="o">"passenger_wsgi.py"</span><span class="p">,</span>
-<% elsif language_type == :nodejs || language_type == :iojs -%>
+<% elsif language_type == :nodejs -%>
   <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
   <span class="c1">// Replace "app.js" with your app's entry point file.</span>
   <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
   <span class="s2">"startup_file"</span><span class="p">:</span> <span class="o">"app.js"</span><span class="p">,</span>
+<% elsif language_type == :iojs -%>
+  <span class="c1">// Tell Passenger that this is an io.js app.</span>
+  <span class="c1">// Replace "app.js" with your app's entry point file.</span>
+  <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
+  <span class="s2">"startup_file"</span><span class="p">:</span> <span class="o">"app.js"</span><span class="p">,</span>
+  <span class="s2">"nodejs"</span><span class="p">:</span> <span class="s2">"/usr/bin/iojs"</span><span class="p">,</span>
 <% elsif language_type == :meteor -%>
   <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
   <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
   <span class="s2">"startup_file"</span><span class="p">:</span> <span class="s2">"main.js"</span><span class="p">,</span>
+  <span class="s2">"envvars"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="c1">// Tell your app where MongoDB is</span>
+    <span class="s2">"MONGO_URL"</span><span class="p">:</span> <span class="s2">"mongodb://localhost:27017/<span class="o">myappdb</span>"</span><span class="p">,</span>
+    <span class="c1">// Tell your app what its root URL is</span>
+    <span class="s2">"ROOT_URL"</span><span class="p">:</span> <span class="s2">"<span class="o">http://www.yourserver.com</span>"</span><span class="p">,</span>
+  <span class="p">],</span>
 <% end -%>
   <span class="c1">// Run the app in a production environment. The default value is "development".</span>
   <span class="s2">"environment"</span><span class="p">:</span> <span class="s2">"production"</span><span class="p">,</span>
@@ -48,10 +73,14 @@ Insert:
   <span class="s2">"daemonize"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="c1">// Tell Passenger to run the app as the given user. Only has effect</span>
   <span class="c1">// if Passenger was started with root privileges.</span>
-  <span class="s2">"user"</span><span class="p">:</span> <span class="s2">"myappuser"</span>
+  <span class="s2">"user"</span><span class="p">:</span> <span class="s2">"<span class="o">myappuser</span>"</span>
 <span class="p">}</span></pre>
 
-Replace `myappuser` with your app's user account name.
+Replace `myappuser` with your app's user account name. Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
+
+<% if language_type == :iojs %>
+This configuration also assumes that the io.js binary is located in `/usr/bin/iojs`. If this is not the case, please specify the full path to the io.js binary.
+<% end %>
 
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Start Passenger Standalone") %>
@@ -82,7 +111,7 @@ The easiest way to do that is to add it to the file `/etc/rc.local`. This script
 
 <% end -%>
 <span class="c"># Change working directory to your webapp.</span>
-<span class="nb">cd</span> /var/www/<span class="o">myapp</span>/code
+<span class="nb">cd</span> /var/www/<span class="o">myapp</span>/<%= app_dirname %>
 
 <span class="c"># Start Passenger Standalone in daemonized mode. Passenger will be started as
 # root when run from this file, but Passengerfile.json tells it to drop its

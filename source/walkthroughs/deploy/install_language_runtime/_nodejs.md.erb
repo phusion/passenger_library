@@ -1,0 +1,74 @@
+<% @page_title = "Installing Node.js" %>
+<h1>Installing Node.js</h1>
+
+Before you can deploy your app on the production server, you need to install Node.js. Here's how you can do that:
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <td>
+      Debian, Ubuntu
+    </td>
+    <td>
+      <p>Please install Node.js from the <a href="https://nodesource.com/">NodeSource</a> APT repository. We also install a compiler so that we able to install native addons from npm.</p>
+      <pre class="highlight"><span class="prompt">$ </span>sudo apt-get update
+<span class="prompt">$ </span>sudo apt-get install curl apt-transport-https ca-certificates
+<span class="prompt">$ </span>curl --fail -ssL -o setup-nodejs https://deb.nodesource.com/setup_0.12
+<span class="prompt">$ </span>sudo bash setup-nodejs
+<span class="prompt">$ </span>sudo apt-get install -y nodejs build-essential</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Red Hat, CentOS, Fedora
+    </td>
+    <td>
+      <p>Please enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>, then install Node.js from the <a href="https://nodesource.com/">NodeSource</a> YUM repository. We also install a compiler so that we able to install native addons from npm.</p>
+      <pre class="highlight"><span class="prompt">$ </span>sudo yum install epel-release curl
+<span class="prompt">$ </span>curl --fail -sSL -o setup-nodejs https://rpm.nodesource.com/setup
+<span class="prompt">$ </span>sudo bash setup-nodejs
+<span class="prompt">$ </span>sudo yum install nodejs gcc-c++ make</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Gentoo
+    </td>
+    <td>
+      <pre class="highlight"><span class="prompt">$ </span>sudo emerge nodejs</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Arch Linux
+    </td>
+    <td>
+      <pre class="highlight"><span class="prompt">$ </span>sudo pacman -S nodejs npm</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mac OS X
+    </td>
+    <td>
+      Please <a href="https://nodejs.org/download/">download the Node.js OS X installer from www.nodejs.org</a> and run it.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Other Linux operating systems (32-bit or 64-bit only)
+    </td>
+    <td>
+      Please download either the 32-bit or 64-bit Node.js Linux binaries from <a href="https://nodejs.org/download/">the Node.js download page</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Other operating systems
+    </td>
+    <td>
+      Please install Node.js from source from <a href="http://www.nodejs.org/">www.nodejs.org</a>.
+    </td>
+  </tr>
+</table>
+
+When you are done, continue to the next step.

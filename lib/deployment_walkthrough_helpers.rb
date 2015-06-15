@@ -14,19 +14,24 @@ module DeploymentWalkthroughHelpers
   DEPLOYMENT_WALKTHROUGH_LANGUAGES = [
     { language_type: :ruby,
       language_name: "Ruby",
+      language_runtime_name: "Ruby",
       language_has_install_instructions: true },
     { language_type: :python,
       language_name: "Python",
+      language_runtime_name: "Python",
       language_has_install_instructions: true },
     { language_type: :nodejs,
       language_name: "Node.js",
-      language_has_install_instructions: false },
+      language_runtime_name: "Node.js",
+      language_has_install_instructions: true },
     { language_type: :iojs,
       language_name: "io.js",
-      language_has_install_instructions: false },
+      language_runtime_name: "io.js",
+      language_has_install_instructions: true },
     { language_type: :meteor,
       language_name: "Meteor",
-      language_has_install_instructions: false }
+      language_runtime_name: "Node.js",
+      language_has_install_instructions: true }
   ]
   DEPLOYMENT_WALKTHROUGH_INFRASTRUCTURES = [
     { infrastructure_type: :aws,

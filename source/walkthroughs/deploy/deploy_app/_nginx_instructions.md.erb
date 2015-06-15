@@ -63,7 +63,7 @@ myappuser$ ...</span>
   </p>
 <% end %>
 
-<% if language_type == :nodejs || language_type == :iojs %>
+<% if language_type == :nodejs %>
   <pre class="highlight">server {
     listen 80;
     server_name <span class="o">yourserver.com</span>;
@@ -73,28 +73,52 @@ myappuser$ ...</span>
 
     <span class="c"># Turn on Passenger</span>
     passenger_enabled on;
-    <span class="c"># Tell Passenger that your app is a <%= language_name %> app</span>
+    <span class="c"># Tell Passenger that your app is a Node.js app</span>
     passenger_app_type node;
     passenger_startup_file <span class="o">app.js</span>;
 }</pre>
 
   Replace `yourserver.com` with your server's host name, replace `/var/www/myapp/code` with your application's code directory path and replace `app.js` with your app's entry point file.
+<% elsif language_type == :iojs %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/var/www/myapp/code</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+    <span class="c"># Tell Passenger that your app is an io.js app</span>
+    passenger_app_type node;
+    passenger_startup_file <span class="o">app.js</span>;
+    passenger_node /usr/bin/iojs;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name, replace `/var/www/myapp/code` with your application's code directory path and replace `app.js` with your app's entry point file.
+
+  This configuration also assumes that the io.js binary is located in `/usr/bin/iojs`. If this is not the case, please specify the full path to the io.js binary.
 <% elsif language_type == :meteor %>
   <pre class="highlight">server {
     listen 80;
     server_name <span class="o">yourserver.com</span>;
 
     <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
-    root <span class="o">/var/www/myapp/code</span>/public;
+    root <span class="o">/var/www/myapp/bundle</span>/public;
 
     <span class="c"># Turn on Passenger</span>
     passenger_enabled on;
     <span class="c"># Tell Passenger that your app is a Meteor app</span>
     passenger_app_type node;
     passenger_startup_file main.js;
+
+    <span class="c"># Tell your app where MongoDB is</span>
+    passenger_env_var MONGO_URL mongodb://localhost:27017/<span class="o">myappdb</span>;
+    <span class="c"># Tell your app what its root URL is</span>
+    passenger_env_var ROOT_URL <span class="o">http://www.yourserver.com</span>;
 }</pre>
 
-  Replace `yourserver.com` with your server's host name and replace `/var/www/myapp/code` with your application's code directory path.
+  Replace `yourserver.com` with your server's host name and replace `/var/www/myapp/bundle` with your application's package directory path. Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
 <% else %>
   <pre class="highlight">server {
     listen 80;

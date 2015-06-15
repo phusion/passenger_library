@@ -68,12 +68,12 @@
   <% if needs_install_language_runtime?(locals) != false %>
     <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? || needs_install_language_runtime?(locals).nil? %>
       <% step += 1 %>
-      <li><span><%= step %> Install <%= language_name %></span></li>
+      <li><span><%= step %> Install <%= language_runtime_name %></span></li>
     <% else %>
       <% navbar_subsection :install_language_runtime do %>
         <% step += 1 %>
         <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_language_runtime.html" %>">
-          <%= step %> Install <%= language_name %>
+          <%= step %> Install <%= language_runtime_name %>
         </a>
       <% end %>
     <% end %>

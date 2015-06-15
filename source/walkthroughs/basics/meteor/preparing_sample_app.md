@@ -20,13 +20,29 @@ Let us create an example Meteor app directory structure in your home directory. 
 
 In the previous step, you only created a Meteor app in development mode. In this walkthrough, we also need a *packaged* version of your Meteor sample app. A packaged Meteor app contains the Meteor runtime and various other necessary things for running a Meteor app in production. Some Passenger features are only compatible with packaged Meteor apps.
 
-Inside the `leaderboard` directory, use the `meteor build` command to create a package directory.
+Inside the `leaderboard` directory, use the `meteor bundle` command to create a package tarball.
 
-<pre class="highlight"><span class="prompt">$ </span>meteor build ../leaderboard-package --directory</pre>
+<pre class="highlight"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
 
-The packaged app has now been placed in `~/leaderboard-package/bundle`. This packaged app directory doesn't contain any dependencies, so we need to install them. Run:
+<div class="note">
+  <h3 class="notoc">"meteor build" deprecated?</h3>
+  <p>
+    Meteor will probably tell you that <code>meteor build</code> is deprecated in favor of <code>meteor package</code>. Please ignore that message, because for the purpose of running a Meteor web application on Passenger, only `meteor build` does what we want.
+  </p>
+  <p>
+    `meteor build` builds a packaged web application, in the form of a Node.js web app with the Meteor runtime included. `meteor package` is a more comprehensive tool that not only does what `meteor build` does, but also builds iOS and Android app packages. However, Passenger is a web application server, but iOS and Android packages are not relevant to us, which is why we recommend using `meteor build` instead of `meteor package`.
+  </p>
+</div>
 
-<pre class="highlight"><span class="prompt">$ </span>cd ../leaderboard-package/bundle/programs/server
+The packaged app has now been placed in `package.tar.gz`. But Passenger expects a directory, so let us extract it in `../leaderboard-package`:
+
+<pre class="highlight"><span class="prompt">$ </span>mkdir ../leaderboard-package
+<span class="prompt">$ </span>cd ../leaderboard-package
+<span class="prompt">$ </span>tar xzf ../leaderboard/package.tar.gz</pre>
+
+The packaged app directory doesn't contain any dependencies, so we need to install them. Run:
+
+<pre class="highlight"><span class="prompt">$ </span>cd bundle/programs/server
 <span class="prompt">$ </span>npm install</pre>
 
 Finally, return to the original `leaderboard` app directory:
