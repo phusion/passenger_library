@@ -40,6 +40,12 @@ module DeploymentWalkthroughHelpers
       infrastructure_long_name: "Amazon Web Services",
       infrastructure_has_launch_instructions: true,
       infrastructure_needs_install_language_runtime: true },
+    { infrastructure_type: :digital_ocean,
+      infrastructure_name: "Digital Ocean",
+      infrastructure_name_with_determiner: "a Digital Ocean",
+      infrastructure_long_name: "Digital Ocean",
+      infrastructure_has_launch_instructions: true,
+      infrastructure_needs_install_language_runtime: true },
     { infrastructure_type: :heroku,
       infrastructure_name: "Heroku",
       infrastructure_name_with_determiner: "a Heroku",
@@ -314,10 +320,10 @@ module DeploymentWalkthroughHelpers
     integration_mode_type = locals[:integration_mode_type]
     edition_type = locals[:edition_type]
     if needs_install_language_runtime?(locals)
-      language_name = locals[:language_name]
+      language_runtime_name = locals[:language_runtime_name]
       { url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_language_runtime.html"),
-        title: "Install #{language_name}",
-        long_title: "Installing #{language_name}",
+        title: "Install #{language_runtime_name}",
+        long_title: "Installing #{language_runtime_name}",
         subsection: :install_language_runtime }
     else
       deployment_walkthrough_next_step_after_install_language_runtime(locals)

@@ -1,0 +1,50 @@
+<% @page_title = "Launching a server on Digital Ocean" %>
+# Launching a server on Digital Ocean
+
+<% spec = deployment_walkthrough_next_step_after_launching_server(locals) %>
+On this page, we will launch a Digital Ocean server (or "droplets" as Digital Ocean calls them) and login to that server. If you have already launched a server, then you can [skip to the next page](<%= spec[:url] %>).
+
+<div class="row row-instruction">
+  <div class="col-md-6">
+    <p>
+      Login to your Digital Ocean account click on <em>Create Droplet</em>.
+    </p>
+  </div>
+  <div class="col-md-6">
+    <a href="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_create_droplet.png") %>" target="_blank"><img src="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_create_droplet.png") %>" class="img-thumbnail"></a>
+  </div>
+</div>
+<div class="row row-instruction">
+  <div class="col-md-6">
+    <p>
+      Give your droplet a host name, then select an image. You are free to choose any Linux/Unix image, but for demonstration purposes let us pick the <em>Ubuntu 14.04 x64</em> image.
+    </p>
+  </div>
+  <div class="col-md-6">
+    <a href="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_image.png") %>" target="_blank"><img src="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_image.png") %>" class="img-thumbnail" style="max-height: 15em"></a>
+  </div>
+</div>
+<div class="row row-instruction">
+  <div class="col-md-6">
+    <p>
+      Select a droplet size. For smaller web apps, the 1 GB plan is enough.
+    </p>
+  </div>
+  <div class="col-md-6">
+    <a href="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_size.png") %>" target="_blank"><img src="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_size.png") %>" class="img-thumbnail"></a>
+  </div>
+</div>
+<div class="row row-instruction">
+  <div class="col-md-6">
+    <p>
+      Scroll down and click Create Droplet.
+    </p>
+  </div>
+  <div class="col-md-6">
+    <a href="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_final.png") %>" target="_blank"><img src="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_final.png") %>" class="img-thumbnail"></a>
+  </div>
+</div>
+
+## Next step
+
+Congratulations, you have launched a server on Digital Ocean and successfully logged in to the server!
