@@ -347,10 +347,10 @@ All subsequent instructions must be run under the application's user account. Wh
 
 Your application has various dependencies.
 <% if language_type == :ruby -%>
-They must be installed. Most of these dependencies are gems in your Gemfile, managed by Bundler. You can install them by running `bundle install` in your app's directory:
+They must be installed. Most of these dependencies are gems in your Gemfile, managed by Bundler. You can install them by running `bundle install --deployment --without development test` in your app's directory:
 
 <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
-<span class="prompt">$ </span>bundle install</pre>
+<span class="prompt">$ </span>bundle install --deployment --without development test</pre>
 
 Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
 <% elsif language_type == :python -%>
@@ -406,21 +406,22 @@ This command will output a secret key. Copy that value to your clipboard. Next, 
 
 <pre class="highlight"><span class="prompt">$ </span>nano config/secrets.yml</pre>
 
-Look for this:
+If the file already exists, look for this:
 
 ~~~yaml
 production:
   secret_key_base: <%= "<" + "%=" %>ENV["SECRET_KEY_BASE"]<%= "%" + ">" %>
 ~~~
 
-Replace it with:
+Then replace it with the following. If the file didn't already exist, simply insert the following.
 
 <pre class="highlight"><span class="s">production</span><span class="pi">:</span>
   <span class="s">secret_key_base</span><span class="pi">:</span> <span class="o">the value that you copied from 'rake secret'</span></pre>
 
 To prevent other users on the system from reading sensitive information belonging to your app, let's tighten the security on the configuration directory and the database directory:
 
-<pre class="highlight"><span class="prompt">$ </span>chmod 700 config db</pre>
+<pre class="highlight"><span class="prompt">$ </span>chmod 700 config db
+<span class="prompt">$ </span>chmod 600 config/database.yml config/secrets.yml</pre>
 
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Compile Rails assets and run database migrations") %>

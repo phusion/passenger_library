@@ -15,7 +15,7 @@ If you have already installed Ruby, then you [can skip to the next page](<%= spe
 
 ## Prepare the system
 
-Ensure that curl and gpg are installed.
+Ensure that curl and gpg are installed, as well as a compiler toolchain. Curl and gpg are needed for further installation steps, while the compiler toolchain is needed for installing common Ruby gems.
 
 <table class="table table-bordered table-striped">
   <tr>
@@ -24,7 +24,7 @@ Ensure that curl and gpg are installed.
     </td>
     <td>
       <pre class="highlight">sudo apt-get update
-sudo apt-get install curl gpg</pre>
+sudo apt-get install curl gpg build-essential</pre>
     </td>
   </tr>
   <tr>
@@ -32,7 +32,7 @@ sudo apt-get install curl gpg</pre>
       Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
     </td>
     <td>
-      <pre class="highlight">sudo yum install curl gpg</pre>
+      <pre class="highlight">sudo yum install curl gpg gcc gcc-c++ make</pre>
     </td>
   </tr>
   <tr>
@@ -53,7 +53,11 @@ Run the following commands on your production server to install RVM:
 <span class="prompt">$ </span>curl -sSL https://get.rvm.io | sudo bash -s stable
 <span class="prompt">$ </span>sudo usermod -a -G rvm `whoami`</pre>
 
-When done, **relogin to your server** to activate RVM. This is important: if you don't relogin, RVM doesn't work.
+If you are on **Red Hat/CentOS/Fedora/Amazon Linux**, or on any operating system where sudo is configured with `secure_path`, be sure to modify your shell environment to set `rvmsudo_secure_path=1`:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo sh -c <span class="s">"echo export rvmsudo_secure_path=1 >> /etc/profile.d/rvm_secure_path.sh"</span></pre>
+
+When you are done with all this, **relogin to your server** to activate RVM. This is important: if you don't relogin, RVM doesn't work.
 
 ## Install the Ruby version you want
 
@@ -72,6 +76,12 @@ To install a specific version of Ruby, run:
 <span class="prompt">$ </span>rvm --default use ruby-<span class="si">X.X.X</span></pre>
 
 Replace X.X.X with the Ruby version you want.
+
+## Install Bundler
+
+Bundler is a popular tool for managing application gem dependencies. We will use Bundler in this walkthrough, so let us install it:
+
+<pre class="highlight"><span class="prompt">$ </span>gem install bundler --no-rdoc --no-ri</pre>
 
 ## Optional: install Node.js if you're using Rails
 
@@ -96,7 +106,8 @@ sudo ln -sf /usr/bin/nodejs /usr/local/bin/node</pre>
       Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
     </td>
     <td>
-      <pre class="highlight">sudo yum install nodejs</pre>
+      <pre class="highlight">sudo yum install epel-release
+sudo yum install nodejs</pre>
     </td>
   </tr>
   <tr>
