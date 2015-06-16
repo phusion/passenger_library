@@ -21,19 +21,23 @@ substep = 0
 
 Now that you are done with transferring your app's code to the server and setting up an environment for your app, it is time to start your app in Passenger.
 
-While following these instructions, please make sure you are [logged in under your app's user account](#<%= id_prefix %>login-as-the-app-s-user), and that your shell is in the application's
-<% if language_type == :meteor -%>
-package directory (e.g. `/var/www/myapp/bundle`).
-<% else -%>
-code directory (e.g. `/var/www/myapp/code`).
-<% end -%>
-
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Create a Passenger config file") %>
 
-Since this is a production environment, we need to customize Passenger a little bit. Create a file named `Passengerfile.json`:
+Since this is a production environment, we need to customize Passenger a little bit. Go to your application's
+<% if language_type == :meteor -%>
+  package directory
+<% else -%>
+  code directory
+<% end -%>
+and create a file named `Passengerfile.json`:
 
-<pre class="highlight"><span class="prompt">$ </span>nano Passengerfile.json</pre>
+<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/<%= app_dirname %>
+<% if needs_login_as_app_user_to_prepare_environment?(locals) %>
+<span class="prompt">$ </span>nano Passengerfile.json
+<% else -%>
+<span class="prompt">$ </span>sudo nano Passengerfile.json
+<% end -%></pre>
 
 Insert:
 
@@ -76,10 +80,36 @@ Insert:
   <span class="s2">"user"</span><span class="p">:</span> <span class="s2">"<span class="o">myappuser</span>"</span>
 <span class="p">}</span></pre>
 
-Replace `myappuser` with your app's user account name. Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
+Replace `myappuser` with your app's user account name.
+<% if language_type == :meteor -%>
+Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
+<% end -%>
 
 <% if language_type == :iojs %>
 This configuration also assumes that the io.js binary is located in `/usr/bin/iojs`. If this is not the case, please specify the full path to the io.js binary.
+<% end %>
+
+<% if !needs_login_as_app_user_to_prepare_environment?(locals) %>
+  Finally, fix the permissions on the file:
+
+  <pre class="highlight"><span class="prompt">$ </span>sudo chown <span class="o">myappuser</span>: Passengerfile.json</pre>
+<% end %>
+
+<% if needs_login_as_app_user_to_prepare_environment?(locals) %>
+<% substep += 1 %>
+<%= h3(nil, "#{header_step}.#{substep} Go back to the admin account") %>
+
+You have previously logged into your app's user account in order to prepare the app's environment. That user does not have sudo access. In the next steps, you need to start Passenger with root privileges, for which sudo access is needed. So you need to switch back to the admin account.
+
+This can be done by simply exiting the shell that was logged into the app's user account. You will then be dropped back to the admin account. For example:
+
+<pre class="highlight"><span class="c"># This is what you previously ran:</span>
+<span class="output">admin$ sudo -u myappuser -H bash -l
+myappuser$ ...</span>
+
+<span class="c"># Type `exit` to go back to the account you were before</span>
+<span class="prompt">myappuser$ </span>exit
+<span class="prompt">admin$</span> _</pre>
 <% end %>
 
 <% substep += 1 %>
@@ -87,7 +117,14 @@ This configuration also assumes that the io.js binary is located in `/usr/bin/io
 
 While in your application's code directory, start Passenger. As configured, it will start on port 80 and will daemonize into the background.
 
-<pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger start</pre>
+Note that, because Passenger is configured to listen on port 80, this command must be run with root privileges. Only root privileged processes can listen on ports lower than 1024.
+
+<% if language_type == :ruby %>
+  <pre class="highlight app_details app_details_rvm"><span class="prompt">$ </span>rvmsudo <%= passenger_command_prefix(locals) %>passenger start</pre>
+  <pre class="highlight app_details app_details_nonrvm"><span class="prompt">$ </span>sudo <%= passenger_command_prefix(locals) %>passenger start</pre>
+<% else %>
+  <pre class="highlight"><span class="prompt">$ </span>sudo <%= passenger_command_prefix(locals) %>passenger start</pre>
+<% end %>
 
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Test drive") %>
@@ -96,6 +133,8 @@ You should now be able to access your app through the server's host name! Try ru
 
 <pre class="highlight"><span class="prompt">$ </span>curl http://yourserver.com/
 <span class="output">...your app's front page HTML...</span></pre>
+
+If you do not see your app's front page HTML, then the most likely cause is that you did not setup DNS records. Setting up DNS is outside the scope of this walkthrough. In the mean time, we recommend that you use your server's IP address as the server name.
 
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Make sure Passenger Standalone starts on system boot") %>

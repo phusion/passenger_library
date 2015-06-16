@@ -151,3 +151,8 @@ You should now be able to access your app through the server's host name! Try ru
 
 <pre class="highlight"><span class="prompt">$ </span>curl http://yourserver.com/
 <span class="output">...your app's front page HTML...</span></pre>
+
+If you do not see your app's front page HTML, then these are the most likely causes:
+
+1. You did not correctly configure your `server_name` directive. The `server_name` must exactly match the host name in the URL. For example, if you use the command `curl http://45.55.91.235/` to access your app, then the `server_name` must be `45.55.91.235`.
+2. You did not setup DNS records. Setting up DNS is outside the scope of this walkthrough. In the mean time, we recommend that you use your server's IP address as the server name.

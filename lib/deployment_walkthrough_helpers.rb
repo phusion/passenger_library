@@ -278,6 +278,20 @@ module DeploymentWalkthroughHelpers
       locals[:os_config_type] == :rubygems_rvm
   end
 
+  def deployment_walkthrough_sample_app_git_url(locals)
+    if locals[:language_type] == :ruby
+      ["https://github.com/phusion/passenger-ruby-rails-demo.git", "end_result"]
+    elsif locals[:language_type] == :python
+      ["https://github.com/phusion/passenger-python-flask-demo.git", "end_result"]
+    elsif locals[:language_type] == :nodejs || locals[:language_type] == :iojs
+      ["https://github.com/phusion/passenger-nodejs-connect-demo.git", "master"]
+    elsif locals[:language_type] == :meteor
+      ["https://github.com/phusion/passenger-meteor-leaderboard-demo.git", "master"]
+    else
+      raise "No sample app known for #{language_name}"
+    end
+  end
+
   def deployment_walkthrough_next_step_after_selecting_infrastructure(locals)
     if locals[:infrastructure_type] || available_infrastructures(locals).size == 1
       language_type = locals[:language_type]

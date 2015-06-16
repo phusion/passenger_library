@@ -157,6 +157,10 @@ substep = 0
   <% substep += 1 %>
   <%= h3(id_prefix, "#{header_step}.#{substep} Push your code to a Git repository") %>
 
+  <div class="note">
+    If you are using our sample app, you can <a href="#login-to-your-server-create-a-user-for-the-app">skip to the next step</a>.
+  </div>
+
   <p>
     We want to transfer our application's code to the server. The easiest way to do that is via Git.
   </p>
@@ -201,8 +205,8 @@ You should give the user account the same name as your app. But for demonstratio
 <span class="prompt">$ </span>sudo chmod <span>700</span> ~<span class="o">myappuser</span>/.ssh
 <span class="prompt">$ </span>sudo sh -c <span class="s">"chmod <span>600</span> ~<span class="o">myappuser</span>/.ssh/*"</span></pre>
 
-<% substep += 1 %>
 <% if language_type == :meteor -%>
+  <% substep += 1 %>
   <%= h3(id_prefix, "#{header_step}.#{substep} Extract package") %>
 
   <p>
@@ -227,13 +231,42 @@ You should give the user account the same name as your app. But for demonstratio
     Your extract app package directory now lives on the server at <code>/var/www/myapp/bundle</code>.
   </p>
 <% else -%>
+  <% substep += 1 %>
+  <%= h3(id_prefix, "#{header_step}.#{substep} Install Git on the server") %>
+
+  <div>
+    <% if locals[:os_config_class] == :debian %>
+      <pre class="highlight"><span class="prompt">$ </span>sudo apt-get install git</pre>
+    <% elsif locals[:os_config_class] == :redhat %>
+      <pre class="highlight"><span class="prompt">$ </span>sudo yum install git</pre>
+    <% elsif locals[:os_config_class].nil? %>
+      <table class="table table-bordered table-striped">
+        <tr>
+          <td>Debian, Ubuntu</td>
+          <td><pre class="highlight">sudo apt-get install git</pre></td>
+        </tr>
+        <tr>
+          <td>Red Hat, CentOS, Fedora, Scientific Linux, Amazon Linux</td>
+          <td><pre class="highlight">sudo yum install git</pre></td>
+        </tr>
+        <tr>
+          <td>Other operating systems</td>
+          <td>Please install Git from <a href="https://git-scm.com/">git-scm.com</a>.</td>
+        </tr>
+      </table>
+    <% else%>
+      Please install Git from <a href="https://git-scm.com/">git-scm.com</a>.
+    <% end %>
+  </div>
+
+  <% substep += 1 %>
   <%= h3(id_prefix, "#{header_step}.#{substep} Pull code") %>
 
   <p>
     You need to pick a location in which to permanently store your application's code. A good location is <code>/var/www/APP_NAME</code>. Let us create that directory.
   </p>
 
-  <pre class="highlight"><span class="prompt">$ </span>sudo mkdir /var/www/<span class="o">myapp</span>
+  <pre class="highlight"><span class="prompt">$ </span>sudo mkdir -p /var/www/<span class="o">myapp</span>
 <span class="prompt">$ </span>sudo chown <span class="o">myappuser</span>: /var/www/<span class="o">myapp</span></pre>
 
   <p>
@@ -246,6 +279,12 @@ You should give the user account the same name as your app. But for demonstratio
 
   <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
 <span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone <span class="o">git://github.com/username/myapp.git</span> code</pre>
+
+  <div class="info">
+    <p>If you are using our sample app, use this Git clone command instead:</p>
+    <% git_url, branch = deployment_walkthrough_sample_app_git_url(locals) %>
+    <pre class="highlight"><span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone --branch=<%= branch %> <%= git_url %> code</pre>
+  </div>
 
   <p>
     Your app's code now lives on the server at <code>/var/www/myapp</code>/code.

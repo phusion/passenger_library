@@ -67,7 +67,7 @@ step = 0
 <% step += 1 %>
 <h2 id="install_packages">Step <%= step %>: install Passenger packages</h2>
 <p>
-  These commands will install Passenger <%= packages_title %> through Phusion's YUM repository.
+  These commands will install <%= packages_title %> through Phusion's YUM repository.
   <% if integration_mode_type == :nginx %>
     If you already had Nginx installed, then these commands will upgrade Nginx to Phusion's version (with Passenger compiled in).
   <% end %>
