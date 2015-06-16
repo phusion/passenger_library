@@ -458,3 +458,24 @@ figcaption {
     margin-top: 0;
   }
 }
+
+
+#tipue_search_results_count {
+  font-size: 80%;
+  font-style: italic;
+}
+
+.tipue_search_content_title {
+  margin-top: 1em;
+  font-size: 1.2em;
+}
+
+.tipue_search_content_url {
+  font-size: 0.8em;
+}
+
+.tipue_search_content_text {
+  > .h01 {
+    background-color: #FFF9BC;
+  }
+}

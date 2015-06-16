@@ -1,3 +1,5 @@
+require_relative 'constants'
+
 CURRENT_VERSION = "5.0.0"
 LATEST_RUBY_VERSION = "2.2.1"
 

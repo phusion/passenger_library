@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <title><% if current_page.data.title %><%= current_page.data.title %> - <%end %>Phusion Passenger Library</title>
+    <title><% if current_page.data.title %><%= current_page.data.title %> - <%end %><%= SITE_TITLE %></title>
     <%= stylesheet_link_tag "all" %>
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Open+Sans:400,600" rel="stylesheet" type="text/css">
+    <% if current_page.data.skip_search %>
+      <!-- META: SKIP SEARCH -->
+    <% end %>
   </head>
-  
+
   <body class="<%= page_classes %> <%= 'automenu' if !content_for?(:sidebar) %>">
     <!-- Main navigation
     =========================================== -->

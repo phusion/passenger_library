@@ -55,10 +55,16 @@ set :js_dir, 'javascripts'
 set :images_dir, 'images'
 set :markdown_engine, :kramdown
 set :relative_links, true
+set :url_root, URL_ROOT
 
 activate :syntax
 activate :relative_assets
-activate :livereload, :port => 35730
+
+configure :development do
+  activate :livereload, :port => 35730
+
+  set :dummy_search, true
+end
 
 # Build-specific configuration
 configure :build do
@@ -70,4 +76,6 @@ configure :build do
 
   # Enable cache buster
   activate :asset_hash
+
+  activate :search_engine_sitemap
 end
