@@ -9,7 +9,7 @@ Before you can deploy your app on the production server, you need to install Nod
       Debian, Ubuntu
     </td>
     <td>
-      <p>Please install Node.js from the <a href="https://nodesource.com/">NodeSource</a> APT repository. We also install a compiler so that we able to install native addons from npm.</p>
+      <p>Run the following commands to install Node.js from the <a href="https://nodesource.com/">NodeSource</a> APT repository. With these commands, we also install a compiler so that we are able to install native addons from npm.</p>
       <pre class="highlight"><span class="prompt">$ </span>sudo apt-get update
 <span class="prompt">$ </span>sudo apt-get install curl apt-transport-https ca-certificates
 <span class="prompt">$ </span>curl --fail -ssL -o setup-nodejs https://deb.nodesource.com/setup_0.12
@@ -22,7 +22,7 @@ Before you can deploy your app on the production server, you need to install Nod
       Red Hat, CentOS, Fedora
     </td>
     <td>
-      <p>Please enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>, then install Node.js from the <a href="https://nodesource.com/">NodeSource</a> YUM repository. We also install a compiler so that we able to install native addons from npm.</p>
+      <p>Run the following commands to enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> and to install Node.js from the <a href="https://nodesource.com/">NodeSource</a> YUM repository. With these commands, we also install a compiler so that we are able to install native addons from npm.</p>
       <pre class="highlight"><span class="prompt">$ </span>sudo yum install epel-release curl
 <span class="prompt">$ </span>curl --fail -sSL -o setup-nodejs https://rpm.nodesource.com/setup
 <span class="prompt">$ </span>sudo bash setup-nodejs
