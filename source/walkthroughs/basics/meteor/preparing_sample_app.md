@@ -25,12 +25,12 @@ Inside the `leaderboard` directory, use the `meteor bundle` command to create a 
 <pre class="highlight"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
 
 <div class="note">
-  <h3 class="notoc">"meteor build" deprecated?</h3>
+  <h3 class="notoc">"meteor bundle" deprecated?</h3>
   <p>
-    Meteor will probably tell you that <code>meteor build</code> is deprecated in favor of <code>meteor package</code>. Please ignore that message, because for the purpose of running a Meteor web application on Passenger, only `meteor build` does what we want.
+    Meteor will probably tell you that <code>meteor bundle</code> is deprecated in favor of <code>meteor build</code>. Please ignore that message, because for the purpose of running a Meteor web application on Passenger, only `meteor bundle` does what we want.
   </p>
   <p>
-    `meteor build` builds a packaged web application, in the form of a Node.js web app with the Meteor runtime included. `meteor package` is a more comprehensive tool that not only does what `meteor build` does, but also builds iOS and Android app packages. However, Passenger is a web application server, but iOS and Android packages are not relevant to us, which is why we recommend using `meteor build` instead of `meteor package`.
+    `meteor bundle` creates a packaged web application, in the form of a Node.js web app with the Meteor runtime included. `meteor build` is a more comprehensive tool that not only does what `meteor bundle` does, but also builds iOS and Android app packages. However, Passenger is a web application server, so iOS and Android packages are not relevant to us, which is why we recommend using `meteor bundle` instead of `meteor build`.
   </p>
 </div>
 

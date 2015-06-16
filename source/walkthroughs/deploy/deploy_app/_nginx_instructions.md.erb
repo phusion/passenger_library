@@ -115,7 +115,7 @@ myappuser$ ...</span>
     <span class="c"># Tell your app where MongoDB is</span>
     passenger_env_var MONGO_URL mongodb://localhost:27017/<span class="o">myappdb</span>;
     <span class="c"># Tell your app what its root URL is</span>
-    passenger_env_var ROOT_URL <span class="o">http://www.yourserver.com</span>;
+    passenger_env_var ROOT_URL <span class="o">http://yourserver.com</span>;
 }</pre>
 
   Replace `yourserver.com` with your server's host name and replace `/var/www/myapp/bundle` with your application's package directory path. Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.

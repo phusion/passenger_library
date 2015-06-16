@@ -115,18 +115,18 @@ substep = 0
   </p>
 
   <p>
-    Inside your application's code directory, on your local computer, use the <code>meteor build</code> command to create a package directory.
+    Inside your application's code directory, on your local computer, use the <code>meteor bundle</code> command to create a package directory.
   </p>
 
-  <pre class="highlight"><span class="prompt">$ </span>meteor build package.tar.gz</pre>
+  <pre class="highlight"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
 
   <div class="note">
-    <h3 class="notoc">"meteor build" deprecated?</h3>
+    <h3 class="notoc">"meteor bundle" deprecated?</h3>
     <p>
-      Meteor will probably tell you that <code>meteor build</code> is deprecated in favor of <code>meteor package</code>. Please ignore that message, because for the purpose of running a Meteor web application on Passenger, only `meteor build` does what we want.
+      Meteor will probably tell you that <code>meteor bundle</code> is deprecated in favor of <code>meteor build</code>. Please ignore that message, because for the purpose of running a Meteor web application on Passenger, only `meteor bundle` does what we want.
     </p>
     <p>
-      `meteor build` builds a packaged web application, in the form of a Node.js web app with the Meteor runtime included. `meteor package` is a more comprehensive tool that not only does what `meteor build` does, but also builds iOS and Android app packages. However, Passenger is a web application server, but iOS and Android packages are not relevant to us, which is why we recommend using `meteor build` instead of `meteor package`.
+      `meteor bundle` creates a packaged web application, in the form of a Node.js web app with the Meteor runtime included. `meteor build` is a more comprehensive tool that not only does what `meteor bundle` does, but also builds iOS and Android app packages. However, Passenger is a web application server, so iOS and Android packages are not relevant to us, which is why we recommend using `meteor bundle` instead of `meteor build`.
     </p>
   </div>
 
@@ -195,8 +195,11 @@ Now that you have logged in, you should create an operating system user account 
 You should give the user account the same name as your app. But for demonstration purposes, this tutorial names the user account `myappuser`. We also ensure that that user has your SSH key installed.
 
 <pre class="highlight"><span class="prompt">$ </span>sudo adduser <span class="o">myappuser</span>
+<span class="prompt">$ </span>sudo mkdir -p ~<span class="o">myappuser</span>/.ssh
 <span class="prompt">$ </span>sudo sh -c <span class="s">"cat $HOME/.ssh/authorized_keys >> ~<span class="o">myappuser</span>/.ssh/authorized_keys"</span>
-<span class="prompt">$ </span>sudo chown <span>myappuser:</span> ~<span class="o">myappuser</span>/.ssh/authorized_keys</pre>
+<span class="prompt">$ </span>sudo chown -R <span>myappuser:</span> ~<span class="o">myappuser</span>/.ssh
+<span class="prompt">$ </span>sudo chmod <span>700</span> ~<span class="o">myappuser</span>/.ssh
+<span class="prompt">$ </span>sudo sh -c <span class="s">"chmod <span>600</span> ~<span class="o">myappuser</span>/.ssh/*"</span></pre>
 
 <% substep += 1 %>
 <% if language_type == :meteor -%>
@@ -206,8 +209,7 @@ You should give the user account the same name as your app. But for demonstratio
     You need extract the package to a permanent location on the server. A good location is <code>/var/www/APP_NAME</code>. Let us create that directory.
   </p>
 
-  <pre class="highlight"><span class="prompt">$ </span>sudo mkdir /var/www/<span class="o">myapp</span>
-<span class="prompt">$ </span>sudo chown <span class="o">myappuser</span>: /var/www/<span class="o">myapp</span></pre>
+  <pre class="highlight"><span class="prompt">$ </span>sudo mkdir -p /var/www/<span class="o">myapp</span></pre>
 
   <p>
     Replace <code>myapp</code> and <code>myappuser</code> with your app's name and your app user account's name.
@@ -218,7 +220,8 @@ You should give the user account the same name as your app. But for demonstratio
   </p>
 
   <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
-<span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone <span class="o">tar xzf ~/package.tar.gz</span></pre>
+<span class="prompt">$ </span>tar xzf <span class="o">~/package.tar.gz</span>
+<span class="prompt">$ </span>chown -R <span class="o">myappuser</span>: .</pre>
 
   <p>
     Your extract app package directory now lives on the server at <code>/var/www/myapp/bundle</code>.
@@ -258,6 +261,30 @@ substep = 0
 %>
 <%= h2(id_prefix, "#{header_step} Preparing the app's environment") %>
 
+<% if language_type == :meteor %>
+  <% substep += 1 %>
+  <%= h3(id_prefix, "#{header_step}.#{substep} Install MongoDB") %>
+
+  <p>
+    During development, the Meteor runtime takes care of starting MongoDB for you. MongoDB is the database engine that Meteor uses. But a packaged Meteor app does not start MongoDB for you. Instead, a packaged Meteor app expects that MongoDB is already running somewhere, and that you tell the app where that MongoDB instance is.
+  </p>
+  <div>
+    <% if os_config_class == :debian %>
+      <p>
+        If you are on Debian 8 or later, or on Ubuntu 14.04 or later, you can simply install MongoDB with apt-get:
+      </p>
+      <pre class="highlight"><span class="prompt">$ </span>sudo apt-get install mongodb</pre>
+      <p>
+        If you are on an older version of Debian or Ubuntu, please install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
+      </p>
+    <% else %>
+      <p>
+        Please install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
+      </p>
+    <% end %>
+  </div>
+<% end %>
+
 <% if needs_login_as_app_user_to_prepare_environment?(locals) %>
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Login as the app's user") %>
@@ -274,18 +301,6 @@ All subsequent instructions must be run under the application's user account. Wh
     <pre class="highlight"><span class="prompt">$ </span>rvm use ruby-<%= LATEST_RUBY_VERSION %></pre>
   </div>
 <% end %>
-<% end %>
-
-<% if language_type == :meteor %>
-  <% substep += 1 %>
-  <%= h3(id_prefix, "#{header_step}.#{substep} Install MongoDB") %>
-
-  <p>
-    During development, the Meteor runtime takes care of starting MongoDB for you. MongoDB is the database engine that Meteor uses. But a packaged Meteor app does not start MongoDB for you. Instead, a packaged Meteor app expects that MongoDB is already running somewhere, and that you tell the app where that MongoDB instance is.
-  </p>
-  <p>
-    Please install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
-  </p>
 <% end %>
 
 <% substep += 1 %>
@@ -313,12 +328,12 @@ They must be installed. Most of these dependencies are Javascript libraries, man
 
 Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
 <% elsif language_type == :meteor %>
-They must be installed. Most of these dependencies are Javascript libraries, managed by npm. You can install them by running `npm install` in your app's directory:
+They must be installed. Most of these dependencies are Javascript libraries, managed by npm. You can install them by running `npm install` in your app's package directory, under the `programs/server` subdirectory:
 
-<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/bundle
+<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/bundle/programs/server
 <span class="prompt">$ </span>npm install</pre>
 
-Your app may also depend on services, such as Redis etc. With the exception of MongoDB, Installing services that your app depends on is outside of this walkthrough's scope.
+Your app may also depend on services, such as Redis etc. With the exception of MongoDB, installing services that your app depends on is outside of this walkthrough's scope.
 <% else -%>
 Please install them now, before Passenger is started.
 

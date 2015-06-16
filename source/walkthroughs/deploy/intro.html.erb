@@ -11,21 +11,23 @@ subsection: intro
 </p>
 
 <p>
-  This walkthrough teaches you step-by-step how to install <%= language_name %> and Passenger in a production environment. This walkthrough is also applicable if you are using <a href="https://www.phusionpassenger.com/enterprise">Passenger Enterprise</a>.
+  This is an end-to-end walkthrough that teaches you how to install <%= language_name %> and Passenger on a production server. This walkthrough will ask you some questions, so the exact walkthrough steps depend on the choices you make. In general, it covers these topics:
+</p>
+<ol>
+  <li>Launching a server</li>
+  <li>Installing the <%= language_name %> runtime</li>
+  <li>Installing Passenger</li>
+  <li>Setting up the production server in preparation for the application, such as creating a Unix user account and setting up permissions</li>
+  <li>Deploying the application itself</li>
+  <li>Optional integration with a web server, such as Nginx or Apache</li>
+</ol>
+<p>
+  If you are an advanced user, you can simply skip the steps that you are already familiar with.
 </p>
 
 <p>
-  A few things you should be aware of first:
+  Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics walkthrough</a>.
 </p>
-
-<ul>
-  <li>
-    Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics walkthrough</a>.
-  </li>
-  <li>
-    This walkthrough assumes that you are deploying <a href="<%= url_for("/walkthroughs/start/#{language_type}.html") %>#preparing-the-example-application">the example app from the quickstart</a>. If you are following this walkthrough to deploy your own app, then please be aware that it may not work 100% because your app may have custom dependencies or other requirements that this walkthrough can't take account of.
-  </li>
-</ul>
 
 <% if (spec = deployment_walkthrough_next_step_after_selecting_infrastructure(locals)) %>
   <p>Ready to get started?</p>

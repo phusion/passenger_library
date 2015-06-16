@@ -7,7 +7,7 @@ On this page, we will launch a Digital Ocean server (or "droplets" as Digital Oc
 <div class="row row-instruction">
   <div class="col-md-6">
     <p>
-      Login to your Digital Ocean account click on <em>Create Droplet</em>.
+      <a href="https://cloud.digitalocean.com/" target="_blank">Login to your Digital Ocean account</a> click on <em>Create Droplet</em>.
     </p>
   </div>
   <div class="col-md-6">
@@ -37,11 +37,41 @@ On this page, we will launch a Digital Ocean server (or "droplets" as Digital Oc
 <div class="row row-instruction">
   <div class="col-md-6">
     <p>
-      Scroll down and click Create Droplet.
+      Scroll down and click <em>Create Droplet</em>.
     </p>
   </div>
   <div class="col-md-6">
     <a href="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_final.png") %>" target="_blank"><img src="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_final.png") %>" class="img-thumbnail"></a>
+  </div>
+</div>
+<div class="row row-instruction">
+  <div class="col-md-6">
+    <p>
+      Wait until the droplet is created.
+    </p>
+  </div>
+  <div class="col-md-6">
+    <a href="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_creating.png") %>" target="_blank"><img src="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_creating.png") %>" class="img-thumbnail"></a>
+  </div>
+</div>
+<div class="row row-instruction">
+  <div class="col-md-6">
+    <p>
+      When the droplet is created, Digital Ocean will display its IP address at the top left corner of your dashboard, right under the server name. Use this IP address to login to your server.
+    </p>
+  </div>
+  <div class="col-md-6">
+    <a href="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_ip.png") %>" target="_blank"><img src="<%= url_for("/walkthroughs/deploy/launch_server/digital_ocean_ip.png") %>" class="img-thumbnail"></a>
+  </div>
+</div>
+<div class="row row-instruction">
+  <div class="col-md-6">
+    <p>
+      Use SSH to login to your server. The username is <em>root</em>.
+    </p>
+  </div>
+  <div class="col-md-6">
+    <pre class="highlight"><span class="prompt">$ </span>ssh root@<span class="o">YOUR_IP_ADDRESS</span></pre>
   </div>
 </div>
 
