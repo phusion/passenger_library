@@ -33,9 +33,32 @@
             <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://www.phusionpassenger.com/">Back to Passenger homepage</a></li>
+            <!-- <li><a href="https://www.phusionpassenger.com/">Back to Passenger homepage</a></li>
             <li><a href="https://www.phusionpassenger.com/support" target="_blank">Support</a></li>
-            <li><a href="http://www.phusion.nl/contact" target="_blank">Contact</a></li>
+            <li><a href="http://www.phusion.nl/contact" target="_blank">Contact</a></li> -->
+            <li class="gcs-container">
+              <script>
+                (function() {
+                  var cx = '002541305414719736737:avcxluym01g';
+                  var gcse = document.createElement('script');
+                  gcse.type = 'text/javascript';
+                  gcse.async = true;
+                  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                      '//cse.google.com/cse.js?cx=' + cx;
+                  var s = document.getElementsByTagName('script')[0];
+                  s.parentNode.insertBefore(gcse, s);
+                })();
+              </script>
+              <gcse:search></gcse:search>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="https://www.phusionpassenger.com/">Back to Passenger homepage</a></li>
+                <li><a href="https://www.phusionpassenger.com/support" target="_blank">Support</a></li>
+                <li><a href="http://www.phusion.nl/contact" target="_blank">Contact</a></li>
+              </ul>
+            </li>
           </ul>
         </nav>
       </div>

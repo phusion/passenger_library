@@ -460,22 +460,32 @@ figcaption {
 }
 
 
-#tipue_search_results_count {
-  font-size: 80%;
-  font-style: italic;
-}
-
-.tipue_search_content_title {
-  margin-top: 1em;
-  font-size: 1.2em;
-}
-
-.tipue_search_content_url {
-  font-size: 0.8em;
-}
-
-.tipue_search_content_text {
-  > .h01 {
-    background-color: #FFF9BC;
+.gcs-container {
+  .cse .gsc-control-cse,
+  .gsc-control-cse {
+    background-color: inherit;
+    border: none;
+    margin: 0 1em 0 0;
+    padding: 9px 0 0 0;
+    width: 15em;
   }
+
+  .gsc-search-box {
+    margin: 0;
+  }
+
+  .cse table.gsc-search-box td.gsc-input,
+  table.gsc-search-box td.gsc-input {
+    padding-right: 0;
+  }
+
+  .gsc-search-button,
+  .gsc-clear-button {
+    display: none;
+  }
+}
+
+.gsc-selected-option-container,
+html > body .gsc-inline-block.gsc-selected-option-container {
+  width: 11em !important;
 }

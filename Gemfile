@@ -18,5 +18,4 @@ gem "tzinfo-data", platforms: [:mswin, :mingw]
 gem "kramdown"
 gem "middleman-syntax"
 
-gem "nokogiri"
 gem "middleman-search_engine_sitemap"
