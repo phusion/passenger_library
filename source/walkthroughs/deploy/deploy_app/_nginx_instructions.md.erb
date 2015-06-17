@@ -19,6 +19,23 @@ substep = 0
 
 Now that you are done with transferring your app's code to the server and setting up an environment for your app, it is time to configure Nginx so that Passenger knows how to serve your app.
 
+<% if language_type == :ruby %>
+  <% substep += 1 %>
+  <% determine_ruby_substep = substep %>
+  <%= h3(id_prefix, "#{header_step}.#{substep} Determine the Ruby command that Passenger should use") %>
+
+  <p>
+    We need to tell Passenger which Ruby command it should use to run your app, just in case there are multiple Ruby interpreters on your system. Please run `passenger-config about ruby-command` to find out which Ruby interpreter you are using. For example:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
+<span class="output">passenger-config was invoked through the following Ruby interpreter:
+  Command: /usr/local/rvm/gems/ruby-<%= LATEST_RUBY_VERSION %>/wrappers/ruby
+  Version: ruby <%= LATEST_RUBY_VERSION %>p85 (2015-02-26 revision 49769) [x86_64-linux]
+  ...</span></pre>
+
+  Please take note of the path after "Command" (in this example, `/usr/local/rvm/gems/ruby-<%= LATEST_RUBY_VERSION %>/wrappers/ruby`). You will need it in one of the next steps.
+<% end %>
+
 <% if needs_login_as_app_user_to_prepare_environment?(locals) %>
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Go back to the admin account") %>
@@ -63,7 +80,23 @@ myappuser$ ...</span>
   </p>
 <% end %>
 
-<% if language_type == :nodejs %>
+<% if language_type == :ruby %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/var/www/myapp/code</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+    passenger_ruby <span class="o">/path-to-ruby</span>;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name, and replace `/var/www/myapp/code` with your application's code directory path. However, make sure that Nginx is configured to point to the `public` subdirectory inside it!
+
+  Replace `/path-to-ruby` with the Ruby command that you obtained in [step <%= header_step %>.<%= determine_ruby_substep %>](#<%= id_prefix %>determine-the-ruby-command-that-passenger-should-use).
+<% elsif language_type == :nodejs %>
   <pre class="highlight">server {
     listen 80;
     server_name <span class="o">yourserver.com</span>;
