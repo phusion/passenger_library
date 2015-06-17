@@ -97,7 +97,7 @@ This configuration also assumes that the io.js binary is located in `/usr/bin/io
 
 <% if needs_login_as_app_user_to_prepare_environment?(locals) %>
 <% substep += 1 %>
-<%= h3(nil, "#{header_step}.#{substep} Go back to the admin account") %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Go back to the admin account") %>
 
 You have previously logged into your app's user account in order to prepare the app's environment. That user does not have sudo access. In the next steps, you need to start Passenger with root privileges, for which sudo access is needed. So you need to switch back to the admin account.
 

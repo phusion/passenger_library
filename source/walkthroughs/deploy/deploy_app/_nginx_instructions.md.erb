@@ -15,13 +15,13 @@ output
 header_step += 1
 substep = 0
 %>
-<%= h2(nil, "#{header_step} Configuring Nginx and Passenger") %>
+<%= h2(id_prefix, "#{header_step} Configuring Nginx and Passenger") %>
 
 Now that you are done with transferring your app's code to the server and setting up an environment for your app, it is time to configure Nginx so that Passenger knows how to serve your app.
 
 <% if needs_login_as_app_user_to_prepare_environment?(locals) %>
 <% substep += 1 %>
-<%= h3(nil, "#{header_step}.#{substep} Go back to the admin account") %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Go back to the admin account") %>
 
 You have previously logged into your app's user account in order to prepare the app's environment. That user does not have sudo access. In the next steps, you need to edit configuration files, for which sudo access is needed. So you need to switch back to the admin account.
 
@@ -37,7 +37,7 @@ myappuser$ ...</span>
 <% end %>
 
 <% substep += 1 %>
-<%= h3(nil, "#{header_step}.#{substep} Edit Nginx configuration file") %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Edit Nginx configuration file") %>
 
 <% if os_config_class == :debian || os_config_class == :redhat %>
   <p>
@@ -145,7 +145,7 @@ When you are done, restart Nginx:
 <% end %>
 
 <% substep += 1 %>
-<%= h3(nil, "#{header_step}.#{substep} Test drive") %>
+<%= h3(id_prefix, "#{header_step}.#{substep} Test drive") %>
 
 You should now be able to access your app through the server's host name! Try running this from your local computer. Replace `yourserver.com` with your server's hostname, exactly as it appears in the Nginx config file's `server_name` directive.
 
