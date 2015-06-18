@@ -33,9 +33,6 @@
             <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <!-- <li><a href="https://www.phusionpassenger.com/">Back to Passenger homepage</a></li>
-            <li><a href="https://www.phusionpassenger.com/support" target="_blank">Support</a></li>
-            <li><a href="http://www.phusion.nl/contact" target="_blank">Contact</a></li> -->
             <li class="gcs-container">
               <script>
                 (function() {
@@ -73,15 +70,15 @@
           <!-- Sidebar
           =========================================== -->
           <div class="col-md-3" role="complementary">
-            <div class="bs-docs-sidebar hidden-print">
+            <aside class="bs-docs-sidebar hidden-print">
               <%= yield_sidebar_content %>
-            </div>
+            </aside>
           </div>
 
           <!-- Content
           =========================================== -->
           <div class="col-md-8" role="main">
-            <div class="alert alert-info">This documentation is new and is a <em>work in progress</em>. There may be inaccuracies. Please let us know if you find any.</div>
+            <div class="alert alert-info" role="alert">This documentation is new and is a <em>work in progress</em>. There may be inaccuracies. Please let us know if you find any.</div>
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
@@ -90,7 +87,7 @@
           <!-- Content
           =========================================== -->
           <div class="col-md-8 col-md-offset-2" role="main">
-            <div class="alert alert-info">This documentation is new and is a <em>work in progress</em>. There may be inaccuracies. Please let us know if you find any.</div>
+            <div class="alert alert-info" role="alert">This documentation is new and is a <em>work in progress</em>. There may be inaccuracies. Please let us know if you find any.</div>
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
@@ -154,10 +151,11 @@
         </p>
 
         <!-- Based on http://mistic100.github.io/jekyll-bootstrap-doc/ -->
-        <!-- <ul class="bs-docs-footer-links muted">
+        <ul class="bs-docs-footer-links muted">
+          <li><a href="https://github.com/phusion/passenger">Passenger at Github</a></li>
           <li>&middot;</li>
-          <li><a href="{{l.url}}">{{l.title}}</a></li>
-        </ul> -->
+          <li><a href="https://github.com/phusion/passenger_library">Passenger Library at Github</a></li>
+        </ul>
       </div>
     </footer>
 

@@ -1,7 +1,10 @@
 ---
-title: Conclusion
 section: deploy_walkthrough
 subsection: conclusion
 ---
-<% content_for(:sidebar) { render_partial("_toc.html", locals: locals) } %>
+<%
+@page_title = "Conclusion - #{language_name} deployment walkthrough"
+content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
+%>
+
 TODO

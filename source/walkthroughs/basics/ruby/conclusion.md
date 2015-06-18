@@ -1,5 +1,5 @@
 ---
-title: Conclusion
+title: 'Conclusion - Passenger + Ruby basics'
 section: basics
 subsection: conclusion
 sidebar: _toc.html

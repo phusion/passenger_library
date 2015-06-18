@@ -1,5 +1,5 @@
 ---
-title: Preparing a sample application
+title: 'Preparing a sample application - Passenger + Meteor basics'
 section: basics
 subsection: preparing_sample_app
 sidebar: toc.html

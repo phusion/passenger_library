@@ -1,5 +1,5 @@
 ---
-title: Installation
+title: 'Installation - Passenger + Ruby basics'
 section: basics
 subsection: installation
 sidebar: _toc.html

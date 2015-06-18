@@ -1,9 +1,11 @@
 ---
-title: Deploying a Ruby app with Passenger to a Linux/Unix production server
 section: deploy_walkthrough
 subsection: intro
 ---
-<% content_for(:sidebar) { render_partial("_toc.html", locals: locals) } %>
+<%
+@page_title = "Deploying a #{language_name} app with Passenger to a Linux/Unix production server"
+content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
+%>
 
 <h1>Deploying a <%= language_name %> app with Passenger to production</h1>
 <p>

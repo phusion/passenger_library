@@ -8,7 +8,7 @@ if edition_type == :oss
 else
   passenger_title = "Passenger Enterprise"
 end
-@page_title = "Installing #{passenger_title} + #{integration_mode_name} on #{infrastructure_name_with_determiner} production server"
+@page_title = "Installing #{passenger_title} + #{integration_mode_name} on #{infrastructure_name_with_determiner} production server (part 2) - #{language_name} deployment walkthrough"
 content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
 
 locals[:enterprise] = edition_type == :enterprise
