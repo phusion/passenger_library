@@ -60,8 +60,14 @@ module DeploymentWalkthroughHelpers
       infrastructure_needs_install_language_runtime: true }
   ]
   PASSENGER_EDITIONS = [
-    { edition_type: :oss, edition_name: "open source" },
-    { edition_type: :enterprise, edition_name: "Enterprise" }
+    { edition_type: :oss,
+      edition_name: "open source",
+      edition_title: "Passenger",
+      edition_long_title: "Passenger open source" },
+    { edition_type: :enterprise,
+      edition_name: "Enterprise",
+      edition_title: "Passenger Enterprise",
+      edition_long_title: "Passenger Enterprise" }
   ]
 
 
@@ -228,20 +234,23 @@ module DeploymentWalkthroughHelpers
       { os_config_type: :tarball,
         os_config_class: :tarball,
         os_config_name: "source tarball",
-        os_config_description: "generic installation through source tarball" }
+        os_config_description: "generic installation through source tarball",
+        os_config_target_description: "from source tarball" }
     ]
     if locals[:language_type] == :ruby
       result << {
         os_config_type: :rubygems_rvm,
         os_config_class: :rubygems,
         os_config_name: "RubyGems (with RVM)",
-        os_config_description: "generic installation through RubyGems (with RVM)"
+        os_config_description: "generic installation through RubyGems (with RVM)",
+        os_config_target_description: "from RubyGems (with RVM)"
       }
       result << {
         os_config_type: :rubygems_norvm,
         os_config_class: :rubygems,
         os_config_name: "RubyGems (without RVM)",
-        os_config_description: "generic installation through RubyGems (without RVM)"
+        os_config_description: "generic installation through RubyGems (without RVM)",
+        os_config_target_description: "from RubyGems (without RVM)"
       }
     end
     if locals[:edition_type] != :enterprise
@@ -250,7 +259,8 @@ module DeploymentWalkthroughHelpers
         os_config_type: :osx,
         os_config_class: :osx,
         os_config_name: "Mac OS X",
-        os_config_description: "Mac OS X"
+        os_config_description: "Mac OS X",
+        os_config_target_description: "on Mac OS X"
       }
     end
     SUPPORTED_DEBIAN_VERSIONS.each_pair do |codename, name|
@@ -258,7 +268,8 @@ module DeploymentWalkthroughHelpers
         os_config_type: codename.to_sym,
         os_config_class: :debian,
         os_config_name: name,
-        os_config_description: name
+        os_config_description: name,
+        os_config_target_description: "on #{name}"
       }
     end
     SUPPORTED_REDHAT_VERSIONS.each_pair do |distro_class, name|
@@ -266,7 +277,8 @@ module DeploymentWalkthroughHelpers
         os_config_type: distro_class.to_sym,
         os_config_class: :redhat,
         os_config_name: name,
-        os_config_description: name
+        os_config_description: name,
+        os_config_target_description: "on #{name}"
       }
     end
     result
