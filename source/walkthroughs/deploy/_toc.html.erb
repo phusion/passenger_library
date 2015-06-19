@@ -121,6 +121,18 @@
 
   <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? %>
     <% step += 1 %>
+    <li><span><%= step %> Deploy updates</span></li>
+  <% else %>
+    <% navbar_subsection :deploy_updates do %>
+      <% step += 1 %>
+      <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/deploy_updates.html" %>">
+        <%= step %> Deploy updates
+      </a>
+    <% end %>
+  <% end %>
+
+  <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? %>
+    <% step += 1 %>
     <li><span><%= step %> Conclusion</span></li>
   <% else %>
     <% navbar_subsection :conclusion do %>

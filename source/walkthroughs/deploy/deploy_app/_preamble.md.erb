@@ -115,7 +115,7 @@ substep = 0
   </p>
 
   <p>
-    Inside your application's code directory, on your local computer, use the <code>meteor bundle</code> command to create a package directory.
+    Inside your application's code directory, on your local computer, use the <code>meteor bundle</code> command to create a Meteor package tarball.
   </p>
 
   <pre class="highlight"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
@@ -363,14 +363,14 @@ Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing
 They must be installed. Most of these dependencies are Javascript libraries, managed by npm. You can install them by running `npm install` in your app's directory:
 
 <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
-<span class="prompt">$ </span>npm install</pre>
+<span class="prompt">$ </span>npm install --production</pre>
 
 Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
 <% elsif language_type == :meteor %>
 They must be installed. Most of these dependencies are Javascript libraries, managed by npm. You can install them by running `npm install` in your app's package directory, under the `programs/server` subdirectory:
 
 <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/bundle/programs/server
-<span class="prompt">$ </span>npm install</pre>
+<span class="prompt">$ </span>npm install --production</pre>
 
 Your app may also depend on services, such as Redis etc. With the exception of MongoDB, installing services that your app depends on is outside of this walkthrough's scope.
 <% else -%>

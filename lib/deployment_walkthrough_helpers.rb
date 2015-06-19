@@ -154,6 +154,11 @@ module DeploymentWalkthroughHelpers
               end
             end
 
+            # Deploy updates
+            yield "#{prefix}/deploy_updates.html",
+              "/walkthroughs/deploy/deploy_updates.html",
+              locals: locals
+
             # Conclusion
             yield "#{prefix}/conclusion.html",
               "/walkthroughs/deploy/conclusion.html",

@@ -46,6 +46,7 @@ ignore "/walkthroughs/deploy/install_passenger_main.html"
 ignore "/walkthroughs/deploy/install_passenger.html"
 ignore "/walkthroughs/deploy/deploy_app_main.html"
 ignore "/walkthroughs/deploy/deploy_app.html"
+ignore "/walkthroughs/deploy/deploy_updates.html"
 ignore "/walkthroughs/deploy/conclusion.html"
 
 ###
