@@ -3,14 +3,14 @@ section: deploy_walkthrough
 subsection: deploy_app
 ---
 <%
-@page_title = "Deploying a #{language_name} app #{os_config_target_description} on #{infrastructure_name_with_determiner} production server with #{edition_long_title} in #{integration_mode_name} mode - #{edition_title} + #{language_name} deployment walkthrough"
+@page_title = "Deploying a #{language_name} app #{os_config_description_with_preposition} on #{infrastructure_name_with_determiner} production server with #{edition_long_title} in #{integration_mode_name} mode - #{edition_title} + #{language_name} deployment walkthrough"
 content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
 %>
 
 <!-- This page is only reached in configurations where `needs_install_passenger?` is true. If `needs_install_passenger?` is false, then deploy_app_main.html.erb displays deployment instructions directly without showing an OS selection menu. -->
 
 <h1>Deploying a <%= language_name %> app on <%= infrastructure_name_with_determiner %> production server<br>
-<small>with <%= edition_title %> in <%= integration_mode_name %> mode <%= os_config_target_description %></small></h1>
+<small>with <%= edition_title %> in <%= integration_mode_name %> mode <%= os_config_description_with_preposition %></small></h1>
 
 <div class="info">
   This page describes the deployment of a <%= language_name %> app, assuming that Passenger was installed through the following operating system configuration: <strong style="font-size: 120%"><%= os_config_description %></strong>. Is this not how Passenger was installed? <a href="../deploy_app_main.html">Go back to the operating system selection menu.</a>

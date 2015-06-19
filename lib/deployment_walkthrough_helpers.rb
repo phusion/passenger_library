@@ -235,7 +235,7 @@ module DeploymentWalkthroughHelpers
         os_config_class: :tarball,
         os_config_name: "source tarball",
         os_config_description: "generic installation through source tarball",
-        os_config_target_description: "from source tarball" }
+        os_config_description_with_preposition: "from source tarball" }
     ]
     if locals[:language_type] == :ruby
       result << {
@@ -243,14 +243,14 @@ module DeploymentWalkthroughHelpers
         os_config_class: :rubygems,
         os_config_name: "RubyGems (with RVM)",
         os_config_description: "generic installation through RubyGems (with RVM)",
-        os_config_target_description: "from RubyGems (with RVM)"
+        os_config_description_with_preposition: "from RubyGems (with RVM)"
       }
       result << {
         os_config_type: :rubygems_norvm,
         os_config_class: :rubygems,
         os_config_name: "RubyGems (without RVM)",
         os_config_description: "generic installation through RubyGems (without RVM)",
-        os_config_target_description: "from RubyGems (without RVM)"
+        os_config_description_with_preposition: "from RubyGems (without RVM)"
       }
     end
     if locals[:edition_type] != :enterprise
@@ -260,7 +260,7 @@ module DeploymentWalkthroughHelpers
         os_config_class: :osx,
         os_config_name: "Mac OS X",
         os_config_description: "Mac OS X",
-        os_config_target_description: "on Mac OS X"
+        os_config_description_with_preposition: "on Mac OS X"
       }
     end
     SUPPORTED_DEBIAN_VERSIONS.each_pair do |codename, name|
@@ -269,7 +269,7 @@ module DeploymentWalkthroughHelpers
         os_config_class: :debian,
         os_config_name: name,
         os_config_description: name,
-        os_config_target_description: "on #{name}"
+        os_config_description_with_preposition: "on #{name}"
       }
     end
     SUPPORTED_REDHAT_VERSIONS.each_pair do |distro_class, name|
@@ -278,7 +278,7 @@ module DeploymentWalkthroughHelpers
         os_config_class: :redhat,
         os_config_name: name,
         os_config_description: name,
-        os_config_target_description: "on #{name}"
+        os_config_description_with_preposition: "on #{name}"
       }
     end
     result
@@ -288,6 +288,27 @@ module DeploymentWalkthroughHelpers
   def deployment_walkthrough_probably_using_rvm?(locals)
     (locals[:infrastructure_has_launch_instructions] && !locals[:os_config_type] != :rubygems_norvm) ||
       locals[:os_config_type] == :rubygems_rvm
+  end
+
+  def deployment_walkthrough_page_title(locals)
+    # Example: deployment walkthrough with io.js, Passenger, Nginx, Debian 8, Digital Ocean
+    components = [locals[:language_name]]
+    edition_title = locals[:edition_title] || "Passenger"
+    if locals[:integration_mode_type] == :standalone
+      components << "#{edition_title} Standalone"
+    else
+      components << edition_title
+      components << locals[:integration_mode_name]
+    end
+    components << locals[:os_config_name]
+    components << locals[:infrastructure_name]
+    components.compact!
+    if components.size == 1
+      "deployment walkthrough with #{components[0]}"
+    else
+      last_component = components.pop
+      "deployment walkthrough with #{components.join(', ')} and #{last_component}"
+    end
   end
 
   def deployment_walkthrough_sample_app_git_url(locals)

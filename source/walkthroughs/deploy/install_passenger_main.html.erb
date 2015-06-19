@@ -3,7 +3,7 @@ section: deploy_walkthrough
 subsection: install_passenger
 ---
 <%
-@page_title = "Installing #{edition_title} + #{integration_mode_name} on #{infrastructure_name_with_determiner} production server - #{edition_title} + #{language_name} deployment walkthrough"
+@page_title = "Installing #{edition_title} + #{integration_mode_name} on #{infrastructure_name_with_determiner} production server - #{deployment_walkthrough_page_title(locals)}"
 content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
 %>
 
