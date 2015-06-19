@@ -70,14 +70,8 @@ module CustomHelpers
   end
 
   def current_page_github_url
-    path = current_page.path.sub(/\/$/, '')
-    if path.include?("/")
-      dir = path.sub(/(.*)\/.*/, '\1') + "/"
-    else
-      dir = ""
-    end
-    name = current_page.source_file.sub(/.*[\/\\]/, '')
-    "https://github.com/phusion/passenger_library/edit/master/source/#{dir}#{name}"
+    path = current_page.source_file.sub(/.*source\//, '')
+    "https://github.com/phusion/passenger_library/edit/master/source/#{path}"
   end
 
   def has_sidebar?

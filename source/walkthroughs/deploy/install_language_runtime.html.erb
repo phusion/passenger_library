@@ -3,6 +3,8 @@ section: deploy_walkthrough
 subsection: install_language_runtime
 ---
 <% content_for(:sidebar) { render_partial("_toc.html", locals: locals) } %>
+
+<!-- See install_language_runtime/_*.md for the main content file. -->
 <%= render_partial("install_language_runtime/#{language_type}.md", locals: locals) %>
 
 <% spec = deployment_walkthrough_next_step_after_install_language_runtime(locals) %>
