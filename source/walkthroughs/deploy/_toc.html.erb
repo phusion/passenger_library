@@ -22,7 +22,7 @@
   <% if needs_pick_integration_mode?(locals) != false %>
     <% if needs_pick_integration_mode?(locals).nil? || locals[:infrastructure_type].nil? %>
       <% step += 1 %>
-      <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "digital_ocean"}/integration_mode.html" %>" class="muted"><%= step %> Pick integration mode</a></li>
+      <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "ownserver"}/integration_mode.html" %>" class="muted"><%= step %> Pick integration mode</a></li>
     <% else %>
       <% navbar_subsection :integration_mode do %>
         <% step += 1 %>
@@ -39,7 +39,7 @@
   <% if !locals[:infrastructure_type] || !locals[:integration_mode_type] %>
     <% step += 1 %>
     <li>
-      <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "digital_ocean"}/#{locals[:integration_mode_type || "nginx"]}/open_source_vs_enterprise.html" %>" class="muted"><%= step %> Open source vs Enterprise</a>
+      <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "ownserver"}/#{locals[:integration_mode_type] || "nginx"}/open_source_vs_enterprise.html" %>" class="muted"><%= step %> Open source vs Enterprise</a>
     </li>
   <% else %>
     <% navbar_subsection :open_source_vs_enterprise do %>
@@ -70,7 +70,7 @@
   <% if needs_install_language_runtime?(locals) != false %>
     <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? || needs_install_language_runtime?(locals).nil? %>
       <% step += 1 %>
-      <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "digital_ocean"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/install_language_runtime.html" %>" class="muted"><%= step %> Install <%= language_runtime_name %></a></li>
+      <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "ownserver"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/install_language_runtime.html" %>" class="muted"><%= step %> Install <%= language_runtime_name %></a></li>
     <% else %>
       <% navbar_subsection :install_language_runtime do %>
         <% step += 1 %>
@@ -84,7 +84,7 @@
   <% if needs_install_passenger?(locals) != false %>
     <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? || needs_install_passenger?(locals).nil? %>
       <% step += 1 %>
-      <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "digital_ocean"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/#{locals[:edition_type] || "trusty"}/install_passenger.html" %>" class="muted"><%= step %> Install Passenger</a></li>
+      <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "ownserver"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/#{locals[:edition_type] || "trusty"}/install_passenger.html" %>" class="muted"><%= step %> Install Passenger</a></li>
     <% else %>
       <% navbar_subsection :install_passenger do %>
         <% step += 1 %>
@@ -104,7 +104,7 @@
 
   <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? %>
     <% step += 1 %>
-    <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "digital_ocean"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/#{locals[:edition_type] || "trusty"}/deploy_app.html" %>" class="muted"><%= step %> Deploy app</a></li>
+    <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "ownserver"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/#{locals[:edition_type] || "trusty"}/deploy_app.html" %>" class="muted"><%= step %> Deploy app</a></li>
   <% else %>
     <% navbar_subsection :deploy_app do %>
       <% step += 1 %>
@@ -123,7 +123,7 @@
 
   <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? %>
     <% step += 1 %>
-    <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "digital_ocean"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/deploy_updates.html" %>" class="muted"><%= step %> Deploy updates</a></li>
+    <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "ownserver"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/deploy_updates.html" %>" class="muted"><%= step %> Deploy updates</a></li>
   <% else %>
     <% navbar_subsection :deploy_updates do %>
       <% step += 1 %>
@@ -135,7 +135,7 @@
 
   <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? %>
     <% step += 1 %>
-    <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "digital_ocean"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/conclusion.html" %>" class="muted"><%= step %> Conclusion</a></li>
+    <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "ownserver"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/conclusion.html" %>" class="muted"><%= step %> Conclusion</a></li>
   <% else %>
     <% navbar_subsection :conclusion do %>
       <% step += 1 %>
