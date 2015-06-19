@@ -2,7 +2,7 @@
 title: Process management
 section: indepth
 ---
-## About processes
+# About processes
 
 <p class="lead">Phusion Passenger manages multiple processes in order to maximize stability and performance. Learn what processes are and how they behave.</p>
 
