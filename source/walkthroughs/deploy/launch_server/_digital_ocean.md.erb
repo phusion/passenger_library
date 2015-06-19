@@ -1,6 +1,10 @@
 <% @page_title = "Launching a server on Digital Ocean - #{deployment_walkthrough_page_title(locals)}" %>
 # Launching a server on Digital Ocean
 
+<div class="info">
+  This page describes how to launch a server on <strong style="font-size: 120%">Digital Ocean</strong>. Is this not the infrastructure that you are using? <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>">Go back to the infrastructure selection page.</a>
+</div>
+
 <% spec = deployment_walkthrough_next_step_after_launching_server(locals) %>
 On this page, we will launch a Digital Ocean server (or "droplets" as Digital Ocean calls them) and login to that server. If you have already launched a server, then you can [skip to the next page](<%= spec[:url] %>).
 
