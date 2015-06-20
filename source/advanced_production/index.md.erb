@@ -1,0 +1,20 @@
+---
+title: Advanced production techniques
+section: advanced_production
+---
+<%
+content_for(:sidebar) do
+  %Q{
+    <a href="#{url_for "/index.html"}" class="back-to-previous">&laquo; Back to Passenger Library front page</a>
+  }
+end
+%>
+
+# Advanced production techniques
+
+<ul class="list-unstyled list-links">
+  <li><a href="automating_deployment_app_updates.html">Automating deployments of application updates</a></li>
+  <li><a href="zero_downtime_redeployments.html">Zero-downtime app updates and restarts</a></li>
+  <li><a href="server_optimization_guide.html">Server optimization guide</a></li>
+  <li><a href="passenger_standalone_reverse_proxy.html">Putting Passenger Standalone behind an Nginx or Apache reverse proxy</a></li>
+</ul>

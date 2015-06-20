@@ -1,6 +1,7 @@
 ---
-title: Process management
-section: indepth
+title: About processes
+section: misc
+sidebar: sidebar
 ---
 # About processes
 

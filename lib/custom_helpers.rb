@@ -34,6 +34,14 @@ module CustomHelpers
     title.sub(/^[0-9]+(\.[0-9])*/, "").scan(/[a-z0-9]+/i).join("-").downcase
   end
 
+  def site_title
+    if config[:display_guides]
+      "Passenger Library"
+    else
+      "Passenger Walkthroughs"
+    end
+  end
+
   def page_title
     current_page.data.title || @page_title
   end

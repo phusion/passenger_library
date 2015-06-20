@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <title><% if page_title %><%= page_title %> - <%end %><%= SITE_TITLE %></title>
+    <title><% if page_title %><%= page_title %> - <%end %><%= site_title %></title>
     <%= stylesheet_link_tag "all" %>
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Open+Sans:400,600" rel="stylesheet" type="text/css">
     <% if current_page.data.skip_search %>
@@ -22,15 +22,40 @@
             <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> Navigation
           </button>
           <a class="navbar-brand" href="<%= url_for '/index.html' %>">
-            <span class="navbar-brand-part1">Passenger</span>
-            <span class="navbar-brand-part2">Walkthroughs</span>
+            <% if config[:display_guides] %>
+              <span class="navbar-brand-part1">Passenger</span>
+              <span class="navbar-brand-part2">Library</span>
+            <% else %>
+              <span class="navbar-brand-part1">Passenger</span>
+              <span class="navbar-brand-part2">Walkthroughs</span>
+            <% end %>
           </a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
-            <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
-            <% navbar_section :basics do %><%= link_to "Basics", "/walkthroughs/basics/index.html" %><% end %>
-            <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
+            <% if config[:display_guides] %>
+              <% navbar_dropdown_section :start, :basics, :deploy_walkthrough do %>
+                <a href="<%= url_for '/walkthroughs/index.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
+                  <% navbar_section :basics do %><%= link_to "Basics", "/walkthroughs/basics/index.html" %><% end %>
+                  <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
+                </ul>
+              <% end %>
+              <% navbar_dropdown_section :advanced_production, :admin, :indepth, :misc do %>
+                <a href="<%= url_for '/guides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <% navbar_section :advanced_production do %><%= link_to "Advanced production techniques", "/advanced_production/index.html" %><% end %>
+                  <% navbar_section :admin do %><%= link_to "Administration", "/admin/index.html" %><% end %>
+                  <% navbar_section :indepth do %><%= link_to "Passenger in depth", "/indepth/index.html" %><% end %>
+                  <% navbar_section :misc do %><%= link_to "Miscellaneous", "/misc/index.html" %><% end %>
+                </ul>
+              <% end %>
+            <% else %>
+              <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
+              <% navbar_section :basics do %><%= link_to "Basics", "/walkthroughs/basics/index.html" %><% end %>
+              <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
+            <% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="gcs-container">

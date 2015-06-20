@@ -1,6 +1,7 @@
 ---
 title: Passenger and its relationship with Ruby
-section: indepth
+section: misc
+sidebar: sidebar
 ---
 # Passenger and its relationship with Ruby
 

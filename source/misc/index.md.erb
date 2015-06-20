@@ -1,0 +1,33 @@
+---
+title: Miscellaneous
+section: misc
+---
+<%
+content_for(:sidebar) do
+  %Q{
+    <a href="#{url_for "/index.html"}" class="back-to-previous">&laquo; Back to Passenger Library front page</a>
+  }
+end
+%>
+
+# Miscellaneous
+
+<div class="row">
+  <div class="col-md-8">
+    <h3>Operating system fundamentals</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="processes.html">About processes</a></li>
+      <li><a href="environment_variables.html">About environment variables</a></li>
+    </ul>
+  </div>
+
+  <div class="col-md-4">
+    <h3>Other</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="upgrading_from_oss_to_enterprise.html">Upgrading from open source to Passenger Enterprise</a></li>
+      <li><a href="working_with_the_apache_config_file.html">Working with the Apache config file</a></li>
+    </ul>
+  </div>
+</div>

@@ -6,16 +6,104 @@ skip_search: true
 <% content_for :masthead do %>
   <div class="bs-docs-masthead" id="content">
     <div class="container">
-      <h1 class="home-title">
-        <span class="home-title-brand">Passenger</span>
-        <span class="home-title-name">Walkthroughs</span>
-      </h1>
-      <p class="lead">A gentle beginner's guide to Passenger.</p>
+      <% if config[:display_guides] %>
+        <h1 class="home-title">
+          <span class="home-title-brand">Phusion</span>
+          <span class="home-title-name">Passenger Library</span>
+        </h1>
+        <p class="lead">Build, deploy, manage and scale web apps with Passenger and its world-class documentation.</p>
+      <% else %>
+        <h1 class="home-title">
+          <span class="home-title-brand">Passenger</span>
+          <span class="home-title-name">Walkthroughs</span>
+        </h1>
+        <p class="lead">A gentle beginner's guide to Passenger.</p>
+      <% end %>
       <p class="lead"><a href="walkthroughs/start/" class="btn btn-outline-inverse btn-lg">Get started</a></p>
     </div>
   </div>
 <% end %>
 
+<% if config[:display_guides] %>
+  <section id="site_intro" class="site-intro">
+    <p class="home-welcome-message">
+      Welcome to the Phusion Passenger Library, a comprehensive online resource about Ruby, Python and Node.js deployment, administration, scaling, high availability and more &mdash; through the use of the <a href="https://www.phusionpassenger.com">Phusion Passenger</a> application server. The entire library is <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">open source</a>. Think anything can be improved? Just <a href="https://github.com/phusion/passenger_library">edit the content on Github</a>.
+    </p>
+  </section>
+<% end %>
+
 <section class="bs-docs-section">
+  <h2 id="walkthroughs">Walkthroughs</h2>
+
   <%= render_partial("/walkthroughs/index.html", locals: { quickstart: true, basics: true, deployment: true }) %>
 </section>
+
+<% if config[:display_guides] %>
+  <section class="bs-docs-section" id="guides">
+    <div class="row">
+      <div class="col-sm-8">
+        <h3>Advanced production techniques</h3>
+
+        <ul class="list-unstyled list-links">
+          <li><a href="<%= url_for "/advanced_production/automating_deployment_app_updates.html" %>">Automating deployments of application updates</a></li>
+          <li><a href="<%= url_for "/advanced_production/zero_downtime_redeployments.html" %>">Zero-downtime app updates and restarts</a></li>
+          <li><a href="<%= url_for "/admin/server_optimization_guide.html" %>">Server optimization guide</a></li>
+          <li><a href="<%= url_for "/advanced_production/index.html" %>" class="visible-xs"><strong>More guides &raquo;</strong></a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <h3>Administration</h3>
+
+        <ul class="list-unstyled list-links">
+          <li><a href="<%= url_for "/admin/troubleshooting.html" %>">Troubleshooting</a></li>
+          <li><a href="<%= url_for "/admin/tools.html" %>">Administration tools</a></li>
+          <li><a href="<%= url_for "/admin/upgrading_passenger.html" %>">Upgrading Passenger</a></li>
+          <li><a href="<%= url_for "/admin/index.html" %>" class="visible-xs"><strong>More guides &raquo;</strong></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row hidden-xs">
+      <div class="col-sm-8">
+        <a href="<%= url_for "/advanced_production/index.html" %>"><strong>More guides &raquo;</strong></a>
+      </div>
+      <div class="col-sm-4">
+        <a href="<%= url_for "/admin/index.html" %>"><strong>More guides &raquo;</strong></a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>Passenger in depth</h3>
+
+        <ul class="list-unstyled list-links">
+          <li><a href="<%= url_for "/indepth/integration_modes.html" %>">Integration modes</a></li>
+          <li><a href="<%= url_for "/indepth/relationship_with_ruby.html" %>">Passenger's relationship with Ruby</a></li>
+          <li><a href="<%= url_for "/indepth/reverse_port_binding.html" %>">Reverse port binding in Node.js and io.js</a></li>
+          <li><a href="<%= url_for "/indepth/index.html" %>" class="visible-xs"><strong>More guides &raquo;</strong></a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-6">
+        <h3>Miscellaneous</h3>
+
+        <ul class="list-unstyled list-links">
+          <li><a href="<%= url_for "/misc/upgrading_passenger.html" %>">Upgrading from open source to Passenger Enterprise</a></li>
+          <li><a href="<%= url_for "/misc/environment_variables.html" %>">About environment variables</a></li>
+          <li><a href="<%= url_for "/misc/working_with_the_apache_config_file.html" %>">Working with the Apache config file</a></li>
+          <li><a href="<%= url_for "/misc/index.html" %>" class="visible-xs"><strong>More guides &raquo;</strong></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row hidden-xs">
+      <div class="col-sm-6">
+        <a href="<%= url_for "/indepth/index.html" %>"><strong>More guides &raquo;</strong></a>
+      </div>
+      <div class="col-sm-6">
+        <a href="<%= url_for "/misc/index.html" %>"><strong>More guides &raquo;</strong></a>
+      </div>
+    </div>
+  </section>
+<% end %>

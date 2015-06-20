@@ -1,6 +1,7 @@
 ---
 title: Working with the Apache configuration file
-section: indepth
+section: misc
+sidebar: sidebar
 ---
 # Working with the Apache configuration file
 

@@ -64,7 +64,7 @@ activate :relative_assets
 configure :development do
   activate :livereload, :port => 35730
 
-  set :dummy_search, true
+  set :display_guides, true
 end
 
 # Build-specific configuration

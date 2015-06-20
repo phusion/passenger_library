@@ -433,6 +433,15 @@ figcaption {
   margin-bottom: 2em;
 }
 
+.list-links > li {
+  line-height: 1.4;
+  font-size: 90%;
+}
+
+.list-links > li + li {
+  margin-top: 0.5em;
+}
+
 #integration_mode_selector {
   margin: 2em 0;
 
