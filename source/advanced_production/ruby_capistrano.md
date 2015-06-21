@@ -486,11 +486,26 @@ Passenger + Nginx
 : Open the Nginx configuration file in which your app's virtual host is defined. Modify the `root` directive, and point it to `/var/www/myapp/current/public`. Notice the `public` part after `/var/www/myapp/current`. When done, restart Nginx.
 
 Passenger Standalone
-: <p>Stop your Passenger Standalone instance for now. Also, if you created a Passengerfile.json on the server (as per the deployment walkthrough), then it is a good idea to copy that to the <code>shared</code> directory:</p>
+: <p>Modify <code>/etc/rc.local</code> and change the Passenger invocation to:</p>
 
-      cp /var/www/myapp/code/Passengerfile.json /var/www/myapp/shared/
+  ~~~bash
+  # Change working directory to your webapp.
+  cd /var/www/myapp/current
 
-  Modify your `config/deploy.rb` and add Passengerfile.json to `linked_files` so that it is persisted across deployments.
+  # Start Passenger Standalone in daemonized mode. Passenger will be started as
+  # root when run from this file, but Passengerfile.json tells it to drop its
+  # privileges to a normal user.
+  bundle exec passenger start
+  # Or something like this, if your server uses RVM:
+  #/usr/local/rvm/bin/rvm-exec ruby-2.2.1 \
+  #  bundle exec passenger start
+  ~~~
+
+  If you created a Passengerfile.json on the server (as per the deployment walkthrough), then it is a good idea to copy that to the `shared` directory:
+
+  <pre class="highlight"><span class="prompt">$ </span>cp /var/www/myapp/code/Passengerfile.json /var/www/myapp/shared/</pre>
+
+  Modify your local computer's `config/deploy.rb` and add Passengerfile.json to `linked_files` so that it is persisted across deployments.
 
   ~~~ruby
   set :linked_files, fetch(:linked_files, []).push(...previous value..., 'Passengerfile.json')
@@ -500,7 +515,7 @@ Passenger Standalone
 
 You are now ready to deploy a new release using Capistrano!
 
-Make a random change in your application, add the various Capistrano config files, then commit and push your changes.
+On your local computer, make a random change in your application, add the various Capistrano config files, then commit and push your changes.
 
 <pre class="highlight"><span class="prompt">$ </span>nano app/somefile.rb
 <span class="prompt">$ </span>git add Capfile config/deploy.rb config/deploy lib/capistrano
@@ -510,6 +525,23 @@ Make a random change in your application, add the various Capistrano config file
 Next, run Capistrano to start the deployment:
 
 <pre class="highlight"><span class="prompt">$ </span>bundle exec cap production deploy</pre>
+
+### Restart Passenger Standalone
+
+If you are using Passenger Standalone, then make sure that you stop it and restart it in the newly-created `current` directory. This only needs to be done once, not on every deploy.
+
+Login to your server as `myappuser`.
+
+If you use RVM, activate the correct Ruby interpreter for your app:
+
+<pre class="highlight"><span class="prompt">$ </span>rvm use ruby-2.2.1</pre>
+
+Stop the Passenger that was running in the `code` directory, then start a Passenger in the `current` directory:
+
+<pre class="highlight"><span class="prompt">$ </span>cd /var/www/myapp/code
+<span class="prompt">$ </span>bundle exec passenger stop
+<span class="prompt">$ </span>cd /var/www/myapp/current
+<span class="prompt">$ </span>bundle exec passenger start</pre>
 
 ## Conclusion
 
