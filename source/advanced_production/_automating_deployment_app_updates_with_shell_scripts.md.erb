@@ -1,0 +1,165 @@
+# Automating deployments of <%= language_name %> application updates with shell scripts
+
+If you have followed the [<%= language_name %> deployment walkthrough](../walkthroughs/deploy/<%= language_type %>/), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
+
+This guide teaches you how to automate the deployment of application updates with SSH and shell scripts. Once these scripts are set up, deploying further application updates only takes a single command.
+
+**Notes:**
+
+ * This guide assumes that you know how to manually deploy <%= language_name %> applications and how to manually deploy updates. This guide only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [<%= language_name %> deployment walkthrough](../walkthroughs/deploy/<%= language_type %>/).
+ * This guide assumes you are using at least Passenger 5.0.11. This guide does not work with earlier Passenger versions.
+
+----
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Basic idea
+
+The goal of this automation guide is to create a set of scripts, so that when you want to deploy a new version of your application, you only have to git commit &amp; push your changes and run the script.
+
+We will create two scripts:
+
+ * The `deploy/work.sh` script is run on the remote server. It performs all the steps that you would do manually on the server, such as running `git pull`,
+   <% if language_type == :nodejs || language_type == :iojs -%>
+     running `npm install`,
+   <% elsif language_type == :meteor -%>
+     extracting the Meteor package, running `npm install`,
+   <% else -%>
+     installing dependencies,
+   <% end -%>
+   restarting Passenger, etc.
+ * The `deploy/initiate.sh` script is run locally. It performs all the steps that you would do manually on your local computer, such as running as SSH'ing into the server.
+
+## Creating deploy/work.sh
+
+Create a `deploy` directory in your application directory. Inside there, create a `work.sh` which contains:
+
+~~~bash
+#!/bin/bash
+set -e
+
+### Configuration ###
+
+APP_DIR=/var/www/myapp
+
+# Uncomment and modify the following if you installed Passenger from tarball
+#export PATH=/path-to-passenger/bin:$PATH
+
+
+### Automation steps ###
+
+set -x
+
+<% if language_type == :nodejs || language_type == :iojs -%>
+# Pull latest code
+cd $APP_DIR/code
+git pull
+
+# Install dependencies
+npm install --production
+npm prune --production
+
+# Restart app
+passenger-config restart-app --ignore-app-not-running $APP_DIR/code
+<% elsif language_type == :meteor -%>
+# Extract newly uploaded package
+mkdir -p $APP_DIR/tmp
+cd $APP_DIR/tmp
+tar xzf $APP_DIR/package.tar.gz
+rm -f $APP_DIR/package.tar.gz
+
+# Install dependencies
+cd $APP_DIR/tmp/bundle/programs/server
+npm install --production
+npm prune --production
+
+# Copy over persistent files
+if [[ -e $APP_DIR/bundle/Passengerfile.json ]]; then
+  cp $APP_DIR/bundle/Passengerfile.json $APP_DIR/tmp/bundle/
+fi
+
+# Switch directories, restart app
+mv $APP_DIR/bundle $APP_DIR/bundle.old
+mv $APP_DIR/tmp/bundle $APP_DIR/bundle
+passenger-config restart-app --ignore-app-not-running $APP_DIR/bundle
+rm -rf $APP_DIR/bundle.old
+<% else -%>
+cd $APP_DIR/code
+git pull
+
+# Install dependencies
+#...put your own instructions here...
+
+# Restart app
+passenger-config restart-app --ignore-app-not-running $APP_DIR/code
+<% end -%>
+~~~
+
+Be sure to customize the `APP_DIR` configuration option. Set it to the actual application directory.
+
+## Creating deploy/initiate.sh
+
+Inside the `deploy` directory in your application directory, create an `initiate.sh` which contains:
+
+~~~bash
+#!/bin/bash
+set -e
+
+### Configuration ###
+
+SERVER=myappuser@yourserver.com
+APP_DIR=/var/www/myapp
+KEYFILE=
+REMOTE_SCRIPT_PATH=/tmp/deploy-myapp.sh
+
+
+### Library ###
+
+function run()
+{
+  echo "Running: $@"
+  "$@"
+}
+
+
+### Automation steps ###
+
+if [[ "$KEYFILE" != "" ]]; then
+  KEYARG="-i $KEYFILE"
+else
+  KEYARG=
+fi
+
+<% if language_type == :meteor -%>
+run meteor bundle package.tar.gz
+run scp $KEYARG package.tar.gz $SERVER:$APP_DIR/
+<% end -%>
+run scp $KEYARG deploy/work.sh $SERVER:$REMOTE_SCRIPT_PATH
+echo
+echo "---- Running deployment script on remote server ----"
+run ssh $KEYARG $SERVER bash $REMOTE_SCRIPT_PATH
+~~~
+
+Be sure to customize these configuration options:
+
+ * Set `APP_DIR` to the actual application directory.
+ * Set `SERVER` to the actual username and server name.
+ * If your server is on Amazon EC2, set `KEYFILE` to the path of your EC2 key file.
+
+Make this file executable:
+
+<pre class="highlight"><span class="prompt">$ </span>chmod +x deploy/initiate.sh</pre>
+
+`work.sh` does not need to be executable because it is never executed on your local computer.
+
+## Wrapping up
+
+Add these files to your Git repository, commit and test the the script:
+
+<pre class="highlight"><span class="prompt">$ </span>git add deploy/work.sh deploy/initiate.sh
+<span class="prompt">$ </span>git commit -m "Add deployment automation scripts"
+<span class="prompt">$ </span>./deploy/initiate.sh</pre>
+
+Congratulations, you are done automating redeployments.

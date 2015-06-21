@@ -88,6 +88,16 @@ substep = 0
     <p>
       The extracted package is now located in <code>/var/www/myapp/tmp/bundle</code>.
     </p>
+
+    <% if integration_mode_type == :standalone %>
+      <% substep += 1 %>
+      <h3><%= step %>.<%= substep %> Copy over Passengerfile.json</h3>
+
+      <p>
+        The Passengerfile.json that you created for the app is not inside the extracted package, so copy it over.
+      </p>
+      <pre class="highlight"><span class="prompt">$ </span>cp /var/www/<span class="o">myapp</span>/bundle/Passengerfile.json /var/www/<span class="o">myapp</span>/tmp/bundle/</pre>
+    <% end %>
   <% else %>
     <% substep += 1 %>
     <h3><%= step %>.<%= substep %> Pull latest code from Git</h3>

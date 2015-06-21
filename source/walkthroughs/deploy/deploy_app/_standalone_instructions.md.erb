@@ -62,12 +62,12 @@ Insert:
   <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
   <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
   <span class="s2">"startup_file"</span><span class="p">:</span> <span class="s2">"main.js"</span><span class="p">,</span>
-  <span class="s2">"envvars"</span><span class="p">:</span> <span class="p">[</span>
+  <span class="s2">"envvars"</span><span class="p">:</span> <span class="p">{</span>
     <span class="c1">// Tell your app where MongoDB is</span>
     <span class="s2">"MONGO_URL"</span><span class="p">:</span> <span class="s2">"mongodb://localhost:27017/<span class="o">myappdb</span>"</span><span class="p">,</span>
     <span class="c1">// Tell your app what its root URL is</span>
     <span class="s2">"ROOT_URL"</span><span class="p">:</span> <span class="s2">"<span class="o">http://yourserver.com</span>"</span><span class="p">,</span>
-  <span class="p">],</span>
+  <span class="p">},</span>
 <% end -%>
   <span class="c1">// Run the app in a production environment. The default value is "development".</span>
   <span class="s2">"environment"</span><span class="p">:</span> <span class="s2">"production"</span><span class="p">,</span>
@@ -77,7 +77,10 @@ Insert:
   <span class="s2">"daemonize"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="c1">// Tell Passenger to run the app as the given user. Only has effect</span>
   <span class="c1">// if Passenger was started with root privileges.</span>
-  <span class="s2">"user"</span><span class="p">:</span> <span class="s2">"<span class="o">myappuser</span>"</span>
+  <span class="s2">"user"</span><span class="p">:</span> <span class="s2">"<span class="o">myappuser</span>"</span>,
+  <span class="c1">// Store log and PID file in parent directory</span>
+  <span class="s2">"log_file"</span><span class="p">:</span> <span class="s2">"<span class="o">../passenger.log</span>"</span>,
+  <span class="s2">"pid_file"</span><span class="p">:</span> <span class="s2">"<span class="o">../passenger.pid</span>"</span>
 <span class="p">}</span></pre>
 
 Replace `myappuser` with your app's user account name.
@@ -120,10 +123,13 @@ While in your application's code directory, start Passenger. As configured, it w
 Note that, because Passenger is configured to listen on port 80, this command must be run with root privileges. Only root privileged processes can listen on ports lower than 1024.
 
 <% if language_type == :ruby %>
-  <pre class="highlight app_details app_details_rvm"><span class="prompt">$ </span>rvmsudo <%= passenger_command_prefix(locals) %>passenger start</pre>
-  <pre class="highlight app_details app_details_nonrvm"><span class="prompt">$ </span>sudo <%= passenger_command_prefix(locals) %>passenger start</pre>
+  <pre class="highlight app_details app_details_rvm"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
+<span class="prompt">$ </span>rvmsudo <%= passenger_command_prefix(locals) %>passenger start ./<%= app_dirname %></pre>
+  <pre class="highlight app_details app_details_nonrvm"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
+<span class="prompt">$ </span>sudo <%= passenger_command_prefix(locals) %>passenger start ./<%= app_dirname %></pre>
 <% else %>
-  <pre class="highlight"><span class="prompt">$ </span>sudo <%= passenger_command_prefix(locals) %>passenger start</pre>
+  <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
+<span class="prompt">$ </span>sudo <%= passenger_command_prefix(locals) %>passenger start ./<%= app_dirname %></pre>
 <% end %>
 
 <% substep += 1 %>
@@ -150,7 +156,7 @@ The easiest way to do that is to add it to the file `/etc/rc.local`. This script
 
 <% end -%>
 <span class="c"># Change working directory to your webapp.</span>
-<span class="nb">cd</span> /var/www/<span class="o">myapp</span>/<%= app_dirname %>
+<span class="nb">cd</span> /var/www/<span class="o">myapp</span>
 
 <span class="c"># Start Passenger Standalone in daemonized mode. Passenger will be started as
 # root when run from this file, but Passengerfile.json tells it to drop its
@@ -158,8 +164,8 @@ The easiest way to do that is to add it to the file `/etc/rc.local`. This script
 <% if language_type == :ruby -%>
 <span class="app_details app_details_rvm"><span class="c"># Replace '<%= LATEST_RUBY_VERSION %>' with the Ruby version you want your app to run under.</span>
 /usr/local/rvm/bin/rvm-exec ruby-<%= LATEST_RUBY_VERSION %> \
-  <%= passenger_command_prefix(locals) %>passenger start</span><span class="app_details app_details_nonrvm"><%= passenger_command_prefix(locals) %>passenger start</span>
+  <%= passenger_command_prefix(locals) %>passenger start ./<%= app_dirname %></span><span class="app_details app_details_nonrvm"><%= passenger_command_prefix(locals) %>passenger start ./<%= app_dirname %></span>
 <% else -%>
-<%= passenger_command_prefix(locals) %>passenger start
+<%= passenger_command_prefix(locals) %>passenger start ./<%= app_dirname %>
 <% end -%>
 </pre>
