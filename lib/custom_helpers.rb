@@ -102,8 +102,15 @@ module CustomHelpers
     end
   end
 
+  def should_use_bundle_exec_for_passenger?(locals)
+    (locals[:language_type] == :ruby || current_page.data.language_type == 'ruby') &&
+      (current_page.data.section == "start" ||
+       current_page.data.section == "basics" ||
+       locals[:integration_mode_type] == :standalone)
+  end
+
   def passenger_command_prefix(locals)
-    if locals[:language_type] == :ruby || current_page.data.language_type == 'ruby'
+    if should_use_bundle_exec_for_passenger?(locals)
       "bundle exec "
     else
       ""
@@ -116,7 +123,11 @@ module CustomHelpers
       if options.fetch(:cd, true)
         result << %Q{<span class="prompt">$ </span>cd /path-to-your-app\n}
       end
-      result << %Q{<span class="prompt">$ </span>bundle exec }
+      if should_use_bundle_exec_for_passenger?(locals)
+        result << %Q{<span class="prompt">$ </span>bundle exec }
+      else
+        %Q{<span class="prompt">$ </span>}
+      end
     else
       %Q{<span class="prompt">$ </span>}
     end
