@@ -497,7 +497,7 @@ Passenger + Nginx
 : Open the Nginx configuration file in which your app's virtual host is defined. Modify the `root` directive, and point it to `/var/www/myapp/current/public`. Notice the `public` part after `/var/www/myapp/current`. When done, restart Nginx.
 
 Passenger Standalone
-: <p>Stop your Passenger Standalone instance for now. Also, if you created a Passengerfile.json on the server (as per the deployment walkthrough), then it is a good idea to copy that to the `shared` directory:</p>
+: <p>Stop your Passenger Standalone instance for now. Also, if you created a Passengerfile.json on the server (as per the deployment walkthrough), then it is a good idea to copy that to the <code>shared</code> directory:</p>
 
       cp /var/www/myapp/code/Passengerfile.json /var/www/myapp/shared/
 
