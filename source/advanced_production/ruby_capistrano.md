@@ -11,7 +11,12 @@ If you have followed the [Ruby deployment walkthrough](../walkthroughs/deploy/ru
 
 This guide teaches you how to automate the deployment of application updates through [Capistrano](http://capistranorb.com/). Capistrano is a popular task automation tool among Ruby developers. Once Capistrano is set up, deploying further application updates only takes a single command.
 
-**Note:** this guide assumes that you know how to manually deploy Ruby applications and how to manually deploy updates. Capistrano only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [Ruby deployment walkthrough](../walkthroughs/deploy/ruby/).
+**Notes:**
+
+ * This guide assumes that you know how to manually deploy Ruby applications and how to manually deploy updates. Capistrano only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [Ruby deployment walkthrough](../walkthroughs/deploy/ruby/).
+ * This guide assumes you are using at least Passenger 5.0.11. This guide does not work with earlier Passenger versions.
+
+---
 
 **Table of contents**
 
