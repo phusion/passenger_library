@@ -20,7 +20,7 @@ This guide teaches you how to automate the deployment of application updates thr
 
 **Table of contents**
 
-<ol class="toc-container"><li>Loading...</li></ol>
+<ul class="toc-container"><li>Loading...</li></ul>
 
 ## Fundamental concepts
 
@@ -81,17 +81,6 @@ myapp
               └── secrets.yml
 </pre>
 
-~~~ruby
-class Bar < Baz
-  def foo
-    puts 123 + "456"
-  end
-
-  %Q(hello world)
-  %w(hello world)
-end
-~~~
-
  1. `releases` holds all deployments in a timestamped folder. Every time you instruct Capistrano to deploy, Capistrano makes clones the Git repository to a new subdirectory inside `releases`.
  2. `current` is a symlink pointing to the latest release inside the `releases` directory. This symlink is updated at the end of a successful deployment. If the deployment fails in any step the current symlink still points to the old release.
  3. `repo` holds a cached copy of the Git repository, for making subsequent Git pulls faster.
@@ -108,7 +97,7 @@ The advantage over the simple `/var/www/myapp/code` approach in the deployment w
  1. It makes deployments atomic. If a deployment fails, the currently running version of the application is not affected. Users also never get to see a state in which an update is half-deployed.
  2. It makes rolling back to previous releases dead-simple. Simply change the `current` symlink, tell Passenger to restart the app, and done.
 
-## Initializing Capistrano
+## 1 Initializing Capistrano
 
 Now that you understand Capistrano's fundamental concepts, it is time to get started. The first thing you need to do is to install Capistrano into your Ruby project. Open your Gemfile and add:
 
@@ -141,7 +130,7 @@ create Capfile
 Capified</span>
 </pre>
 
-## Editing Capfile
+## 2 Editing Capfile
 
 `Capfile` is the Capistrano entry point. It defines what recipes to load. You must edit it to load the recipes you need.
 
@@ -205,7 +194,7 @@ require 'capistrano/rvm'
 
 Capistrano also has recipes for rbenv and chruby support. Those are outside the scope of this document, so if you want to use them, be sure to check the [capistrano-rbenv](https://github.com/capistrano/rbenv) and [capistrano-chruby](https://github.com/capistrano/chruby) websites for documentation.
 
-## Editing config/deploy.rb
+## 3 Editing config/deploy.rb
 
 The next step is to edit config/deploy.rb. This file contains configuration values that control how the loaded recipes should do their jobs. It also defines additional commands to be executed on servers. You must edit it according to your situation.
 
@@ -321,7 +310,7 @@ The `after :restart, :clear_cache` block you see means "define a new task named 
        set :passenger_in_gemfile, true
        ~~~
 
-## Editing config/deploy/production.rb
+## 4 Editing config/deploy/production.rb
 
 The next step is to edit config/deploy/production.rb. This file defines the servers that Capistrano should deploy to, in the form of SSH login information.
 
@@ -425,7 +414,7 @@ set :ssh_options, {
 }
 ~~~
 
-## Preparing the server(s)
+## 5 Preparing the server(s)
 
 You are now done configuring Capistrano. But before Capistrano can do its work, you need to setup a basic directory structure on the server, create initial configuration files and configure Passenger.
 
@@ -507,7 +496,7 @@ Passenger Standalone
   set :linked_files, fetch(:linked_files, []).push(...previous value..., 'Passengerfile.json')
   ~~~
 
-## Deploying a new release
+## 6 Deploying a new release
 
 You are now ready to deploy a new release using Capistrano!
 

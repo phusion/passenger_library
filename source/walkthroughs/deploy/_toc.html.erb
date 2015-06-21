@@ -104,7 +104,11 @@
 
   <% if locals[:infrastructure_type].nil? || locals[:integration_mode_type].nil? || locals[:edition_type].nil? %>
     <% step += 1 %>
-    <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "ownserver"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/#{locals[:edition_type] || "trusty"}/deploy_app.html" %>" class="muted"><%= step %> Deploy app</a></li>
+    <% if locals[:language_type] == :ruby && locals[:integration_mode_type] == :standalone %>
+      <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "ownserver"}/standalone/#{locals[:edition_type] || "oss"}/deploy_app_main.html" %>" class="muted"><%= step %> Deploy app</a></li>
+    <% else %>
+      <li><a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{locals[:infrastructure_type] || "ownserver"}/#{locals[:integration_mode_type] || "nginx"}/#{locals[:edition_type] || "oss"}/#{locals[:edition_type] || "trusty"}/deploy_app.html" %>" class="muted"><%= step %> Deploy app</a></li>
+    <% end %>
   <% else %>
     <% navbar_subsection :deploy_app do %>
       <% step += 1 %>
