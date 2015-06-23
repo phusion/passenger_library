@@ -5,4 +5,4 @@ sidebar: sidebar
 ---
 # Upgrading from open source to Passenger Enterprise
 
-TODO
+<%= render_partial("/to_be_written.md") %>
