@@ -8,7 +8,6 @@ The fact that Nginx needs to be recompiled, has some implications:
 
  * Init scripts, e.g. `/etc/init.d/nginx` and `service nginx restart`, are not provided by the default Nginx source code. Init scripts are actually extensions provided by the operating system's Nginx package. If you install Nginx from source, then you can't use init scripts to control Nginx anymore. Instead, you will use more generic operating system primitives to control Nginx, such as PID files and signals. Don't worry, this installation guide will teach you.
 
-<!-- TODO: add link -->
-If you do not like having to recompile Nginx then consider using Passenger Standalone in a reverse proxy configuration to Nginx. Passenger Standalone + reverse proxy is fully supported and supports the same features as Passenger's Nginx integration mode.
+If you do not like having to recompile Nginx then consider [using Passenger Standalone in a reverse proxy configuration to Nginx](<%= url_for "/advanced_production/passenger_standalone_reverse_proxy.html" %>). Passenger Standalone + reverse proxy is fully supported and supports the same features as Passenger's Nginx integration mode.
 
 If you understand this and choose to use Passenger with its Nginx integration mode, then read on. :-)
