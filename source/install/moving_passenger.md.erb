@@ -1,0 +1,33 @@
+---
+title: Moving Passenger to a different directory
+section: install
+---
+# Moving Passenger to a different directory
+
+If you installed Passenger through a source tarball then you can move the Passenger directory to another location. This is not possible if you used any of the other installation methods, such as APT, YUM or RubyGems.
+
+First, move the directory to whereever you like:
+
+    mv /opt/passenger/passenger-5.0.0 /usr/local/passenger-5.0.0
+
+If applicable, you must tell Nginx or Apache that Phusion Passenger has moved. Open your Nginx or Apache configuration file and set the `passenger_root`/`PassengerRoot` directive to the new location.
+
+Nginx syntax:
+
+    passenger_root /usr/local/passenger-5.0.0;
+
+Apache syntax:
+
+    PassengerRoot /usr/local/passenger-5.0.0
+
+Restart your web server to finalize the change.
+
+If you added Passenger's `bin` subdirectory to `PATH` by editing /etc/bashrc (or a related shell startup file), then you must update your PATH with the new location. Open `/etc/bashrc` (or `/etc/bash.bashrc` on some systems) and change:
+
+    export PATH=/opt/passenger/passenger-5.0.0/bin:$PATH
+
+to:
+
+    export PATH=/usr/local/passenger-5.0.0/bin:$PATH
+
+Finally, restart all your shell sessions to activate the PATH change.

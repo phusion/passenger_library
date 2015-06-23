@@ -5,4 +5,24 @@ sidebar: sidebar
 ---
 # Uninstalling Passenger
 
-<%= render_partial("/to_be_written.md") %>
+Uninstalling Passenger involves two steps. The first step is to remove the Passenger files. The second step is to remove any Passenger configuration from your system.
+
+## Step 1: remove the Passenger files
+
+ * If you installed Passenger through Homebrew, then run `brew uninstall passenger`.
+ * If you installed Passenger via a Ruby gem, then run `gem uninstall passenger` (or, if you're a [Passenger Enterprise](https://www.phusionpassenger.com/enterprise) user, `gem uninstall passenger-enterprise-server`).
+ * If you installed Passenger via a source tarball, then remove the directory
+  in which you placed the extracted Passenger files. This directory is the
+  same as the one pointed to the by `PassengerRoot`/`passenger_root` configuration directive.
+ * If you installed Passenger through APT, then run `sudo apt-get remove passenger nginx-extras libapache2-mod-passenger`.
+ * If you installed Passenger through YUM, then run `sudo yum remove passenger nginx mod_passenger`.
+
+## Step 2: remove Passenger configuration from system
+
+Inspect all your Nginx or Apache configuration files, and remove any Passenger-related configuration options.
+
+If you installed Passenger via a source tarball, then edit your shell startup file (e.g. /etc/bashrc) and ensure the Passenger bin directory is no longer in PATH.
+
+## Tip: Nginx does not need to be recompiled
+
+Nginx does not have to be recompiled after uninstalling Passenger. Altough Nginx will contain the Passenger Nginx module, the module will not do anything when all Passenger configuration directives are removed.

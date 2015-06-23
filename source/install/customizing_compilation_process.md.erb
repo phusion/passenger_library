@@ -1,0 +1,109 @@
+---
+title: Customizing the compilation process
+section: install
+sidebar: sidebar
+---
+# Customizing the compilation process
+
+The Phusion Passenger compilation process can be customized with environment variables. You can learn more about environment variables in [About environment variables](../misc/environment_variables.html).
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Setting the compiler
+
+You can force the Phusion Passenger build system to use a specific C or C++ compiler by setting the `CC` and `CXX` environment variables. These may be set to any arbitrary shell commands.
+
+For example, contributors who want to hack on Phusion Passenger may want to use Clang for faster compilation and [ccache](http://ccache.samba.org/) for faster recompilation, and may want to enable more error-catching compilation flags:
+
+~~~bash
+export CC='ccache clang -fcolor-diagnostics -Qunused-arguments -fcatch-undefined-behavior -ftrapv'
+export CXX='ccache clang++ -fcolor-diagnostics -Qunused-arguments -fcatch-undefined-behavior -ftrapv'
+~~~
+
+<div class="note">
+  If you run the installer with <code>sudo</code> then environment variables may not be passed properly. Learn more at <a href="../misc/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
+</div>
+
+## Adding additional compiler or linker flags
+
+On some systems, C/C++ libraries and headers that Phusion Passenger requires may be located in a non-standard directory. You can force the Phusion Passenger build system to look in those locations by injecting compiler and linker flags using the following environment variables:
+
+`EXTRA_PRE_CFLAGS`
+: These flags are injected into all C compiler invocations that involve compiling C source files. This also covers compiler invocations that compile *and* link. The flags are injected at the beginning of the command string, even before `EXTRA_PRE_LDFLAGS`.
+
+`EXTRA_CFLAGS`
+: Similar to `EXTRA_PRE_CFLAGS`, but injected at the end of the command string, before `EXTRA_LDFLAGS`.
+
+`EXTRA_PRE_CXXFLAGS`
+: Similar to `EXTRA_PRE_CFLAGS`, but for C++ compiler invocations.
+
+`EXTRA_CXXFLAGS`
+: Similar to `EXTRA_CFLAGS`, but for C++ compiler invocations.
+
+`EXTRA_PRE_LDFLAGS`
+: These flags are injected into all C/C++ compiler invocations that involve linking. This includes compiler invocations that compile *and* link. The flags are injected at the beginning of the command string, but after `EXTRA_PRE_CFLAGS`/`EXTRA_PRE_CXXFLAGS`.
+
+`EXTRA_PRE_C_LDFLAGS`
+: These flags are injected into all C compiler invocations that involve linking, right after `EXTRA_PRE_LDFLAGS`.
+
+`EXTRA_PRE_CXX_LDFLAGS`
+: Similar to `EXTRA_PRE_CXX_LDFLAGS`, but for C++ compiler invocations.
+
+`EXTRA_LDFLAGS`
+: Similar to `EXTRA_PRE_LDFLAGS`, but injected at the very end of the command string, even after `EXTRA_CFLAGS` and `EXTRA_CXXFLAGS`.
+
+`EXTRA_C_LDFLAGS`
+: Similar to `EXTRA_LDFLAGS`, but only injected for C executable linking commands. Injected right after `EXTRA_LDFLAGS`.
+
+`EXTRA_CXX_LDFLAGS`
+: Similar to `EXTRA_LDFLAGS`, but only injected for C++ executable linking commands. Injected right after `EXTRA_LDFLAGS`.
+
+`PASSENGER_THREAD_LOCAL_STORAGE`
+: Setting this to 1 will enable the `PASSENGER_THREAD_LOCAL_STORAGE` macro, which forcefully disables the use of thread-local storage inside the Phusion Passenger codebase. Setting this environment variable is useful on systems that have broken support for thread-local storage, despite passing our build system's check for proper thread-local storage support. At the time of writing, one user has reported that Ubuntu 12.04 32-bit has broken thread-local storage report although neither the reporter nor us were able to reproduce the problem on any other systems running Ubuntu 12.04 32-bit. Note that this flag has no effect on non-Phusion Passenger code.
+
+<div class="note">
+  If you run the installer with <code>sudo</code> then environment variables may not be passed properly. Learn more at <a href="../misc/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
+</div>
+
+## Forcing location of command line tools and dependencies
+
+The Phusion Passenger build system attempts to autodetect many things by locating relevant helper tools. For example, to find out which compiler flags it should use for compiling Apache modules, it locates the `apxs2` command and queries it. To find out which compiler flags it should use for libcurl, it queries the `curl-config` command. These commands may not be in `$PATH`, or even when they are you may want to use a different one.
+
+You can force the build to find certain command line tools at certain locations by using the following environment variables:
+
+`HTTPD`
+: The location of the `httpd` executable (the Apache server executable).
+
+`APXS2`
+: The location of the `apxs2` executable (the Apache module developer tool). Only used by `passenger-install-apache2-module`.
+
+  This environment variable, together with `HTTPD`, are what you need to customize if you have multiple Apache installations on your system, or if your Apache is located in a non-standard location which Phusion Passenger cannot detect. By setting `APXS2` and `HTTP` to the right paths, you can force Phusion Passenger to be compiled against that specific Apache installation.
+
+  For example, if your Apache installation is located in `/opt/lamp/apache2`, then you can run the installer as follows:
+
+  <pre class="highlight"><span class="prompt">$ </span>sudo bash
+<span class="prompt"># </span>export HTTPD=/opt/lampp/apache2/bin/apache
+<span class="prompt"># </span>export APXS2=/opt/lampp/apache2/bin/apxs
+<span class="prompt"># </span>passenger-install-apache2-module</pre>
+
+`APR_CONFIG`
+: The location of the `apr-config` executable (the Apache Portable Runtime developer tool).
+
+`APU_CONFIG`
+: The location of the `apu-config` executable (the Apache Portable Runtime Utility developer tool).
+
+`MAKE`
+: The location of a `make` tool. It does not matter which implementation of `make` this is.
+
+`GMAKE`
+: The location of the GNU-compatible `make` tool.
+
+<div class="note">
+  If you do not know what environment variables are, or how to use them, then please read <a href="../misc/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
+</div>
+
+<div class="note">
+  If you run the installer with <code>sudo</code> then environment variables may not be passed properly. Learn more at <a href="../misc/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
+</div>

@@ -1,0 +1,46 @@
+---
+title: Non-interactive, automatic, headless installs or upgrades
+section: install
+sidebar: sidebar
+---
+# Non-interactive, automatic, headless installs or upgrades
+
+Passenger and Passenger Enterprise can be installed in a non-interactive, automatic, headless manner. This is perfect in automated scenarios, e.g. when using Chef or Puppet, or when building a Docker container.
+
+This guide assumes that you are already familiar with installing Passenger manually. If not, please read the [installation guide](.).
+
+The instructions in this guide apply equally to the open source version and to the Enterprise version.
+
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+## Debian packages
+
+If you are on a Debian or Ubuntu operating system, then the recommended way to install Passenger is through [APT](apt_repo.html). While installing the Passenger packages through APT, you can pass `-y` to `apt-get install` to have it run non-interactively. For example:
+
+    sudo apt-get install -y passenger
+
+## RPM packages
+
+If you are on a Red Hat or CentOS operating system, then the recommended way to install Passenger is through [YUM](yum_repo.html). While installing the Passenger packages through YUM, you can pass `-y` to `yumm install` to have it run non-interactively. For example:
+
+    sudo yum install -y passenger
+
+## Source tarball or RubyGems installation
+
+### Nginx mode or Apache mode
+
+If you are using Passenger + Nginx or Passenger + Apache, then the installation process involves running an installer (`passenger-install-nginx-module` and `passenger-install-apache2-module`) which is interactive. You can run the installer non-interactively by passing various answers to the installer through command line options. Please run the installer with `--help` for a list of available command line options. Here are examples which show how to run them non-interactively:
+
+    passenger-install-apache2-module --auto
+    passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx
+
+In case of Nginx, you can also achieve non-interactive installation by [installing Passenger as a normal Nginx module](install_as_nginx_module.html).
+
+### Standalone mode
+
+If you are using Passenger in its Standalone mode, then you should run the following commands right after installing Passenger. These will download any necessary files immediately, which would otherwise be downloading during the first run of `passenger start`.
+
+    passenger-config install-standalone-runtime
+    passenger-config build-native-support

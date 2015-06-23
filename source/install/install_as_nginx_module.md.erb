@@ -1,0 +1,27 @@
+---
+title: Installing Passenger as a normal Nginx module
+section: install
+sidebar: sidebar
+---
+# Installing Passenger as a normal Nginx module
+
+If you have ever installed an add-on module for Nginx, then you know that it involves the following steps:
+
+ 1. Download the Nginx source code.
+ 2. Run the Nginx `configure` script with `--add-module` parameters, like this: `./configure --prefix=/somewhere --add-module=/path-to-your-module`
+ 3. Run `make && sudo make install` to compile and install Nginx.
+
+This is actually exactly what `passenger-install-nginx-module` does under the hood. It compiles Nginx with `--add-module=/path-to-passenger-module`.
+
+The value for `/path-to-passenger-module` can be obtained with the command:
+
+<pre class="highlight"><span class="prompt">$ </span>passenger-config --nginx-addon-dir</pre>
+
+Here is a full example that shows, given an Nginx source directory, how you can install Nginx with Passenger enabled as well as any other Nginx module you want:
+
+<pre class="highlight"><span class="prompt">$ </span>cd /path-to-nginx-source-dir
+<span class="prompt">$ </span>./configure --prefix=/opt/nginx \
+  --add-module=$(passenger-config --nginx-addon-dir) \
+  --add-module=/path-to-some-nginx-module
+<span class="prompt">$ </span>make
+<span class="prompt">$ </span>sudo make install</pre>
