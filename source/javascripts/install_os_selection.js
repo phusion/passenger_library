@@ -97,7 +97,7 @@ function showGenericInstallationInstructions() {
 }
 
 $(document).ready(function() {
-  $('#os_install_select').change(installOsChanged);
+  $('#os_install_select').show().change(installOsChanged);
   $('#debian_version_select').change(installOsChanged);
   $('#redhat_version_select').change(installOsChanged);
   $('#generic_install_method_select').change(installOsChanged);

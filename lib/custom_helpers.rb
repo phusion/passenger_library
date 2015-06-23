@@ -145,12 +145,30 @@ module CustomHelpers
     result
   end
 
+  def debian_version_list_options(next_page)
+    result = ""
+    SUPPORTED_DEBIAN_VERSIONS.each_pair do |codename, name|
+      stylized_codename = codename.dup
+      stylized_codename[0..0] = stylized_codename[0..0].upcase
+      result << %Q{<li><a href="#{codename}/#{next_page}">#{name} (#{stylized_codename})</a></li>}
+    end
+    result
+  end
+
   def redhat_version_selection_options
     result = ""
     maybe_selected = " selected"
     SUPPORTED_REDHAT_VERSIONS.each_pair do |version, name|
       result << %Q{<option value="#{version}"#{maybe_selected}>#{name}</option>}
       maybe_selected = nil
+    end
+    result
+  end
+
+  def redhat_version_list_options(next_page)
+    result = ""
+    SUPPORTED_REDHAT_VERSIONS.each_pair do |version, name|
+      result << %Q{<li><a href="#{version}/#{next_page}">#{name}</a></li>}
     end
     result
   end

@@ -10,6 +10,7 @@
     <% if current_page.data.skip_search %>
       <!-- META: SKIP SEARCH -->
     <% end %>
+    <%= yield_content :head %>
   </head>
 
   <body class="<%= page_classes %>">
@@ -42,9 +43,10 @@
                   <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
                 </ul>
               <% end %>
-              <% navbar_dropdown_section :advanced_production, :admin, :indepth, :misc do %>
+              <% navbar_dropdown_section :install, :advanced_production, :admin, :indepth, :misc do %>
                 <a href="<%= url_for '/guides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
+                  <% navbar_section :install do %><%= link_to "Installation, upgrade and uninstallation", "/install/index.html" %><% end %>
                   <% navbar_section :advanced_production do %><%= link_to "Advanced production techniques", "/advanced_production/index.html" %><% end %>
                   <% navbar_section :admin do %><%= link_to "Administration", "/admin/index.html" %><% end %>
                   <% navbar_section :indepth do %><%= link_to "Passenger in depth", "/indepth/index.html" %><% end %>

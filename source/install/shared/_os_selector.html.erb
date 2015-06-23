@@ -6,7 +6,56 @@ if context != :install_passenger && !needs_install_passenger?(locals)
 end
 %>
 
-<p><select id="os_install_select">
+<noscript>
+  <!-- Many parts of the Library don't work without Javascript. This noscript section here only serves to allow search engines to discover links. -->
+  <ul>
+    <li>
+      <strong>Debian, Ubuntu</strong>
+      <ul>
+        <%= debian_version_list_options(next_page) %>
+      </ul>
+    </li>
+    <li>
+      <strong>Red Hat, CentOS</strong>
+      <ul>
+        <%= redhat_version_list_options(next_page) %>
+      </ul>
+    </li>
+    <% if edition_type == :oss %>
+      <%# Passenger Enterprise cannot be installed via Homebrew %>
+      <li>
+        <strong>Mac OS X</strong>
+        <ul>
+          <li><a href="osx/<%= next_page %>">Mac OS X + Homebrew</a></li>
+        </ul>
+      </li>
+    <% end %>
+    <li>
+      <strong>Other</strong>
+      <% if context == :install_passenger %>
+        <ul>
+          <li>Please select an installation method:</li>
+          <li><a href="tarball/<%= next_page %>">Source tarball</a></li>
+          <% if locals[:language_type].nil? || locals[:language_type] == :ruby %>
+            <li><a href="rubygems_rvm/<%= next_page %>">RubyGems (with RVM)</a></li>
+            <li><a href="rubygems_norvm/<%= next_page %>">RubyGems (without RVM)</a></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <ul>
+          <li>Please specify how Passenger was installed:</li>
+          <li><a href="tarball/<%= next_page %>">Through source tarball</a></li>
+          <% if locals[:language_type].nil? || locals[:language_type] == :ruby %>
+            <li><a href="rubygems_rvm/<%= next_page %>">Through RubyGems (with RVM)</a></li>
+            <li><a href="rubygems_norvm/<%= next_page %>">Through RubyGems (without RVM)</a></li>
+          <% end %>
+        </ul>
+      <% end %>
+    </li>
+  </ul>
+</noscript>
+
+<p><select id="os_install_select" style="display: none">
   <option value="none" selected>Please select an operating system</option>
   <option value="debian">Debian, Ubuntu</option>
   <option value="redhat">Red Hat, CentOS</option>
@@ -48,14 +97,14 @@ end
     <% if context == :install_passenger %>
       <option value="none" selected>Please select an installation method</option>
       <option value="tarball">Source tarball</option>
-      <% if language_type == :ruby %>
+      <% if locals[:language_type].nil? || locals[:language_type] == :ruby %>
         <option value="rubygems_rvm">RubyGems (with RVM)</option>
         <option value="rubygems_norvm">RubyGems (without RVM)</option>
       <% end %>
     <% else %>
       <option value="none" selected>Please specify how Passenger was installed</option>
       <option value="tarball">Through source tarball</option>
-      <% if language_type == :ruby %>
+      <% if locals[:language_type].nil? || locals[:language_type] == :ruby %>
         <option value="rubygems_rvm">Through RubyGems (with RVM)</option>
         <option value="rubygems_norvm">Through RubyGems (without RVM)</option>
       <% end %>
@@ -75,6 +124,6 @@ end
   </div>
 <% end %>
 
-<div class="install_os install_os_any">
+<div class="install_os install_os_any" style="display: none">
   <a href="." class="btn btn-primary install_os_continue" data-next-page="<%= next_page %>">Continue &raquo;</a>
 </div>

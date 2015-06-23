@@ -1,0 +1,75 @@
+<%
+if edition_type == :enterprise
+  alternative_edition_name = "open source"
+  alternative_edition_url = url_for("/install/passenger_oss_#{integration_mode_type}/index.html")
+  enterprise_suffix = "_enterprise"
+else
+  alternative_edition_name = "Enterprise"
+  alternative_edition_url = url_for("/install/passenger_enterprise_#{integration_mode_type}/index.html")
+  enterprise_suffix = nil
+end
+-%>
+
+<% if integration_mode_type == :nginx %>
+  <div style="text-align: center">
+    <img src="<%= url_for '/images/passenger.png' %>" style="margin-right: 2em" alt="Passenger">
+    <img src="<%= url_for '/images/nginx.png' %>" wwidth="144" hheight="128" alt="Nginx">
+  </div>
+<% elsif integration_mode_type == :apache %>
+  <div class="image-float-right hidden-xs">
+    <p><img src="<%= url_for '/images/passenger.png' %>" alt="Passenger"></p>
+    <p><img src="<%= url_for '/images/apache.png' %>" width="144" height="128" alt="Apache"></p>
+  </div>
+  <div class="visible-xs" style="text-align: center">
+    <img src="<%= url_for '/images/passenger.png' %>" style="margin-right: 2em" alt="Passenger">
+    <img src="<%= url_for '/images/apache.png' %>" width="144" height="128" alt="Apache">
+  </div>
+<% else %>
+  <div class="image-float-right hidden-xs">
+    <p><img src="<%= url_for '/images/passenger.png' %>" alt="Passenger"></p>
+  </div>
+  <div class="visible-xs" style="text-align: center">
+    <img src="<%= url_for '/images/passenger.png' %>" alt="Passenger">
+  </div>
+<% end %>
+
+[Passenger](https://www.phusionpassenger.com/) is an open source **web application server** for Ruby, Python, Node.js and Meteor. It handles HTTP requests, manages processes and resources, and enables administration, monitoring and problem diagnosis. Passenger is very easy to use, makes deploying in production much easier and is scalable.
+
+<% if integration_mode_type == :apache %>
+  This installation guide teaches you how to install Passenger in a production environment, integrated with the [Apache web server](http://httpd.apache.org/).
+<% elsif integration_mode_type == :nginx %>
+  This installation guide teaches you how to install Passenger in a production environment, integrated with the [Nginx web server](http://nginx.org/).
+<% else %>
+  This installation guide teaches you how to install Passenger in a production environment, running as a standalone web server.
+<% end %>
+When you are done with this guide, we will teach you how to deploy an app in a production environment using Passenger.
+
+#### Is this the right guide for you?
+
+<% if integration_mode_type == :apache || integration_mode_type == :nginx %>
+  This guide guide assumes you are already familiar with Passenger's basic concepts and that you are already familiar with <%= integration_mode_name %> (and thus that you chose <%= integration_mode_name %> for a reason).
+
+   * Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the [quickstart](<%= url_for '/walkthroughs/start/index.html' %>) and the [basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>).
+   * Not familiar with <%= integration_mode_name %>? Please follow [the end-to-end deployment walkthroughs](<%= url_for '/walkthroughs/deploy/index.html' %>) instead, which guide you through the entire installation process, including installing the programming language runtime that your application needs.
+<% else %>
+  This guide guide assumes you are already familiar with Passenger's basic concepts. Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the [quickstart](<%= url_for '/walkthroughs/start/index.html' %>) and the [basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>).
+<% end %>
+
+Before we continue, there are a few more things you should know:
+
+Open source vs Enterprise
+: Passenger comes in an open source edition, as well as a paid [Enterprise edition](https://www.phusionpassenger.com/enterprise) that has more features. This guide teaches you how to install the <%= edition_name %> edition. There is a [separate guide for installing the <%= alternative_edition_name %> edition](<%= alternative_edition_url %>).
+
+<% if integration_mode_type == :apache -%>
+Multiple integration modes
+: Passenger supports [multiple web server integration modes](<%= url_for '/indepth/integration_modes.html' %>). Passenger can integrate with Apache, but also with Nginx, and can even run standalone. You can learn more about integration modes in the [basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>). There are also separate installation guides for [the Nginx mode](<%= url_for "/install/passenger_#{edition_type}_nginx/index.html" %>) and [the Standalone mode](<%= url_for "/install/passenger_#{edition_type}_standalone/index.html" %>).
+<% elsif integration_mode_type == :nginx -%>
+Multiple integration modes
+: Passenger supports [multiple web server integration modes](<%= url_for '/indepth/integration_modes.html' %>). Passenger can integrate with Nginx, but also with Apache, and can even run standalone. You can learn more about integration modes in the [basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>). There are also separate installation guides for [the Apache mode](<%= url_for "/install/passenger_#{edition_type}_apache/index.html" %>) and [the Standalone mode](<%= url_for "/install/passenger_#{edition_type}_standalone/index.html" %>).
+<% else -%>
+Multiple integration modes
+: Passenger supports [multiple web server integration modes](<%= url_for '/indepth/integration_modes.html' %>). Passenger can run standalone, but can also integrate with Nginx or with Apache. You can learn more about integration modes in the [basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>). There are also separate installation guides for [the Nginx mode](<%= url_for "/install/passenger_#{edition_type}_nginx/index.html" %>) and [the Apache mode](<%= url_for "/install/passenger_#{edition_type}_apache/index.html" %>).
+<% end -%>
+
+First time install vs upgrade
+: This guide is for *first time installations* only. If you are upgrading, please refer to the upgrade guide.<!-- TODO: link to upgrade guide -->

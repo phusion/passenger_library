@@ -69,6 +69,14 @@ module DeploymentWalkthroughHelpers
       edition_title: "Passenger Enterprise",
       edition_long_title: "Passenger Enterprise" }
   ]
+  INTEGRATION_MODES = [
+    { integration_mode_type: :nginx,
+      integration_mode_name: "Nginx" },
+    { integration_mode_type: :apache,
+      integration_mode_name: "Apache" },
+    { integration_mode_type: :standalone,
+      integration_mode_name: "Standalone" }
+  ]
 
 
   def define_deployment_walkthrough_pages
@@ -192,12 +200,7 @@ module DeploymentWalkthroughHelpers
       [{ integration_mode_type: :standalone,
          integration_mode_name: "Standalone" }]
     else
-      [{ integration_mode_type: :nginx,
-         integration_mode_name: "Nginx" },
-       { integration_mode_type: :apache,
-         integration_mode_name: "Apache" },
-       { integration_mode_type: :standalone,
-         integration_mode_name: "Standalone" }]
+      INTEGRATION_MODES
     end
   end
 
@@ -242,7 +245,7 @@ module DeploymentWalkthroughHelpers
         os_config_description: "generic installation through source tarball",
         os_config_description_with_preposition: "from source tarball" }
     ]
-    if locals[:language_type] == :ruby
+    if locals[:language_type].nil? || locals[:language_type] == :ruby
       result << {
         os_config_type: :rubygems_rvm,
         os_config_class: :rubygems,

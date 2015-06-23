@@ -35,7 +35,7 @@ end
 <% if edition_type == :enterprise %>
   <%=
   result2 = {}
-  output = render_partial("/guides/install/shared/enterprise_preamble.html",
+  output = render_partial("/install/shared/enterprise_preamble.html",
     locals: locals.merge(result: result2, heading_level: 3, step_format: "#{header_step}.%s"))
   substep = result2[:step]
   output

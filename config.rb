@@ -49,6 +49,31 @@ ignore "/walkthroughs/deploy/deploy_app.html"
 ignore "/walkthroughs/deploy/deploy_updates.html"
 ignore "/walkthroughs/deploy/conclusion.html"
 
+
+INTEGRATION_MODES.each do |integration_mode_spec|
+  integration_mode_type = integration_mode_spec[:integration_mode_type]
+
+  PASSENGER_EDITIONS.each do |edition_spec|
+    edition_type = edition_spec[:edition_type]
+    locals = integration_mode_spec.merge(edition_spec)
+
+    proxy "/install/passenger_#{edition_type}_#{integration_mode_type}/index.html",
+        "/install/install_passenger_main.html",
+        locals: locals
+
+    available_os_configs(locals).each do |os_config_spec|
+      os_config = os_config_spec[:os_config_type]
+
+      proxy "/install/passenger_#{edition_type}_#{integration_mode_type}/#{os_config}/index.html",
+        "/install/install_passenger.html",
+        locals: locals.merge(os_config_spec)
+    end
+  end
+end
+
+ignore "/install/install_passenger_main.html"
+ignore "/install/install_passenger.html"
+
 ###
 
 set :css_dir, 'stylesheets'

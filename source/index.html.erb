@@ -40,6 +40,27 @@ skip_search: true
 
 <% if config[:display_guides] %>
   <section class="bs-docs-section" id="guides">
+    <h3>Installation, upgrade and uninstallation</h3>
+
+    <div class="row">
+      <div class="col-sm-8">
+        <ul class="list-unstyled list-links">
+          <li><a href="<%= url_for "/install/passenger_oss_nginx/index.html" %>">Install Passenger (open source) + Nginx</a></li>
+          <li><a href="<%= url_for "/install/passenger_oss_apache/index.html" %>">Install Passenger (open source) + Apache</a></li>
+          <li><a href="<%= url_for "/install/passenger_oss_standalone/index.html" %>">Install Passenger (open source) + Standalone</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <ul class="list-unstyled list-links">
+          <li><a href="<%= url_for "/install/upgrading_passenger.html" %>">Upgrading Passenger</a></li>
+          <li><a href="<%= url_for "/install/upgrading_from_oss_to_enterprise.html" %>">Upgrading from open source Passenger Enterprise</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div><a href="<%= url_for "/install/index.html" %>"><strong>More guides &raquo;</strong></a></div>
+
     <div class="row">
       <div class="col-sm-8">
         <h3>Advanced production techniques</h3>
@@ -58,7 +79,6 @@ skip_search: true
         <ul class="list-unstyled list-links">
           <li><a href="<%= url_for "/admin/troubleshooting.html" %>">Troubleshooting</a></li>
           <li><a href="<%= url_for "/admin/admin_tools.html" %>">Administration tools</a></li>
-          <li><a href="<%= url_for "/admin/upgrading_passenger.html" %>">Upgrading Passenger</a></li>
           <li><a href="<%= url_for "/admin/index.html" %>" class="visible-xs"><strong>More guides &raquo;</strong></a></li>
         </ul>
       </div>
@@ -89,7 +109,6 @@ skip_search: true
         <h3>Miscellaneous</h3>
 
         <ul class="list-unstyled list-links">
-          <li><a href="<%= url_for "/misc/upgrading_from_oss_to_enterprise.html" %>">Upgrading from open source to Passenger Enterprise</a></li>
           <li><a href="<%= url_for "/misc/environment_variables.html" %>">About environment variables</a></li>
           <li><a href="<%= url_for "/misc/working_with_the_apache_config_file.html" %>">Working with the Apache config file</a></li>
           <li><a href="<%= url_for "/misc/index.html" %>" class="visible-xs"><strong>More guides &raquo;</strong></a></li>

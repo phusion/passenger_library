@@ -3,7 +3,7 @@
 <% if edition_type == :enterprise %>
   <%=
   result = {}
-  output = render_partial("/guides/install/shared/enterprise_preamble.html", locals: locals.merge(result: result))
+  output = render_partial("/install/shared/enterprise_preamble.html", locals: locals.merge(result: result))
   step = result[:step]
   output
   %>
@@ -72,5 +72,5 @@ To activate Phusion Passenger, ...
 
 <% step += 1 %>
 <h3>Step <%= step %>: check installation</h3>
-<%= render_partial("/guides/install/shared/postinstall_check.html",
+<%= render_partial("/install/shared/postinstall_check.html",
       locals: locals.merge(apache_process_name: "apache2")) %>

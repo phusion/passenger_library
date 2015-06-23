@@ -1,0 +1,20 @@
+---
+title: Installing Passenger (open source edition) in production with Nginx
+section: install
+sidebar: sidebar
+---
+<%
+@page_title = "Installing #{edition_title} + #{integration_mode_name}"
+%>
+# Installing <%= edition_title %> + <%= integration_mode_name %>
+
+### Introduction
+
+<%= render_partial("shared/intro.md", locals: locals) %>
+
+<h2 id="select_os">Select operating system</h2>
+
+To continue, please select an operating system.
+
+<%= render_partial("shared/os_selector.html",
+      locals: locals.merge(context: :install_passenger, next_page: "")) %>

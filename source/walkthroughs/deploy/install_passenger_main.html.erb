@@ -17,5 +17,5 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
   <% end %>
 </p>
 
-<%= render_partial("/guides/install/shared/os_selector.html",
+<%= render_partial("/install/shared/os_selector.html",
       locals: locals.merge(context: :install_passenger, next_page: "install_passenger.html")) %>

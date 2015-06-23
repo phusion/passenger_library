@@ -1,0 +1,68 @@
+---
+title: Installation, upgrade and uninstallation
+section: install
+---
+<%
+content_for(:sidebar) do
+  %Q{
+    <a href="#{url_for "/index.html"}" class="back-to-previous">&laquo; Back to Passenger Library front page</a>
+  }
+end
+%>
+
+# Installation, upgrade and uninstallation
+
+<p class="lead">These guides cover various topics related to installing Passenger. These guides are targeted at advanced users. If you are not familar with Passenger, please refer to <a href="<%= url_for "/walkthroughs/deploy/" %>">the deployment walkthrough</a> instead, which covers a deployment process end-to-end.</p>
+
+<div class="row">
+  <div class="col-md-4">
+    <h3>Installation with Nginx</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="passenger_oss_nginx/">Installing Passenger (open source) + Nginx</a></li>
+      <li><a href="passenger_enterprise_nginx/">Installing Passenger Enterprise + Nginx</a></li>
+    </ul>
+  </div>
+
+  <div class="col-md-4">
+    <h3>Installation with Apache</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="passenger_oss_apache/">Installing Passenger (open source) + Apache</a></li>
+      <li><a href="passenger_enterprise_apache/">Installing Passenger Enterprise + Apache</a></li>
+    </ul>
+  </div>
+
+  <div class="col-md-4">
+    <h3>Installation in Standalone mode</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="passenger_oss_standalone/">Installing Passenger Standalone (open source)</a></li>
+      <li><a href="passenger_enterprise_standalone/">Installing Passenger Enterprise Standalone</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h2>Other</h2>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="upgrading_passenger.html">Upgrading Passenger</a></li>
+      <li><a href="upgrading_from_oss_to_enterprise.html">Upgrading from open source Passenger Enterprise</a></li>
+      <li><a href="uninstalling_passenger.html">Uninstalling Passenger</a></li>
+      <li><a href="crypto_verify_install.html">Cryptographic verification of installation files</a></li>
+      <li><a href="apt_repo.html">APT repository (.deb packages)</a></li>
+      <li><a href="yum_repo.html">YUM repository (.rpm packages)</a></li>
+      <li><a href="working_with_the_apache_config_file.html">Working with the Apache config file</a></li>
+    </ul>
+  </div>
+
+  <div class="col-md-6">
+    <h2>Background information</h2>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="../indepth/integration_modes.html">Integration modes (Nginx vs Apache vs Standalone)</a></li>
+    </ul>
+  </div>
+</div>
