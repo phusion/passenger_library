@@ -40,7 +40,7 @@ skip_search: true
 
 <% if config[:display_guides] %>
   <section class="bs-docs-section" id="guides">
-    <h3>Installation, upgrade and uninstallation</h3>
+    <h3 class="front-page-link-header"><a href="<%= url_for "/install/index.html" %>">Installation, upgrade and uninstallation</a></h3>
 
     <div class="row">
       <div class="col-sm-8">
@@ -63,7 +63,7 @@ skip_search: true
 
     <div class="row">
       <div class="col-sm-8">
-        <h3>Advanced production techniques</h3>
+        <h3 class="front-page-link-header"><a href="<%= url_for "/advanced_production/index.html" %>">Advanced production techniques</a></h3>
 
         <ul class="list-unstyled list-links">
           <li><a href="<%= url_for "/advanced_production/automating_deployment_app_updates.html" %>">Automating deployments of application updates</a></li>
@@ -74,7 +74,7 @@ skip_search: true
       </div>
 
       <div class="col-sm-4">
-        <h3>Administration</h3>
+        <h3 class="front-page-link-header"><a href="">Administration</a></h3>
 
         <ul class="list-unstyled list-links">
           <li><a href="<%= url_for "/admin/troubleshooting.html" %>">Troubleshooting</a></li>
@@ -95,7 +95,7 @@ skip_search: true
 
     <div class="row">
       <div class="col-sm-6">
-        <h3>Passenger in depth</h3>
+        <h3 class="front-page-link-header"><a href="<%= url_for "/indepth/index.html" %>">Passenger in depth</a></h3>
 
         <ul class="list-unstyled list-links">
           <li><a href="<%= url_for "/indepth/integration_modes.html" %>">Integration modes</a></li>
@@ -106,7 +106,7 @@ skip_search: true
       </div>
 
       <div class="col-sm-6">
-        <h3>Miscellaneous</h3>
+        <h3 class="front-page-link-header"><a href="<%= url_for "/misc/index.html" %>">Miscellaneous</a></h3>
 
         <ul class="list-unstyled list-links">
           <li><a href="<%= url_for "/misc/environment_variables.html" %>">About environment variables</a></li>

@@ -82,14 +82,13 @@ set :images_dir, 'images'
 set :markdown_engine, :kramdown
 set :relative_links, true
 set :url_root, URL_ROOT
+set :display_guides, true
 
 activate :syntax
 activate :relative_assets
 
 configure :development do
   activate :livereload, :port => 35730
-
-  set :display_guides, true
 end
 
 # Build-specific configuration
