@@ -5,4 +5,11 @@ sidebar: sidebar
 ---
 # Upgrading from open source to Passenger Enterprise
 
-<%= render_partial("/to_be_written.md") %>
+Phusion Passenger comes in two variants: an open source version, as well as an [Enterprise version](https://www.phusionpassenger.com/enterprise) which introduces a myriad of useful features that can improve stability and performance and efficiency.
+
+Customers who have bought Passenger Enterprise can upgrade their open source installation to Enterprise as follows:
+
+ 1. [Uninstall the open source Phusion Passenger](../admin/uninstalling_passenger.html).
+ 2. Install Passenger Enterprise by following one of the [deployment walkthroughs](../walkthroughs/deploy/). To sure to select "I use am using the Enterprise edition" during the "Open source vs Enterprise" step.
+
+The uninstallation is necessary because the Enterprise Ruby gem has a different gem name ('passenger-enterprise-server' instead of 'passenger'), but the same administration command names (e.g. `passenger-status`). Uninstalling the open source version avoids any conflicts.
