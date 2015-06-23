@@ -97,10 +97,11 @@ and SockJS through the use of sticky sessions. These technologies do not work we
 Passenger does many things, but some things are currently out of scope.
 
  * **Setting up a server with an operating system**<br>
-   Passenger assumes that you already have a server with an working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.<!-- TODO: <br>
-   However, the Passenger Library contains excellent [documentation on setting up a server](../../deploy/meteor/). -->
+   Passenger assumes that you already have a server with an working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.<br>
+   However, the Passenger Library contains excellent [documentation on setting up a server](<%= url_for "/walkthroughs/deploy/meteor/index.html" %>).
  * **Installing Meteor and Node.js**<br>
-   To run Meteor apps on Passenger, you must already have either Node.js installed or Meteor installed (the details depends on whether you're using Meteor in bundled form or not; more about this later). Passenger doesn't do that for you. Passenger doesn't care how you install Node.js/Meteor though; you sometimes just need to tell Passenger where Node.js is.
+   To run Meteor apps on Passenger, you must already have either Node.js installed or Meteor installed (the details depends on whether you're using Meteor in bundled form or not; more about this later). Passenger doesn't do that for you. Passenger doesn't care how you install Node.js/Meteor though; you sometimes just need to tell Passenger where Node.js is.<br>
+   Having said that, the Passenger Library contains excellent [documentation on installing Node.js during a production deployment](<%= url_for "/walkthroughs/deploy/meteor/index.html" %>).
  * **Transferring the application code and files to the server**<br>
    Passenger does not transfer the application code and files to the server for you. To do this, you must use tools like Git, scp, FTP, Capistrano, Fabric, etc. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.
  * **Installing application dependencies**<br>

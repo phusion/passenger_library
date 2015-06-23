@@ -60,15 +60,15 @@ Passenger's feature set is very different from those of GUnicorn and uWSGI. In p
 Passenger does many things, but some things are currently out of scope.
 
  * **Setting up a server with an operating system**<br>
-   Passenger assumes that you already have a server with an working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.<!-- TODO: <br>
-   However, the Passenger Library contains excellent [documentation on setting up a server](../../deploy/python/). -->
+   Passenger assumes that you already have a server with an working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.<br>
+   However, the Passenger Library contains excellent [documentation on setting up a server](<%= url_for "/walkthroughs/deploy/python/index.html" %>).
  * **Installing Python**<br>
-   To run Python web apps on Passenger, you must already have Python installed. Passenger does not do that for you. Passenger does not care how you install Python though; you sometimes just need to tell Passenger where Python is.<!-- TODO: <br>
-   Having said that, the Passenger Library contains excellent [documentation on installing Python during a production deployment](../../deploy/python/). -->
+   To run Python web apps on Passenger, you must already have Python installed. Passenger does not do that for you. Passenger does not care how you install Python though; you sometimes just need to tell Passenger where Python is.<br>
+   Having said that, the Passenger Library contains excellent [documentation on installing Python during a production deployment](<%= url_for "/walkthroughs/deploy/python/index.html" %>).
  * **Transferring the application code and files to the server**<br>
    Passenger does not transfer the application code and files to the server for you. To do this, you should use something like Capistrano. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.
  * **Installing application dependencies**<br>
-   Passenger does not install your application's dependencies for you. That job belongs to Fabric, Virtualenv and pip.
+   Passenger does not install your application's dependencies for you. That job belongs to Virtualenv and pip.
  * **Managing the database**<br>
    If your application requires a database, then Passenger does not install that database for you, nor does it sets up database accounts and tables for you. They must already be set up by the time you deploy your application to Passenger.
 
