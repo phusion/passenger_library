@@ -40,6 +40,8 @@ skip_search: true
 
 <% if config[:display_guides] %>
   <section class="bs-docs-section" id="guides">
+    <h2>Guides</h2>
+
     <h3 class="front-page-link-header"><a href="<%= url_for "/install/index.html" %>">Installation, upgrade and uninstallation</a></h3>
 
     <div class="row">
@@ -109,6 +111,7 @@ skip_search: true
         <h3 class="front-page-link-header"><a href="<%= url_for "/misc/index.html" %>">Miscellaneous</a></h3>
 
         <ul class="list-unstyled list-links">
+          <li><a href="<%= url_for "/misc/processes.html" %>">About processes</a></li>
           <li><a href="<%= url_for "/misc/environment_variables.html" %>">About environment variables</a></li>
           <li><a href="<%= url_for "/misc/index.html" %>" class="visible-xs"><strong>More guides &raquo;</strong></a></li>
         </ul>

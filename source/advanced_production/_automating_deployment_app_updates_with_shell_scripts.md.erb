@@ -43,6 +43,9 @@ set -e
 ### Configuration ###
 
 APP_DIR=/var/www/myapp
+<% if language_type != :meteor -%>
+GIT_URL=git://github.com/myusername/myapp
+<% end -%>
 
 # Uncomment and modify the following if you installed Passenger from tarball
 #export PATH=/path-to-passenger/bin:$PATH
@@ -54,8 +57,13 @@ set -x
 
 <% if language_type == :nodejs || language_type == :iojs -%>
 # Pull latest code
-cd $APP_DIR/code
-git pull
+if [[ -e $APP_DIR/code ]]; then
+  cd $APP_DIR/code
+  git pull
+else
+  git clone $GIT_URL $APP_DIR/code
+  cd $APP_DIR/code
+fi
 
 # Install dependencies
 npm install --production
@@ -97,7 +105,11 @@ passenger-config restart-app --ignore-app-not-running $APP_DIR/code
 <% end -%>
 ~~~
 
-Be sure to customize the `APP_DIR` configuration option. Set it to the actual application directory.
+<% if language_type == :meteor -%>
+  Be sure to customize the `APP_DIR` configuration option. Set it to the actual application directory.
+<% else -%>
+  Be sure to customize the `APP_DIR` and the `GIT_URL` configuration options. Set these to the actual application directory and Git repository URL, respectively.
+<% end -%>
 
 ## Creating deploy/initiate.sh
 
