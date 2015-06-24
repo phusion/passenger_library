@@ -133,7 +133,8 @@ In addition, if you installed Passenger using a Ruby interpreter that was instal
 
 Execute the command using its full path. You can use `which` as a normal user to lookup the full path:
 
-<pre class="highlight"><span class="prompt">$ </span>which passenger-status
+<div>
+  <pre class="highlight"><span class="prompt">$ </span>which passenger-status
 <span class="output">/somewhere/bin/passenger-status</span></pre>
 
 Next, run full path of the command using either sudo or rvmsudo:
@@ -143,6 +144,7 @@ Next, run full path of the command using either sudo or rvmsudo:
 <span class="c"># -OR, if you're using RVM:-</span>
 
 <span class="prompt">$ </span>rvmsudo /somewhere/bin/passenger-status</pre>
+</div>
 
 #### Recommended reading
 
@@ -192,6 +194,114 @@ sudo chmod g+x,o+x /Users
     On Unix, the 'executable' permission on directories dictates whether a process is allowed to <em>access</em> files or subdirectories within that directory. The 'readable' permission dictates whether a process is allowed to see what files are inside the directory, but does not necessarily allow access to them. You can learn more at <a href="http://en.wikipedia.org/wiki/File_system_permissions#Permissions">Wikipedia</a>.
   </p>
 </div>
+
+## Common problems specific to Passenger for Apache
+
+### OS X: The installer cannot locate MAMP's Apache
+
+#### Symptoms
+
+The installer finds Apache 2 development headers at `/Applications/MAMP/Library/bin/apxs`. However, Apache cannot be found. The installer also outputs the following error:
+
+~~~
+cannot open /Applications/MAMP/Library/build/config_vars.mk:
+No such file or directory at /Applications/MAMP/Library/bin/apxs line 218.
+~~~
+
+#### Cause
+
+Your MAMP installation seems to be broken. In particular, 'config_vars.mk' is missing.
+
+#### Solution
+
+Please read [this forum topic](http://forum.mamp.info/viewtopic.php?t=1866) to learn how to fix this problem. See also [this bug report](https://github.com/phusion/passenger/issues/113).
+
+### Apache reports a "403 Forbidden" error
+
+Please refer to [Static assets such as images and stylesheets aren't being displayed](#static-assets-such-as-images-and-stylesheets-arent-being-displayed).
+
+### Static assets such as images and stylesheets aren't being displayed
+
+Static assets are accelerated, i.e. they are served directly by Apache and do not go through the application. There are two reasons why Apache doesn't serve static assets correctly:
+
+ 1. Your Apache configuration is too strict, and does not allow HTTP clients to access static assets. This can be achieved with an `Allow from all` directive in the correct place. For example:
+
+    ~~~
+    <Directory "/webapps/mycook/public">
+       Options FollowSymLinks
+       AllowOverride None
+       Order allow,deny
+       Allow from all
+       Options -MultiViews
+       # Uncomment this if you're on Apache >= 2.4:
+       #Require all granted
+    </Directory>
+    ~~~
+
+    See also [this discussion](http://groups.google.com/group/phusion-passenger/browse_thread/thread/9699a639a87f85f4/b9d71a03bf2670a5).
+
+ 2. The Apache process doesn't have permission to access your application's directory. Please make sure that the application's directory, as well as all of its parent directories, have the correct permissions and/or ownerships.
+
+### Apache cannot access my app's files because of SELinux errors
+
+On Red Hat Enterprise Linux and CentOS, Apache is locked down by a security mechanism called SELinux. This security mechanism works on top of normal Unix permissions. In order for Apache to be able to access your app's files, you must set the proper SELinux labels on your files.
+
+First, ensure that your app does not live in a home directory. It is not possible to allow Apache to read files from your home directory.
+
+Second, give your app's files the `httpd_sys_content_t` labels by running the following command:
+
+~~~bash
+sudo chcon -R -h -t httpd_sys_content_t /path-to-your-app
+~~~
+
+### The application thinks its not on SSL even though it is
+
+Rails and many other frameworks infers whether it's running on SSL through the CGI environment variable `HTTPS`. Apache always sets this variable when on SSL, except when SSL is incorrectly configured.
+
+Most Apache installations already configure SSL by default on port 443 (conf/extra/httpd-ssl.conf). Some people think they can save some typing in subsequent SSL vhost blocks, and omit important options like 'SSLEngine on', like this:
+
+~~~
+# httpd-ssl.conf contains something like:
+# <VirtualHost _default_:443>
+#     SSLEngine on
+#     ...
+# </VirtualHost>
+Include conf/extra/httpd-ssl.conf
+
+<VirtualHost *:443>
+    ServerName www.example.com
+    DocumentRoot /webapps/example/public
+</Virtualhost>
+~~~
+
+**This is wrong!** In each SSL vhost block you must re-specify all the SSL options. Otherwise Apache won't properly detect the vhost as an SSL vhost block. Here's the corrected example:
+
+~~~
+Include conf/extra/httpd-ssl.conf
+
+<VirtualHost *:443>
+    ServerName www.example.com
+    DocumentRoot /webapps/example/public
+    SSLEngine on
+    ...more SSL options here...
+</Virtualhost>
+~~~
+
+### Conflicting Apache modules
+
+Some Apache modules are not compatible with Passenger. They may be loaded simultaneously with Passenger, but they may not be enabled simultaneously in the same virtual hosts.
+
+#### mod_userdir
+
+`mod_userdir` is not compatible with Passenger at the moment.
+
+#### MultiViews (mod_negotiation)
+
+MultiViews is not compatible with Passenger. You must disable MultiViews for all Passenger hosts.
+
+#### VirtualDocumentRoot
+
+VirtualDocumentRoot is not compatible with Passenger at the moment.
 
 ## Common problems specific to Passenger Standalone
 

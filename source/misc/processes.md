@@ -7,7 +7,11 @@ sidebar: sidebar
 
 <p class="lead">Phusion Passenger manages multiple processes in order to maximize stability and performance. Learn what processes are and how they behave.</p>
 
-### What are processes?
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## What are processes?
 
 An instance of an application is called a **process**. Passenger takes care of starting and stopping your application for you. Every time Passenger starts an instance of your application, it is said that an application process is spawned. Every time Passenger stops an instance of your application, it is said that an application process is shut down.
 
