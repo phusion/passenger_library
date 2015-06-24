@@ -61,6 +61,10 @@ You can locate the Passenger log file as follows:
   </tr>
 </table>
 
+<div class="note">
+  Do you find nothing useful in the Nginx or Apache error log? And at the same time, does it look like Passenger stopped logging to the file quite some time ago? Then you probably have a log rotation problem, causing logs to get lost. Please <a href="log_rotation.html">configure Passenger log rotation.</a>
+</div>
+
 ## Golden tip 2: check the application log file
 
 The application or web framework may have its own log file that is independent from the Passenger log file. You should also check that file to see whether your application or web framework has logged any important messages.
@@ -262,3 +266,9 @@ Please read [User switching](https://www.phusionpassenger.com/documentation/User
 ### The Rails application cannot find my database
 
 If your Rails application cannot find your database, then you probably didn't configure Passenger correctly, or didn't configure your database.yml correctly. By default, Passenger runs Rails applications in 'production' mode, so please either make sure that your database.yml contains an entry for the production environment, or configure Passenger to start your app in the 'development' environment.
+
+## Common problems specific to Node.js and io.js
+
+### I get "Error: http.Server.listen() was called more than once"
+
+Please refer to [Reverse port binding in Node.js and io.js](../indepth/reverse_port_binding.html).
