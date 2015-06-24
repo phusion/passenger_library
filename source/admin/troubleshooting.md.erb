@@ -11,7 +11,9 @@ sidebar: sidebar
 
 <ul class="toc-container"><li>Loading...</li></ul>
 
-## Golden tip 1: check the Passenger log file
+## Golden tips
+
+### 1 Check the Passenger log file
 
 One of the first things you should do upon encountering a problem, is to check the Passenger log file. The log file is where Passenger prints to when it encounters a problem or when it wants to tell you something.
 
@@ -65,13 +67,25 @@ You can locate the Passenger log file as follows:
   Do you find nothing useful in the Nginx or Apache error log? And at the same time, does it look like Passenger stopped logging to the file quite some time ago? Then you probably have a log rotation problem, causing logs to get lost. Please <a href="log_rotation.html">configure Passenger log rotation.</a>
 </div>
 
-## Golden tip 2: check the application log file
+### 2 Check the application log file
 
 The application or web framework may have its own log file that is independent from the Passenger log file. You should also check that file to see whether your application or web framework has logged any important messages.
 
 For example, Ruby on Rails logs to `log/development.log` and `log/production.log`. When an error occurs during request handling, it is typically logged here. Note that this file does **not** contain errors that Rails encounters during startup -- those kinds of errors are typically written to STDERR, which means they end up in the Passenger log instead.
 
 Note that Passenger runs applications in the "production" environment by default (that is, Passenger sets `RAILS_ENV`, `RACK_ENV`, `NODE_ENV` and related environment variables "production"). So if you're using Rails, please be sure to check `production.log` instead of `development.log`.
+
+### 3 Upgrade Passenger to the latest version
+
+Some problems are caused by bugs in Passenger. Passenger is under active maintenance and development, so there is a chance that -- assuming you really ran into a bug -- the bug is already fixed. Please [upgrade Passenger to the latest version](../install/upgrading_passenger.html) and check whether the problem is still there.
+
+If you suspect that your problem is a bug in Passenger, and upgrading didn't fix it, please [report the bug to our Github issue tracker](https://github.com/phusion/passenger).
+
+If upgrading Passenger didn't help, and you don't think your problem is caused by a bug, then please continue with this troubleshooting guide.
+
+### 4 Out of ideas? Try the support resources
+
+<%= render_partial("/walkthroughs/basics/shared/support.md", locals: { context: :troubleshooting_guide }) %>
 
 ## Common problems
 
