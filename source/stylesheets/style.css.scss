@@ -364,6 +364,15 @@ figcaption {
   margin-right: auto;
 }
 
+.section-header {
+  margin-top: 3em;
+  text-align: center;
+
+  .glyphicon {
+    font-size: 5em;
+  }
+}
+
 
 .programming-language-selections {
   text-align: center;

@@ -33,14 +33,20 @@ skip_search: true
 <% end %>
 
 <section class="bs-docs-section">
-  <h2 id="walkthroughs">Walkthroughs</h2>
+  <div class="section-header">
+    <h2 id="walkthroughs" class="section-header">Walkthroughs</h2>
+  </div>
 
   <%= render_partial("/walkthroughs/index.html", locals: { quickstart: true, basics: true, deployment: true }) %>
 </section>
 
 <% if config[:display_guides] %>
   <section class="bs-docs-section" id="guides">
-    <h2>Guides</h2>
+    <div class="section-header">
+      <div><span class="glyphicon glyphicon-book" aria-hidden="true"></span></div>
+      <h2>Guides</h2>
+      <p class="lead">Articles about specific topics.</p>
+    </div>
 
     <h3 class="front-page-link-header"><a href="<%= url_for "/install/index.html" %>">Installation, upgrade and uninstallation</a></h3>
 

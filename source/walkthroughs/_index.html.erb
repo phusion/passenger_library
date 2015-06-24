@@ -10,7 +10,7 @@
   <% if quickstart %>
     <div class="col-sm-4 site-section-showoff">
       <a href="<%= url_for "/walkthroughs/start/#{suffix}" %>" class="eyecatcher">
-        <span class="glyphicon glyphicon-sunglasses"></span>
+        <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
         <span class="title">Quickstart</span>
       </a>
 
@@ -26,7 +26,7 @@
   <% if basics %>
     <div class="col-sm-4 site-section-showoff">
       <a href="<%= url_for "/walkthroughs/basics/#{suffix}" %>" class="eyecatcher">
-        <span class="glyphicon glyphicon-picture"></span>
+        <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
         <span class="title">Basics</span>
       </a>
 
@@ -43,7 +43,7 @@
   <% if deployment %>
     <div class="col-sm-4 site-section-showoff">
       <a href="<%= url_for "/walkthroughs/deploy/#{suffix}" %>" class="eyecatcher">
-        <span class="glyphicon glyphicon-education"></span>
+        <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
         <span class="title">Deployment</span>
       </a>
 
