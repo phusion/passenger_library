@@ -1,8 +1,264 @@
 ---
-title: Administration tools
+title: Troubleshooting
 section: admin
 sidebar: sidebar
 ---
-# Administration tools
+# Troubleshooting
 
-<%= render_partial("/to_be_written.md") %>
+<p class="lead">This page provides guidence on what to do when you encounter problems.</p>
+
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+## Golden tip 1: check the Passenger log file
+
+One of the first things you should do upon encountering a problem, is to check the Passenger log file. The log file is where Passenger prints to when it encounters a problem or when it wants to tell you something.
+
+This log file contains:
+
+ * Passenger info, warning and error messages.
+ * Everything that the application writes to STDOUT and STDERR. This typically consists of errors that the application encounters during startup, but not errors that it encounters when it's handling requests.
+
+You can locate the Passenger log file as follows:
+
+<table class="table table-striped table-bordered">
+  <tr>
+    <td>Nginx</td>
+    <td>
+      <p>
+        The Passenger log file is the <strong>global</strong> Nginx error log file. This is one specified by the <code>error_log</code> directive in the main context (that is, <strong>not</strong> the one inside the <code>http</code> context). The file is typically located in <code>/var/log/nginx/error.log</code>.
+      </p>
+      <p>
+        Or, if you configured the <code>passenger_log_file</code> directive, then the log file is in the referenced file.
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td>Apache</td>
+    <td>
+      <p>
+        The Passenger log file is the <strong>global</strong> (not the per-vhost) Apache error log file. This is typically located in <code>/var/log/apache2/error_log</code>.
+      </p>
+      <p>
+        You can find out the exact location of the error log by running <code>passenger-config --detect-apache2</code>.
+      </p>
+      <p>
+        Or, if you configured the <code>PassengerLogFile</code> directive, then the log file is in the referenced file.
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td>Standalone</td>
+    <td>
+      <p>
+        The default log file is located in <code>log/passenger.XXX.log</code>, where <code>XXX</code> is the port number that Passenger listens on.
+      </p>
+      <p>
+        Or, if you passed the <code>--log-file</code> command line parameter, then the log file is in the referenced file.
+      </p>
+    </td>
+  </tr>
+</table>
+
+## Golden tip 2: check the application log file
+
+The application or web framework may have its own log file that is independent from the Passenger log file. You should also check that file to see whether your application or web framework has logged any important messages.
+
+For example, Ruby on Rails logs to `log/development.log` and `log/production.log`. When an error occurs during request handling, it is typically logged here. Note that this file does **not** contain errors that Rails encounters during startup -- those kinds of errors are typically written to STDERR, which means they end up in the Passenger log instead.
+
+Note that Passenger runs applications in the "production" environment by default (that is, Passenger sets `RAILS_ENV`, `RACK_ENV`, `NODE_ENV` and related environment variables "production"). So if you're using Rails, please be sure to check `production.log` instead of `development.log`.
+
+## Common problems
+
+### Why does the first request take a long time?
+
+#### Symptoms
+
+The first request to your application takes more time than usual. Subsequent requests have the normal speed.
+
+#### Cause
+
+Passenger starts your application the first time it is accessed, not during web server startup. Some applications can take several seconds to start. If you're using Ruby on Rails, then needing 10 seconds to start your application is normal. On slow or heavily loaded servers, or in case of large and heavy applications, the startup time may be even longer.
+
+#### Solution
+
+Use one of the following configuration options:
+
+ * [passenger_pre_start (Nginx)](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerPreStart)
+ * [PassengerPreStart (Apache)](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerPreStart)
+
+### I get "command not found" when running a Passenger command through sudo
+
+#### Symptoms
+
+Passenger commands can be found as a normal user, but not when run through sudo:
+
+<div>
+  <pre class="highlight"><span class="prompt">$ </span>passenger-status
+<span class="output">...some output, but no "command not found" error...</span>
+<span class="prompt">$ </span>passenger-install-apache2-module
+<span class="output">...some output, but no "command not found" error...</span>
+<span class="prompt">$ </span>sudo passenger-status
+<span class="output">sudo: passenger-status: command not found</span>
+<span class="prompt">$ </span>sudo passenger-install-apache2-module
+<span class="output">sudo: passenger-install-apache2-module: command not found</span></pre>
+</div>
+
+#### Cause
+
+The operating system looks up commands using [the PATH environment variable](../misc/environment_variables.html#the-path-environment-variable). However, sudo resets all environment variables to a default value, dictated by sudo. If Passenger was installed to a location that is not in the default sudo PATH value, then sudo will not be able to find the Passenger commands.
+
+In addition, if you installed Passenger using a Ruby interpreter that was installed through RVM, then you **must** use [rvmsudo](https://rvm.io/integration/sudo) instead of sudo. As a rule, when you're an RVM user, always use rvmsudo instead of sudo.
+
+#### Solution
+
+Execute the command using its full path. You can use `which` as a normal user to lookup the full path:
+
+<pre class="highlight"><span class="prompt">$ </span>which passenger-status
+<span class="output">/somewhere/bin/passenger-status</span></pre>
+
+Next, run full path of the command using either sudo or rvmsudo:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo /somewhere/bin/passenger-status
+
+<span class="c"># -OR, if you're using RVM:-</span>
+
+<span class="prompt">$ </span>rvmsudo /somewhere/bin/passenger-status</pre>
+
+#### Recommended reading
+
+When using sudo, you will probably run into similar "command not found" issues in the future, with components other than Phusion Passenger. We **strongly recommend** you to [learn about environment variables](../misc/environment_variables.html) so that you know what to do in the future.
+
+## Common problems specific to Passenger for Nginx
+
+### Upon accessing the web app, Nginx reports a "Permission denied" error
+
+#### Symptoms
+
+A typical error message looks like this:
+
+~~~
+2013/10/21 17:16:03 [alert] 98687#0: *1 Cannot stat
+'/Users/phusion/Sites/rack.test/config.ru': Permission denied (errno=13); This
+error means that the Nginx worker process (PID 99064, running as UID 70) does
+not have permission to access this file. Please read the manual to learn how to
+fix this problem: section 'Troubleshooting' -> 'Upon accessing the web app,
+Nginx reports a "Permission denied" error'; Extra info, client: 127.0.0.1,
+server: www.foo.com, request: "GET / HTTP/1.1", host: "www.foo.com"
+~~~
+
+#### Cause
+
+Phusion Passenger tries to access your application directory in order to find out what language it's written in. This access is initiated from inside an Nginx worker process. This error indicates that the Nginx worker process does not have the proper permissions to access your application's root directory.
+
+#### Solution
+
+You need to relax permissions to that the Nginx worker process can access your application directory, by making the directory group- and world-*executable*:
+
+~~~bash
+sudo chmod g+x,o+x /Users/phusion/Sites/rack.test
+~~~
+
+You *also* need to ensure that all parent directories are also 'executable' by the Nginx process:
+
+~~~bash
+sudo chmod g+x,o+x /Users/phusion/Sites
+sudo chmod g+x,o+x /Users/phusion
+sudo chmod g+x,o+x /Users
+~~~
+
+<div class="note">
+  <strong>Why 'executable' permission and not 'readable'?</strong>
+  <p>
+    On Unix, the 'executable' permission on directories dictates whether a process is allowed to <em>access</em> files or subdirectories within that directory. The 'readable' permission dictates whether a process is allowed to see what files are inside the directory, but does not necessarily allow access to them. You can learn more at <a href="http://en.wikipedia.org/wiki/File_system_permissions#Permissions">Wikipedia</a>.
+  </p>
+</div>
+
+## Common problems specific to Passenger Standalone
+
+### Upon uploading a file, Passenger reports "client_body_temp/00000000xx failed (2: No such file or directory)"
+
+#### Symptoms
+
+When performing an HTTP POST call, the request sometimes fails, with Passenger reporting an error along the lines of:
+
+~~~
+/tmp/passenger-standalone.8583/client_body_temp/0000000022" failed (2: No such
+file or directory), client: 127.0.0.1, server: www.foo.com
+~~~
+
+#### Cause
+
+Passenger buffers HTTP POST bodies (file uploads) to a temporary directory, by default `/tmp/passenger-standalone.xxx`. This error means that Passenger that that directory has been removed, probably by some other program.
+
+#### Solution
+
+Tell Phusion Passenger to use a different directory to store its temporary files by setting the `TMPDIR` environment variable. For example:
+
+~~~bash
+mkdir $HOME/tmp
+cd /path-to-your-app
+export TMPDIR=$HOME/tmp
+passenger start
+~~~
+
+## Common problems specific to Ruby
+
+### The application reports during startup that it cannot find a gem
+
+#### Symptoms
+
+Despite the fact that you have already run `bundle install`, you see an error page that contains the following messages:
+
+~~~
+It looks like Bundler could not find a gem. Maybe you didn't install all the gems that this application needs. To install your gems, please run:
+
+  bundle install
+
+...
+
+Could not find XXX in any of the sources (Bundler::GemNotFound)
+~~~
+
+#### Causes and solutions
+
+The most common cause of this problem, is that your system has multiple Ruby interpreter (or multiple RVM gemsets), and your application is not being run under the correct Ruby interpreter. The `bundle install` command installs gems into a directory that is specific to one Ruby interpreter, so when your app is being run under a different Ruby interpreter, Bundler cannot find its gems.
+
+To solve this problem, you must explicitly tell Passenger what Ruby interpreter to use.
+
+ * [passenger_ruby (Nginx)](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerRuby)
+ * [PassengerRuby (Apache)](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerRuby)
+ * The `--ruby` command line option (Standalone)
+
+The second most common cause of this problem, is that your application is being run under the wrong user. The `bundle install` command often installs gems into a user-specific directory. So if Passenger for some reason runs your app as a different user than the one that invoked `bundle install`, Bundler may not be able to find its gems. Read [User switching](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#user_switching) to learn why Passenger may run your application as a different user.
+
+To solve this problem, you must explicit tell Passenger what user to run as.
+
+ * [passenger_user (Nginx)](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerUser)
+ * [PassengerUser (Apache)](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerUser)
+ * The `--user` command line option (Standalone)
+
+If this didn't solve your problem, try following the tips in the error message. Also be sure to double check the settings printed on the error page. Be sure to double check all environment variables, user IDs, etc and check whether they are what you expect.
+
+## Common problems specific to Ruby on Rails
+
+This section lists some common problems that are specific to the Ruby on Rails web framework.
+
+### The "About your application's environment" link does not work
+
+The "About your application's environment" link only works if the application is started in the "development" environment.  Passenger starts the application in the "production" environment by default. Please use one of the following configuration options to change this:
+
+ * [rails_env (Nginx)](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#RailsEnv)
+ * [RailsEnv (Apache)](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#RailsEnv)
+ * The `--environment` command line parameter (Standalone)
+
+### The Rails application reports that it's unable to start because of a permission error
+
+Please check whether your Rails application's directory has the correct permissions. By default, Rails applications are started as the owner of the file `config.ru`, except if the file is owned by root. If the file is owned by root, then the Rails application will be started as 'nobody' (or as the user specify by [passenger_default_user](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerDefaultUser), if that's specified).
+
+Please read [User switching](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#user_switching) for details.
+
+### The Rails application cannot find my database
+
+If your Rails application cannot find your database, then you probably didn't configure Passenger correctly, or didn't configure your database.yml correctly. By default, Passenger runs Rails applications in 'production' mode, so please either make sure that your database.yml contains an entry for the production environment, or configure Passenger to start your app in the 'development' environment.
