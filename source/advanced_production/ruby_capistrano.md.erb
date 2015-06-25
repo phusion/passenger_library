@@ -280,7 +280,7 @@ The `after :restart, :clear_cache` block you see means "define a new task named 
 ### Editing instructions
 
  1. Please remove the `lock` statement. The statement is meant to lock down the Capistrano script to a certain Capistrano version. But Bundler [already serves as a mechanism to lock down gem versions](http://bundler.io/rationale.html), so the `lock` statement is quite redundant here.
- 2. Set `application` to your application's name. Please note that this affects which directory Capistrano deploys to as explained earlier.
+ 2. Set `application` to your application's name (e.g. `myapp`). Please note that this affects which directory Capistrano deploys to as explained earlier.
  3. Set `repo_url` to your Git repository's URL.
  4. If your app is a Rails app, set `linked_files` and `linked_dirs`:
 
@@ -382,24 +382,24 @@ In this guide, we use the simple role syntax. Comment out the code that uses the
 # server 'example.com', user: 'deploy', roles: %w{web app}, my_property: :my_value
 ~~~
 
-Then edit the `role` code. Specify your server's (or servers') host names. As username, you should specify the OS user account that your application uses. (If you do not yet have an OS user account for your application, then that will be covered in the next step, [Preparing the server(s)](#preparing-the-servers).)
+Then edit the `role` code. Specify your server's (or servers') host names. As username, you should specify the OS user account that your application uses (e.g. `myappuser`). (If you do not yet have an OS user account for your application, then that will be covered in the next step, [Preparing the server(s)](#preparing-the-servers).)
 
 For example, if you have one server:
 
 ~~~ruby
 # Single server example
-role :app, %w{myapp@myserver.com}
-role :web, %w{myapp@myserver.com}
-role :db,  %w{myapp@myserver.com}
+role :app, %w{myappuser@myserver.com}
+role :web, %w{myappuser@myserver.com}
+role :db,  %w{myappuser@myserver.com}
 ~~~
 
 If you have multiple servers, simply add them to the `app` and `web` roles (but *not* the `db` role, because that role dictates which server Rails database migrations are run on). For example:
 
 ~~~ruby
 # Multi-server example
-role :app, %w{myapp@myserver.com myapp@myserver2.com}
-role :web, %w{myapp@myserver.com myapp@myserver2.com}
-role :db,  %w{myapp@myserver.com}
+role :app, %w{myappuser@myserver.com myappuser@myserver2.com}
+role :web, %w{myappuser@myserver.com myappuser@myserver2.com}
+role :db,  %w{myappuser@myserver.com}
 ~~~
 
 If your server is on Amazon EC2, be sure to uncomment the `set :ssh_options` call and point the `keys` option to your Amazon EC2 key file.
@@ -416,7 +416,9 @@ set :ssh_options, {
 
 ## 5 Preparing the server(s)
 
-You are now done configuring Capistrano. But before Capistrano can do its work, you need to setup a basic directory structure on the server, create initial configuration files and configure Passenger.
+You are now done configuring Capistrano. But before Capistrano can do its work, you need to setup a basic directory structure on the server(s), create initial configuration files and configure Passenger.
+
+Please login to your server(s) as an administrator, then follow the following instructions.
 
 ### Install Git
 
@@ -425,11 +427,11 @@ Install Git on your server if you haven't already:
 <table class="table table-bordered table-striped">
   <tr>
     <td>Debian, Ubuntu</td>
-    <td><pre class="highlight">sudo apt-get install git</pre></td>
+    <td><pre class="highlight">sudo apt-get install -y git</pre></td>
   </tr>
   <tr>
     <td>Red Hat, CentOS, Fedora, Scientific Linux, Amazon Linux</td>
-    <td><pre class="highlight">sudo yum install git</pre></td>
+    <td><pre class="highlight">sudo yum install -y git</pre></td>
   </tr>
   <tr>
     <td>Other operating systems</td>
@@ -437,25 +439,30 @@ Install Git on your server if you haven't already:
   </tr>
 </table>
 
-### Setting up a basic directory structure
+### Setting up a user account (if you haven't already)
 
-If you have followed the [deployment walkthrough](../walkthroughs/deploy/ruby/), then you have already setup a user account for your application (`myappuser` in our example), and you have already setup a directory in which your application code lives (`/var/www/myapp/code` in our example). If not, you must set them up now. Login to your server(s), and run the following commands on each one:
+If you have followed the [deployment walkthrough](../walkthroughs/deploy/ruby/), then you have already setup a user account for your application (`myappuser` in our example), for the sake of using Passenger's [user sandboxing feature](../deploy/user_sandboxing.html).
+
+If not, you must set them up now. Login to your server(s), and run the following commands on each one:
 
 <pre class="highlight"><span class="c"># Add user account</span>
-<span class="prompt">$ </span>sudo adduser <span class="o">myappuser</span>
+<span class="prompt">$ </span>sudo adduser <span class="o">myappuser</span> &amp;&amp;
 
 <span class="c"># Setup initial SSH key</span>
-<span class="prompt">$ </span>sudo mkdir -p ~<span class="o">myappuser</span>/.ssh
-<span class="prompt">$ </span>sudo sh -c <span class="s">"cat $HOME/.ssh/authorized_keys >> ~<span class="o">myappuser</span>/.ssh/authorized_keys"</span>
-<span class="prompt">$ </span>sudo chown -R <span>myappuser:</span> ~<span class="o">myappuser</span>/.ssh
-<span class="prompt">$ </span>sudo chmod <span>700</span> ~<span class="o">myappuser</span>/.ssh
-<span class="prompt">$ </span>sudo sh -c <span class="s">"chmod <span>600</span> ~<span class="o">myappuser</span>/.ssh/*"</span>
-
-<span class="c"># Create application directory</span>
-<span class="prompt">$ </span>sudo mkdir -p /var/www/<span class="o">myapp</span>/shared
-<span class="prompt">$ </span>sudo chown <span class="o">myappuser</span>: /var/www/<span class="o">myapp</span> /var/www/<span class="o">myapp</span>/shared</pre>
+sudo mkdir -p ~<span class="o">myappuser</span>/.ssh &amp;&amp;
+sudo sh -c <span class="s">"cat $HOME/.ssh/authorized_keys >> ~<span class="o">myappuser</span>/.ssh/authorized_keys"</span> &amp;&amp; \
+sudo chown -R <span>myappuser:</span> ~<span class="o">myappuser</span>/.ssh &amp;&amp;
+sudo chmod <span>700</span> ~<span class="o">myappuser</span>/.ssh &amp;&amp;
+sudo sh -c <span class="s">"chmod <span>600</span> ~<span class="o">myappuser</span>/.ssh/*"</span></pre>
 
 Of course, replace `myappuser` with the username that you desire.
+
+### Setting up a basic directory structure
+
+Run the following commands on each server to setup a basic directory structure that Capistrano can work with.
+
+<pre class="highlight"><span class="prompt">$ </span>sudo mkdir -p /var/www/<span class="o">myapp</span>/shared
+<span class="prompt">$ </span>sudo chown <span class="o">myappuser</span>: /var/www/<span class="o">myapp</span> /var/www/<span class="o">myapp</span>/shared</pre>
 
 ### Create initial configuration files
 
@@ -463,11 +470,11 @@ _You can skip this step if your app is not a Rails app._
 
 If your app is a Rails app, then it expects a `config/database.yml` and a `config/secrets.yml`. The contents of these configuration files are identical on each server, are only known to the server(s) and persist across application releases. The `shared` directory is the perfect place to place them. And as configured before in `config/deploy.rb`, Capistrano will automatically create symlinks within the release directory to those files.
 
-Create the `shared/config` directory and add `database.yml` and `secrets.yml` inside:
+On each server, create the `shared/config` directory and add `database.yml` and `secrets.yml` inside:
 
 <pre class="highlight"><span class="prompt">$ </span>sudo mkdir -p /var/www/<span class="o">myapp</span>/shared/config
-<span class="prompt">$ </span>nano /var/www/<span class="o">myapp</span>/shared/config/database.yml
-<span class="prompt">$ </span>nano /var/www/<span class="o">myapp</span>/shared/config/secrets.yml</pre>
+<span class="prompt">$ </span>nano /var/www/<span class="o">myapp</span>/shared/config/database.yml &amp;&amp;
+  nano /var/www/<span class="o">myapp</span>/shared/config/secrets.yml</pre>
 
 Then fix and tighten permissions:
 
@@ -488,18 +495,21 @@ Passenger + Nginx
 Passenger Standalone
 : <p>Modify <code>/etc/rc.local</code> and change the Passenger invocation to:</p>
 
-  ~~~bash
-  # Change working directory to your webapp.
-  cd /var/www/myapp/current
+  <div>
 
-  # Start Passenger Standalone in daemonized mode. Passenger will be started as
-  # root when run from this file, but Passengerfile.json tells it to drop its
-  # privileges to a normal user.
-  bundle exec passenger start
-  # Or something like this, if your server uses RVM:
-  #/usr/local/rvm/bin/rvm-exec ruby-2.2.1 \
-  #  bundle exec passenger start
-  ~~~
+  <pre class="highlight"><span class="c"># Change working directory to your webapp.</span>
+<span class="nb">cd</span> /var/www/myapp/current
+&nbsp;
+<span class="c"># Start Passenger Standalone in daemonized mode. Passenger will be started as
+# root when run from this file, but Passengerfile.json tells it to drop its
+# privileges to a normal user.</span>
+bundle exec passenger start
+<span class="c"># <span class="o">-OR-</span>
+# If your server uses RVM, use something like this:</span>
+/usr/local/rvm/bin/rvm-exec ruby-2.2.1 \
+&nbsp;&nbsp;bundle exec passenger start</pre>
+
+  </div>
 
   If you created a Passengerfile.json on the server (as per the deployment walkthrough), then it is a good idea to copy that to the `shared` directory:
 

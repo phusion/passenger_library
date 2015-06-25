@@ -24,7 +24,7 @@ Ensure that curl and gpg are installed, as well as a compiler toolchain. Curl an
     </td>
     <td>
       <pre class="highlight">sudo apt-get update
-sudo apt-get install curl gnupg build-essential</pre>
+sudo apt-get install -y curl gnupg build-essential</pre>
     </td>
   </tr>
   <tr>
@@ -32,7 +32,7 @@ sudo apt-get install curl gnupg build-essential</pre>
       Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
     </td>
     <td>
-      <pre class="highlight">sudo yum install curl gpg gcc gcc-c++ make</pre>
+      <pre class="highlight">sudo yum install -y curl gpg gcc gcc-c++ make</pre>
     </td>
   </tr>
   <tr>
@@ -53,9 +53,9 @@ Run the following commands on your production server to install RVM:
 <span class="prompt">$ </span>curl -sSL https://get.rvm.io | sudo bash -s stable
 <span class="prompt">$ </span>sudo usermod -a -G rvm `whoami`</pre>
 
-If you are on **Red Hat/CentOS/Fedora/Amazon Linux**, or on any operating system where sudo is configured with `secure_path`, be sure to modify your shell environment to set `rvmsudo_secure_path=1`:
+On systems where sudo is configured with `secure_path`, the shell environment needs to be modified to set `rvmsudo_secure_path=1`. `sucure_path` is set on most Linux systems, but not on OS X. The following command tries to autodetect whether it is necessary to install `rvmsudo_secure_path=1`, and only installs the environment variable if it is the code.
 
-<pre class="highlight"><span class="prompt">$ </span>sudo sh -c <span class="s">"echo export rvmsudo_secure_path=1 >> /etc/profile.d/rvm_secure_path.sh"</span></pre>
+<pre class="highlight"><span class="prompt">$ </span><span class="k">if</span> sudo grep -q secure_path /etc/sudoers; <span class="k">then</span> sudo sh -c <span class="s">"echo export rvmsudo_secure_path=1 >> /etc/profile.d/rvm_secure_path.sh"</span> &amp;&amp; echo Environment variable installed; <span class="k">fi</span></pre>
 
 When you are done with all this, **relogin to your server** to activate RVM. This is important: if you don't relogin, RVM doesn't work.
 
@@ -97,7 +97,7 @@ To install Node.js:
       Debian, Ubuntu
     </td>
     <td>
-      <pre class="highlight">sudo apt-get install nodejs
+      <pre class="highlight">sudo apt-get install -y nodejs &amp;&amp;
 sudo ln -sf /usr/bin/nodejs /usr/local/bin/node</pre>
     </td>
   </tr>
@@ -106,8 +106,8 @@ sudo ln -sf /usr/bin/nodejs /usr/local/bin/node</pre>
       Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
     </td>
     <td>
-      <pre class="highlight">sudo yum install epel-release
-sudo yum install nodejs</pre>
+      <pre class="highlight">sudo yum install -y epel-release
+sudo yum install -y nodejs</pre>
     </td>
   </tr>
   <tr>

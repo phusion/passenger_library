@@ -9,9 +9,11 @@ function appDetailsChanged() {
     $('.app_details_nonrails').show();
   }
   if (rvm) {
-    $('.app_details_rvm').show();
+    $('.app_details_rvm').removeClass('nocopy').show();
+    $('.app_details_nonrvm').addClass('nocopy');
   } else {
-    $('.app_details_nonrvm').show();
+    $('.app_details_nonrvm').removeClass('nocopy').show();
+    $('.app_details_rvm').addClass('nocopy');
   }
   autoGenerateMenu();
 }

@@ -77,7 +77,7 @@ step = 0
 </p>
 
 <pre class="highlight shell"><code><span class="c unselectable"># Install <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> and other other prerequisites</span>
-sudo yum install epel-release pygpgme curl
+sudo yum install -y epel-release pygpgme curl
 
 <span class="c unselectable"># Add our <span class="redhat_distro_name"><%= os_config_type %></span> YUM repository</span>
 <% if edition_type == :oss -%>
@@ -90,7 +90,7 @@ sudo chmod 600 /etc/yum.repos.d/passenger.repo
 <% end -%>
 
 <span class="c unselectable"># Install <%= packages_title %></span>
-sudo yum install <%= packages %></code></pre>
+sudo yum install -y <%= packages %></code></pre>
 
 <% if type == "apache" %>
   <% step += 1 %>

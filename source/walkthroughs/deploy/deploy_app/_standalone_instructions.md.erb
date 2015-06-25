@@ -163,7 +163,7 @@ The easiest way to do that is to add it to the file `/etc/rc.local`. This script
 # privileges to a normal user.</span>
 <% if language_type == :ruby -%>
 <span class="app_details app_details_rvm"><span class="c"># Replace '<%= LATEST_RUBY_VERSION %>' with the Ruby version you want your app to run under.</span>
-/usr/local/rvm/bin/rvm-exec ruby-<%= LATEST_RUBY_VERSION %> \
+/usr/local/rvm/bin/rvm-exec ruby-<span class="o"><%= LATEST_RUBY_VERSION %></span> \
   <%= passenger_command_prefix(locals) %>passenger start</span><span class="app_details app_details_nonrvm"><%= passenger_command_prefix(locals) %>passenger start</span>
 <% else -%>
 <%= passenger_command_prefix(locals) %>passenger start

@@ -88,7 +88,7 @@ Make sure the following line exists:
 <% if edition_type == :enterprise -%>
 source "https://download:#{your_download_token}@www.phusionpassenger.com/enterprise_gems"
 <% end -%>
-gem "<%= gem_name %>"
+gem "<%= gem_name %>", ">= 5.0.11"
 ~~~
 <% end %>
 
@@ -194,12 +194,15 @@ Replace `adminuser` with the name of an account with administrator privileges or
 
 <div class="alert alert-info">Starting from this point, unless stated otherwise, all commands that we instruct you to run should be run on the server, not on your local computer!</div>
 
-Now that you have logged in, you should create an operating system user account for your app. For security reasons, it is a good idea to run each app under its own user account, in order to limit the damage that security vulnerabilities in the app can do.
+Now that you have logged in, you should create an operating system user account for your app. For security reasons, it is a good idea to run each app under its own user account, in order to limit the damage that security vulnerabilities in the app can do. Passenger will automatically run your app under this user account as part of its [user sandboxing feature](<%= url_for "/deploy/user_sandboxing.html" %>).
 
-You should give the user account the same name as your app. But for demonstration purposes, this tutorial names the user account `myappuser`. We also ensure that that user has your SSH key installed.
+You should give the user account the same name as your app. But for demonstration purposes, this tutorial names the user account `myappuser`.
 
-<pre class="highlight"><span class="prompt">$ </span>sudo adduser <span class="o">myappuser</span>
-<span class="prompt">$ </span>sudo mkdir -p ~<span class="o">myappuser</span>/.ssh
+<pre class="highlight"><span class="prompt">$ </span>sudo adduser <span class="o">myappuser</span></pre>
+
+We also ensure that that user has your SSH key installed:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo mkdir -p ~<span class="o">myappuser</span>/.ssh
 <span class="prompt">$ </span>sudo sh -c <span class="s">"cat $HOME/.ssh/authorized_keys >> ~<span class="o">myappuser</span>/.ssh/authorized_keys"</span>
 <span class="prompt">$ </span>sudo chown -R <span>myappuser:</span> ~<span class="o">myappuser</span>/.ssh
 <span class="prompt">$ </span>sudo chmod <span>700</span> ~<span class="o">myappuser</span>/.ssh
@@ -236,18 +239,18 @@ You should give the user account the same name as your app. But for demonstratio
 
   <div>
     <% if locals[:os_config_class] == :debian %>
-      <pre class="highlight"><span class="prompt">$ </span>sudo apt-get install git</pre>
+      <pre class="highlight"><span class="prompt">$ </span>sudo apt-get install -y git</pre>
     <% elsif locals[:os_config_class] == :redhat %>
-      <pre class="highlight"><span class="prompt">$ </span>sudo yum install git</pre>
+      <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y git</pre>
     <% elsif locals[:os_config_class].nil? %>
       <table class="table table-bordered table-striped">
         <tr>
           <td>Debian, Ubuntu</td>
-          <td><pre class="highlight">sudo apt-get install git</pre></td>
+          <td><pre class="highlight">sudo apt-get install -y git</pre></td>
         </tr>
         <tr>
           <td>Red Hat, CentOS, Fedora, Scientific Linux, Amazon Linux</td>
-          <td><pre class="highlight">sudo yum install git</pre></td>
+          <td><pre class="highlight">sudo yum install -y git</pre></td>
         </tr>
         <tr>
           <td>Other operating systems</td>
@@ -283,7 +286,8 @@ You should give the user account the same name as your app. But for demonstratio
   <div class="info">
     <p>If you are using our sample app, use this Git clone command instead:</p>
     <% git_url, branch = deployment_walkthrough_sample_app_git_url(locals) %>
-    <pre class="highlight"><span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone --branch=<%= branch %> <%= git_url %> code</pre>
+    <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
+<span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone --branch=<%= branch %> <%= git_url %> code</pre>
   </div>
 
   <p>
@@ -312,7 +316,7 @@ substep = 0
       <p>
         If you are on Debian 8 or later, or on Ubuntu 14.04 or later, you can simply install MongoDB with apt-get:
       </p>
-      <pre class="highlight"><span class="prompt">$ </span>sudo apt-get install mongodb</pre>
+      <pre class="highlight"><span class="prompt">$ </span>sudo apt-get install -y mongodb</pre>
       <p>
         If you are on an older version of Debian or Ubuntu, please install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
       </p>
