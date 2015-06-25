@@ -81,18 +81,20 @@ set :js_dir, 'javascripts'
 set :images_dir, 'images'
 set :markdown_engine, :kramdown
 set :relative_links, true
-set :url_root, URL_ROOT
 set :display_guides, true
 
 activate :syntax
 activate :relative_assets
 
 configure :development do
+  set :url_root, DEVELOPMENT_URL_ROOT
   activate :livereload, :port => 35730
 end
 
 # Build-specific configuration
 configure :build do
+  set :url_root, PRODUCTION_URL_ROOT
+
   # For example, change the Compass output style for deployment
   activate :minify_css
 

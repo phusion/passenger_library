@@ -491,3 +491,37 @@ figcaption {
     margin-right: 1em;
   }
 }
+
+
+.btn-copy {
+  font-size: 0.8em;
+  padding: 0.5em 2em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #bbb;
+  background-color: #2A4252;
+  border: none;
+  border-left: solid 1px #666;
+  border-bottom: solid 1px #666;
+  border-radius: 0 0 0 4px;
+}
+
+.btn-copy:hover {
+  color: #eee;
+  background-color: #445;
+}
+
+.btn-copy:focus {
+  outline: 0 !important;
+  color: inherit;
+}
+
+.btn-copy-spacer {
+  display: inline-block;
+  float: right;
+  font-size: 0.8em;
+  margin: -9px -14px 3px 3px;
+  padding: 0.5em 2em;
+  visibility: hidden;
+}

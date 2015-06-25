@@ -1,0 +1,44 @@
+(function ($) {
+  'use strict';
+
+  $(document).ready(function() {
+    ZeroClipboard.config({ swfPath: "<%= config[:url_root] %>/javascripts/ZeroClipboard.swf" });
+
+    // Add copy buttons
+    $('pre.highlight').each(function() {
+      var pre = $(this);
+
+      var button = $('<button class="btn btn-copy">Copy</button>');
+      button.prependTo(pre);
+
+      // Install a spacer element so that text inside the 'pre' wrap around the copy button
+      var spacer = $('<div class="btn-copy-spacer">Copy</div>');
+      spacer.prependTo(pre);
+    });
+
+    // Install copy button behavior
+    var client = new ZeroClipboard($('.btn-copy'));
+    client.on( 'ready', function(event) {
+      client.on('copy', function(event) {
+        var button  = $(event.target);
+        var pre     = button.parent('pre.highlight');
+        var preCopy = pre.clone();
+
+        // Copy all text except for buttons, labels, prompts, command outputs, etc
+        preCopy.find('.btn, .btn-copy-spacer, .label, .prompt, .output, .nocopy').remove();
+        event.clipboardData.setData('text/plain', preCopy.text());
+
+        // Set button text to 'Copied!' for 2 seconds
+        button.text('Copied!');
+        clearTimeout(button.data('restore_timer'));
+        var restoreTimer = setTimeout(function() {
+          button.text('Copy');
+        }, 2000);
+        button.data('restore_timer', restoreTimer);
+      });
+    });
+    client.on('error', function(event) {
+      ZeroClipboard.destroy();
+    });
+  });
+})(jQuery);
