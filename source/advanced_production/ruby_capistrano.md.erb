@@ -540,7 +540,7 @@ Next, run Capistrano to start the deployment:
 
 If you are using Passenger Standalone, then make sure that you stop it and restart it in the newly-created `current` directory. This only needs to be done once, not on every deploy.
 
-Login to your server as `myappuser`.
+Login to your server as an administrator.
 
 If you use RVM, activate the correct Ruby interpreter for your app:
 
@@ -549,9 +549,11 @@ If you use RVM, activate the correct Ruby interpreter for your app:
 Stop the Passenger that was running in the `code` directory, then start a Passenger in the `current` directory:
 
 <pre class="highlight"><span class="prompt">$ </span>cd /var/www/myapp/code
-<span class="prompt">$ </span>bundle exec passenger stop
+<span class="prompt">$ </span>sudo bundle exec passenger stop --port 80
 <span class="prompt">$ </span>cd /var/www/myapp/current
-<span class="prompt">$ </span>bundle exec passenger start</pre>
+<span class="prompt">$ </span>sudo bundle exec passenger start</pre>
+
+(If you are on RVM, be sure to replace `sudo` with `rvmsudo`.)
 
 ## Conclusion
 
