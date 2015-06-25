@@ -101,7 +101,7 @@
           <!-- Content
           =========================================== -->
           <div class="col-md-8" role="main">
-            <div class="alert alert-info" role="alert">This documentation is new and is a <em>work in progress</em>. There may be inaccuracies. Please let us know if you find any.</div>
+            <div class="alert alert-info" role="alert" data-swiftype-index="false">This documentation is new and is a <em>work in progress</em>. There may be inaccuracies. Please let us know if you find any.</div>
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
@@ -110,7 +110,7 @@
           <!-- Content
           =========================================== -->
           <div class="col-md-8 col-md-offset-2" role="main">
-            <div class="alert alert-info" role="alert">This documentation is new and is a <em>work in progress</em>. There may be inaccuracies. Please let us know if you find any.</div>
+            <div class="alert alert-info" role="alert" data-swiftype-index="false">This documentation is new and is a <em>work in progress</em>. There may be inaccuracies. Please let us know if you find any.</div>
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
@@ -184,6 +184,9 @@
 
     <% if !current_page.data.skip_default_javascript %>
       <%= javascript_include_tag "all", :async => true %>
+    <% end %>
+    <% if !current_page.data.skip_search %>
+      <script data-st-module="em_nJUwzVfKRqxVaYfHYokd" src="//s.swiftypecdn.com/modules/v1/embed.js" async defer></script>
     <% end %>
   </body>
 </html>
