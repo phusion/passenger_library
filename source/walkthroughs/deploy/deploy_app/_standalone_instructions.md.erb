@@ -147,7 +147,14 @@ If you do not see your app's front page HTML, then the most likely cause is that
 
 Passenger is now running and serving your app, but that only lasts until you reboot your server. So you must configure your server to start Passenger Standalone on system boot.
 
-The easiest way to do that is to add it to the file `/etc/rc.local`. This script is called during system boot. Here is an example of what you may want to add to `/etc/rc.local`. If there is an `exit` command in rc.local, make sure you add these before the exit command.
+<!-- NOTE: Making /etc/rc.local executable is necessary on Red Hat 7, where it is disabled by default because of the lack of executable bit. -->
+
+The easiest way to do that is to add it to the file `/etc/rc.local`. This script is called during system boot. Ensure that it's executable and open it in a text editor:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo chmod +x /etc/rc.local
+<span class="prompt">$ </span>sudo nano /etc/rc.local</pre>
+
+Here is an example of what you may want to add to `/etc/rc.local`. If there is an `exit` command in rc.local, make sure you add these before the exit command.
 
 <pre class="highlight">
 <% if locals[:os_config_type] == :tarball %>

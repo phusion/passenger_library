@@ -291,7 +291,7 @@ We also ensure that that user has your SSH key installed:
   </div>
 
   <p>
-    Your app's code now lives on the server at <code>/var/www/myapp</code>/code.
+    Your app's code now lives on the server at <code>/var/www/myapp/code</code>.
   </p>
 <% end %>
 
@@ -319,6 +319,16 @@ substep = 0
       <pre class="highlight"><span class="prompt">$ </span>sudo apt-get install -y mongodb</pre>
       <p>
         If you are on an older version of Debian or Ubuntu, please install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
+      </p>
+    <% elsif os_config_class == :redhat %>
+      <p>
+        If you are on Red Hat 7 or later, or on CentOS 7 or later, you can simply install MongoDB with YUM (assuming <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> is enabled):
+      </p>
+      <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y mongodb-server
+<span class="prompt">$ </span>sudo systemctl enable mongod
+<span class="prompt">$ </span>sudo systemctl start mongod</pre>
+      <p>
+        If you are on an older version of Red Hat or CentOS, please install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
       </p>
     <% else %>
       <p>
