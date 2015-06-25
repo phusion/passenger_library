@@ -485,33 +485,9 @@ figcaption {
   }
 }
 
-
-.gcs-container {
-  .cse .gsc-control-cse,
-  .gsc-control-cse {
-    background-color: inherit;
-    border: none;
-    margin: 0 1em 0 0;
-    padding: 9px 0 0 0;
-    width: 15em;
+@media (min-width: 1200px) {
+  .swiftype-container .st-default-search-input {
+    margin-top: 9px;
+    margin-right: 1em;
   }
-
-  .gsc-search-box {
-    margin: 0;
-  }
-
-  .cse table.gsc-search-box td.gsc-input,
-  table.gsc-search-box td.gsc-input {
-    padding-right: 0;
-  }
-
-  .gsc-search-button,
-  .gsc-clear-button {
-    display: none;
-  }
-}
-
-.gsc-selected-option-container,
-html > body .gsc-inline-block.gsc-selected-option-container {
-  width: 11em !important;
 }
