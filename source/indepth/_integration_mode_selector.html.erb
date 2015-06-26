@@ -1,0 +1,24 @@
+<div class="icon-selection-row-container">
+  <div class="icon-selection-row-intro">
+    <p class="lead">Please select the integration mode you are interested in.</p>
+    <p>
+      <a href="<%= url_for '/indepth/integration_modes.html' %>">What is an integration mode?</a> |
+      <a href="<%= url_for '/indepth/integration_modes.html' %>">Which one should I pick?</a>
+    </p>
+  </div>
+
+  <div class="icon-selection-row-items">
+    <a href="<%= nginx_url %>" class="icon-selection-row-item nginx">
+      <img src="<%= url_for '/images/nginx.png' %>" width="96" height="96" alt="Nginx">
+      <span class="icon-selection-row-item-label">Nginx</span>
+    </a>
+    <a href="<%= apache_url %>" class="icon-selection-row-item apache">
+      <img src="<%= url_for '/images/apache.png' %>" width="96" height="96" alt="Apache">
+      <span class="icon-selection-row-item-label">Apache</span>
+    </a>
+    <a href="<%= standalone_url %>" class="icon-selection-row-item standalone">
+      <img src="<%= url_for '/images/passenger.png' %>" width="80" height="96" alt="Standalone">
+      <span class="icon-selection-row-item-label">Standalone</span>
+    </a>
+  </div>
+</div>

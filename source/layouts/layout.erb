@@ -190,5 +190,39 @@
     <% if !current_page.data.skip_search %>
       <script data-st-module="em_nJUwzVfKRqxVaYfHYokd" src="//s.swiftypecdn.com/modules/v1/embed.js" async defer></script>
     <% end %>
+
+    <div id="js-templates" style="display: hidden">
+      <div id="js-template-modal" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+              <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <div id="js-template-integration-mode-selector">
+        <%= render_partial("/indepth/integration_mode_selector.html", locals: {
+          nginx_url: "",
+          apache_url: "",
+          standalone_url: ""
+        }) %>
+      </div>
+
+      <div id="js-template-edition-selector">
+        <%= render_partial("/indepth/edition_selector.html", locals: {
+          oss_url: "",
+          enterprise_url: ""
+        }) %>
+      </div>
+    </div>
   </body>
 </html>

@@ -3,18 +3,9 @@ require "./lib/deployment_walkthrough_helpers"
 helpers CustomHelpers
 helpers DeploymentWalkthroughHelpers
 
-###
-# Compass
-###
-
-# Change Compass configuration
-# compass_config do |config|
-#   config.output_style = :compact
-# end
-
-###
+#################################################
 # Page options, layouts, aliases and proxies
-###
+#################################################
 
 # Per-page layout changes:
 #
@@ -33,6 +24,8 @@ helpers DeploymentWalkthroughHelpers
 # proxy "/this-page-has-no-template.html", "/template-file.html", :locals => {
 #  :which_fake_page => "Rendering a fake page with a local variable" }
 
+###### Deployment walkthrough ######
+
 define_deployment_walkthrough_pages do |*proxy_args|
   proxy(*proxy_args)
 end
@@ -49,32 +42,43 @@ ignore "/walkthroughs/deploy/deploy_app.html"
 ignore "/walkthroughs/deploy/deploy_updates.html"
 ignore "/walkthroughs/deploy/conclusion.html"
 
+###### Installation guide ######
 
 INTEGRATION_MODES.each do |integration_mode_spec|
   integration_mode_type = integration_mode_spec[:integration_mode_type]
+
+  proxy "/install/#{integration_mode_type}/index.html",
+    "/install/index2.html",
+    locals: integration_mode_spec
+  proxy "/install/#{integration_mode_type}/install/index.html",
+    "/install/install.html",
+    locals: integration_mode_spec
 
   PASSENGER_EDITIONS.each do |edition_spec|
     edition_type = edition_spec[:edition_type]
     locals = integration_mode_spec.merge(edition_spec)
 
-    proxy "/install/passenger_#{edition_type}_#{integration_mode_type}/index.html",
-        "/install/install_passenger_main.html",
+    proxy "/install/#{integration_mode_type}/install/#{edition_type}/index.html",
+        "/install/install2.html",
         locals: locals
 
     available_os_configs(locals).each do |os_config_spec|
       os_config = os_config_spec[:os_config_type]
 
-      proxy "/install/passenger_#{edition_type}_#{integration_mode_type}/#{os_config}/index.html",
-        "/install/install_passenger.html",
+      proxy "/install/#{integration_mode_type}/install/#{edition_type}/#{os_config}/index.html",
+        "/install/install3.html",
         locals: locals.merge(os_config_spec)
     end
   end
 end
 
-ignore "/install/install_passenger_main.html"
-ignore "/install/install_passenger.html"
+ignore "/install/install.html"
+ignore "/install/install2.html"
+ignore "/install/install3.html"
 
-###
+
+#################################################
+
 
 set :css_dir, 'stylesheets'
 set :js_dir, 'javascripts'

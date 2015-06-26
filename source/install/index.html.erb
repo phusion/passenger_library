@@ -1,0 +1,20 @@
+---
+title: Installation, upgrade and uninstallation
+section: install
+comments: false
+skip_search_index: true
+---
+<% content_for :masthead do %>
+  <div class="bs-docs-header" id="content">
+    <div class="container">
+      <h1>Installation, upgrade and uninstallation</h1>
+      <p>Learn about topics related to installing, upgrading and uninstalling Passenger.</p>
+    </div>
+  </div>
+<% end %>
+
+<%= render_partial("/indepth/integration_mode_selector.html", locals: {
+  nginx_url: url_for('/install/nginx/index.html'),
+  apache_url: url_for('/install/apache/index.html'),
+  standalone_url: url_for('/install/standalone/index.html')
+}) %>

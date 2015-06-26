@@ -410,12 +410,14 @@ figcaption {
   text-align: center;
   margin-right: 2em;
   margin-bottom: 2em;
+  max-width: 200px;
 }
 
 .icon-selection-row-item-label {
   display: block;
   font-size: 1.5em;
   margin-top: 1em;
+  line-height: 1.3;
 }
 
 
@@ -530,28 +532,61 @@ figcaption {
 }
 
 
-.breadcrumb-container-sidebar {
+.breadcrumb-container,
+.bs-docs-container .breadcrumb-container {
   border: solid rgb(230, 226, 249);
-  padding: 0.3em 1em;
+  padding: 0.6em 1em;
   margin-bottom: 1.5em;
   border-radius: 6px;
   border-style: dashed;
-  background: rgb(252, 248, 253);
   text-align: center;
 
   .breadcrumb-announcer {
+    margin: 0;
     font-size: 0.9em;
     color: rgb(192, 179, 200);
   }
 
   .glyphicon {
-    font-size: 3em;
+    font-size: 2em;
     display: block;
     margin-bottom: 0.25em;
   }
 
+  .icon {
+    margin-bottom: 0.25em;
+  }
+
+  .icon > img {
+    width: auto;
+    height: 2em;
+  }
+
   a small {
     color: inherit;
+  }
+
+  h2 {
+    font-size: 1.2em;
+    margin: 0.5em 0;
+  }
+
+  h3 {
+    font-weight: normal;
+    font-size: 1.1em;
+    margin: 0.5em 0;
+  }
+
+  .back-to-previous {
+    margin-bottom: 0;
+  }
+}
+
+.breadcrumb-container.breadcrumb-container-main {
+  background: rgb(252, 248, 253);
+
+  .glyphicon {
+    font-size: 2.5em;
   }
 }
 

@@ -1,0 +1,19 @@
+<div class="icon-selection-row-container">
+  <div class="icon-selection-row-intro">
+    <p class="lead">Are you using Passenger open source or Passenger Enterprise?</p>
+    <p>
+      <a href="<%= url_for '/indepth/open_source_vs_enterprise.html' %>">Learn more about open source vs Enterprise</a>
+    </p>
+  </div>
+
+  <div class="icon-selection-row-items">
+    <a href="<%= oss_url %>" class="icon-selection-row-item oss">
+      <img src="<%= url_for '/images/passenger.png' %>" width="80" height="96" alt="Passenger open source">
+      <span class="icon-selection-row-item-label">I am using Passenger open souce</span>
+    </a>
+    <a href="<%= enterprise_url %>" class="icon-selection-row-item enterprise">
+      <img src="<%= url_for '/images/apache.png' %>" width="96" height="96" alt="Passenger Enterprise">
+      <span class="icon-selection-row-item-label">I am using Passenger Enterprise</span>
+    </a>
+  </div>
+</div>
