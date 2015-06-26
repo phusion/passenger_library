@@ -3,10 +3,12 @@
   language_name = current_page.data.language_name
 %>
 
-<a href="<%= url_for "/index.html" %>#walkthroughs" class="back-to-previous">&laquo; Back to all walkthroughs</a>
+<div data-swiftype-index="false">
+  <a href="<%= url_for "/index.html" %>#walkthroughs" class="back-to-previous">&laquo; Back to all walkthroughs</a>
 
-<h2>Basics<br>
-<small>for <%= language_name %> developers</small></h2>
+  <h2>Basics<br>
+  <small>for <%= language_name %> developers</small></h2>
+</div>
 
 <ul class="nav nav-stacked">
   <% navbar_subsection :beginning do %>
