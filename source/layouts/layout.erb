@@ -184,6 +184,8 @@
       </div>
     </footer>
 
+    <%= globals[:layout_body_trailer] || "" %>
+
     <% if !current_page.data.skip_default_javascript %>
       <%= javascript_include_tag "all", :async => true %>
     <% end %>

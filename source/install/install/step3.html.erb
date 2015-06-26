@@ -2,14 +2,14 @@
 section: install
 ---
 <%
-@page_title = "Installing #{edition_title} + #{integration_mode_name} #{os_config_description_with_preposition}"
+@page_title = "Installing #{edition_title} #{integration_mode_name_as_passenger_suffix} #{os_config_description_with_preposition}"
 content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
 locals[:enterprise] = edition_type == :enterprise
 locals[:type] = integration_mode_type.to_s
 locals[:web_server_name] = integration_mode_name
 %>
 
-<h1>Installing <%= edition_title %> + <%= integration_mode_name %><br>
+<h1>Installing <%= edition_title %> <%= integration_mode_name_as_passenger_suffix %><br>
 <small><%= os_config_description_with_preposition %></small></h1>
 
 <div class="info">

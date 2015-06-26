@@ -71,15 +71,18 @@ module DeploymentWalkthroughHelpers
   ]
   INTEGRATION_MODE_NGINX = {
     integration_mode_type: :nginx,
-    integration_mode_name: "Nginx"
+    integration_mode_name: "Nginx",
+    integration_mode_name_as_passenger_suffix: "+ Nginx"
   }
   INTEGRATION_MODE_APACHE = {
     integration_mode_type: :apache,
-    integration_mode_name: "Apache"
+    integration_mode_name: "Apache",
+    integration_mode_name_as_passenger_suffix: "+ Apache"
   }
   INTEGRATION_MODE_STANDALONE = {
     integration_mode_type: :standalone,
-    integration_mode_name: "Standalone"
+    integration_mode_name: "Standalone",
+    integration_mode_name_as_passenger_suffix: "Standalone"
   }
   INTEGRATION_MODES = [
     INTEGRATION_MODE_NGINX,

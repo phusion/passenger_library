@@ -47,14 +47,20 @@ ignore "/walkthroughs/deploy/conclusion.html"
 INTEGRATION_MODES.each do |integration_mode_spec|
   integration_mode_type = integration_mode_spec[:integration_mode_type]
 
-  # Miscellaneous pages
   proxy "/install/#{integration_mode_type}/index.html",
     "/install/index2.html",
     locals: integration_mode_spec
-
-  # Install Passenger
   proxy "/install/#{integration_mode_type}/install/index.html",
     "/install/install/step1.html",
+    locals: integration_mode_spec
+  proxy "/install/#{integration_mode_type}/upgrade.html",
+    "/install/upgrade.html",
+    locals: integration_mode_spec
+  proxy "/install/#{integration_mode_type}/uninstall/index.html",
+    "/install/uninstall/step1.html",
+    locals: integration_mode_spec
+  proxy "/install/#{integration_mode_type}/noninteractive_install.html",
+    "/install/noninteractive_install.html",
     locals: integration_mode_spec
 
   PASSENGER_EDITIONS.each do |edition_spec|
@@ -62,8 +68,11 @@ INTEGRATION_MODES.each do |integration_mode_spec|
     locals = integration_mode_spec.merge(edition_spec)
 
     proxy "/install/#{integration_mode_type}/install/#{edition_type}/index.html",
-        "/install/install/step2.html",
-        locals: locals
+      "/install/install/step2.html",
+      locals: locals
+    proxy "/install/#{integration_mode_type}/uninstall/#{edition_type}/index.html",
+      "/install/uninstall/step2.html",
+      locals: locals
 
     available_os_configs(locals).each do |os_config_spec|
       os_config = os_config_spec[:os_config_type]
@@ -75,10 +84,23 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   end
 end
 
+# Miscellaneous pages
+proxy "/install/nginx/disable.html",
+  "/install/disable.html",
+  locals: INTEGRATION_MODE_NGINX
+proxy "/install/apache/disable.html",
+  "/install/disable.html",
+  locals: INTEGRATION_MODE_APACHE
+
 ignore "/install/index2.html"
+ignore "/install/upgrade.html"
+ignore "/install/disable.html"
+ignore "/install/noninteractive_install.html"
 ignore "/install/install/step1.html"
 ignore "/install/install/step2.html"
 ignore "/install/install/step3.html"
+ignore "/install/uninstall/step1.html"
+ignore "/install/uninstall/step2.html"
 
 
 #################################################

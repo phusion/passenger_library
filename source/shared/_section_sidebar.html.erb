@@ -38,25 +38,27 @@ end
     </p>
   </div>
 
-  <div class="modal fade" id="integration_mode_selection_modal" tabindex="-1" role="dialog" style="display: none" data-swiftype-index="false">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <%= render_partial("/shared/integration_mode_selector.html", locals: {
-            nginx_url: current_url_with_other_integration_mode(:nginx, locals[:available_integration_modes], section_path),
-            apache_url: current_url_with_other_integration_mode(:apache, locals[:available_integration_modes], section_path),
-            standalone_url: current_url_with_other_integration_mode(:standalone, locals[:available_integration_modes], section_path)
-          }) %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  <% append_to_layout_body do %>
+    <div class="modal fade" id="integration_mode_selection_modal" tabindex="-1" role="dialog" style="display: none" data-swiftype-index="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <%= render_partial("/shared/integration_mode_selector.html", locals: {
+              nginx_url: current_url_with_other_integration_mode(:nginx, locals[:available_integration_modes], section_path),
+              apache_url: current_url_with_other_integration_mode(:apache, locals[:available_integration_modes], section_path),
+              standalone_url: current_url_with_other_integration_mode(:standalone, locals[:available_integration_modes], section_path)
+            }) %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 
 <% if locals[:edition_type] %>
@@ -70,22 +72,24 @@ end
     </p>
   </div>
 
-  <div class="modal fade" id="edition_selection_modal" tabindex="-1" role="dialog" style="display: none" data-swiftype-index="false">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <%= render_partial("/shared/edition_selector.html", locals: {
-            oss_url: current_url_with_other_edition(:oss),
-            enterprise_url: current_url_with_other_edition(:enterprise)
-          }) %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  <% append_to_layout_body do %>
+    <div class="modal fade" id="edition_selection_modal" tabindex="-1" role="dialog" style="display: none" data-swiftype-index="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <%= render_partial("/shared/edition_selector.html", locals: {
+              oss_url: current_url_with_other_edition(:oss),
+              enterprise_url: current_url_with_other_edition(:enterprise)
+            }) %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 <% end %>

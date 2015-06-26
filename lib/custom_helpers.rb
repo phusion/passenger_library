@@ -94,6 +94,11 @@ module CustomHelpers
     end
   end
 
+  def append_to_layout_body(&block)
+    globals[:layout_body_trailer] ||= ""
+    globals[:layout_body_trailer] << capture_html(&block)
+  end
+
   def comments_section_classes
     if has_sidebar?
       "col-md-8 col-md-offset-3"
@@ -185,10 +190,10 @@ module CustomHelpers
     if available
       path = "#{config[:root_url]}/" + current_page.path
       path.sub!(/\/index\.html$/, "/")
-      path.gsub(/(nginx|apache|standalone)/, other_integration_mode.to_s)
     else
-      section_path
+      path = section_path
     end
+    path.gsub(/(nginx|apache|standalone)/, other_integration_mode.to_s)
   end
 
   def current_url_with_other_edition(other_edition)

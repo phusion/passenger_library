@@ -1,8 +1,11 @@
 ---
-title: Non-interactive, automatic, headless installs or upgrades
 section: install
-sidebar: sidebar
 ---
+<%
+@page_title = "Non-interactive, automatic, headless installs or upgrades - #{integration_mode_name}"
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+%>
+
 # Non-interactive, automatic, headless installs or upgrades
 
 Passenger and Passenger Enterprise can be installed in a non-interactive, automatic, headless manner. This is perfect in automated scenarios, e.g. when using Chef or Puppet, or when building a Docker container.
@@ -29,18 +32,20 @@ If you are on a Red Hat or CentOS operating system, then the recommended way to 
 
 ## Source tarball or RubyGems installation
 
-### Nginx mode or Apache mode
+<% if integration_mode_type == :nginx || integration_mode_type == :apache %>
 
 If you are using Passenger + Nginx or Passenger + Apache, then the installation process involves running an installer (`passenger-install-nginx-module` and `passenger-install-apache2-module`) which is interactive. You can run the installer non-interactively by passing various answers to the installer through command line options. Please run the installer with `--help` for a list of available command line options. Here are examples which show how to run them non-interactively:
 
     passenger-install-apache2-module --auto
     passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx
 
-In case of Nginx, you can also achieve non-interactive installation by [installing Passenger as a normal Nginx module](install_as_nginx_module.html).
+In case of Nginx, you can also achieve non-interactive installation by [installing Passenger as a normal Nginx module](<%= url_for "/install/nginx/install_as_nginx_module.html" %>).
 
-### Standalone mode
+<% else %>
 
 If you are using Passenger in its Standalone mode, then you should run the following commands right after installing Passenger. These will download any necessary files immediately, which would otherwise be downloading during the first run of `passenger start`.
 
     passenger-config install-standalone-runtime
     passenger-config build-native-support
+
+<% end %>
