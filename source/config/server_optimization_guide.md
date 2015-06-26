@@ -1,6 +1,6 @@
 ---
 title: Server optimization guide
-section: advanced_production
+section: config
 sidebar: sidebar
 ---
 # Server optimization guide

@@ -5,7 +5,20 @@ section: indepth
 <%
 content_for(:sidebar) do
   %Q{
-    <a href="#{url_for "/index.html"}" class="back-to-previous">&laquo; Back to Passenger Library front page</a>
+    <div class="breadcrumb-container breadcrumb-container-sidebar" data-swiftype-index="false">
+      <p class="breadcrumb-announcer">Current section:</p>
+
+      <h2>
+        <a href="#{url_for "/indepth/index.html"}">
+          <span class="glyphicon glyphicon-cog"></span>
+          Passenger in depth
+        </a>
+      </h2>
+
+      <p class="back-to-previous">
+        <a href="#{url_for "/index.html"}">&laquo; Back to Passenger Library front page</a>
+      </p>
+    </div>
   }
 end
 %>

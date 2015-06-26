@@ -374,19 +374,45 @@ figcaption {
 }
 
 
-.programming-language-selections {
-  text-align: center;
-  margin: 2em 0 0 0;
+.icon-selection-row-container {
+  // .integration-mode-selections's negative right margin
+  // causes a horizontal scrollbar to appear on small viewport
+  // sizes. We set overflow hidden to make sure that
+  // scrollbar doesn't appear.
+  overflow: hidden;
 }
 
-.programming-language-selection {
+.icon-selection-row-intro,
+.bs-docs-container p.icon-selection-row-intro {
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+  text-align: center;
+  color: #555;
+
+  .lead {
+    font-size: 200%;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+  }
+}
+
+.icon-selection-row-items {
+  text-align: center;
+  // .integration-mode-selections has a negative right margin
+  // in order to get rid of the extra right margin of the last
+  // icon in a row.
+  margin: 2em -2em 0 0;
+}
+
+.icon-selection-row-item {
   display: inline-block;
   text-align: center;
   margin-right: 2em;
   margin-bottom: 2em;
 }
 
-.programming-language-selection-label {
+.icon-selection-row-item-label {
   display: block;
   font-size: 1.5em;
   margin-top: 1em;
@@ -451,6 +477,17 @@ figcaption {
   margin-top: 0.5em;
 }
 
+.front-page-link-header,
+.bs-docs-container h3.front-page-link-header {
+  margin-top: 1.5em;
+}
+
+.front-page-link-header .glyphicon {
+  display: block;
+  font-size: 2em;
+  margin-bottom: 0.25em;
+}
+
 .front-page-link-header > a {
   color: black;
 }
@@ -489,6 +526,32 @@ figcaption {
   .swiftype-container .st-default-search-input {
     margin-top: 9px;
     margin-right: 1em;
+  }
+}
+
+
+.breadcrumb-container-sidebar {
+  border: solid rgb(230, 226, 249);
+  padding: 0.3em 1em;
+  margin-bottom: 1.5em;
+  border-radius: 6px;
+  border-style: dashed;
+  background: rgb(252, 248, 253);
+  text-align: center;
+
+  .breadcrumb-announcer {
+    font-size: 0.9em;
+    color: rgb(192, 179, 200);
+  }
+
+  .glyphicon {
+    font-size: 3em;
+    display: block;
+    margin-bottom: 0.25em;
+  }
+
+  a small {
+    color: inherit;
   }
 }
 

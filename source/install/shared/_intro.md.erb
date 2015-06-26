@@ -12,17 +12,13 @@ end
 
 <% if integration_mode_type == :nginx %>
   <div style="text-align: center">
-    <img src="<%= url_for '/images/passenger.png' %>" style="margin-right: 2em" alt="Passenger">
-    <img src="<%= url_for '/images/nginx.png' %>" wwidth="144" hheight="128" alt="Nginx">
+    <img src="<%= url_for '/images/passenger.png' %>" width="106" height="128" style="margin-right: 2em" alt="Passenger">
+    <img src="<%= url_for '/images/nginx.png' %>" width="128" height="128" alt="Nginx">
   </div>
 <% elsif integration_mode_type == :apache %>
-  <div class="image-float-right hidden-xs">
-    <p><img src="<%= url_for '/images/passenger.png' %>" alt="Passenger"></p>
-    <p><img src="<%= url_for '/images/apache.png' %>" width="144" height="128" alt="Apache"></p>
-  </div>
-  <div class="visible-xs" style="text-align: center">
-    <img src="<%= url_for '/images/passenger.png' %>" style="margin-right: 2em" alt="Passenger">
-    <img src="<%= url_for '/images/apache.png' %>" width="144" height="128" alt="Apache">
+  <div style="text-align: center">
+    <img src="<%= url_for '/images/passenger.png' %>" width="106" height="128" style="margin-right: 2em" alt="Passenger">
+    <img src="<%= url_for '/images/apache.png' %>" width="128" height="128" alt="Apache">
   </div>
 <% else %>
   <div class="image-float-right hidden-xs">

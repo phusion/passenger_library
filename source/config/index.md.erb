@@ -1,6 +1,6 @@
 ---
-title: Administration
-section: admin
+title: 'Configuration and optimization'
+section: config
 ---
 <%
 content_for(:sidebar) do
@@ -9,9 +9,9 @@ content_for(:sidebar) do
       <p class="breadcrumb-announcer">Current section:</p>
 
       <h2>
-        <a href="#{url_for "/admin/index.html"}">
-          <span class="glyphicon glyphicon-check"></span>
-          Administration
+        <a href="#{url_for "/config/index.html"}">
+          <span class="glyphicon glyphicon-cog"></span>
+          Configuration and optimization
         </a>
       </h2>
 
@@ -23,11 +23,11 @@ content_for(:sidebar) do
 end
 %>
 
-# Administration
+# Configuration and optimization
 
 <ul class="list-unstyled list-links">
-  <li><a href="troubleshooting.html">Troubleshooting</a></li>
-  <li><a href="admin_tools.html">Administration tools</a></li>
-  <li><a href="log_rotation.html">Log rotation</a></li>
+  <li><a href="troubleshooting.html">Overview of major Passenger features</a></li>
+  <li><a href="server_optimization_guide.html">Server optimization guide</a></li>
+  <li><a href="reference.html">Configuration reference</a></li>
   <li><a href="cloud_licensing_configuration.html">Passenger Enterprise cloud licensing configuration</a></li>
 </ul>

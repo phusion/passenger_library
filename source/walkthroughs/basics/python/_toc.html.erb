@@ -1,8 +1,17 @@
-<div data-swiftype-index="false">
-  <a href="<%= url_for "/index.html" %>#walkthroughs" class="back-to-previous">&laquo; Back to all walkthroughs</a>
+<div class="breadcrumb-container breadcrumb-container-sidebar" data-swiftype-index="false">
+  <p class="breadcrumb-announcer">Current section:</p>
 
-  <h2>Basics<br>
-  <small>for Python developers</small></h2>
+  <h2>
+    <a href="<%= url_for "/walkthroughs/basics/index.html" %>">
+      <span class="glyphicon glyphicon-picture"></span>
+      Basics<br>
+      <small>for Python developers</small>
+    </a>
+  </h2>
+
+  <p class="back-to-previous">
+    <a href="<%= url_for "/index.html" %>#walkthroughs">&laquo; Back to all walkthroughs</a>
+  </p>
 </div>
 
 <ul class="nav nav-stacked">
