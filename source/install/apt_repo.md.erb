@@ -1,9 +1,12 @@
 ---
-title: Phusion Passenger APT repository
 section: install
-sidebar: sidebar
 ---
-# Phusion Passenger APT repository
+<%
+@page_title = "Passenger #{integration_mode_name_as_passenger_suffix} APT repository"
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+%>
+
+# Passenger <%= integration_mode_name_as_passenger_suffix %> APT repository
 
 We provide APT repositories for installing Phusion Passenger on Debian and Ubuntu systems. There are separate repositories for the open source and Enterprise versions.
 
@@ -13,12 +16,9 @@ If you use these packages to install Passenger then you do not need to run `pass
 
 Packages are available for the x86 and x86_64 architectures. Our policy is to support all Ubuntu LTS releases that are still supported by Canonical, plus the latest Ubuntu release, plus all Debian releases that are still supported by Debian.
 
+## Installation guides
+
 To learn more about installing Passenger or Passenger Enterprise through APT, please refer to one of the installation guides. When asked to select an operating system, select <strong>"Debian, Ubuntu"</strong>.
 
-<ul>
-  <% PASSENGER_EDITIONS.each do |edition_spec| %>
-    <% INTEGRATION_MODES.each do |integration_mode_spec| %>
-      <li><a href="<%= url_for "/install/passenger_#{edition_spec[:edition_type]}_#{integration_mode_spec[:integration_mode_type]}/index.html" %>">Installing <%= edition_spec[:edition_title] %> + <%= integration_mode_spec[:integration_mode_name] %></a></li>
-    <% end %>
-  <% end %>
-</ul>
+<%= render_partial("/shared/edition_selector.html", locals: {
+      oss_url: "install/oss/", enterprise_url: "install/enterprise/"}) %>

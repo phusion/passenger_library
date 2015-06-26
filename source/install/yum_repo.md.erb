@@ -1,9 +1,12 @@
 ---
-title: Phusion Passenger YUM repository
 section: install
-sidebar: sidebar
 ---
-# Phusion Passenger YUM repository
+<%
+@page_title = "Passenger #{integration_mode_name_as_passenger_suffix} YUM repository"
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+%>
+
+# Passenger <%= integration_mode_name_as_passenger_suffix %> YUM repository
 
 We provide YUM repositories for installing Phusion Passenger on Red Hat Enterprise Linux and CentOS systems. There are separate repositories for the open source and Enterprise versions.
 
@@ -20,12 +23,9 @@ If you use these packages to install Passenger then you do not need to run `pass
 
 Packages are available for the x86 and x86_64 architectures. Our policy is to support all Red Hat and CentOS releases that still receive full updates by their vendors. The earliest Red Hat and CentOS version we support is version 5.
 
+## Installation guides
+
 To learn more about installing Passenger or Passenger Enterprise through YUM, please refer to one of the installation guides. When asked to select an operating system, select <strong>"Red Hat, CentOS"</strong>.
 
-<ul>
-  <% PASSENGER_EDITIONS.each do |edition_spec| %>
-    <% INTEGRATION_MODES.each do |integration_mode_spec| %>
-      <li><a href="<%= url_for "/install/passenger_#{edition_spec[:edition_type]}_#{integration_mode_spec[:integration_mode_type]}/index.html" %>">Installing <%= edition_spec[:edition_title] %> + <%= integration_mode_spec[:integration_mode_name] %></a></li>
-    <% end %>
-  <% end %>
-</ul>
+<%= render_partial("/shared/edition_selector.html", locals: {
+      oss_url: "install/oss/", enterprise_url: "install/enterprise/"}) %>

@@ -68,6 +68,12 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/install/#{integration_mode_type}/upgrading_from_oss_to_enterprise.html",
     "/install/upgrading_from_oss_to_enterprise.html",
     locals: integration_mode_spec
+  proxy "/install/#{integration_mode_type}/apt_repo.html",
+    "/install/apt_repo.html",
+    locals: integration_mode_spec
+  proxy "/install/#{integration_mode_type}/yum_repo.html",
+    "/install/yum_repo.html",
+    locals: integration_mode_spec
 
   PASSENGER_EDITIONS.each do |edition_spec|
     edition_type = edition_spec[:edition_type]
@@ -104,6 +110,8 @@ ignore "/install/disable.html"
 ignore "/install/moving.html"
 ignore "/install/noninteractive_install.html"
 ignore "/install/upgrading_from_oss_to_enterprise.html"
+ignore "/install/apt_repo.html"
+ignore "/install/yum_repo.html"
 ignore "/install/install/step1.html"
 ignore "/install/install/step2.html"
 ignore "/install/install/step3.html"
