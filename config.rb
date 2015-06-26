@@ -59,8 +59,14 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/install/#{integration_mode_type}/uninstall/index.html",
     "/install/uninstall/step1.html",
     locals: integration_mode_spec
+  proxy "/install/#{integration_mode_type}/moving.html",
+    "/install/moving.html",
+    locals: integration_mode_spec
   proxy "/install/#{integration_mode_type}/noninteractive_install.html",
     "/install/noninteractive_install.html",
+    locals: integration_mode_spec
+  proxy "/install/#{integration_mode_type}/upgrading_from_oss_to_enterprise.html",
+    "/install/upgrading_from_oss_to_enterprise.html",
     locals: integration_mode_spec
 
   PASSENGER_EDITIONS.each do |edition_spec|
@@ -95,7 +101,9 @@ proxy "/install/apache/disable.html",
 ignore "/install/index2.html"
 ignore "/install/upgrade.html"
 ignore "/install/disable.html"
+ignore "/install/moving.html"
 ignore "/install/noninteractive_install.html"
+ignore "/install/upgrading_from_oss_to_enterprise.html"
 ignore "/install/install/step1.html"
 ignore "/install/install/step2.html"
 ignore "/install/install/step3.html"

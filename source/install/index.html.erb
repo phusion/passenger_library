@@ -15,7 +15,7 @@ skip_search_index: true
 
 <p>This section is targeted at <strong>advanced users</strong>. Not familar with Passenger? Please read <a href="<%= url_for "/walkthroughs/deploy/" %>">the deployment walkthrough</a> instead.</p>
 
-<%= render_partial("/indepth/integration_mode_selector.html", locals: {
+<%= render_partial("/shared/integration_mode_selector.html", locals: {
   nginx_url: url_for('/install/nginx/index.html'),
   apache_url: url_for('/install/apache/index.html'),
   standalone_url: url_for('/install/standalone/index.html')
