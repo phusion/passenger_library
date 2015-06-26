@@ -32,7 +32,7 @@ step = 0
 <% if edition_type == :enterprise %>
   <%=
   result = {}
-  output = render_partial("/install/shared/enterprise_preamble.html", locals: locals.merge(result: result))
+  output = render_partial("/install/install/shared/enterprise_preamble.html", locals: locals.merge(result: result))
   step = result[:step]
   output
   %>
@@ -132,7 +132,7 @@ passenger_instance_registry_dir /var/run/passenger-instreg;</pre>
 
 <% step += 1 %>
 <h2>Step <%= step %>: check installation</h2>
-<%= render_partial("/install/shared/postinstall_check.html",
+<%= render_partial("/install/install/shared/postinstall_check.html",
       locals: locals.merge(apache_process_name: "httpd")) %>
 
 <% step += 1 %>

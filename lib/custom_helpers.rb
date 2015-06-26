@@ -172,4 +172,28 @@ module CustomHelpers
     end
     result
   end
+
+  def current_url_with_other_integration_mode(other_integration_mode, available_integration_modes, section_path)
+    available = false
+    available_integration_modes.each do |spec|
+      if spec[:integration_mode_type] == other_integration_mode
+        available = true
+        break
+      end
+    end
+
+    if available
+      path = "#{config[:root_url]}/" + current_page.path
+      path.sub!(/\/index\.html$/, "/")
+      path.gsub(/(nginx|apache|standalone)/, other_integration_mode.to_s)
+    else
+      section_path
+    end
+  end
+
+  def current_url_with_other_edition(other_edition)
+    path = "#{config[:root_url]}/" + current_page.path
+    path.sub!(/\/index\.html$/, "/")
+    path.gsub(/(oss|enterprise)/, other_edition.to_s)
+  end
 end

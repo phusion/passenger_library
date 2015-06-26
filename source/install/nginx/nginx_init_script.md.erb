@@ -1,8 +1,13 @@
 ---
 title: Creating an Nginx init script
 section: install
-sidebar: sidebar
 ---
+<%
+locals.merge!(INTEGRATION_MODE_NGINX)
+content_for(:sidebar) { render_partial("../sidebar.html",
+  locals: locals.merge(available_integration_modes: [INTEGRATION_MODE_NGINX])) }
+%>
+
 # Creating an Nginx init script
 
 If you installed Nginx with one of the generic installation methods ([source tarball](passenger_oss_nginx/tarball/) or [RubyGems](passenger_oss_nginx/rubygems_rvm/)) then you [won't have an init script](passenger_oss_nginx/tarball/#note_about_nginx) to start, stop and restart Nginx with.

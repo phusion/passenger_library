@@ -1,48 +1,5 @@
-<div class="breadcrumb-container breadcrumb-container-main" data-swiftype-index="false">
-  <p class="breadcrumb-announcer">Current section:</p>
-
-  <h2>
-    <a href="<%= url_for "/install/#{integration_mode_type}/index.html" %>">
-      <span class="glyphicon glyphicon-hdd"></span>
-      Installation, upgrade and uninstallation
-    </a>
-  </h2>
-
-  <p class="back-to-previous">
-    <% if locals[:context] == :index %>
-      <a href="<%= url_for "/index.html" %>">&laquo; Back to Library front page</a>
-    <% else %>
-      <a href="<%= url_for "/install/#{integration_mode_type}/index.html" %>">&laquo; Back to section</a>
-    <% end %>
-  </p>
-</div>
-
-<div class="breadcrumb-container" data-swiftype-index="false">
-  <p class="breadcrumb-announcer">Selected integration mode:</p>
-
-  <h3>
-    <a href="javascript:void(changeIntegrationMode())">
-      <%= locals[:integration_mode_name] %>
-    </a>
-  </h3>
-
-  <p class="back-to-previous">
-    <a href="javascript:void(changeIntegrationMode())">Change selection</a>
-  </p>
-</div>
-
-<% if locals[:edition_type] %>
-  <div class="breadcrumb-container" data-swiftype-index="false">
-    <p class="breadcrumb-announcer">Selected edition:</p>
-
-    <h3>
-      <a href="javascript:void(changeEdition())">
-        <%= locals[:edition_long_title] %>
-      </a>
-    </h3>
-
-    <p class="back-to-previous">
-      <a href="javascript:void(changeEdition())">Change selection</a>
-    </p>
-  </div>
-<% end %>
+<%= render_partial("/shared/section_sidebar.html", locals: locals.merge(
+  section_path: "/install",
+  section_glyphicon: "hdd",
+  section_title: "Installation, upgrade and uninstallation"
+)) %>

@@ -1,8 +1,13 @@
 ---
 title: Installing Passenger as a normal Nginx module
 section: install
-sidebar: sidebar
 ---
+<%
+locals.merge!(INTEGRATION_MODE_NGINX)
+content_for(:sidebar) { render_partial("../sidebar.html",
+  locals: locals.merge(available_integration_modes: [INTEGRATION_MODE_NGINX])) }
+%>
+
 # Installing Passenger as a normal Nginx module
 
 If you have ever installed an add-on module for Nginx, then you know that it involves the following steps:

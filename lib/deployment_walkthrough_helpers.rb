@@ -69,13 +69,22 @@ module DeploymentWalkthroughHelpers
       edition_title: "Passenger Enterprise",
       edition_long_title: "Passenger Enterprise" }
   ]
+  INTEGRATION_MODE_NGINX = {
+    integration_mode_type: :nginx,
+    integration_mode_name: "Nginx"
+  }
+  INTEGRATION_MODE_APACHE = {
+    integration_mode_type: :apache,
+    integration_mode_name: "Apache"
+  }
+  INTEGRATION_MODE_STANDALONE = {
+    integration_mode_type: :standalone,
+    integration_mode_name: "Standalone"
+  }
   INTEGRATION_MODES = [
-    { integration_mode_type: :nginx,
-      integration_mode_name: "Nginx" },
-    { integration_mode_type: :apache,
-      integration_mode_name: "Apache" },
-    { integration_mode_type: :standalone,
-      integration_mode_name: "Standalone" }
+    INTEGRATION_MODE_NGINX,
+    INTEGRATION_MODE_APACHE,
+    INTEGRATION_MODE_STANDALONE
   ]
 
 

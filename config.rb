@@ -47,11 +47,14 @@ ignore "/walkthroughs/deploy/conclusion.html"
 INTEGRATION_MODES.each do |integration_mode_spec|
   integration_mode_type = integration_mode_spec[:integration_mode_type]
 
+  # Miscellaneous pages
   proxy "/install/#{integration_mode_type}/index.html",
     "/install/index2.html",
     locals: integration_mode_spec
+
+  # Install Passenger
   proxy "/install/#{integration_mode_type}/install/index.html",
-    "/install/install.html",
+    "/install/install/step1.html",
     locals: integration_mode_spec
 
   PASSENGER_EDITIONS.each do |edition_spec|
@@ -59,22 +62,23 @@ INTEGRATION_MODES.each do |integration_mode_spec|
     locals = integration_mode_spec.merge(edition_spec)
 
     proxy "/install/#{integration_mode_type}/install/#{edition_type}/index.html",
-        "/install/install2.html",
+        "/install/install/step2.html",
         locals: locals
 
     available_os_configs(locals).each do |os_config_spec|
       os_config = os_config_spec[:os_config_type]
 
       proxy "/install/#{integration_mode_type}/install/#{edition_type}/#{os_config}/index.html",
-        "/install/install3.html",
+        "/install/install/step3.html",
         locals: locals.merge(os_config_spec)
     end
   end
 end
 
-ignore "/install/install.html"
-ignore "/install/install2.html"
-ignore "/install/install3.html"
+ignore "/install/index2.html"
+ignore "/install/install/step1.html"
+ignore "/install/install/step2.html"
+ignore "/install/install/step3.html"
 
 
 #################################################

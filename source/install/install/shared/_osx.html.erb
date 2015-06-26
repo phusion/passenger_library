@@ -3,7 +3,7 @@
 <% if edition_type == :enterprise %>
   <%=
   result = {}
-  output = render_partial("/install/shared/enterprise_preamble.html", locals: locals.merge(result: result))
+  output = render_partial("/install/install/shared/enterprise_preamble.html", locals: locals.merge(result: result))
   step = result[:step]
   output
   %>
@@ -11,7 +11,7 @@
 <% end %>
 
 <% step += 1 %>
-<h3>Step <%= step %>: install Passenger package</h3>
+<h2>Step <%= step %>: install Passenger package</h2>
 <p>
   You can install Passenger through <a href="http://brew.sh/">Homebrew</a>:
 </p>
@@ -26,7 +26,7 @@
 
 <% if integration_mode_type == :apache %>
   <% step += 1 %>
-  <h3>Step <%= step %>: enable the Passenger Apache module and restart Apache</h3>
+  <h2>Step <%= step %>: enable the Passenger Apache module and restart Apache</h2>
   <p>
     Passenger is now installed, but it still needs to be enabled inside Apache. Run <code>brew info passenger</code> and follow the instructions in the "Caveats" section:
   </p>
@@ -53,7 +53,7 @@ To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.co
   </div>
 <% elsif integration_mode_type == :nginx %>
   <% step += 1 %>
-  <h3>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h3>
+  <h2>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h2>
   <p>
     Passenger is now installed, but it still needs to be enabled inside Nginx. Run <code>brew info nginx --with-passenger</code> and follow the instructions in the "Caveats" section:
   </p>
@@ -71,6 +71,6 @@ To activate Phusion Passenger, ...
 <% end %>
 
 <% step += 1 %>
-<h3>Step <%= step %>: check installation</h3>
-<%= render_partial("/install/shared/postinstall_check.html",
+<h2>Step <%= step %>: check installation</h2>
+<%= render_partial("/install/install/shared/postinstall_check.html",
       locals: locals.merge(apache_process_name: "apache2")) %>

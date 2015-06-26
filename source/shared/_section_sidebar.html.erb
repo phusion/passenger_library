@@ -1,0 +1,91 @@
+<%
+locals[:available_integration_modes] ||= INTEGRATION_MODES
+
+if locals[:integration_mode_type]
+  section_path = "#{config[:url_root]}#{locals[:section_path]}/#{locals[:integration_mode_type]}/"
+else
+  section_path = "#{config[:url_root]}#{locals[:section_path]}/"
+end
+%>
+
+<div class="breadcrumb-container breadcrumb-container-main" data-swiftype-index="false">
+  <p class="breadcrumb-announcer">Current section:</p>
+
+  <h2>
+    <a href="<%= section_path %>">
+      <span class="glyphicon glyphicon-<%= section_glyphicon %>"></span>
+      <%= section_title %>
+    </a>
+  </h2>
+
+  <p class="back-to-previous">
+    <% if locals[:context] == :index %>
+      <a href="<%= url_for "/index.html" %>">&laquo; Back to Library front page</a>
+    <% else %>
+      <a href="<%= section_path %>">&laquo; Back to section</a>
+    <% end %>
+  </p>
+</div>
+
+<% if locals[:integration_mode_type] %>
+  <div class="breadcrumb-container" data-swiftype-index="false">
+    <p class="breadcrumb-announcer">Selected integration mode:</p>
+
+    <h3><a href="#" data-toggle="modal" data-target="#integration_mode_selection_modal"><%= locals[:integration_mode_name] %></a></h3>
+
+    <p class="back-to-previous">
+      <a href="#" data-toggle="modal" data-target="#integration_mode_selection_modal">Change selection</a>
+    </p>
+  </div>
+
+  <div class="modal fade" id="integration_mode_selection_modal" tabindex="-1" role="dialog" style="display: none" data-swiftype-index="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <%= render_partial("/shared/integration_mode_selector.html", locals: {
+            nginx_url: current_url_with_other_integration_mode(:nginx, locals[:available_integration_modes], section_path),
+            apache_url: current_url_with_other_integration_mode(:apache, locals[:available_integration_modes], section_path),
+            standalone_url: current_url_with_other_integration_mode(:standalone, locals[:available_integration_modes], section_path)
+          }) %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% if locals[:edition_type] %>
+  <div class="breadcrumb-container" data-swiftype-index="false">
+    <p class="breadcrumb-announcer">Selected edition:</p>
+
+    <h3><a href="#" data-toggle="modal" data-target="#edition_selection_modal"><%= locals[:edition_long_title] %></a></h3>
+
+    <p class="back-to-previous">
+      <a href="#" data-toggle="modal" data-target="#edition_selection_modal">Change selection</a>
+    </p>
+  </div>
+
+  <div class="modal fade" id="edition_selection_modal" tabindex="-1" role="dialog" style="display: none" data-swiftype-index="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <%= render_partial("/shared/edition_selector.html", locals: {
+            oss_url: current_url_with_other_edition(:oss),
+            enterprise_url: current_url_with_other_edition(:enterprise)
+          }) %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
