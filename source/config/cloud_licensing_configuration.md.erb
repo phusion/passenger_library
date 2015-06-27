@@ -1,9 +1,12 @@
 ---
-title: Passenger Enterprise cloud licensing configuration
-section: admin
-sidebar: sidebar
+section: config
 ---
-# Passenger Enterprise cloud licensing configuration
+<%
+@page_title = "Passenger Enterprise #{integration_mode_name_as_passenger_suffix} cloud licensing configuration"
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+%>
+
+# Passenger Enterprise <%= integration_mode_name_as_passenger_suffix %> cloud licensing configuration
 
 When using the [Passenger Enterprise](https://www.phusionpassenger.com/enterprise) cloud license, you are billed per server per hour. There is a mechanism which automatically reports usage to the Phusion licensing server. This is implemented by sending a certain HTTPS request to the Phusion Passenger website, https://www.phusionpassenger.com, every 15 minutes, on every server that Passenger Enterprise is running with a cloud license.
 

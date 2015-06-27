@@ -1,19 +1,22 @@
 ---
-title: Server optimization guide
 section: config
-sidebar: sidebar
 ---
-# Server optimization guide
+<%
+@page_title = "Optimizing Passenger #{integration_mode_name_as_passenger_suffix}"
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+%>
 
-There are two aspects with regard to optimizing Phusion Passenger performance.
+# Optimizing Passenger <%= integration_mode_name_as_passenger_suffix %>
 
-The first aspect is *settings tuning*. Phusion Passenger's default settings are not aimed at optimizing, but at *safety*. The defaults are designed to conserve resources, to prevent server overload and to keep web apps up and running. To optimize for performance, you need to tweak some settings whose values depend on your hardware and your environment.
+There are two aspects with regard to optimizing Phusion Passenger's server performance.
 
-Besides Phusion Passenger settings, you may also want to tune kernel-level settings.
+ * The first aspect is *settings tuning*. Passenger's default settings are not aimed at optimizing, but at *safety*. The defaults are designed to conserve resources, to prevent server overload and to keep web apps up and running. To optimize for performance, you need to tweak some settings whose values depend on your hardware and your environment.
 
-The second aspect is *using performance-enhancing features*. This requires small application-level changes.
+   Besides Passenger settings, you may also want to tune kernel-level settings.
 
-If you are optimizing Phusion Passenger for the purpose of **benchmarking** then you should also follow the benchmarking recommendations.
+ * The second aspect is *using performance-enhancing features*. This requires small application-level changes.
+
+If you are optimizing Passenger for the purpose of **benchmarking** then you should also follow the [benchmarking recommendations](#benchmarking-recommendations).
 
 **Table of contents**
 
@@ -21,45 +24,53 @@ If you are optimizing Phusion Passenger for the purpose of **benchmarking** then
 
 ## Minimizing process spawning
 
-By default, Phusion Passenger spawns and shuts down application processes according to traffic. This allows it to use more resources during busy times, while conserving resources during idle times. This is especially useful if you host more than 1 app on a single server: if not all apps are used at the same time, then you don't have to keep all apps running at the same time.
+By default, Passenger spawns and shuts down application processes according to traffic. This allows it to use more resources during busy times, while conserving resources during idle times. This is especially useful if you host more than 1 app on a single server: if not all apps are used at the same time, then you don't have to keep all apps running at the same time.
 
 However, spawning a process takes a lot of time (in the order of 10-20 seconds for a Rails app), and CPU usage will be near 100% during spawning. Therefore, while spawning, your server will be slower at performing other activities, such as handling requests.
 
-For consistent performance, it is thus recommended that you configure a static process pool: telling Phusion Passenger to use a fixed number of processes, instead of spawning and shutting them down dynamically.
+For consistent performance, it is thus recommended that you configure a static process pool: telling Passenger to use a fixed number of processes, instead of spawning and shutting them down dynamically.
 
-### Standalone
+<% if integration_mode_type == :nginx %>
+  <p>
+    Let <code>N</code> be the number of processes you want. Set the following configuration in your <code>http</code> block:
+  </p>
 
-Run `passenger start` with `--max-pool-size=N --min-instances=N`, where `N` is the number of processes you want.
+  <pre class="highlight">passenger_max_pool_size N;</pre>
 
-### Nginx
+  <p>
+    Set the following configuration in your <code>server</code> block:
+  </p>
 
-Let `N` be the number of processes you want. Set the following configuration in your `http` block:
+  <pre class="highlight">passenger_min_instances N;</pre>
 
-    passenger_max_pool_size N;
+  <p>
+    You should also configure <a href="https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerPreStart">passenger_pre_start</a> in the <code>http</code> block so that your app is started during web server launch:
+  </p>
 
-Set the following configuration in your `server` block:
+  <pre class="highlight">passenger_pre_start http://your-website-url.com;</pre>
+<% elsif integration_mode_type == :apache %>
+  <p>
+    Let <code>N</code> be the number of processes you want. Set the following configuration in the global context:
+  </p>
 
-    passenger_min_instances N;
+  <pre class="highlight">PassengerMaxPoolSize N</pre>
 
-You should also configure `passenger_pre_start` in the `http` block so that your app is started during web server launch:
+  <p>
+    Set the following configuration in your virtual host block:
+  </p>
 
-    # Refer to the Users Guide for more information about passenger_pre_start.
-    passenger_pre_start http://your-website-url.com;
+  <pre class="highlight">PassengerMinInstances N</pre>
 
-### Apache
+  <p>
+    You should also configure <a href="https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerPreStart">PassengerPreStart</a> in the global context so that your app is started during web server launch:
+  </p>
 
-Let `N` be the number of processes you want. Set the following configuration in the global context:
-
-    PassengerMaxPoolSize N
-
-Set the following configuration in your virtual host block:
-
-    PassengerMinInstances N
-
-You should also configure `PassengerPreStart` in the global context so that your app is started during web server launch:
-
-    # Refer to the Users Guide for more information about PassengerPreStart.
-    PassengerPreStart http://your-website-url.com
+  <pre class="highlight">PassengerPreStart http://your-website-url.com</pre>
+<% else %>
+  <p>
+    Run <code>passenger start</code> with <code>--max-pool-size=N --min-instances=N</code>, where <code>N</code> is the number of processes you want.
+  </p>
+<% end %>
 
 ## Maximizing throughput
 
@@ -156,37 +167,48 @@ Armed with this knowledge, we derive the formulas for calculating how many proce
 
 **Purely single-threaded multi-process scenarios**
 
- * When using Phusion Passenger Standalone, run `passenger start` with `--max-pool-size=<desired_app_processes> --min-instances=<desired_app_processes>`.
- * When using Phusion Passenger for Nginx, configure:
-   * `passenger_max_pool_size <desired_app_processes>;`
-   * `passenger_min_instances <desired_app_processes>;`
-   * `passenger_pre_start` to have your app started automatically at web server boot.
- * When using Phusion Passenger for Apache, configure:
-   * `PassengerMaxPoolSize <desired_app_processes>`
-   * `PassengerMinInstances <desired_app_processes>`
-   * `PassengerPreStart` to have your app started automatically at web server boot.
+<% if integration_mode_type == :nginx %>
+Configure:
+
+ * `passenger_max_pool_size <desired_app_processes>;`
+ * `passenger_min_instances <desired_app_processes>;`
+ * `passenger_pre_start` to have your app started automatically at web server boot.
+<% elsif integration_mode_type == :apache %>
+Configure:
+
+ * `PassengerMaxPoolSize <desired_app_processes>`
+ * `PassengerMinInstances <desired_app_processes>`
+ * `PassengerPreStart` to have your app started automatically at web server boot.
+<% else %>
+Run `passenger start` with `--max-pool-size=<desired_app_processes> --min-instances=<desired_app_processes>`
+<% end %>
 
 **Multithreaded scenarios**
 
-In order to use multithreading you must use Phusion Passenger Enterprise. The open source version of Phusion Passenger does not support multithreading.
+In order to use multithreading you must use Passenger Enterprise. The open source version of Passenger does not support multithreading.
 
- * When using Phusion Passenger Standalone:
-   * Run `passenger start` with `--max-pool-size=<CHOSEN_NUMBER_OF_PROCESSES> --min-instances=<CHOSEN_NUMBER_OF_PROCESSES> --concurrency-model=thread --thread-count=<desired_app_threads_per_process>`
-   * If `desired_app_processes` is 1, then you should also add `--spawn-method=direct`. By using direct spawning instead of smart spawning, Phusion Passenger will not keep a Preloader process around, saving you some memory. This is because a Preloader process is useless when there's only 1 application process.
- * When using Phusion Passenger for Nginx, configure:
-   * `passenger_max_pool_size <CHOSEN_NUMBER_OF_PROCESSES>;`
-   * `passenger_min_instances <CHOSEN_NUMBER_OF_PROCESSES>;`
-   * `passenger_concurrency_model thread;`
-   * `passenger_thread_count <desired_app_threads_per_process>;`
-   * `passenger_pre_start` to have your app started automatically at web server boot.
-   * If `desired_app_processes` is 1, then you should set `passenger_spawn_method direct`. By using direct spawning instead of smart spawning, Phusion Passenger will not keep a Preloader process around, saving you some memory. This is because a Preloader process is useless when there's only 1 application process.
- * When using Phusion Passenger for Apache, configure:
-   * `PassengerMaxPoolSize <desired_app_processes>`
-   * `PassengerMinInstances <desired_app_processes>`
-   * `PassengerConcurrencyModel thread`
-   * `PassengerThreadCount <desired_app_threads_per_process>`
-   * `PassengerPreStart` to have your app started automatically at web server boot.
-   * If `desired_app_processes` is 1, then you should set `PassengerSpawnMethod direct`. By using direct spawning instead of smart spawning, Phusion Passenger will not keep a Preloader process around, saving you some memory. This is because a Preloader process is useless when there's only 1 application process.
+<% if integration_mode_type == :nginx %>
+Configure:
+
+ * `passenger_max_pool_size <CHOSEN_NUMBER_OF_PROCESSES>;`
+ * `passenger_min_instances <CHOSEN_NUMBER_OF_PROCESSES>;`
+ * `passenger_concurrency_model thread;`
+ * `passenger_thread_count <desired_app_threads_per_process>;`
+ * `passenger_pre_start` to have your app started automatically at web server boot.
+ * If `desired_app_processes` is 1, then you should set `passenger_spawn_method direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
+<% elsif integration_mode_type == :apache %>
+Configure:
+
+ * `PassengerMaxPoolSize <desired_app_processes>`
+ * `PassengerMinInstances <desired_app_processes>`
+ * `PassengerConcurrencyModel thread`
+ * `PassengerThreadCount <desired_app_threads_per_process>`
+ * `PassengerPreStart` to have your app started automatically at web server boot.
+ * If `desired_app_processes` is 1, then you should set `PassengerSpawnMethod direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
+<% else %>
+ * Run `passenger start` with `--max-pool-size=<CHOSEN_NUMBER_OF_PROCESSES> --min-instances=<CHOSEN_NUMBER_OF_PROCESSES> --concurrency-model=thread --thread-count=<desired_app_threads_per_process>`
+ * If `desired_app_processes` is 1, then you should also add `--spawn-method=direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
+<% end %>
 
 #### Possible step 4: configure Rails
 
@@ -209,18 +231,17 @@ Then the calculation is as follows:
     max_app_processes = (1024 * 0.75) / 150 = 5.12
     desired_app_processes = max_app_processes = 5.12
 
-Conclusion: you should use 5 or 6 processes. Phusion Passenger should be configured as follows:
+Conclusion: you should use 5 or 6 processes. Passenger should be configured as follows:
 
-    # Standalone
-    passenger start --max-pool-size=5 --min-instances=5
-
-    # Nginx
+<% if integration_mode_type == :nginx %>
     passenger_max_pool_size 5;
     passenger_min_instances 5;
-
-    # Apache
+<% elsif integration_mode_type == :apache %>
     PassengerMaxPoolSize 5
     PassengerMinInstances 5
+<% else %>
+    passenger start --max-pool-size=5 --min-instances=5
+<% end %>
 
 However a concurrency of 5 or 6 is way too low if your application performs a lot of blocking I/O. You should use a multithreaded deployment instead, or you need to get more RAM so you can run more processes.
 
@@ -242,18 +263,17 @@ Then the calculation is as follows:
 
 Conclusion: you should use 163 or 164 processes. This number seems high, but the value is correct. Because your app performs a lot of blocking I/O, you need a lot of I/O concurrency. The more concurrency the better. The amount of concurrency scales linearly with the number of processes, which is why you end up with such a large number.
 
-Phusion Passenger should be configured as follows:
+Passenger should be configured as follows:
 
-    # Standalone
-    passenger start --max-pool-size=163 --min-instances=163
-
-    # Nginx
+<% if integration_mode_type == :nginx %>
     passenger_max_pool_size 163;
     passenger_min_instances 163;
-
-    # Apache
+<% elsif integration_mode_type == :apache %>
     PassengerMaxPoolSize 163
     PassengerMinInstances 163
+<% else %>
+    passenger start --max-pool-size=163 --min-instances=163
+<% end %>
 
 Note that in this example, 163-164 processes is merely the maximum number of processes that you can run, without overloading your RAM. It does not mean that you have enough concurrency for your application! If you need more concurrency, you should use a multithreaded deployment instead.
 
@@ -276,32 +296,37 @@ But this time you're using multithreading with 8 application processes (because 
 
 Conclusion: you should use 195 threads per process.
 
-    # Standalone
-    passenger start --max-pool-size=8 --min-instances=8 --concurrency-model=thread --thread-count=195
-
-    # Nginx
+<% if integration_mode_type == :nginx %>
     passenger_max_pool_size 8;
     passenger_min_instances 8;
     passenger_concurrency_model thread;
     passenger_thread_count 195;
-
-    # Apache
+<% elsif integration_mode_type == :apache %>
     PassengerMaxPoolSize 8
     PassengerMinInstances 8
     PassengerConcurrencyModel thread
     PassengerThreadCount 195
+<% else %>
+    passenger start --max-pool-size=8 --min-instances=8 --concurrency-model=thread --thread-count=195
+<% end %>
 
 Because of the huge number of threads, this only works on a 64-bit platform. If you're on a 32-bit platform, consider lowering the number of threads while raising the number of processes. For example, you can double the number of processes (to 16) and halve the number of threads (to 779).
 
-### Configuring the web server
+<% if integration_mode_type == :apache %>
+  <h3>Configuring Apache</h3>
 
-If you're using Nginx then it does not need additional configuration. Nginx is evented and already supports a high concurrency out of the box.
+  <p>
+    Apache itself also needs some tweaking. You should use the worker MPM (which uses a combination of processes and threads) or the event MPM (which is similar to the worker MPM, but better) over the prefork MPM (which only uses processes) whenever possible. PHP requires prefork, but if you don't use PHP then you can probably use one of the other MPMs. Make sure you set a low number of processes and a moderate to high number of threads.
+  </p>
 
-If you're using Apache, then prefer the worker MPM (which uses a combination of processes and threads) or the event MPM (which is similar to the worker MPM, but better) over the prefork MPM (which only uses processes) whenever possible. PHP requires prefork, but if you don't use PHP then you can probably use one of the other MPMs. Make sure you set a low number of processes and a moderate to high number of threads.
+  <p>
+    Because Apache performs a lot of blocking I/O (namely HTTP handling), you should give it a lot of threads so that it has a lot of concurrency. Apache's concurrency <code>must</code> be somewhat larger than the total number of application processes or total number of application threads. When considering example 3, the Apache concurrency must be larger than <code>8 * 1558 = 12464</code>.
+  </p>
 
-Because Apache performs a lot of blocking I/O (namely HTTP handling), you should give it a lot of threads so that it has a lot of concurrency. Apache's concurrency *must* be somewhat larger than the total number of application processes or total number of application threads. When considering example 3, the Apache concurrency must be larger than `8 * 1558 = 12464`.
-
-If you cannot use the event MPM, consider putting Apache behind an Nginx reverse proxy, with response buffering turned on on the Nginx side. This reliefs a lot of concurrency problems from Apache. If you can use the event MPM then adding Nginx to the mix does not provide many advantages.
+  <p>
+    If you cannot use the event MPM, consider putting Apache behind an Nginx reverse proxy, with response buffering turned on on the Nginx side. This reliefs a lot of concurrency problems from Apache. If you can use the event MPM then adding Nginx to the mix does not provide many advantages.
+  </p>
+<% end %>
 
 ### Summary
 
@@ -339,7 +364,7 @@ Here is an example of a response which is cacheable for 60 seconds by the browse
 
     Cache-Control: max-age=60,private
 
-The HTTP specification specifies a bunch of other flags, but they're not relevant for the turbocache. 
+The HTTP specification specifies a bunch of other flags, but they're not relevant for the turbocache.
 
 #### Only GET requests are cacheable
 
@@ -361,11 +386,11 @@ The turbocache caches a response for a maximum duration of 2 seconds, or whateve
 
 Phusion Passenger supports out-of-band garbage collection for Ruby apps. With this feature enabled, Phusion Passenger can run the garbage collector in between requests, so that the garbage collector doesn't delay the app as much. Please refer to the Users Guide for more information about this feature.
 
-### Using the builtin HTTP engine
+### Using Passenger Standalone with the builtin HTTP engine
 
-In certain situations, using the builtin HTTP engine in Passenger Standalone may yield some performance benefits because it skips a layer of processing.
+In certain situations, using Passenger Standalone in combination with the builtin HTTP engine may yield some performance benefits because it skips a layer of processing.
 
-Passenger normally works by integrating into Nginx or Apache. As described in the [Design & Architecture](https://www.phusionpassenger.com/documentation/Design%20and%20Architecture.html) document, requests are first handled by Nginx or Apache, and then forwarded to the Passenger core process (the HelperAgent) and the application process. This architecture provides various benefits, such as security benefits (Nginx and Apache's HTTP connection handling routines are thoroughly battle-tested and secure) and feature benefits (e.g. Gzip compression, superb static file handling).
+Passenger normally works by integrating into Nginx or Apache. As described in the [Design & Architecture](https://www.phusionpassenger.com/documentation/Design%20and%20Architecture.html) document, requests are first handled by Nginx or Apache, and then forwarded to the Passenger core process and the application process. This architecture provides various benefits, such as security benefits (Nginx and Apache's HTTP connection handling routines are thoroughly battle-tested and secure) and feature benefits (e.g. Gzip compression, superb static file handling).
 
 This is even true if you use the Standalone mode. Although it acts standalone, it is implemented under the hood by running Passenger in a builtin Nginx engine.
 
@@ -381,6 +406,15 @@ This builtin HTTP engine can be accessed by starting Passenger Standalone using 
     passenger start --engine=builtin
 
 It should be noted that the builtin HTTP engine has fewer features than the Nginx engine, by design. For example the builtin HTTP engine does not support serving static files, nor does it support gzip compression. Thus, we recommend using the Nginx engine in most situations, unless you have special needs such as documented above.
+
+<% if integration_mode_type != :standalone %>
+  <div class="note">
+    <h3 class="notoc">There is a version of this Optimization Guide for the Standalone mode</h3>
+    <p>
+      You are currently reading the <%= integration_mode_name %> version of this Optimization Guide. Have you decided to switch to Passenger Standalone? <a href="<%= url_for "/config/standalone/optimization.html" %>">Read the Passenger Standalone version of this guide.</a>
+    </p>
+  </div>
+<% end %>
 
 ## Benchmarking recommendations
 
@@ -399,8 +433,9 @@ It should be noted that the builtin HTTP engine has fewer features than the Ngin
 
 ### Server and application recommendations
 
- * If the purpose of your benchmark is to compare against Puma, Unicorn or other app servers, be sure to benchmark against Phusion Passenger Standalone, not Phusion Passenger for Nginx or Phusion Passenger for Apache.
-   - This is because Puma, Unicorn and other app servers are standalone servers, while Phusion Passenger for Nginx and Phusion Passenger for Apache introduce additional layers (namely Nginx and Apache), making the comparison unfair.
-   - Be sure to start Phusion Passenger Standalone with the `builtin` engine. This is the default.
- * Configure Phusion Passenger to [use a static number of processes](#minimizing-process-spawning). The number of processes should be a multiple of the number of CPU cores.
- * Ensure that your app outputs HTTP caching headers, so that Phusion Passenger's [turbocaching](#turbocaching) can kick in.
+ * If the purpose of your benchmark is to compare against Puma, Unicorn or other app servers, be sure to benchmark against Passenger Standalone, not Passenger for Nginx or Passenger for Apache.
+   - This is because Puma, Unicorn and other app servers are standalone servers, while Passenger for Nginx and Passenger for Apache introduce additional layers (namely Nginx and Apache), making the comparison unfair.
+   - Be sure to [start Passenger Standalone with the `builtin` engine](#using-passenger-standalone-with-the-builtin-http-engine).
+   - See also: [Integration modes](<%= "/indepth/integration_modes.html" %>)
+ * Configure Passenger to [use a static number of processes](#minimizing-process-spawning). The number of processes should be a multiple of the number of CPU cores.
+ * Ensure that your app outputs HTTP caching headers, so that Passenger's [turbocaching](#turbocaching) can kick in.

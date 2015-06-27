@@ -118,6 +118,26 @@ ignore "/install/install/step3.html"
 ignore "/install/uninstall/step1.html"
 ignore "/install/uninstall/step2.html"
 
+###### Configuration and optimization guide ######
+
+INTEGRATION_MODES.each do |integration_mode_spec|
+  integration_mode_type = integration_mode_spec[:integration_mode_type]
+
+  proxy "/config/#{integration_mode_type}/index.html",
+    "/config/index2.html",
+    locals: integration_mode_spec
+  proxy "/config/#{integration_mode_type}/optimization.html",
+    "/config/optimization.html",
+    locals: integration_mode_spec
+  proxy "/config/#{integration_mode_type}/cloud_licensing_configuration.html",
+    "/config/cloud_licensing_configuration.html",
+    locals: integration_mode_spec
+end
+
+ignore "/config/index2.html"
+ignore "/config/optimization.html"
+ignore "/config/cloud_licensing_configuration.html"
+
 
 #################################################
 
