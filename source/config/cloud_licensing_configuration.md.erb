@@ -25,7 +25,7 @@ The setup works as follows:
  3. All these packages are copied to another machine (let's call this "Reporter"), e.g. through SCP, USB stick, etc. The reporter machine may be any machine that you choose, as long as it can access the Phusion licensing server. The method of copying does not matter.
  4. On the reporter machine, a batch job B uploads all these packages to the Phusion licensing server.
 
-<figure><img src="cloud_licensing_batch_job.png" alt="Conceptual overview"></figure>
+<figure><img src="<%= url_for '/config/cloud_licensing_batch_job.png' %>" alt="Conceptual overview"></figure>
 
 ## Phase 1: setting up web servers
 
@@ -39,15 +39,28 @@ Follow these instructions on each server running Passenger Enterprise with a clo
 
         bash$ rvmsudo -H bash
 
- 2. Add the following configuration to your Apache or Nginx configuration file:
+ 2. Add the following
+    <% if integration_mode_type == :nginx -%>
+    configuration to your Nginx configuration file:
 
-        # Apache
-        PassengerCtl licensing_data_points_auto_send false
-
-        # Nginx
         passenger_ctl licensing_data_points_auto_send false;
 
-    Then restart Apache/Nginx. This configuration tells Passenger Enterprise not to automatically send usage data to the Phusion licensing server.
+    Then restart Nginx.
+    <% elsif integration_mode_type == :apache -%>
+    configuration to your Apache configuration file:
+
+        PassengerCtl licensing_data_points_auto_send false
+
+    Then restart Apache.
+    <% else -%>
+
+    parameter to your Passenger Standalone command invoation:
+
+        --ctl licensing_data_points_auto_send=false
+
+    Then restart Passenger Standalone.
+    <% end -%>
+    This configuration tells Passenger Enterprise not to automatically send usage data to the Phusion licensing server.
 
  3. Find out what user the Passenger core process is running as.
 

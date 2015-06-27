@@ -138,6 +138,17 @@ ignore "/config/index2.html"
 ignore "/config/optimization.html"
 ignore "/config/cloud_licensing_configuration.html"
 
+###### Deployment and scaling ######
+
+INTEGRATION_MODES.each do |integration_mode_spec|
+  integration_mode_type = integration_mode_spec[:integration_mode_type]
+
+  proxy "/deploy/#{integration_mode_type}/index.html",
+    "/deploy/index2.html",
+    locals: integration_mode_spec
+end
+
+ignore "/deploy/index2.html"
 
 #################################################
 

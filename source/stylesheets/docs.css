@@ -302,6 +302,7 @@ body {
 .bs-docs-header h1 {
   margin-top: 0;
   color: #fff;
+  width: 80%;
 }
 .bs-docs-header p {
   margin-bottom: 0;
@@ -321,7 +322,6 @@ body {
   }
   .bs-docs-header h1 {
     font-size: 60px;
-    line-height: 1;
   }
 }
 
