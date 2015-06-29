@@ -1,0 +1,40 @@
+---
+section: config
+---
+<%
+@page_title = "Tuning for Server Sent Events and WebSockets on Passenger #{integration_mode_name_as_passenger_suffix}"
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+%>
+
+<h1>Tuning for Server Sent Events and WebSockets<br>
+<small>on Passenger <%= integration_mode_name_as_passenger_suffix %></small></h1>
+
+<% if integration_mode_type == :apache %>
+Passenger supports Server Sent Events (SSE) out of the box with no configuration. However, WebSockets are [not yet supported when using the Apache integration mode](https://github.com/phusion/passenger/issues/1202).
+
+If you want to use WebSockets, then we recommend that you use Passenger for Nginx, or Passenger Standalone with a reverse proxy from Apache. Passenger for Nginx and Passenger Standalone both support WebSockets out of the box with no configuration.
+
+<h2>SSE performance tuning</h2>
+
+There are some things you need to know for optimal SSE performance.
+<% else %>
+Passenger <%= integration_mode_name_as_passenger_suffix %> supports Server Sent Events (SSE) and WebSockets out of the box with no configuration, but there are some things you need to know.
+
+<h2>Performance tuning</h2>
+<% end %>
+
+**For Ruby apps only**, you need to insert a configuration snippet inside your `config.ru`:
+
+~~~ruby
+if defined?(PhusionPassenger)
+  PhusionPassenger.advertised_concurrency_level = 0
+end
+~~~
+
+This snippet tells Passenger that your Ruby app will handle SSE and WebSockets. In response, Passenger will adjust the connection concurrency settings for your app. Without this configuration snippet, SSE and WebSockets still work, but with degraded performance.
+
+This configuration snippet is currently necessary because of the way Passenger is implemented. We are <a href="https://github.com/phusion/passenger/issues/1195">working on improving this mechanism</a>. One day, the above configuration snippet will no longer be necessary. For now, you should include the above configuration snippet for optimal SSE and WebSocket performance.
+
+## Demo apps
+
+You can find Passenger SSE and WebSocket demo apps on [the Passenger documentation overview page](https://www.phusionpassenger.com/documentation_and_support), under section "Demos".

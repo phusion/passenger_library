@@ -42,7 +42,7 @@ ignore "/walkthroughs/deploy/deploy_app.html"
 ignore "/walkthroughs/deploy/deploy_updates.html"
 ignore "/walkthroughs/deploy/conclusion.html"
 
-###### Installation guide ######
+###### Installation, upgrade and uninstallation ######
 
 INTEGRATION_MODES.each do |integration_mode_spec|
   integration_mode_type = integration_mode_spec[:integration_mode_type]
@@ -118,7 +118,7 @@ ignore "/install/install/step3.html"
 ignore "/install/uninstall/step1.html"
 ignore "/install/uninstall/step2.html"
 
-###### Configuration and optimization guide ######
+###### Configuration and optimization ######
 
 INTEGRATION_MODES.each do |integration_mode_spec|
   integration_mode_type = integration_mode_spec[:integration_mode_type]
@@ -129,6 +129,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/config/#{integration_mode_type}/optimization.html",
     "/config/optimization.html",
     locals: integration_mode_spec
+  proxy "/config/#{integration_mode_type}/tuning_sse_and_websockets.html",
+    "/config/tuning_sse_and_websockets.html",
+    locals: integration_mode_spec
   proxy "/config/#{integration_mode_type}/cloud_licensing_configuration.html",
     "/config/cloud_licensing_configuration.html",
     locals: integration_mode_spec
@@ -138,7 +141,7 @@ ignore "/config/index2.html"
 ignore "/config/optimization.html"
 ignore "/config/cloud_licensing_configuration.html"
 
-###### Deployment and scaling ######
+###### Deployment, scaling and high availability ######
 
 INTEGRATION_MODES.each do |integration_mode_spec|
   integration_mode_type = integration_mode_spec[:integration_mode_type]
@@ -149,6 +152,23 @@ INTEGRATION_MODES.each do |integration_mode_spec|
 end
 
 ignore "/deploy/index2.html"
+
+###### Administration and troubleshooting ######
+
+INTEGRATION_MODES.each do |integration_mode_spec|
+  integration_mode_type = integration_mode_spec[:integration_mode_type]
+
+  proxy "/admin/#{integration_mode_type}/index.html",
+    "/admin/index2.html",
+    locals: integration_mode_spec
+  proxy "/admin/#{integration_mode_type}/troubleshooting.html",
+    "/admin/troubleshooting.html",
+    locals: integration_mode_spec
+end
+
+ignore "/admin/index2.html"
+ignore "/admin/troubleshooting.html"
+
 
 #################################################
 

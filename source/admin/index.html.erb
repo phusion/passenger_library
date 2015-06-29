@@ -1,0 +1,19 @@
+---
+title: Administration and troubleshooting
+section: install
+comments: false
+skip_search_index: true
+---
+<% content_for :masthead do %>
+  <div class="bs-docs-header" id="content">
+    <div class="container">
+      <h1>Administration and troubleshooting</h1>
+    </div>
+  </div>
+<% end %>
+
+<%= render_partial("/shared/integration_mode_selector.html", locals: {
+  nginx_url: url_for('/admin/nginx/index.html'),
+  apache_url: url_for('/admin/apache/index.html'),
+  standalone_url: url_for('/admin/standalone/index.html')
+}) %>

@@ -41,7 +41,7 @@ skip_search: true
 </section>
 
 <% if config[:display_guides] %>
-  <section class="bs-docs-section guide-container-frontpage" id="guides">
+  <section class="bs-docs-section guide-container-frontpage" id="guides" class="guides-index">
     <div class="section-header">
       <div><span class="glyphicon glyphicon-book" aria-hidden="true"></span></div>
       <h2>Guides</h2>
@@ -79,11 +79,9 @@ skip_search: true
           </a>
         </h3>
 
-        <ul class="list-unstyled list-links">
-          <li>Installing Passenger</li>
-          <li>Upgrading Passenger</li>
-          <li>Non-interactive, automatic, headless installs or upgrades</li>
-        </ul>
+        <p class="guide-description">
+          Learn everything related to installing Passenger, or managing the Passenger installation. Also covers automated installations, upgrades and uninstalls.
+        </p>
       </div>
 
       <div class="col-sm-6">
@@ -94,11 +92,9 @@ skip_search: true
           </a>
         </h3>
 
-        <ul class="list-unstyled list-links">
-          <li>Overview of major Passenger features</li>
-          <li>Server optimization guide</li>
-          <li>Configuration reference</li>
-        </ul>
+        <p class="guide-description">
+          Learn how to configure Passenger, what configuration options and features are available and how to tweak things for optimal performance.
+        </p>
       </div>
     </div>
 
@@ -130,11 +126,9 @@ skip_search: true
           </a>
         </h3>
 
-        <ul class="list-unstyled list-links">
-          <li>Deploying an application on Passenger</li>
-          <li>Scaling out</li>
-          <li>Setting up high availability</li>
-        </ul>
+        <p class="guide-description">
+          Learn how to deploy web apps to a server that has Passenger installed, how to scale to multiple servers in order to handle more traffic, and how to use multiple servers for high availability.
+        </p>
       </div>
 
       <div class="col-sm-6">
@@ -149,15 +143,6 @@ skip_search: true
           <li><a href="<%= url_for "/admin/admin_tools.html" %>">Administration tools</a></li>
           <li><a href="<%= url_for "/admin/log_rotation.html" %>">Log rotation</a></li>
         </ul>
-      </div>
-    </div>
-
-    <div class="row hidden-xs">
-      <div class="col-sm-6">
-        <a href="<%= url_for "/deploy/index.html" %>"><strong>More guides &raquo;</strong></a>
-      </div>
-      <div class="col-sm-6">
-        <a href="<%= url_for "/admin/index.html" %>"><strong>More guides &raquo;</strong></a>
       </div>
     </div>
 

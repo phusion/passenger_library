@@ -253,6 +253,19 @@ a:focus {
 }
 
 
+.guide-description {
+  font-size: 90%;
+}
+
+p.guide-description {
+  margin: 0;
+}
+
+p.guide-description + p.guide-description {
+  margin-top: 0.5em;
+}
+
+
 figure {
   text-align: center;
   margin: 1em auto 1em auto;
@@ -506,6 +519,10 @@ figcaption {
 
 .front-page-link-header > a {
   color: black;
+
+  &:hover {
+    color: #9084BE;
+  }
 }
 
 .table.table-condensed-width {
