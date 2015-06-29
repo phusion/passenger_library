@@ -8,12 +8,10 @@ skip_search_index: true
   <div class="bs-docs-header" id="content">
     <div class="container">
       <h1>Installation, upgrade and uninstallation</h1>
-      <p>For production environments.</p>
+      <p>Everything related to secure installation, customization and removal, including automated upgrading and background info about integration with Nginx or Apache.</p>
     </div>
   </div>
 <% end %>
-
-<p>This section is targeted at <strong>advanced users</strong>. Not familar with installing Passenger on production? Please read <a href="<%= url_for "/walkthroughs/deploy/" %>">the deployment walkthrough</a> instead.</p>
 
 <%= render_partial("/shared/integration_mode_selector.html", locals: {
   nginx_url: url_for('/install/nginx/index.html'),

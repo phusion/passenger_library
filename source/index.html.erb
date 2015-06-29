@@ -35,6 +35,7 @@ skip_search: true
 <section class="bs-docs-section">
   <div class="section-header">
     <h2 id="walkthroughs" class="section-header">Walkthroughs</h2>
+    <p class="lead">Helping you from zero to fully online.</p>
   </div>
 
   <%= render_partial("/walkthroughs/index.html", locals: { quickstart: true, basics: true, deployment: true }) %>
@@ -43,9 +44,8 @@ skip_search: true
 <% if config[:display_guides] %>
   <section class="bs-docs-section guide-container-frontpage" id="guides" class="guides-index">
     <div class="section-header">
-      <div><span class="glyphicon glyphicon-book" aria-hidden="true"></span></div>
       <h2>Guides</h2>
-      <p class="lead">Articles about specific topics.</p>
+      <p class="lead">For mastering Passenger.</p>
     </div>
 
 
@@ -80,7 +80,7 @@ skip_search: true
         </h3>
 
         <p class="guide-description">
-          Learn everything related to installing Passenger, or managing the Passenger installation. Also covers automated installations, upgrades and uninstalls.
+          Everything related to secure installation, customization and removal, including automated upgrading and background info about integration with Nginx or Apache. 
         </p>
       </div>
 
@@ -93,7 +93,7 @@ skip_search: true
         </h3>
 
         <p class="guide-description">
-          Learn how to configure Passenger, what configuration options and features are available and how to tweak things for optimal performance.
+          Passenger configuration options and features explained, as well as tweaking guides for optimal performance for your specific situation and wishes.
         </p>
       </div>
     </div>
@@ -127,7 +127,7 @@ skip_search: true
         </h3>
 
         <p class="guide-description">
-          Learn how to deploy web apps to a server that has Passenger installed, how to scale to multiple servers in order to handle more traffic, and how to use multiple servers for high availability.
+          Deploying web apps to a server that has Passenger installed; scaling to multiple servers in order to handle more traffic and always be up & running.
         </p>
       </div>
 
@@ -138,73 +138,75 @@ skip_search: true
           </a>
         </h3>
 
-        <ul class="list-unstyled list-links">
-          <li><a href="<%= url_for "/admin/troubleshooting.html" %>">Troubleshooting</a></li>
-          <li><a href="<%= url_for "/admin/admin_tools.html" %>">Administration tools</a></li>
-          <li><a href="<%= url_for "/admin/log_rotation.html" %>">Log rotation</a></li>
-        </ul>
+        <p class="guide-description">
+          Golden tips for troubleshooting problematic installs or applications; making the best of administrative tools and where to find more support resources.
+        </p>
       </div>
     </div>
 
 
-    <!-- Advanced production techniques / Passenger in depth -->
+    <!-- Passenger in depth / Miscellaneous -->
 
     <div class="row hidden-xs">
       <div class="col-sm-6">
-        <h3 class="front-page-link-header"><a href="<%= url_for "/advanced_production/index.html" %>">Advanced production techniques</a></h3>
+        <h3 class="front-page-link-header">
+          <a href="<%= url_for "/misc/index.html" %>">
+            <span class="glyphicon glyphicon-book" aria-hidden="true"></span>Passenger in depth
+          </a>
+        </h3>
       </div>
+      
       <div class="col-sm-6">
-        <h3 class="front-page-link-header"><a href="<%= url_for "/indepth/index.html" %>">Passenger in depth</a></h3>
+        <h3 class="front-page-link-header">
+          <a href="<%= url_for "/indepth/index.html" %>">
+            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>Miscellaneous
+          </a>
+        </h3>
       </div>
     </div>
 
     <div class="row">
+      <div class="col-sm-6">
+        <h3 class="front-page-link-header visible-xs">
+          <a href="<%= url_for "/indepth/index.html" %>">
+            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Passenger in depth
+          </a>
+        </h3>
+
+        <p class="guide-description">
+          Process spawning, server integration, security measures
+        </p>
+      </div>
+      
+      <div class="col-sm-6">
+        <h3 class="front-page-link-header visible-xs">
+          <a href="<%= url_for "/misc/index.html" %>">
+            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Miscellaneous
+          </a>
+        </h3>
+
+        <p class="guide-description">
+          Processes, environment variables, hooks. TODO: move to in-depth?
+        </p>
+      </div>
+    </div>
+
+    <!-- TODO remove -->
+    <div class="row hidden-xs">
+      <div class="col-sm-6">
+        <h3 class="front-page-link-header"><a href="<%= url_for "/advanced_production/index.html" %>">Advanced production techniques</a></h3>
+      </div>
+    </div>
+    
+	<div class="row">
       <div class="col-sm-6">
         <h3 class="front-page-link-header visible-xs"><a href="<%= url_for "/advanced_production/index.html" %>">Advanced production techniques</a></h3>
 
         <p><strong>TODO: deze categorie kan eigenlijk weg en gemerged worden met 'deploy/'</strong></p>
 
-        <ul class="list-unstyled list-links">
-          <li><a href="<%= url_for "/advanced_production/automating_deployment_app_updates.html" %>">Automating deployments of application updates</a></li>
-          <li><a href="<%= url_for "/advanced_production/zero_downtime_redeployments.html" %>">Zero-downtime app updates and restarts</a></li>
-          <li><a href="<%= url_for "/advanced_production/index.html" %>" class="visible-xs"><strong>More guides &raquo;</strong></a></li>
-        </ul>
-      </div>
-
-      <div class="col-sm-6">
-        <h3 class="front-page-link-header visible-xs"><a href="<%= url_for "/indepth/index.html" %>">Passenger in depth</a></h3>
-
-        <ul class="list-unstyled list-links">
-          <li><a href="<%= url_for "/indepth/integration_modes.html" %>">Integration modes</a></li>
-          <li><a href="<%= url_for "/indepth/relationship_with_ruby.html" %>">Passenger's relationship with Ruby</a></li>
-          <li><a href="<%= url_for "/indepth/reverse_port_binding.html" %>">Reverse port binding in Node.js and io.js</a></li>
-          <li><a href="<%= url_for "/indepth/index.html" %>" class="visible-xs"><strong>More guides &raquo;</strong></a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="row hidden-xs">
-      <div class="col-sm-6">
-        <a href="<%= url_for "/advanced_production/index.html" %>"><strong>More guides &raquo;</strong></a>
-      </div>
-      <div class="col-sm-6">
-        <a href="<%= url_for "/indepth/index.html" %>"><strong>More guides &raquo;</strong></a>
-      </div>
-    </div>
-
-
-    <!-- Miscellaneous -->
-
-    <div class="row">
-      <div class="col-sm-6">
-        <h3 class="front-page-link-header"><a href="<%= url_for "/misc/index.html" %>">Miscellaneous</a></h3>
-
-        <ul class="list-unstyled list-links">
-          <li><a href="<%= url_for "/misc/processes.html" %>">About processes</a></li>
-          <li><a href="<%= url_for "/misc/environment_variables.html" %>">About environment variables</a></li>
-          <li><a href="<%= url_for "/misc/hooks.html" %>">Passenger hooks</a></li>
-          <li><a href="<%= url_for "/misc/index.html" %>"><strong>More guides &raquo;</strong></a></li>
-        </ul>
+        <p class="guide-description">
+          -
+        </p>
       </div>
     </div>
   </section>
