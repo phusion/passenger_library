@@ -408,6 +408,10 @@ figcaption {
     margin-bottom: 0.5em;
     line-height: 1.3;
   }
+
+  &.icon-selection-row-intro-small .lead {
+    font-size: 140%;
+  }
 }
 
 .icon-selection-row-footer,
@@ -445,6 +449,37 @@ figcaption {
 
 .icon-selection-row-item-label-long {
   font-size: 1.2em;
+}
+
+.icon-selection-row-container-tabs .icon-selection-row-item {
+  padding: 0.75em;
+  border: solid 3px transparent;
+}
+
+.icon-selection-row-container-tabs .icon-selection-row-item.active,
+.icon-selection-row-container-tabs a.icon-selection-row-item.active {
+  border-radius: 0.5em;
+  border-color: #C4B4D8;
+  background: #F7EEFF;
+}
+
+.icon-selection-row-container-tab-content {
+  display: none;
+}
+
+.icon-selection-row-container-tab-content.active {
+  display: block;
+}
+
+.icon-selection-row-container-disabled {
+  opacity: 0.4;
+}
+
+.icon-selection-row-container-disabled {
+  .icon-selection-row-item {
+    cursor: default;
+    color: inherit;
+  }
 }
 
 
@@ -565,9 +600,9 @@ figcaption {
 
 .breadcrumb-container,
 .bs-docs-container .breadcrumb-container {
-  border: solid rgb(230, 226, 249);
   padding: 0.6em 1em;
   margin-bottom: 1.5em;
+  border-color: rgb(230, 226, 249);
   border-radius: 6px;
   border-style: dashed;
   text-align: center;

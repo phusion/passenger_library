@@ -162,11 +162,18 @@ INTEGRATION_MODES.each do |integration_mode_spec|
     "/admin/index2.html",
     locals: integration_mode_spec
   proxy "/admin/#{integration_mode_type}/troubleshooting/index.html",
-    "/admin/troubleshooting/troubleshooting.html",
+    "/admin/troubleshooting/language_selection.html",
     locals: integration_mode_spec
+  DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
+    next if language_spec[:language_type] == :iojs
+    proxy "/admin/#{integration_mode_type}/troubleshooting/#{language_spec[:language_type]}/index.html",
+      "/admin/troubleshooting/troubleshooting.html",
+      locals: integration_mode_spec.merge(language_spec)
+  end
 end
 
 ignore "/admin/index2.html"
+ignore "/admin/troubleshooting/language_selection.html"
 ignore "/admin/troubleshooting/troubleshooting.html"
 
 

@@ -1,0 +1,25 @@
+### Upon uploading a file, Passenger reports "client_body_temp/00000000xx failed (2: No such file or directory)"
+
+#### Symptoms
+
+When performing an HTTP POST call, the request sometimes fails, with Passenger reporting an error along the lines of:
+
+~~~
+/tmp/passenger-standalone.8583/client_body_temp/0000000022" failed (2: No such
+file or directory), client: 127.0.0.1, server: www.foo.com
+~~~
+
+#### Cause
+
+Passenger buffers HTTP POST bodies (file uploads) to a temporary directory, by default `/tmp/passenger-standalone.xxx`. This error means that Passenger that that directory has been removed, probably by some other program.
+
+#### Solution
+
+Tell Phusion Passenger to use a different directory to store its temporary files by setting the `TMPDIR` environment variable. For example:
+
+~~~bash
+mkdir $HOME/tmp
+cd /path-to-your-app
+export TMPDIR=$HOME/tmp
+passenger start
+~~~

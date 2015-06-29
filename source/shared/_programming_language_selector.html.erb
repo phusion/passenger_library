@@ -1,0 +1,66 @@
+<%
+languages ||= [:ruby, :python, :nodejs, :iojs, :meteor]
+has_intro_text = !locals.has_key?(:intro_text) || !locals[:intro_text].nil?
+enabled = locals[:enabled] = locals.fetch(:enabled, true)
+
+def generate_url(locals, name)
+  if locals[:enabled]
+    if !locals[:url_prefix]
+      raise "'url_prefix' required"
+    end
+    url_suffix = locals[:url_suffix] || "/"
+    "#{locals[:url_prefix]}#{name}#{url_suffix}"
+  else
+    "#"
+  end
+end
+%>
+<div class="icon-selection-row-container <%= "icon-selection-row-container-disabled" if !enabled %> <%= locals[:container_classes] %>" <%= locals[:container_attrs] %>>
+  <% if has_intro_text %>
+    <div class="icon-selection-row-intro <%= locals[:intro_classes] %>">
+      <p class="lead"><%= locals[:intro_text] || "Please select your programming language." %></p>
+    </div>
+  <% end %>
+
+  <div class="icon-selection-row-items">
+    <% if languages.include?(:ruby) %>
+      <a href="<%= generate_url(locals, "ruby") %>" class="icon-selection-row-item">
+        <img src="<%= url_for '/images/ruby.png' %>" width="96" height="96" alt="Ruby">
+        <span class="icon-selection-row-item-label">Ruby</span>
+      </a>
+    <% end %>
+    <% if languages.include?(:python) %>
+      <a href="<%= generate_url(locals, "python") %>" class="icon-selection-row-item">
+        <img src="<%= url_for '/images/python.png' %>" width="96" height="96" alt="Python">
+        <span class="icon-selection-row-item-label">Python</span>
+      </a>
+    <% end %>
+    <% if locals[:combine_nodejs_and_iojs] %>
+      <% if languages.include?(:nodejs) || languages.include?(:iojs) %>
+        <a href="<%= generate_url(locals, "nodejs") %>" class="icon-selection-row-item">
+          <img src="<%= url_for '/images/nodejs.png' %>" width="133" height="96" alt="Node.js/io.js">
+          <span class="icon-selection-row-item-label">Node.js/io.js</span>
+        </a>
+      <% end %>
+    <% else %>
+      <% if languages.include?(:nodejs) %>
+        <a href="<%= generate_url(locals, "nodejs") %>" class="icon-selection-row-item">
+          <img src="<%= url_for '/images/nodejs.png' %>" width="133" height="96" alt="Node.js">
+          <span class="icon-selection-row-item-label">Node.js</span>
+        </a>
+      <% end %>
+      <% if languages.include?(:iojs) %>
+        <a href="<%= generate_url(locals, "iojs") %>" class="icon-selection-row-item">
+          <img src="<%= url_for '/images/iojs.png' %>" width="96" height="96" alt="io.js">
+          <span class="icon-selection-row-item-label">io.js</span>
+        </a>
+      <% end %>
+    <% end %>
+    <% if languages.include?(:meteor) %>
+      <a href="<%= generate_url(locals, "meteor") %>" class="icon-selection-row-item">
+        <img src="<%= url_for '/images/meteor.png' %>" width="133" height="96" alt="Meteor">
+        <span class="icon-selection-row-item-label">Meteor</span>
+      </a>
+    <% end %>
+  </div>
+</div>

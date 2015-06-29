@@ -61,6 +61,39 @@ end
   <% end %>
 <% end %>
 
+<% if locals[:language_type] %>
+  <div class="breadcrumb-container" data-swiftype-index="false">
+    <p class="breadcrumb-announcer">Selected language:</p>
+
+    <h3><a href="#" data-toggle="modal" data-target="#language_selection_modal"><%= locals[:language_name] %></a></h3>
+
+    <p class="back-to-previous">
+      <a href="#" data-toggle="modal" data-target="#language_selection_modal">Change selection</a>
+    </p>
+  </div>
+
+  <% append_to_layout_body do %>
+    <div class="modal fade" id="language_selection_modal" tabindex="-1" role="dialog" style="display: none" data-swiftype-index="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <%= render_partial("/shared/programming_language_selector.html", locals: {
+              url_prefix: current_url_prefix_without_programming_language,
+              url_suffix: current_url_suffix_without_programming_language
+            }) %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
 <% if locals[:edition_type] %>
   <div class="breadcrumb-container" data-swiftype-index="false">
     <p class="breadcrumb-announcer">Selected edition:</p>

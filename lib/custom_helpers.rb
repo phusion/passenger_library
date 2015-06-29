@@ -178,6 +178,11 @@ module CustomHelpers
     result
   end
 
+  def current_page_path
+    path = "#{config[:root_url]}/#{current_page.path}"
+    path.sub!(/\/index\.html$/, "/")
+  end
+
   def current_url_with_other_integration_mode(other_integration_mode, available_integration_modes, section_path)
     available = false
     available_integration_modes.each do |spec|
@@ -188,8 +193,7 @@ module CustomHelpers
     end
 
     if available
-      path = "#{config[:root_url]}/" + current_page.path
-      path.sub!(/\/index\.html$/, "/")
+      path = current_page_path
     else
       path = section_path
     end
@@ -197,8 +201,24 @@ module CustomHelpers
   end
 
   def current_url_with_other_edition(other_edition)
-    path = "#{config[:root_url]}/" + current_page.path
-    path.sub!(/\/index\.html$/, "/")
-    path.gsub(/(oss|enterprise)/, other_edition.to_s)
+    current_page_path.gsub(/(oss|enterprise)/, other_edition.to_s)
+  end
+
+  def current_url_prefix_without_programming_language
+    language_types = []
+    DeploymentWalkthroughHelpers::DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |spec|
+      language_types << spec[:language_type]
+    end
+    current_page_path =~ /(.*)(#{language_types.join("|")})(.*)/
+    $1
+  end
+
+  def current_url_suffix_without_programming_language
+    language_types = []
+    DeploymentWalkthroughHelpers::DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |spec|
+      language_types << spec[:language_type]
+    end
+    current_page_path =~ /(.*)(#{language_types.join("|")})(.*)/
+    $3
   end
 end
