@@ -180,7 +180,7 @@ module CustomHelpers
 
   def current_page_path
     path = "#{config[:root_url]}/#{current_page.path}"
-    path.sub!(/\/index\.html$/, "/")
+    path.sub(/\/index\.html$/, "/")
   end
 
   def current_url_with_other_integration_mode(other_integration_mode, available_integration_modes, section_path)
