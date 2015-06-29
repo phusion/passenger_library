@@ -1,0 +1,123 @@
+---
+section: config
+---
+<%
+@page_title = "How to configure Passenger #{integration_mode_name_as_passenger_suffix}"
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+%>
+
+# How to configure Passenger <%= integration_mode_name_as_passenger_suffix %>
+
+<% if integration_mode_type == :nginx %>
+<!-- ****** Nginx ****** -->
+
+Passenger in its Nginx integration mode is to be configured via the Nginx configuration file. There is no configuration file that is specific to Passenger only.
+
+If you have used [Passenger Standalone](<%= url_for "/indepth/integration_modes.html" %>), then you may be familiar with [Passengerfile.json](<%= url_for "/config/standalone/howto.html" %>). Passenger for Nginx does not consult Passengerfile.json, only the Nginx configuration file.
+
+Configuring Passenger for Nginx works as follows:
+
+ 1. During the Passenger [installation process](<%= url_for "/install/nginx/install/" %>), an Nginx binary with the Passenger module compiled in, is installed.
+ 2. The Passenger Nginx module registers Passenger-specific configuration options inside Nginx.
+ 3. You, the administrator, configure Passenger by adding Passenger-specific configuration options to the Nginx configuration file.
+ 4. Restart or reload Nginx to apply any configuration changes.
+
+Here is an example of an Nginx configuration file which also configures Passenger:
+
+~~~nginx
+server {
+    server_name yourserver.com;
+    root /var/www/myapp/code/public;
+    passenger_ruby /usr/bin/ruby2.0;
+    passenger_sticky_sessions on;
+}
+~~~
+
+## Minimal configuration
+
+For Passenger to work, only one configuration option needs to be setup in Nginx, namely `passenger_root`. If you have already gone through the [installation process](<%= url_for "/install/nginx/install/" %>), then it has already been set.
+
+`passenger_root` tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate. [Learn more about passenger_root.](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerRoot)
+
+## Additional configuration
+
+Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
+
+<% elsif integration_mode_type == :apache %>
+<!-- ****** Apache ****** -->
+
+Passenger in its Apache integration mode is to be configured via [the Apache configuration file](<%= url_for "/install/apache/working_with_the_apache_config_file.html" %>). There is no configuration file that is specific to Passenger only.
+
+If you have used [Passenger Standalone](<%= url_for "/indepth/integration_modes.html" %>), then you may be familiar with [Passengerfile.json](<%= url_for "/config/standalone/howto.html" %>). Passenger for Apache does not consult Passengerfile.json, only the Apache configuration file.
+
+Configuring Passenger for Apache works as follows:
+
+ 1. During the Passenger [installation process](<%= url_for "/install/apache/install/" %>), Apache is setup to load the Passenger Apache module.
+ 2. The Passenger Apache module registers Passenger-specific configuration options inside Apache.
+ 3. You, the administrator, configure Passenger by adding Passenger-specific configuration options to the Apache configuration file.
+ 4. Restart or reload Apache to apply any configuration changes.
+
+Here is an example of an Apache configuration file which also configures Passenger:
+
+~~~
+PassengerRuby /usr/bin/ruby2.0
+
+<VirtualHost *:80>
+    ServerName yourserver.com
+    DocumentRoot /var/www/myapp/code/public
+    PassengerStickySessions on
+
+    <Directory /var/www/myapp/code/public>
+        Allow from all
+        Options -MultiViews
+        Require all granted
+    </Directory>
+</VirtualHost>
+~~~
+
+## Minimal configuration
+
+For Passenger to work, only a few configuration options need to be setup in Apache. If you have already gone through the [installation process](<%= url_for "/install/apache/install/" %>), then these configuration options are already set.
+
+ 1. The `LoadModule passenger_module ...` option must exist in the Apache configuration. This option tells Apache to load the Passenger module from the given filename. If this option does not exist, then Passenger is not loaded into Apache at all, and Apache will complain about syntax errors whenever it encounters Passenger configuration options.
+ 2. The `PassengerRoot` option must exist in the Apache configuration. This option tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate. [Learn more about PassengerRoot.](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerRoot)
+
+## Additional configuration
+
+Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
+
+<% else %>
+<!-- ****** Standalone ****** -->
+
+Passenger in its Standalone mode can be configured through two mechanisms. The first is through *command line arguments* passed to the `passenger start` command. The second is through the configuration file `Passengerfile.json`.
+
+Here is an example which shows you how to configure Passenger Standalone to start on port 4000 instead of the default port 3000, through a command line option:
+
+<pre class="highlight"><span class="prompt">$ </span>passenger start --port 4000</pre>
+
+And here is an example which achieves the same, through `Passengerfile.json`.
+
+ * In Passengerfile.json:
+
+   ~~~json
+   {
+     "port": "4000"
+   }
+   ~~~
+ * Passenger command invocation (which automatically uses Passengerfile.json):
+
+   <pre class="highlight"><span class="prompt">$ </span> passenger start</pre>
+
+## Location of Passengerfile.json
+
+`Passengerfile.json` must be located in the application directory. This allows you to configure Passenger differently on a per-application basis.
+
+## Command line arguments have precedence
+
+Since version 5.0, command line arguments take precedence over `Passengerfile.json`. In earlier versions, the opposite was true.
+
+## Available configuration options
+
+Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
+
+<% end %>

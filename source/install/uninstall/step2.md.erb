@@ -40,33 +40,41 @@ Uninstalling <%= edition_long_title %> involves two steps. The first step is to 
 Removing the Passenger files depends on how you installed Passenger.
 
 <table class="table table-bordered table-striped">
-  <tr>
-    <td>Phusion's <a href="../../apt_repo.html">APT repository</a> for Debian/Ubuntu</td>
-    <td><pre class="highlight">sudo apt-get remove -y <%= packages_debian %></pre></td>
-  </tr>
-  <tr>
-    <td>Phusion's <a href="../../yum_repo.html">YUM repository</a> for Red Hat/CentOS</td>
-    <td><pre class="highlight">sudo yum remove -y <%= packages_rpm %></pre></td>
-  </tr>
-  <% if edition_type == :oss %>
+  <thead>
     <tr>
-      <td>OS X + Homebrew</td>
-      <td><pre class="highlight">brew uninstall passenger</pre></td>
+      <th style="vertical-align: middle">If&nbsp;Passenger&nbsp;is&nbsp;installed as follows...</th>
+      <th style="vertical-align: middle">...then do this</th>
     </tr>
-  <% end %>
-  <tr>
-    <td>Ruby gem</td>
-    <td><pre class="highlight">gem uninstall <%= gem_name %></pre></td>
-  </tr>
-  <tr>
-    <td>Source tarball</td>
-    <td>
-      Remove the directory in which you placed the extracted Passenger files.
-      <% if passenger_root %>
-        This directory is the same as the one pointed to by the <code><%= passenger_root %></code> configuration directive.
-      <% end %>
-    </td>
-  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Phusion's <a href="../../apt_repo.html">APT repository</a> for Debian/Ubuntu</td>
+      <td><pre class="highlight">sudo apt-get remove -y <%= packages_debian %></pre></td>
+    </tr>
+    <tr>
+      <td>Phusion's <a href="../../yum_repo.html">YUM repository</a> for Red Hat/CentOS</td>
+      <td><pre class="highlight">sudo yum remove -y <%= packages_rpm %></pre></td>
+    </tr>
+    <% if edition_type == :oss %>
+      <tr>
+        <td>OS X + Homebrew</td>
+        <td><pre class="highlight">brew uninstall passenger</pre></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td>Ruby gem</td>
+      <td><pre class="highlight">gem uninstall <%= gem_name %></pre></td>
+    </tr>
+    <tr>
+      <td>Source tarball</td>
+      <td>
+        Remove the directory in which you placed the extracted Passenger files.
+        <% if passenger_root %>
+          This directory is the same as the one pointed to by the <code><%= passenger_root %></code> configuration directive.
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 ## Step 2: remove Passenger configuration from system
