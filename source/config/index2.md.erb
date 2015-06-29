@@ -16,4 +16,5 @@ content_for(:sidebar) { render_partial("sidebar.html", locals: locals.merge(cont
   <li><a href="tuning_sse_and_websockets.html">Tuning for Server Sent Events and WebSockets</a></li>
   <li><a href="reference.html">Configuration reference</a> <span class="label label-warning">todo</span></li>
   <li><a href="cloud_licensing_configuration.html">Passenger Enterprise cloud licensing configuration</a></li>
+  <li><a href="<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>">Sandboxing apps with Unix user accounts (user switching)</a> <span class="label label-warning">todo</span></li>
 </ul>

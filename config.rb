@@ -161,13 +161,13 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/admin/#{integration_mode_type}/index.html",
     "/admin/index2.html",
     locals: integration_mode_spec
-  proxy "/admin/#{integration_mode_type}/troubleshooting.html",
-    "/admin/troubleshooting.html",
+  proxy "/admin/#{integration_mode_type}/troubleshooting/index.html",
+    "/admin/troubleshooting/part2.html",
     locals: integration_mode_spec
 end
 
 ignore "/admin/index2.html"
-ignore "/admin/troubleshooting.html"
+ignore "/admin/troubleshooting/part2.html"
 
 
 #################################################

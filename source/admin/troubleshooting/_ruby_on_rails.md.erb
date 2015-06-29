@@ -1,0 +1,19 @@
+This section lists some common problems that are specific to the Ruby on Rails web framework.
+
+### The "About your application's environment" link does not work
+
+The "About your application's environment" link only works if the application is started in the "development" environment.  Passenger starts the application in the "production" environment by default. Please use one of the following configuration options to change this:
+
+ * [rails_env (Nginx)](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#RailsEnv)
+ * [RailsEnv (Apache)](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#RailsEnv)
+ * The `--environment` command line parameter (Standalone)
+
+### The Rails application reports that it's unable to start because of a permission error
+
+Please check whether your Rails application's directory has the correct permissions. By default, Rails applications are started as the owner of the file `config.ru`, except if the file is owned by root. If the file is owned by root, then the Rails application will be started as 'nobody' (or as the user specify by [passenger_default_user](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerDefaultUser), if that's specified).
+
+Please read [User switching](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#user_switching) for details.
+
+### The Rails application cannot find my database
+
+If your Rails application cannot find your database, then you probably didn't configure Passenger correctly, or didn't configure your database.yml correctly. By default, Passenger runs Rails applications in 'production' mode, so please either make sure that your database.yml contains an entry for the production environment, or configure Passenger to start your app in the 'development' environment.
