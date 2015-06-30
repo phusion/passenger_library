@@ -1,9 +1,16 @@
 ---
-title: Zero-downtime web server restarts with Flying Passenger
+title: Zero-downtime web server restarts with Flying Passenger Enterprise
 section: advanced_production
-sidebar: sidebar
 ---
-# Zero-downtime web server restarts with Flying Passenger
+<%
+content_for(:sidebar) do
+  render_partial("sidebar.html", locals: locals.merge(
+    available_integration_modes: [INTEGRATION_MODE_NGINX, INTEGRATION_MODE_APACHE]
+  ))
+end
+%>
+
+# Zero-downtime web server restarts with Flying Passenger Enterprise
 
 Flying Passenger allows one to decouple Passenger's life time from the web server's life time, so that the web server can be independently restarted from Passenger, and from any of the application processes served by Passenger.
 
@@ -30,12 +37,12 @@ There is also a distinct problem, namely that of restarting web applications wit
 ## Requirements
 
  * The Flying Passenger feature is only available in [Passenger Enterprise](https://www.phusionpassenger.com/enterprise). Buy Passenger Enterprise [here](https://www.phusionpassenger.com/enterprise).
- * Flying Passenger for Nginx requires at least version 4.0.6.
- * Flying Passenger for Apache requires at least version 4.0.45.
-
-Before you can use the Flying Passenger feature, you must have Passenger for Apache, or Passenger for Nginx properly installed.
-
-The Flying Passenger feature does not work with Passenger Standalone, because it does not make any sense in that context.
+<% if integration_mode_type == :nginx %>
+ * Passenger version 4.0.6 or higher installed on Nginx.
+<% end %>
+<% if integration_mode_type == :apache %>
+ * Passenger version 4.0.45 or higher installed on Apache.
+<% end %>
 
 ## Basic usage
 
@@ -49,38 +56,24 @@ I, [2013-06-14T09:10:13.097036 #77179]  INFO -- : PassengerAgent started on PID 
 I, [2013-06-14T09:10:13.129017 #77179]  INFO -- : PassengerAgent initialized properly
 I, [2013-06-14T09:10:13.129127 #77179]  INFO -- : Flying Passenger up and listening on /var/run/flying-passenger.sock!</span></pre>
 
-Now configure the web server to make use of the Flying Passenger daemon.
+Now configure the web server to make use of the Flying Passenger daemon by setting the <code>passenger_fly_with</code> option to the socket filename:
 
-<table class="table table-bordered table-striped">
-  <tr>
-    <td>Nginx</td>
-    <td>
-      <p>Set the <code>passenger_fly_with</code> option to the socket filename:</p>
-      <pre class="highlight">http {
+<% if integration_mode_type == :nginx %>
+  <pre class="highlight">http {
     ...
     passenger_fly_with /var/run/flying-passenger.sock;
     ...
 }</pre>
-    </td>
-  </tr>
-  <tr>
-    <td>Apache</td>
-    <td>
-      <p>Set the <code>PassengerFlyWith</code> option to the socket filename:</p>
-      <pre class="highlight">PassengerFlyWith /var/run/flying-passenger.sock</pre>
-    </td>
-  </tr>
-</table>
+<% end %>
+<% if integration_mode_type == :apache %>
+  <pre class="highlight">PassengerFlyWith /var/run/flying-passenger.sock</pre>
+<% end %>
 
 After (re)starting the web server, Flying Passenger is fully operational.
 
 You can test it by adding a virtual host for a web app:
-
-<table class="table table-bordered table-striped">
-  <tr>
-    <td>Nginx</td>
-    <td>
-      <pre class="highlight">http {
+<% if integration_mode_type == :nginx %>
+<pre class="highlight">http {
     ...
 
     server {
@@ -90,18 +83,13 @@ You can test it by adding a virtual host for a web app:
         passenger_enabled on;
     }
 }</pre>
-    </td>
-  </tr>
-  <tr>
-    <td>Apache</td>
-    <td>
-      <pre class="highlight">&lt;VirtualHost *:80&gt;
+<% end %>
+<% if integration_mode_type == :apache %>
+<pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName www.foo.local
     DocumentRoot /webapps/foo/public
 &lt;/VirtualHost&gt;</pre>
-    </td>
-  </tr>
-</table>
+<% end %>
 
 Verify that it works by making an HTTP request to it:
 
@@ -112,7 +100,12 @@ Now let's verify that restarting the web server does not restart the just-spawne
 <pre class="highlight"><span class="prompt">$ </span>sudo passenger-status
 <span class="output">Version : 5.0.11
 Date    : 2015-06-24 12:47:13 +0200
+<% if integration_mode_type == :nginx %>
 Instance: XE6bilnV (nginx/1.8.0 Phusion_Passenger/5.0.11)
+<% end %>
+<% if integration_mode_type == :apache %>
+Instance: XE6bilnV (Apache/2.4.12 Phusion_Passenger/5.0.11)
+<% end %>
 
 ----------- General information -----------
 Max pool size : 6
@@ -129,29 +122,26 @@ Requests in top-level queue : 0
 
 As you can see, the PID of the application process is **77283**. Now let's see what happens if we restart the web server:
 
-<table class="table table-bordered table-striped">
-  <tr>
-    <td>Nginx</td>
-    <td>
-      <pre class="highlight"><span class="prompt">$ </span>sudo service apache2 restart
+<% if integration_mode_type == :nginx %>
+<pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart
 <span class="prompt">$ </span>sudo passenger-status</pre>
-    </td>
-  </tr>
-  <tr>
-    <td>Apache</td>
-    <td>
-      <pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart
+<% end %>
+<% if integration_mode_type == :apache %>
+<pre class="highlight"><span class="prompt">$ </span>sudo service apache2 restart
 <span class="prompt">$ </span>sudo passenger-status</pre>
-    </td>
-  </tr>
-</table>
+<% end %>
 
 The application process should remain there, unchanged:
 
 <pre class="highlight"><span class="prompt">$ </span>sudo passenger-status
 <span class="output">Version : 5.0.11
 Date    : 2015-06-24 12:47:45 +0200
+<% if integration_mode_type == :nginx %>
 Instance: XE6bilnV (nginx/1.8.0 Phusion_Passenger/5.0.11)
+<% end %>
+<% if integration_mode_type == :apache %>
+Instance: XE6bilnV (Apache/2.4.12 Phusion_Passenger/5.0.11)
+<% end %>
 
 ----------- General information -----------
 Max pool size : 6
@@ -168,7 +158,13 @@ Requests in top-level queue : 0
 
 ## Configuring Flying Passenger
 
-Flying Passenger gets *some* configuration from the web server, but not all. In particular, most web server directives that are only valid in the `http` context (Nginx) or the global context (Apache), e.g. `passenger_log_level`/`PassengerLogLevel`, have no effect when using Flying Passenger. Instead, you are supposed to pass these configuration directives through command line options to the Flying Passenger daemon. Configuration directives that have no effect on Flying Passenger are documented as such. You can assume that configuration directives that are not documented as such, work fine on Flying Passenger.
+<% if integration_mode_type == :nginx %>
+Flying Passenger gets *some* configuration from Nginx, but not all. In particular, most web server directives that are only valid in the `http` context, e.g. `passenger_log_level`, have no effect when using Flying Passenger. 
+<% end %>
+<% if integration_mode_type == :apache %>
+Flying Passenger gets *some* configuration from Apache, but not all. In particular, most web server directives that are only valid in the global context, e.g. `PassengerLogLevel`, have no effect when using Flying Passenger. 
+<% end %>
+Instead, you are supposed to pass these configuration directives through command line options to the Flying Passenger daemon. Configuration directives that have no effect on Flying Passenger are documented as such. You can assume that configuration directives that are not documented as such, work fine on Flying Passenger.
 
 For example, to achieve the same effect as setting `passenger_log_level`/`PassengerLogLevel` to 2, run the Flying Passenger daemon as follows:
 
@@ -212,11 +208,8 @@ It is however possible to use Flying Passenger with MRI Ruby 1.8 and JRuby. You 
 
 First, edit your web server configuration file and specify a Ruby interpreter for your web applications. For example:
 
-<table class="table table-bordered table-striped">
-  <tr>
-    <td>Nginx</td>
-    <td>
-      <pre class="highlight"># Connect to the Flying Passenger daemon on the following socket
+<% if integration_mode_type == :nginx %>
+<pre class="highlight"># Connect to the Flying Passenger daemon on the following socket
 passenger_fly_with /var/run/flying-passenger.sock;
 ...
 
@@ -228,12 +221,9 @@ server {
     # Use JRuby for this web application
     passenger_ruby /opt/jruby/bin/jruby;
 }</pre>
-    </td>
-  </tr>
-  <tr>
-    <td>Apache</td>
-    <td>
-      <pre class="highlight"># Connect to the Flying Passenger daemon on the following socket
+<% end %>
+<% if integration_mode_type == :apache %>
+<pre class="highlight"># Connect to the Flying Passenger daemon on the following socket
 PassengerFlyWith /var/run/flying-passenger.sock
 ...
 
@@ -243,9 +233,7 @@ PassengerFlyWith /var/run/flying-passenger.sock
     # Use JRuby for this web application
     PassengerRuby /opt/jruby/bin/jruby
 &lt;/VirtualHost&gt;</pre>
-    </td>
-  </tr>
-</table>
+<% end %>
 
 Then you need to install a Ruby 1.9-compatible Ruby interpreter with POSIX spawn support, alongside JRuby/MRI 1.8. Ruby interpreters which can be used for running the Flying Passenger daemon include:
 
@@ -278,14 +266,15 @@ The Flying Passenger daemon will now be run on Ruby 1.9, while the web applicati
 
 Beware of the following caveats and limitations when using Flying Passenger.
 
-### General caveats and limitations
+### General
 
 The Flying Passenger daemon is written in Ruby. It requires a Ruby interpreter with proper `Process#spawn` support. At the time of writing, all Ruby interpreters in existance satisfy this requirement, except for MRI Ruby 1.8 and JRuby. See [Using Flying Passenger with MRI 1.8 or JRuby](#using-flying-passenger-with-mri-18-or-jruby) for more information.
 
 When you add a new application to the web server configuration, Flying Passenger will automatically pick up the application's settings and spawn this new application upon the first request to it. However it is not capable of automatically starting the new app before a request has been sent to it (i.e. `passenger_pre_start`/`PassengerPreStart`-like
  behavior is not available in this case). As a workaround, you can send an HTTP request to your application after starting the daemon, which forces it to spawn application processes.
 
-### Nginx-specific caveats and limitations
+<% if integration_mode_type == :nginx %>
+### Nginx
 
 The Nginx executable **must** be compiled with the same version of Passenger as the Flying Passenger daemon. Failing to meet this requirement may result in cryptic errors, or may result in certain features not working, until you've fixed the situation. When upgrading Passenger, you must restart both Nginx and the Flying Passenger daemon.
 
@@ -295,8 +284,9 @@ When you remove an application from the web server configuration, Flying Passeng
 
  1. Before removing the application from the web server configuration, explicitly set its `passenger_min_instances` to 0. Next, send a request to it, which will cause the Flying Passenger daemon to take over the new `passenger_min_instances 0` option. You can then proceed with removing the application from the web server configuration, and restarting the web server. Finally, kill the PIDs associated to those application processes and remove the application configuration.
  2. Restart the Flying Passenger daemon.
-
-### Apache-specific caveats and limitations
+<% end %>
+<% if integration_mode_type == :apache %>
+### Apache
 
 The Passenger module that is loaded into Apache, **must** be of the same version as the Flying Passenger daemon. Failing to meet this requirement may result in cryptic errors, or may result in certain features not working, until you've fixed the situation. When upgrading Passenger, you must restart both Apache and the Flying Passenger daemon.
 
@@ -306,3 +296,4 @@ When you remove an application from the web server configuration, Flying Passeng
 
  1. Before removing the application from the web server configuration, explicitly set its `PassengerMinInstances` to 0. Next, send a request to it, which will cause the Flying Passenger daemon to take over the new `PassengerMinInstances 0` option. You can then proceed with removing the application from the web server configuration, and restarting the web server. Finally, kill the PIDs associated to those application processes and remove the application configuration.
  2. Restart the Flying Passenger daemon.
+<% end %>

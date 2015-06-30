@@ -151,8 +151,11 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   integration_mode_type = integration_mode_spec[:integration_mode_type]
 
   proxy "/deploy/#{integration_mode_type}/index.html",
-    "/deploy/index2.html",
-    locals: integration_mode_spec
+      "/deploy/index2.html",
+      locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/flying_passenger.html",
+      "/deploy/flying_passenger.html",
+      locals: integration_mode_spec
 end
 
 ignore "/deploy/index2.html"
