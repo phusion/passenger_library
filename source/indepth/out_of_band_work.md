@@ -3,10 +3,9 @@ title: Out-of-band work and out-of-band garbage collection
 section: misc
 sidebar: sidebar
 ---
-# Out-of-band work and out-of-band garbage collection
+# Out-of-band work garbage collection
 
-**_Available since Phusion Passenger 4.0.0._**<br>
-**_At this time, this feature is only available on Ruby._**
+<div class="note">Only available with Ruby web apps using Passenger 4 or later.</div>
 
 The Out-of-Band Work feature allows you to run arbitrary long-running tasks outside normal request cycles. This works by letting current requests to the process finish, then telling the process to perform the out-of-band work, then resuming passing requests to the process after said work is finished.
 

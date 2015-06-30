@@ -1,33 +1,33 @@
 ---
-title: In depth
+title: In-depth
 section: indepth
 ---
 <% content_for(:sidebar) { render_partial("sidebar.html", locals: locals.merge(context: :index)) } %>
 
-# In depth
+# In-depth
 
 <div class="row">
   <div class="col-md-6">
-    <h3>Topics 1</h3>
+    <h3>Passenger</h3>
 
     <ul class="list-unstyled list-links">
-      <li><a href="integration_modes.html">Integration modes</a></li>
-      <li><a href="relationship_with_ruby.html">Passenger's relationship with Ruby</a></li>
-      <li><a href="reverse_port_binding.html">Reverse port binding in Node.js and io.js</a></li>
-      <li><a href="spawn_methods.html">Spawn methods explained</a></li>
-      <li><a href="bundler.html">Ruby Bundler support</a></li>
-     <li><a href="slow_clients.html">How Passenger protects applications from slow clients through buffering</a> <span class="label label-warning">todo</span></li>
+      <li><a href="relationship_with_ruby.html">Lightweight dependency on Ruby</a></li>
+      <li><a href="integration_modes.html">Integration modes (Nginx, Apache, Standalone)</a></li>
+      <li><a href="hooks.html">Hooking in to Passenger</a></li>
+      <li><a href="slow_clients.html">Protection against slow clients through buffering</a> <span class="label label-warning">todo</span></li>
+      <li><a href="reverse_port_binding.html">(Node.js and io.js) Reverse port binding</a></li>
+      <li><a href="spawn_methods.html">(Ruby) Smart spawning</a></li>
+      <li><a href="bundler.html">(Ruby) Bundler support</a></li>
     </ul>
   </div>
 
   <div class="col-md-6">
-    <h3>MERGE TOPICS</h3>
+    <h3>General concepts</h3>
 
     <ul class="list-unstyled list-links">
       <li><a href="processes.html">About processes</a></li>
       <li><a href="environment_variables.html">About environment variables</a></li>
-      <li><a href="hooks.html">Passenger hooks</a></li>
-      <li><a href="out_of_band_work.html">Out-of-band work and out-of-band garbage collection</a></li>
+      <li><a href="out_of_band_work.html">(Ruby) Out-of-band work and garbage collection</a></li>
     </ul>
   </div>
 </div>
