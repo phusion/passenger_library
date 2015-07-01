@@ -8,7 +8,7 @@ content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
 
 # Customizing the compilation process
 
-The Phusion Passenger compilation process can be customized with environment variables. You can learn more about environment variables in [About environment variables](../misc/environment_variables.html).
+The Phusion Passenger compilation process can be customized with environment variables. You can learn more about environment variables in [About environment variables](../indepth/environment_variables.html).
 
 **Table of contents**
 
@@ -67,7 +67,7 @@ On some systems, C/C++ libraries and headers that Phusion Passenger requires may
 : Setting this to 1 will enable the `PASSENGER_THREAD_LOCAL_STORAGE` macro, which forcefully disables the use of thread-local storage inside the Phusion Passenger codebase. Setting this environment variable is useful on systems that have broken support for thread-local storage, despite passing our build system's check for proper thread-local storage support. At the time of writing, one user has reported that Ubuntu 12.04 32-bit has broken thread-local storage report although neither the reporter nor us were able to reproduce the problem on any other systems running Ubuntu 12.04 32-bit. Note that this flag has no effect on non-Phusion Passenger code.
 
 <div class="note">
-  If you run the installer with <code>sudo</code> then environment variables may not be passed properly. Learn more at <a href="../misc/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
+  If you run the installer with <code>sudo</code> then environment variables may not be passed properly. Learn more at <a href="../indepth/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
 </div>
 
 ## Forcing location of command line tools and dependencies
@@ -106,9 +106,9 @@ You can force the build to find certain command line tools at certain locations 
 <% end %>
 
 <div class="note">
-  If you do not know what environment variables are, or how to use them, then please read <a href="../misc/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
+  If you do not know what environment variables are, or how to use them, then please read <a href="../indepth/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
 </div>
 
 <div class="note">
-  If you run the installer with <code>sudo</code> then environment variables may not be passed properly. Learn more at <a href="../misc/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
+  If you run the installer with <code>sudo</code> then environment variables may not be passed properly. Learn more at <a href="../indepth/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
 </div>

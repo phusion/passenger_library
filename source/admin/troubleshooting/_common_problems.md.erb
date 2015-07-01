@@ -37,7 +37,7 @@ Passenger commands can be found as a normal user, but not when run through sudo:
 
 #### Cause
 
-The operating system looks up commands using [the PATH environment variable](../misc/environment_variables.html#the-path-environment-variable). However, sudo resets all environment variables to a default value, dictated by sudo. If Passenger was installed to a location that is not in the default sudo PATH value, then sudo will not be able to find the Passenger commands.
+The operating system looks up commands using [the PATH environment variable](../indepth/environment_variables.html#the-path-environment-variable). However, sudo resets all environment variables to a default value, dictated by sudo. If Passenger was installed to a location that is not in the default sudo PATH value, then sudo will not be able to find the Passenger commands.
 
 In addition, if you installed Passenger using a Ruby interpreter that was installed through RVM, then you **must** use [rvmsudo](https://rvm.io/integration/sudo) instead of sudo. As a rule, when you're an RVM user, always use rvmsudo instead of sudo.
 
@@ -60,4 +60,4 @@ Next, run full path of the command using either sudo or rvmsudo:
 
 #### Recommended reading
 
-When using sudo, you will probably run into similar "command not found" issues in the future, with components other than Phusion Passenger. We **strongly recommend** you to [learn about environment variables](../misc/environment_variables.html) so that you know what to do in the future.
+When using sudo, you will probably run into similar "command not found" issues in the future, with components other than Phusion Passenger. We **strongly recommend** you to [learn about environment variables](../indepth/environment_variables.html) so that you know what to do in the future.

@@ -20,7 +20,7 @@ Passenger supports [multiple programming languages](<%= url_for "/walkthroughs/b
 
 <figure><img src="../nodejs_or_iojs/traditional_nodejs.png"></figure>
 
-As an application server, Passenger reverses this relationship. The application server runs the application. Services are provided to the application "for free". [The reverse port binding mechanism](<%= url_for "/misc/reverse_port_binding.html" %>) is an example of this reversed relationship at work.
+As an application server, Passenger reverses this relationship. The application server runs the application. Services are provided to the application "for free". [The reverse port binding mechanism](<%= url_for "/indepth/reverse_port_binding.html" %>) is an example of this reversed relationship at work.
 
 <figure><img src="../nodejs_or_iojs/app_server_concept.png"></figure>
 
@@ -89,7 +89,8 @@ Passenger does many things, but some things are currently out of scope.
    However, the Passenger Library contains excellent [documentation on setting up a server](<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>).
  * **Transferring the application code and files to the server**<br>
    Passenger does not transfer the application code and files to the server for you. To do this, you must use tools like Git, scp, FTP, Capistrano, Fabric, etc. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.<br>
-   The Passenger Library contains [documentation on automating releases using shell scripts](<%= url_for "/advanced_production/automating_deployment_nodejs_app_updates_with_shell_scripts.html" %>).
+   <% #TODO: link to automating_deployment_nodejs_app_updates_with_shell_scripts.html through integration selector -%>
+   The Passenger Library contains documentation on [automating releases using shell scripts](<%= url_for "/deploy/" %>).
  * **Installing application dependencies**<br>
    Passenger does not install your application's dependencies for you.
  * **Managing the database**<br>

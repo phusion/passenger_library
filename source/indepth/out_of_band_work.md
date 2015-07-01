@@ -1,6 +1,6 @@
 ---
 title: Out-of-band work and out-of-band garbage collection
-section: misc
+section: indepth
 sidebar: sidebar
 ---
 # Out-of-band work garbage collection

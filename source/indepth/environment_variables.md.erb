@@ -178,9 +178,9 @@ On other systems, or if you did not install Apache through the system's package 
 If you installed Nginx through [the Debian or Ubuntu packages](../install/apt_repo.html), then you can define environment variables in `/etc/default/nginx`. This is a shell script so you must use the `export FOO=bar` syntax.
 
 Otherwise, environment variables are best set through the script which starts Nginx. For example, if you installed Nginx from source and you used [the Nginx init script described here](../install/nginx_init_script.html) then you should edit that script to define the environment variables. Those init scripts are regular shell scripts, so use the `export FOO=bar` syntax. Just make sure your set your environment variables before the script starts Nginx.
-
+<% #TODO: link to flying_passenger.html through integration selection %>
 <div class="note">
-  Setting environment variables on Nginx has no effect on <a href="../advanced_production/flying_passenger.html">the Flying Passenger daemon</a> because the daemon is started seperately. You should set the environment variables in the shell right before starting the daemon.
+  Setting environment variables on Nginx has no effect on <a href="../deploy/">the Flying Passenger daemon</a> because the daemon is started seperately. You should set the environment variables in the shell right before starting the daemon.
 </div>
 
 ### cron

@@ -73,7 +73,8 @@ Passenger does many things, but some things are currently out of scope.
    Having said that, the Passenger Library contains excellent [documentation on installing Ruby during a production deployment](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>).
  * **Transferring the application code and files to the server**<br>
    Passenger does not transfer the application code and files to the server for you. To do this, you should use something like Capistrano. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.<br>
-   The Passenger Library contains [documentation on automating releases using Capistrano](<%= url_for "/advanced_production/ruby_capistrano.html" %>).
+   <% #TODO: link to ruby_capistrano.html through integration selector -%>
+   The Passenger Library contains [documentation on automating releases using Capistrano](<%= url_for "/deploy/" %>).
  * **Installing application dependencies**<br>
    Passenger does not install your application's dependencies for you. That job belongs to Capistrano and Bundler.
  * **Managing the database**<br>
