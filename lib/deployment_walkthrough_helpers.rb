@@ -15,15 +15,18 @@ module DeploymentWalkthroughHelpers
     { language_type: :ruby,
       language_name: "Ruby",
       language_runtime_name: "Ruby",
-      language_has_install_instructions: true },
+      language_has_install_instructions: true,
+      language_startup_file: "config.ru" },
     { language_type: :python,
       language_name: "Python",
       language_runtime_name: "Python",
-      language_has_install_instructions: true },
+      language_has_install_instructions: true,
+      language_startup_file: "passenger_wsgi.py" },
     { language_type: :nodejs,
       language_name: "Node.js",
       language_runtime_name: "Node.js",
-      language_has_install_instructions: true },
+      language_has_install_instructions: true,
+      language_startup_file: "app.js" },
     { language_type: :iojs,
       language_name: "io.js",
       language_runtime_name: "io.js",
@@ -31,7 +34,8 @@ module DeploymentWalkthroughHelpers
     { language_type: :meteor,
       language_name: "Meteor",
       language_runtime_name: "Node.js",
-      language_has_install_instructions: true }
+      language_has_install_instructions: true,
+      language_startup_file: ".meteor" }
   ]
   DEPLOYMENT_WALKTHROUGH_INFRASTRUCTURES = [
     { infrastructure_type: :aws,
@@ -72,16 +76,19 @@ module DeploymentWalkthroughHelpers
   INTEGRATION_MODE_NGINX = {
     integration_mode_type: :nginx,
     integration_mode_name: "Nginx",
+    integration_mode_name_with_determiner: "an Nginx",
     integration_mode_name_as_passenger_suffix: "+ Nginx"
   }
   INTEGRATION_MODE_APACHE = {
     integration_mode_type: :apache,
     integration_mode_name: "Apache",
+    integration_mode_name_with_determiner: "an Nginx",
     integration_mode_name_as_passenger_suffix: "+ Apache"
   }
   INTEGRATION_MODE_STANDALONE = {
     integration_mode_type: :standalone,
     integration_mode_name: "Standalone",
+    integration_mode_name_with_determiner: "a Passenger Standalone",
     integration_mode_name_as_passenger_suffix: "Standalone"
   }
   INTEGRATION_MODES = [

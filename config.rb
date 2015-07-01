@@ -183,6 +183,17 @@ ignore "/admin/index2.html"
 ignore "/admin/troubleshooting/language_selection.html"
 ignore "/admin/troubleshooting/troubleshooting.html"
 
+###### In-depth ######
+
+INTEGRATION_MODES.each do |integration_mode_spec|
+  integration_mode_type = integration_mode_spec[:integration_mode_type]
+
+  proxy "/indepth/app_autodetection/#{integration_mode_type}/index.html",
+    "/indepth/app_autodetection/app_autodetection.html",
+    locals: integration_mode_spec
+end
+
+ignore "/indepth/app_autodetection/app_autodetection.html"
 
 #################################################
 
