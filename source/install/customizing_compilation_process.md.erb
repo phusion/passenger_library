@@ -1,8 +1,11 @@
 ---
 title: Customizing the compilation process
 section: install
-sidebar: sidebar
 ---
+<%
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+%>
+
 # Customizing the compilation process
 
 The Phusion Passenger compilation process can be customized with environment variables. You can learn more about environment variables in [About environment variables](../misc/environment_variables.html).
@@ -23,7 +26,7 @@ export CXX='ccache clang++ -fcolor-diagnostics -Qunused-arguments -fcatch-undefi
 ~~~
 
 <div class="note">
-  If you run the installer with <code>sudo</code> then environment variables may not be passed properly. Learn more at <a href="../misc/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
+  If you run the installer with <code>sudo</code> then environment variables may not be passed properly. Learn more at <a href="../indepth/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
 </div>
 
 ## Adding additional compiler or linker flags
@@ -69,10 +72,17 @@ On some systems, C/C++ libraries and headers that Phusion Passenger requires may
 
 ## Forcing location of command line tools and dependencies
 
-The Phusion Passenger build system attempts to autodetect many things by locating relevant helper tools. For example, to find out which compiler flags it should use for compiling Apache modules, it locates the `apxs2` command and queries it. To find out which compiler flags it should use for libcurl, it queries the `curl-config` command. These commands may not be in `$PATH`, or even when they are you may want to use a different one.
+The Phusion Passenger build system attempts to autodetect many things by locating relevant helper tools. For example, to find out which compiler flags it should use for libcurl, it queries the `curl-config` command. These commands may not be in `$PATH`, or even when they are you may want to use a different one.
 
 You can force the build to find certain command line tools at certain locations by using the following environment variables:
 
+`MAKE`
+: The location of a `make` tool. It does not matter which implementation of `make` this is.
+
+`GMAKE`
+: The location of the GNU-compatible `make` tool.
+
+<% if integration_mode_type == :apache %>
 `HTTPD`
 : The location of the `httpd` executable (the Apache server executable).
 
@@ -93,12 +103,7 @@ You can force the build to find certain command line tools at certain locations 
 
 `APU_CONFIG`
 : The location of the `apu-config` executable (the Apache Portable Runtime Utility developer tool).
-
-`MAKE`
-: The location of a `make` tool. It does not matter which implementation of `make` this is.
-
-`GMAKE`
-: The location of the GNU-compatible `make` tool.
+<% end %>
 
 <div class="note">
   If you do not know what environment variables are, or how to use them, then please read <a href="../misc/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.

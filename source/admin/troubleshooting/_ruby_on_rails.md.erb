@@ -2,17 +2,36 @@ This section lists some common problems that are specific to the Ruby on Rails w
 
 ### The "About your application's environment" link does not work
 
-The "About your application's environment" link only works if the application is started in the "development" environment.  Passenger starts the application in the "production" environment by default. Please use one of the following configuration options to change this:
+The "About your application's environment" link only works if the application is started in the "development" environment.  Passenger starts the application in the "production" environment by default.
 
- * [rails_env (Nginx)](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#RailsEnv)
- * [RailsEnv (Apache)](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#RailsEnv)
- * The `--environment` command line parameter (Standalone)
+Use the 
+<% if integration_mode_type == :nginx %>
+[rails_env](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#RailsEnv) configuration option
+<% end %>
+<% if integration_mode_type == :apache %>
+[RailsEnv](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#RailsEnv) configuration option
+<% end %>
+<% if integration_mode_type == :standalone %>
+`--environment` command line parameter 
+<% end %>
+to change this.
 
 ### The Rails application reports that it's unable to start because of a permission error
 
-Please check whether your Rails application's directory has the correct permissions. By default, Rails applications are started as the owner of the file `config.ru`, except if the file is owned by root. If the file is owned by root, then the Rails application will be started as 'nobody' (or as the user specify by [passenger_default_user](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerDefaultUser), if that's specified).
+Please check whether your Rails application's directory has the correct permissions. By default, Rails applications are started as the owner of the file `config.ru`, except if the file is owned by root. If the file is owned by root, then the Rails application will be started as 'nobody' 
+<% if integration_mode_type == :nginx -%>
+(or as the user specified by [passenger_default_user](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerDefaultUser)).
 
 Please read [User switching](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#user_switching) for details.
+<% end -%>
+<% if integration_mode_type == :apache -%>
+(or as the user specified by [PassengerDefaultUser](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerDefaultUser)).
+
+Please read [User switching](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#user_switching) for details.
+<% end -%>
+<% if integration_mode_type == :standalone -%>
+(or as the user specified by the `--user` command line parameter)).
+<% end -%>
 
 ### The Rails application cannot find my database
 

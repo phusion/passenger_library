@@ -65,6 +65,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/install/#{integration_mode_type}/noninteractive_install.html",
     "/install/noninteractive_install.html",
     locals: integration_mode_spec
+  proxy "/install/#{integration_mode_type}/customizing_compilation_process.html",
+      "/install/customizing_compilation_process.html",
+      locals: integration_mode_spec
   proxy "/install/#{integration_mode_type}/upgrading_from_oss_to_enterprise.html",
     "/install/upgrading_from_oss_to_enterprise.html",
     locals: integration_mode_spec
@@ -153,6 +156,21 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/deploy/#{integration_mode_type}/index.html",
     "/deploy/index2.html",
     locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/automating_deployment_app_updates.html",
+    "/deploy/automating_deployment_app_updates.html",
+    locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/ruby_capistrano.html",
+      "/deploy/ruby_capistrano.html",
+      locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/automating_deployment_python_app_updates_with_shell_scripts.html",
+        "/deploy/automating_deployment_python_app_updates_with_shell_scripts.html",
+        locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/automating_deployment_nodejs_app_updates_with_shell_scripts.html",
+        "/deploy/automating_deployment_nodejs_app_updates_with_shell_scripts.html",
+        locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/automating_deployment_meteor_app_updates_with_shell_scripts.html",
+        "/deploy/automating_deployment_meteor_app_updates_with_shell_scripts.html",
+        locals: integration_mode_spec
   proxy "/deploy/#{integration_mode_type}/flying_passenger.html",
     "/deploy/flying_passenger.html",
     locals: integration_mode_spec

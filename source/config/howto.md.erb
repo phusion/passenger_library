@@ -39,10 +39,6 @@ For Passenger to work, only one configuration option needs to be setup in Nginx,
 
 `passenger_root` tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate. [Learn more about passenger_root.](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerRoot)
 
-## Additional configuration
-
-Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
-
 <% elsif integration_mode_type == :apache %>
 <!-- ****** Apache ****** -->
 
@@ -82,10 +78,6 @@ For Passenger to work, only a few configuration options need to be setup in Apac
  1. The `LoadModule passenger_module ...` option must exist in the Apache configuration. This option tells Apache to load the Passenger module from the given filename. If this option does not exist, then Passenger is not loaded into Apache at all, and Apache will complain about syntax errors whenever it encounters Passenger configuration options.
  2. The `PassengerRoot` option must exist in the Apache configuration. This option tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate. [Learn more about PassengerRoot.](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerRoot)
 
-## Additional configuration
-
-Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
-
 <% else %>
 <!-- ****** Standalone ****** -->
 
@@ -115,9 +107,5 @@ And here is an example which achieves the same, through `Passengerfile.json`.
 ## Command line arguments have precedence
 
 Since version 5.0, command line arguments take precedence over `Passengerfile.json`. In earlier versions, the opposite was true.
-
-## Available configuration options
-
-Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
 
 <% end %>
