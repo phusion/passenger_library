@@ -45,15 +45,23 @@
               <% end %>
               <% navbar_dropdown_section :install, :config, :deploy, :admin, :advanced_production, :indepth, :misc do %>
                 <a href="<%= url_for '/guides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <% navbar_section :install do %><%= link_to "Installation, upgrade and uninstallation", "/install/index.html" %><% end %>
-                  <% navbar_section :config do %><%= link_to "Configuration and optimization", "/config/index.html" %><% end %>
-                  <% navbar_section :deploy do %><%= link_to "Deployment and scaling", "/deploy/index.html" %><% end %>
-                  <% navbar_section :admin do %><%= link_to "Administration", "/admin/index.html" %><% end %>
-                  <% navbar_section :advanced_production do %><%= link_to "Advanced production techniques", "/advanced_production/index.html" %><% end %>
-                  <% navbar_section :indepth do %><%= link_to "Passenger in depth", "/indepth/index.html" %><% end %>
-                  <% navbar_section :misc do %><%= link_to "Miscellaneous", "/misc/index.html" %><% end %>
-                </ul>
+                <% if locals[:integration_mode_type] %>
+                  <ul class="dropdown-menu" role="menu">
+                    <% navbar_section :install do %><%= link_to "Installation, upgrade and uninstallation", "/install/#{integration_mode_type}/index.html" %><% end %>
+                    <% navbar_section :config do %><%= link_to "Configuration and optimization", "/config/#{integration_mode_type}/index.html" %><% end %>
+                    <% navbar_section :deploy do %><%= link_to "Deployment and scaling", "/deploy/#{integration_mode_type}/index.html" %><% end %>
+                    <% navbar_section :admin do %><%= link_to "Administration", "/admin/#{integration_mode_type}/index.html" %><% end %>
+                    <% navbar_section :indepth do %><%= link_to "In-depth", "/indepth/index.html" %><% end %>
+                  </ul>
+                <% else %>
+                  <ul class="dropdown-menu" role="menu">
+                    <% navbar_section :install do %><%= link_to "Installation, upgrade and uninstallation", "/install/index.html" %><% end %>
+                    <% navbar_section :config do %><%= link_to "Configuration and optimization", "/config/index.html" %><% end %>
+                    <% navbar_section :deploy do %><%= link_to "Deployment and scaling", "/deploy/index.html" %><% end %>
+                    <% navbar_section :admin do %><%= link_to "Administration", "/admin/index.html" %><% end %>
+                    <% navbar_section :indepth do %><%= link_to "In-depth", "/indepth/index.html" %><% end %>
+                  </ul>
+                <% end %>
               <% end %>
             <% else %>
               <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
