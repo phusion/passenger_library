@@ -28,6 +28,7 @@ Passenger checks whether the virtual host is a Passenger-supported application t
       </thead>
       <tbody>
         <% DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |spec| %>
+          <% next if spec[:language_startup_file].nil? %>
           <tr>
             <td><%= spec[:language_startup_file] %></td>
             <td><%= spec[:language_name] %></td>

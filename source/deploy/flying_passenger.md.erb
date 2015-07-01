@@ -32,6 +32,8 @@ This problem is solved by 'Flying Passenger', which is an advanced mode of opera
  * The web server must be configured to forward requests to the Flying Passenger daemon.
  * You should beware of the [caveats and limitations](#caveats-and-limitations).
 
+The Flying Passenger mode is off by default. You have to explicitly enable it.
+
 There is also a distinct problem, namely that of restarting web applications without downtime after you have deployed application updates. That problem is solved by [the rolling restarts feature](zero_downtime_redeployments.html), not by Flying Passenger. To achieve full zero-downtime, you will want to enable both rolling restarts **and** Flying Passenger.
 
 ## Requirements
@@ -159,10 +161,10 @@ Requests in top-level queue : 0
 ## Configuring Flying Passenger
 
 <% if integration_mode_type == :nginx %>
-Flying Passenger gets *some* configuration from Nginx, but not all. In particular, most web server directives that are only valid in the `http` context, e.g. `passenger_log_level`, have no effect when using Flying Passenger. 
+Flying Passenger gets *some* configuration from Nginx, but not all. In particular, most web server directives that are only valid in the `http` context, e.g. `passenger_log_level`, have no effect when using Flying Passenger.
 <% end %>
 <% if integration_mode_type == :apache %>
-Flying Passenger gets *some* configuration from Apache, but not all. In particular, most web server directives that are only valid in the global context, e.g. `PassengerLogLevel`, have no effect when using Flying Passenger. 
+Flying Passenger gets *some* configuration from Apache, but not all. In particular, most web server directives that are only valid in the global context, e.g. `PassengerLogLevel`, have no effect when using Flying Passenger.
 <% end %>
 Instead, you are supposed to pass these configuration directives through command line options to the Flying Passenger daemon. Configuration directives that have no effect on Flying Passenger are documented as such. You can assume that configuration directives that are not documented as such, work fine on Flying Passenger.
 

@@ -156,27 +156,47 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/deploy/#{integration_mode_type}/index.html",
     "/deploy/index2.html",
     locals: integration_mode_spec
+
   proxy "/deploy/#{integration_mode_type}/automating_deployment_app_updates.html",
     "/deploy/automating_deployment_app_updates.html",
     locals: integration_mode_spec
   proxy "/deploy/#{integration_mode_type}/ruby_capistrano.html",
-      "/deploy/ruby_capistrano.html",
-      locals: integration_mode_spec
+    "/deploy/ruby_capistrano.html",
+    locals: integration_mode_spec
   proxy "/deploy/#{integration_mode_type}/automating_deployment_python_app_updates_with_shell_scripts.html",
-        "/deploy/automating_deployment_python_app_updates_with_shell_scripts.html",
-        locals: integration_mode_spec
+    "/deploy/automating_deployment_python_app_updates_with_shell_scripts.html",
+    locals: integration_mode_spec
   proxy "/deploy/#{integration_mode_type}/automating_deployment_nodejs_app_updates_with_shell_scripts.html",
-        "/deploy/automating_deployment_nodejs_app_updates_with_shell_scripts.html",
-        locals: integration_mode_spec
+    "/deploy/automating_deployment_nodejs_app_updates_with_shell_scripts.html",
+    locals: integration_mode_spec
   proxy "/deploy/#{integration_mode_type}/automating_deployment_meteor_app_updates_with_shell_scripts.html",
-        "/deploy/automating_deployment_meteor_app_updates_with_shell_scripts.html",
-        locals: integration_mode_spec
+    "/deploy/automating_deployment_meteor_app_updates_with_shell_scripts.html",
+    locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/deploy/index.html",
+    "/deploy/deploy/language_selection.html",
+    locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/user_sandboxing.html",
+    "/deploy/user_sandboxing.html",
+    locals: integration_mode_spec
   proxy "/deploy/#{integration_mode_type}/flying_passenger.html",
     "/deploy/flying_passenger.html",
     locals: integration_mode_spec
+
+  DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
+    proxy "/deploy/#{integration_mode_type}/deploy/#{language_spec[:language_type]}/index.html",
+      "/deploy/deploy/deploy.html",
+      locals: integration_mode_spec.merge(language_spec)
+  end
 end
 
 ignore "/deploy/index2.html"
+ignore "/deploy/deploy/language_selection.html"
+ignore "/deploy/automating_deployment_app_updates.html"
+ignore "/deploy/ruby_capistrano.html"
+ignore "/deploy/automating_deployment_python_app_updates_with_shell_scripts.html"
+ignore "/deploy/automating_deployment_nodejs_app_updates_with_shell_scripts.html"
+ignore "/deploy/automating_deployment_meteor_app_updates_with_shell_scripts.html"
+ignore "/deploy/user_sandboxing.html"
 ignore "/deploy/flying_passenger.html"
 
 ###### Administration and troubleshooting ######
