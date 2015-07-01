@@ -1,0 +1,57 @@
+---
+title: Mass deployment
+section: deploy
+---
+<%
+locals.merge!(INTEGRATION_MODE_STANDALONE)
+globals.merge!(INTEGRATION_MODE_STANDALONE)
+content_for(:sidebar) do
+  render_partial("../sidebar.html", locals: locals.merge(
+    available_integration_modes: [INTEGRATION_MODE_STANDALONE]
+  ))
+end
+%>
+
+# Mass deployment
+
+Mass deployment is a special mode in Passenger Standalone that allows you to deploy multiple web applications, without having to create configuration entries for each one of them like it is necessary for Passenger for Nginx or Passenger for Apache. Given a directory with multiple web applications, Passenger Standalone will automatically give each web application its own virtual host entry, and serve all of them from a single server. The virtual host's server name is equal to the web application's directory name. Whenever a new web application is added or removed, Passenger Standalone automatically reconfigures itself without administrator intervention. This makes the mass deployment mode especially useful when there are a large number of web applications.
+
+For example, suppose we have a directory `/webapps` with three web applications: Ruby app, a Python app and a Node.js app.
+
+~~~
+/webapps
+  |
+  +-- rubyapp.com
+  |    |
+  |    +-- config.ru
+  |
+  +-- pythonapp.com
+  |    |
+  |    +-- passenger_wsgi.py
+  |
+  +-- nodeapp.com
+       |
+       +-- app.js
+~~~
+
+You can activate Passenger Standalone in mass deployment mode by changing the working directory to `/webapps` and running `passenger start`:
+
+<pre class="highlight"><span class="prompt">$ </span>cd /webapps
+<span class="prompt">$ </span>passenger start
+<span class="output">
+=============== Phusion Passenger Standalone web server started ===============
+PID file: /webapps/passenger.3000.pid
+Log file: /webapps/passenger.3000.log
+Environment: development
+
+Serving these applications on 0.0.0.0 port 3000:
+ Host name                     Directory
+-----------------------------------------------------------
+ rubyapp.com                   /webapps/rubyapp.com
+ pythonapp.com                 /webapps/pythonapp.com
+ nodeapp.com                   /webapps/nodeapp.com
+-----------------------------------------------------------</span></pre>
+
+If you for example remove `/webapps/rubyapp.com`, Passenger Standalone will reconfigure itself without that web application. Or if you add a new web applications `/webapps/newapp.org`, Passenger Standalone will reconfigure itself with that web application.
+
+Any options that you pass to the `passenger` command will affect all deployed web applications. It is also possible to change options on a per-application basis through the use of [a `Passengerfile.json` file inside each application's directory](<%= url_for "/config/standalone/howto.html" %>).
