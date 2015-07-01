@@ -28,21 +28,28 @@ For Passenger to work, only a few configuration options need to be setup in Apac
   </tr>
 </table>
 
-Refers to the location to the Passenger root directory. This configuration option is essential to Passenger, and allows Passenger to locate its own data files.
+Refers to the location to the Passenger root directory, or to a location configuration file. This configuration option is essential to Passenger, and allows Passenger to locate its own data files.
 
 You normally do not need to set this configuration option. If you used our [Debian](<%= url_for "/install/apache/apt_repo.html" %>) or [RPM](<%= url_for "/install/apache/yum_repo.html" %>) packages to [install Passenger](<%= url_for "/install/apache/install/index.html" %>), then they automatically configure `PassengerRoot` for you with the right value. If you installed Passenger from Homebrew, tarball or RubyGems, then at some point during the installation process you are told what the correct value should be, and instructed to insert it into your Apache configuration file.
-
-But in case you lost the value (e.g. because you accidentally removed the Apache configuration file, and you are trying to reconstruct it), or in case you didn't follow the installation instructions correctly, then you can find out the correct value by running the following command:
-
-    passenger-config --root
-
-If you have [moved Passenger to a different directory](<%= url_for "/install/apache/moving.html" %>) then you need to update this option as well.
 
 #### What happens if this option is not set, or set wrongly
 
 If you do not set `PassengerRoot`, then Passenger will complain about it and prevent Apache from starting.
 
 If you set `PassengerRoot` to the wrong value, then Passenger will attempt to locate some of its own files, fail to do so, then complain with an error message and abort Apache.
+
+#### How to fix PassengerRoot
+
+If you lost the PassengerRoot configuration value (e.g. because you accidentally removed the Apache configuration file, and you are trying to reconstruct it), if you didn't follow the installation instructions correctly, or if you [moved Passenger to a different directory](<%= url_for "/install/apache/moving.html" %>), then you can fix PassengerRoot as follows.
+
+The correct value for PassengerRoot can be obtained as follows:
+
+ * If you installed Passenger through source tarball or by cloning it from the Passenger Github repository, then the value should be the path to the Passenger directory.
+ * In all other cases, obtain the correct value by running the following command:
+
+       passenger-config --root
+
+Once you have obtained the value, [open your Apache configuration file](<%= url_for "/install/apache/working_with_the_apache_config_file.html" %>) and insert a `PassengerRoot` option somewhere with that value.
 
 
 ### PassengerDefaultRuby
