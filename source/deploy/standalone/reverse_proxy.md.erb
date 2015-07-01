@@ -1,0 +1,275 @@
+---
+title: Putting Passenger Standalone behind an Nginx or Apache reverse proxy
+section: deploy
+---
+<%
+locals.merge!(INTEGRATION_MODE_STANDALONE)
+globals.merge!(INTEGRATION_MODE_STANDALONE)
+content_for(:sidebar) do
+  render_partial("../sidebar.html", locals: locals.merge(
+    available_integration_modes: [INTEGRATION_MODE_STANDALONE]
+  ))
+end
+%>
+
+# Putting Passenger Standalone behind an Nginx or Apache reverse proxy
+
+In some cases, you may want to put Passenger Standalone behind a reverse proxy. The reverse proxy can for example be Nginx, Apache or HAProxy. The reverse proxy listens on port 80 (or any other port you want) and is responsible for accepting HTTP requests. The reverse proxy then determines which Passenger Standalone instance should handle the request, and forwards the request to that instance.
+
+There are two reasons why you may want to have this kind of reverse proxy:
+
+ 1. You already have an existing Nginx or Apache installation, but you want to use Passenger Standalone instead of using Passenger's Nginx or Apache [integration modes](<%= url_for "/indepth/integration_modes.html" %>).
+ 2. You have multiple Passenger Standalone instances, and you want all of them to be accessible on the same port, just with different host names.
+
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+## Step 1: starting all applications
+
+ Passenger Standalone behind a reverse proxy requires three steps. First, you must start all Passenger Standalone instances that you want. Each one must be listening on a different port, because two applications can't listen on the same port. Suppose that you have two applications, `/webapps/foo` and `/webapps/bar`. Here's how you may start them:
+
+<pre class="highlight"><span class="c"># Start foo on port 4000</span>
+<span class="prompt">$ </span>cd /webapps/foo
+<span class="prompt">$ </span>passenger start --daemonize --address 127.0.0.1 --port 4000
+
+<span class="c"># Start bar on port 4010</span>
+<span class="prompt">$ </span>cd /webapps/bar
+<span class="prompt">$ </span>passenger start --daemonize --address 127.0.0.1 --port 4010</pre>
+
+Notice the fact that we pass `--address 127.0.0.1`, which tells Passenger Standalone to only listen for requests that originate from the local machine. This is because the reverse proxy, not Passenger Standalone, is supposed to be responsible for receiving external HTTP requests. In this guide, we are teaching you how to run the reverse proxy on the same machine only, so limiting Passenger Standalone in this manner improves security.
+
+## Step 2: install and configure Nginx or Apache
+
+The next step is to install Nginx or Apache to do the following:
+
+ * To listen on port 80.
+ * To forward requests to either 'foo' or 'bar', depending on the request's HTTP host name.
+
+If you don't know which one to install, then we recommend Nginx because it's smaller and easier to use than Apache.
+
+### Nginx
+
+Here is how you can install Nginx:
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <td>Debian, Ubuntu</td>
+    <td><pre class="highlight">sudo apt-get install nginx-extras</pre></td>
+  </tr>
+  <tr>
+    <td>Red Hat, CentOS, Fedora, ScientificLinux, Amazon Linux</td>
+    <td>
+      Enable <a href="http://fedoraproject.org/wiki/EPEL">EPEL</a>, then run as root:
+      <pre class="highlight">sudo yum install nginx</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>Mac OS X (Homebrew)</td>
+    <td><pre class="highlight">brew install nginx</pre></td>
+  </tr>
+  <tr>
+    <td>Other operating systems</td>
+    <td>Please install Nginx from <a href="http://www.nginx.org/">the Nginx website</a>.</td>
+  </tr>
+</table>
+
+Open the Nginx configuration file:
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <td>Debian, Ubuntu</td>
+    <td>/etc/nginx/nginx.conf</td>
+  </tr>
+  <tr>
+    <td>Red Hat, CentOS, Fedora, ScientificLinux, Amazon Linux</td>
+    <td>/etc/nginx/nginx.conf</td>
+  </tr>
+  <tr>
+    <td>Mac OS X (Homebrew)</td>
+    <td>/usr/local/etc/nginx/nginx.conf</td>
+  </tr>
+  <tr>
+    <td>Other operating systems</td>
+    <td> It depends on how you installed Nginx, but it's usually <code>$PREFIX/conf/nginx.conf</code>, where <code>$PREFIX</code> is the prefix you installed Nginx to.</td>
+  </tr>
+</table>
+
+Add virtual host entries for your applications foo and bar. While making the virtual host entries, you must determine what host names foo and bar should respond to. Let's say that foo should respond to `www.foo.com` and bar should respond to `www.bar.com`. Then the following entries will tell Nginx to listen on port 80, and to handle requests for the domains `www.foo.com` and `www.bar.com` differently.
+
+~~~nginx
+http {
+    ...
+
+    # These are some "magic" Nginx configuration options that aid in making
+    # WebSockets work properly with Passenger Standalone. Please learn more
+    # at http://nginx.org/en/docs/http/websocket.html
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        ''      close;
+    }
+
+    server {
+        listen 80;
+        server_name www.foo.com;
+
+        # Tells Nginx to serve static assets from this directory.
+        root /webapps/foo/public;
+
+        location / {
+            # Tells Nginx to forward all requests for www.foo.com
+            # to the Passenger Standalone instance listening on port 4000.
+            proxy_pass http://127.0.0.1:4000;
+
+            # These are "magic" Nginx configuration options that
+            # should be present in order to make the reverse proxying
+            # work properly. Also contains some options that make WebSockets
+            # work properly with Passenger Standalone. Please learn more at
+            # http://nginx.org/en/docs/http/ngx_http_proxy_module.html
+            proxy_http_version 1.1;
+            proxy_set_header Host $http_host;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $connection_upgrade;
+            proxy_buffering off;
+        }
+    }
+
+    # We handle bar in a similar manner.
+    server {
+        listen 80;
+        server_name www.bar.com;
+
+        root /webapps/bar/public;
+
+        location / {
+            # bar is listening on port 4010 instead of 4000, we
+            # change the URL here.
+            proxy_pass http://127.0.0.1:4010;
+
+            proxy_http_version 1.1;
+            proxy_set_header Host $http_host;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $connection_upgrade;
+            proxy_buffering off;
+        }
+    }
+}
+~~~
+
+Once you're done editing the Nginx configuration file, restart Nginx:
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <td>Debian, Ubuntu</td>
+    <td><pre class="highlight">sudo /etc/init.d/nginx restart</pre></td>
+  </tr>
+  <tr>
+    <td>Red Hat, CentOS, Fedora, ScientificLinux, Amazon Linux</td>
+    <td><pre class="highlight">sudo service nginx restart</pre></td>
+  </tr>
+  <tr>
+    <td>Mac OS X (Homebrew)</td>
+    <td>
+      <ol>
+        <li>Run <code>sudo kill $(cat /usr/local/var/run/nginx.pid)</code></li>
+        <li>If you installed the Nginx launchd plist that Homebrew provides (see <code>brew info nginx</code> to learn more), then you don't have to do anything, and launchd will automatically restart Nginx. Otherwise, you have to manually start Nginx again: <code>sudo /usr/local/bin/nginx</code>.</li>
+      </ol>
+    </td>
+  </tr>
+  <tr>
+    <td>Other operating systems</td>
+    <td>
+      <p>It depends on how you installed Nginx, but it's usually as follows:</p>
+      <ol>
+        <li>Lookup the PID of the Nginx master process using <code>ps aux</code>.</li>
+        <li>Run <code>sudo kill &lt;PID&gt;</code></li>
+        <li>Start Nginx again: <code>sudo $PREFIX/sbin/nginx</code>, where <code>$PREFIX</code> is the prefix you installed Nginx to.</li>
+      </ol>
+    </td>
+  </tr>
+</table>
+
+### Apache
+
+Here is how you can install Apache. `mod_proxy` and `mod_proxy_http` must be enabled.
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <td>Debian, Ubuntu</td>
+    <td><pre class="highlight">sudo apt-get install apache2
+sudo a2enmod proxy
+sudo a2enmod proxy_http</pre></td>
+  </tr>
+  <tr>
+    <td>Red Hat, CentOS, Fedora, ScientificLinux, Amazon Linux</td>
+    <td><pre class="highlight">sudo yum install httpd</pre></td>
+  </tr>
+  <tr>
+    <td>Mac OS X (Homebrew)</td>
+    <td>You don't have to do anything. Apache is installed by default.</td>
+  </tr>
+  <tr>
+    <td>Other operating systems</td>
+    <td>Please install Apache from <a href="http://httpd.apache.org/">the Apache website</a>.</td>
+  </tr>
+</table>
+
+[Open the Apache configuration file](<%= "/install/apache/working_with_the_apache_config_file.html" %>). Add virtual host entries for your applications foo and bar. While making the virtual host entries, you must determine what host names foo and bar should respond to. Let's say that foo should respond to `www.foo.com` and bar should respond to `www.bar.com`. Then the following entries will tell Apache to listen on port 80, and to handle requests for the domains `www.foo.com` and `www.bar.com` differently.
+
+<pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.foo.com
+
+    <span class="c"># Tells Apache to serve static assets from this directory.</span>
+    DocumentRoot /webapps/foo/public
+
+    <span class="c"># Tells Apache to forward all requests for www.foo.com
+    # to the Passenger Standalone instance listening on port 4000.</span>
+    ProxyPass / http://127.0.0.1:4000/
+    ProxyPassReverse / http://127.0.0.1:4000/
+    ProxyPreserveHost on
+
+    &lt;Proxy *&gt;
+      Order deny,allow
+      Allow from all
+    &lt;/Proxy&gt;
+&lt;/VirtualHost&gt;
+
+<span class="c"># We handle bar in a similar manner.</span>
+&lt;VirtualHost *:80&gt;
+    ServerName www.bar.com
+    DocumentRoot /webapps/bar/public
+
+    <span class="c"># bar is listening on port 4010 instead of 4000, we
+    # change the URL here.</span>
+    ProxyPass / http://127.0.0.1:4000/
+    ProxyPassReverse / http://127.0.0.1:4000/
+    ProxyPreserveHost on
+
+    &lt;Proxy *&gt;
+      Order deny,allow
+      Allow from all
+    &lt;/Proxy&gt;
+&lt;/VirtualHost&gt;</pre>
+
+Once you're done editing the Apache configuration file, restart Apache:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo apache2ctl reload</pre>
+
+Note that on some systems, the command may be `apachectl` instead of `apache2ctl`.
+
+## Step 3: making all apps start at system boot
+
+Once you restart the machine, the reverse proxy will no longer be able to serve 'www.foo.com' or 'www.bar.com' because the Passenger Standalone instances that host them are no longer running. You must therefore configure the system to start Passenger Standalone at system boot. Please refer to <<starting_at_system_boot,Starting Passenger Standalone at system boot>> for more information.
+
+For example, you can put this in `/etc/rc.local` to make the system start foo and bar at system boot:
+
+~~~bash
+# If you installed Passenger from tarball, add its `bin` directory to PATH.
+#export PATH=/path-to-passenger/bin:$PATH
+
+cd /webapps/foo
+passenger start --daemonize --port 4000 --user someusername1
+
+cd /webapps/bar
+passenger start --daemonize --port 4010 --user someusername2
+~~~
