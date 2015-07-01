@@ -1,26 +1,10 @@
 ---
-title: Passenger and its relationship with Ruby
+title: How having multiple Ruby interpreters affects Passenger
 section: indepth
 ---
 <% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
 
-# Passenger and its relationship with Ruby
-
-Passenger has a lightweight dependency on Ruby. This page explains what we mean by "lightweight" and how exactly Ruby is used and. For non-Ruby users, we explain how we ensure this Ruby dependency doesn't impact resource usage. For Ruby users, we explain what it means if you try to install Passenger on a system with multiple Ruby interpreters.
-
-## How Ruby is used
-
-Passenger's core is written in C++ for performance and memory efficiency. It supports web applications written in any language. Passenger requires Ruby, its usage of Ruby is minimal in order to maximize performance and to minimize memory usage.
-
- * Passenger's installer, build system and command line administration tools are written in Ruby.
- * Certain internally used tools, such as the crash handler (which generates a backtrace in case Passenger crash) and the prespawn script <!-- TODO: fix link --> are written in Ruby as well. These tools are only invoked in a one-off manner, and do not run persistently in the background.
- * Ruby web application support is implemented in Ruby.
- * If you use [Flying Passenger](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#flying_passenger), then the Flying Passenger daemon is written in Ruby. The daemon is a small (less than 500 lines of code) and offloads most tasks to the C++ core.
- * If you use [Passenger Standalone](https://www.phusionpassenger.com/documentation/Users%20guide%20Standalone.html), then the frontend (the `passenger` command) is written in Ruby. The frontend is small (less than 1500 lines of code) and offloads most tasks to the C++ core.
-
-Other than the aforementioned aspects, Passenger does not use Ruby during normal operation. For example, if you run Node.js web applications on Passenger, then there will be (almost) no Ruby code running on the system.
-
-## When the system has multiple Ruby interpreters
+# How having multiple Ruby interpreters affects Passenger
 
 Passenger may be installed with any Ruby interpreter. Once installed, you can run Passenger's Ruby parts under any Ruby interpreter you want, even if that Ruby interpreter was not the one you originally installed Passenger with.
 
