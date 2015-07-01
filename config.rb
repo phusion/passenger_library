@@ -130,8 +130,8 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/config/#{integration_mode_type}/index.html",
     "/config/index2.html",
     locals: integration_mode_spec
-  proxy "/config/#{integration_mode_type}/howto.html",
-    "/config/howto.html",
+  proxy "/config/#{integration_mode_type}/intro.html",
+    "/config/intro.html",
     locals: integration_mode_spec
   proxy "/config/#{integration_mode_type}/optimization.html",
     "/config/optimization.html",
@@ -145,7 +145,7 @@ INTEGRATION_MODES.each do |integration_mode_spec|
 end
 
 ignore "/config/index2.html"
-ignore "/config/howto.html"
+ignore "/config/intro.html"
 ignore "/config/optimization.html"
 ignore "/config/cloud_licensing_configuration.html"
 

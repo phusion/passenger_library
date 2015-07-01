@@ -2,18 +2,18 @@
 section: config
 ---
 <%
-@page_title = "How to configure Passenger #{integration_mode_name_as_passenger_suffix}"
+@page_title = "Introduction to configuring Passenger #{integration_mode_name_as_passenger_suffix}"
 content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
 %>
 
-# How to configure Passenger <%= integration_mode_name_as_passenger_suffix %>
+# Introduction to configuring Passenger <%= integration_mode_name_as_passenger_suffix %>
 
 <% if integration_mode_type == :nginx %>
 <!-- ****** Nginx ****** -->
 
 Passenger in its Nginx integration mode is to be configured via the Nginx configuration file. There is no configuration file that is specific to Passenger only.
 
-If you have used [Passenger Standalone](<%= url_for "/indepth/integration_modes.html" %>), then you may be familiar with [Passengerfile.json](<%= url_for "/config/standalone/howto.html" %>). Passenger for Nginx does not consult Passengerfile.json, only the Nginx configuration file.
+If you have used [Passenger Standalone](<%= url_for "/indepth/integration_modes.html" %>), then you may be familiar with [Passengerfile.json](<%= url_for "/config/standalone/intro.html" %>). Passenger for Nginx does not consult Passengerfile.json, only the Nginx configuration file.
 
 Configuring Passenger for Nginx works as follows:
 
@@ -39,12 +39,16 @@ For Passenger to work, only one configuration option needs to be setup in Nginx,
 
 `passenger_root` tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate. [Learn more about passenger_root.](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerRoot)
 
+## Start configuring Passenger
+
+Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
+
 <% elsif integration_mode_type == :apache %>
 <!-- ****** Apache ****** -->
 
 Passenger in its Apache integration mode is to be configured via [the Apache configuration file](<%= url_for "/install/apache/working_with_the_apache_config_file.html" %>). There is no configuration file that is specific to Passenger only.
 
-If you have used [Passenger Standalone](<%= url_for "/indepth/integration_modes.html" %>), then you may be familiar with [Passengerfile.json](<%= url_for "/config/standalone/howto.html" %>). Passenger for Apache does not consult Passengerfile.json, only the Apache configuration file.
+If you have used [Passenger Standalone](<%= url_for "/indepth/integration_modes.html" %>), then you may be familiar with [Passengerfile.json](<%= url_for "/config/standalone/intro.html" %>). Passenger for Apache does not consult Passengerfile.json, only the Apache configuration file.
 
 Configuring Passenger for Apache works as follows:
 
@@ -78,6 +82,11 @@ For Passenger to work, only a few configuration options need to be setup in Apac
  1. The `LoadModule passenger_module ...` option must exist in the Apache configuration. This option tells Apache to load the Passenger module from the given filename. If this option does not exist, then Passenger is not loaded into Apache at all, and Apache will complain about syntax errors whenever it encounters Passenger configuration options.
  2. The `PassengerRoot` option must exist in the Apache configuration. This option tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate. [Learn more about PassengerRoot.](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerRoot)
 
+## Start configuring Passenger
+
+Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
+
+
 <% else %>
 <!-- ****** Standalone ****** -->
 
@@ -107,5 +116,10 @@ And here is an example which achieves the same, through `Passengerfile.json`.
 ## Command line arguments have precedence
 
 Since version 5.0, command line arguments take precedence over `Passengerfile.json`. In earlier versions, the opposite was true.
+
+## Start configuring Passenger
+
+Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
+
 
 <% end %>

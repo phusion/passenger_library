@@ -220,7 +220,7 @@ As you can see, the application in this example is being run as user `phusion`.
 
 Passenger Standalone runs the application as the current user by default. That means if you start Passenger Standalone while logged in as `root`, then Passenger will run your application as `root`.
 
-You can activate Passenger Standalone's user account sandboxing feature by passing `--user` to `passenger start`, or by setting the `user` option in [Passengerfile.json](<%= url_for "/config/standalone/howto.html" %>). Passenger will then run the application as that user.
+You can activate Passenger Standalone's user account sandboxing feature by passing `--user` to `passenger start`, or by setting the `user` option in [Passengerfile.json](<%= url_for "/config/standalone/intro.html" %>). Passenger will then run the application as that user.
 
 User account sandboxing is the reason why, in all official Passenger Library documentation, we recommend that you create a new user account for each application.
 
