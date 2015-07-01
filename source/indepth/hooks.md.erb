@@ -1,8 +1,9 @@
 ---
 title: Passenger hooks
-section: misc
-sidebar: sidebar
+section: indepth
 ---
+<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
+
 # Passenger hooks
 
 <p class="lead">Phusion Passenger provides a powerful but simple hooking system, which allows you to extend many aspects of Passenger's behavior. The hooking system works by executing commands during certain events. Event parameters are passed to the command in the form of environment variables.</p>

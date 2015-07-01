@@ -1,8 +1,9 @@
 ---
 title: About processes
-section: misc
-sidebar: sidebar
+section: indepth
 ---
+<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
+
 # About processes
 
 <p class="lead">Phusion Passenger manages multiple processes in order to maximize stability and performance. Learn what processes are and how they behave.</p>
