@@ -104,7 +104,7 @@
           <!-- Sidebar
           =========================================== -->
           <div class="col-md-3" role="complementary">
-            <aside class="bs-docs-sidebar hidden-print">
+            <aside class="bs-docs-sidebar hidden-print" data-swiftype-index="false">
               <%= yield_sidebar_content %>
             </aside>
           </div>
@@ -197,9 +197,6 @@
 
     <% if !current_page.data.skip_default_javascript %>
       <%= javascript_include_tag "all", :async => true %>
-    <% end %>
-    <% if !current_page.data.skip_search && !@skip_search %>
-      <script data-st-module="em_nJUwzVfKRqxVaYfHYokd" src="//s.swiftypecdn.com/modules/v1/embed.js" async defer></script>
     <% end %>
   </body>
 </html>

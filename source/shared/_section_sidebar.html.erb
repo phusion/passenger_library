@@ -9,7 +9,7 @@ else
 end
 %>
 
-<div class="breadcrumb-container breadcrumb-container-main" data-swiftype-index="false">
+<div class="breadcrumb-container breadcrumb-container-main">
   <p class="breadcrumb-announcer">Current section:</p>
 
   <h2>
@@ -29,7 +29,7 @@ end
 </div>
 
 <% if locals[:integration_mode_type] %>
-  <div class="breadcrumb-container" data-swiftype-index="false">
+  <div class="breadcrumb-container">
     <p class="breadcrumb-announcer">Selected integration mode:</p>
 
     <h3><a href="#" data-toggle="modal" data-target="#integration_mode_selection_modal"><%= locals[:integration_mode_name] %></a></h3>
@@ -40,7 +40,7 @@ end
   </div>
 
   <% append_to_layout_body do %>
-    <div class="modal fade" id="integration_mode_selection_modal" tabindex="-1" role="dialog" style="display: none" data-swiftype-index="false">
+    <div class="modal fade" id="integration_mode_selection_modal" tabindex="-1" role="dialog" style="display: none">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -63,7 +63,7 @@ end
 <% end %>
 
 <% if locals[:language_type] %>
-  <div class="breadcrumb-container" data-swiftype-index="false">
+  <div class="breadcrumb-container">
     <p class="breadcrumb-announcer">Selected language:</p>
 
     <h3><a href="#" data-toggle="modal" data-target="#language_selection_modal"><%= locals[:language_name] %></a></h3>
@@ -74,7 +74,7 @@ end
   </div>
 
   <% append_to_layout_body do %>
-    <div class="modal fade" id="language_selection_modal" tabindex="-1" role="dialog" style="display: none" data-swiftype-index="false">
+    <div class="modal fade" id="language_selection_modal" tabindex="-1" role="dialog" style="display: none">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -96,7 +96,7 @@ end
 <% end %>
 
 <% if locals[:edition_type] %>
-  <div class="breadcrumb-container" data-swiftype-index="false">
+  <div class="breadcrumb-container">
     <p class="breadcrumb-announcer">Selected edition:</p>
 
     <h3><a href="#" data-toggle="modal" data-target="#edition_selection_modal"><%= locals[:edition_long_title] %></a></h3>
@@ -107,7 +107,7 @@ end
   </div>
 
   <% append_to_layout_body do %>
-    <div class="modal fade" id="edition_selection_modal" tabindex="-1" role="dialog" style="display: none" data-swiftype-index="false">
+    <div class="modal fade" id="edition_selection_modal" tabindex="-1" role="dialog" style="display: none">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
