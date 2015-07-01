@@ -142,12 +142,19 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/config/#{integration_mode_type}/cloud_licensing_configuration.html",
     "/config/cloud_licensing_configuration.html",
     locals: integration_mode_spec
+
+  if integration_mode_type != :standalone
+    proxy "/config/#{integration_mode_type}/essential/index.html",
+      "/config/essential/index.html",
+      locals: integration_mode_spec
+  end
 end
 
 ignore "/config/index2.html"
 ignore "/config/intro.html"
 ignore "/config/optimization.html"
 ignore "/config/cloud_licensing_configuration.html"
+ignore "/config/essential/index.html"
 
 ###### Deployment, scaling and high availability ######
 

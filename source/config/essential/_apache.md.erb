@@ -1,0 +1,74 @@
+For Passenger to work, only a few configuration options need to be setup in Apache. If you have already gone through the [installation process](<%= url_for "/install/apache/install/" %>), then these configuration options are already set.
+
+ 1. The `LoadModule passenger_module ...` option must exist in the Apache configuration. This option tells Apache to load the Passenger module from the given filename. If this option does not exist, then Passenger is not loaded into Apache at all, and Apache will complain about syntax errors whenever it encounters Passenger configuration options.
+ 2. The [PassengerRoot](#passengerroot) option must exist in the Apache configuration. This option tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate.
+ 3. The [PassengerDefaultRuby](#passengerdefaultruby) option does not have to exist, but it is strongly recommended that you set it.
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Reference
+
+
+### PassengerRoot
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerRoot <em>dir-path</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>1.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+Refers to the location to the Passenger root directory. This configuration option is essential to Passenger, and allows Passenger to locate its own data files.
+
+You normally do not need to set this configuration option. If you used our [Debian](<%= url_for "/install/apache/apt_repo.html" %>) or [RPM](<%= url_for "/install/apache/yum_repo.html" %>) packages to [install Passenger](<%= url_for "/install/apache/install/index.html" %>), then they automatically configure `PassengerRoot` for you with the right value. If you installed Passenger from Homebrew, tarball or RubyGems, then at some point during the installation process you are told what the correct value should be, and instructed to insert it into your Apache configuration file.
+
+But in case you lost the value (e.g. because you accidentally removed the Apache configuration file, and you are trying to reconstruct it), or in case you didn't follow the installation instructions correctly, then you can find out the correct value by running the following command:
+
+    passenger-config --root
+
+If you have [moved Passenger to a different directory](<%= url_for "/install/apache/moving.html" %>) then you need to update this option as well.
+
+#### What happens if this option is not set, or set wrongly
+
+If you do not set `PassengerRoot`, then Passenger will complain about it and prevent Apache from starting.
+
+If you set `PassengerRoot` to the wrong value, then Passenger will attempt to locate some of its own files, fail to do so, then complain with an error message and abort Apache.
+
+
+### PassengerDefaultRuby
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDefaultRuby <em>file-path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerDefaultRuby ruby</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+This option specifies:
+
+ * which Ruby interpreter Passenger should use for its internal Ruby helper tools, e.g. the one used by [PassengerPreStart](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerPreStart). See [Lightweight Ruby dependency](<%= url_for "/indepth/lightweight_ruby_dependency.html" %>) for more information.
+ * the default Ruby interpreter to use for Ruby web apps. Naturally, this is not applicable if you do not use Passenger to serve Ruby web apps. Please see [PassengerRuby](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerRuby) for more information, as well as how it relates to PassengerDefaultRuby.
+
+The default value is `ruby`, meaning that the Ruby interpreter will be looked up according to [the PATH environment variable](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable).
