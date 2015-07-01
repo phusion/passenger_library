@@ -8,7 +8,7 @@
     <title><% if page_title %><%= page_title %> - <%end %><%= site_title %></title>
     <%= stylesheet_link_tag "all" %>
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Open+Sans:400,600" rel="stylesheet" type="text/css">
-    <% if current_page.data.skip_search %>
+    <% if current_page.data.skip_search || @skip_search %>
       <meta name="st:robots" content="noindex">
     <% end %>
     <%= yield_content :head %>
@@ -198,7 +198,7 @@
     <% if !current_page.data.skip_default_javascript %>
       <%= javascript_include_tag "all", :async => true %>
     <% end %>
-    <% if !current_page.data.skip_search %>
+    <% if !current_page.data.skip_search && !@skip_search %>
       <script data-st-module="em_nJUwzVfKRqxVaYfHYokd" src="//s.swiftypecdn.com/modules/v1/embed.js" async defer></script>
     <% end %>
   </body>

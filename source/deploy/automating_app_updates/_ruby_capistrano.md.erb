@@ -1,10 +1,7 @@
----
-title: Automating deployments of Ruby application updates through Capistrano
-section: deploy
----
 <%
-content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+@page_title = "Automating deployments of Ruby application updates through Capistrano - #{integration_mode_name}"
 %>
+
 # Automating deployments of Ruby application updates through Capistrano
 
 <figure><a href="http://capistranorb.com/"><img src="/images/CapistranoLogo.png" alt="Capistrano"></a></figure>
@@ -16,7 +13,7 @@ This guide teaches you how to automate the deployment of application updates thr
 **Notes:**
 
  * This guide assumes that you know how to manually deploy Ruby applications and how to manually deploy updates. Capistrano only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [Ruby deployment walkthrough](../walkthroughs/deploy/ruby/).
- * This guide assumes you are using at least Passenger 5.0.11. This guide does not work with earlier Passenger versions.
+ * This guide assumes you are using at least Passenger 5.0.13. This guide does not work with earlier Passenger versions.
 
 ----
 
@@ -107,7 +104,7 @@ Now that you understand Capistrano's fundamental concepts, it is time to get sta
 group :development do
   gem 'capistrano'
   gem 'capistrano-bundler'
-  gem 'capistrano-passenger'
+  gem 'capistrano-passenger', '>= 0.1.1'
 
   # Remove the following if your app does not use Rails
   gem 'capistrano-rails'
@@ -306,11 +303,13 @@ The `after :restart, :clear_cache` block you see means "define a new task named 
 
        Replace `/path-to-passenger` with the actual path that Passenger is installed in. You can find the correct value for `/path-to-passenger` by logging into your server and running `passenger-config --root`.
 
-     * If you are using Passenger Standalone, and you have `passenger` as an entry in your Gemfile, set:
+    <% if language_type == :standalone %>
+     * If you have `passenger` as an entry in your Gemfile, set:
 
        ~~~ruby
        set :passenger_in_gemfile, true
        ~~~
+    <% end %>
 
 ## 4 Editing config/deploy/production.rb
 
@@ -489,17 +488,14 @@ Then fix and tighten permissions:
 As configured in `config/deploy.rb`, Capistrano will deploy app releases to `/var/www/myapp/releases`, with `/var/www/myapp/current` pointing to the latest release. So Passenger must be configured to serve the app from `/var/www/myapp/current/public`.
 
 <% if integration_mode_type == :apache %>
-Open the Apache configuration file in which your app's virtual host is defined. Modify the `DocumentRoot` directive, and point it to `/var/www/myapp/current/public`. Notice the `public` part after `/var/www/myapp/current`. When done, restart Apache.
-<% end %>
-<% if integration_mode_type == :nginx %>
-Open the Nginx configuration file in which your app's virtual host is defined. Modify the `root` directive, and point it to `/var/www/myapp/current/public`. Notice the `public` part after `/var/www/myapp/current`. When done, restart Nginx.
-<% end %>
-<% if integration_mode_type == :standalone %>
-<p>Modify <code>/etc/rc.local</code> and change the Passenger invocation to:</p>
+  Open the Apache configuration file in which your app's virtual host is defined. Modify the `DocumentRoot` directive, and point it to `/var/www/myapp/current/public`. Notice the `public` part after `/var/www/myapp/current`. When done, restart Apache.
+<% elsif integration_mode_type == :nginx %>
+  Open the Nginx configuration file in which your app's virtual host is defined. Modify the `root` directive, and point it to `/var/www/myapp/current/public`. Notice the `public` part after `/var/www/myapp/current`. When done, restart Nginx.
+<% elsif integration_mode_type == :standalone %>
+  Modify `/etc/rc.local` and change the Passenger invocation to:
 
-<div>
-
-  <pre class="highlight"><span class="c"># Change working directory to your webapp.</span>
+  <div>
+    <pre class="highlight"><span class="c"># Change working directory to your webapp.</span>
 <span class="nb">cd</span> /var/www/myapp/current
 &nbsp;
 <span class="c"># Start Passenger Standalone in daemonized mode. Passenger will be started as
@@ -510,14 +506,13 @@ bundle exec passenger start
 # If your server uses RVM, use something like this:</span>
 /usr/local/rvm/bin/rvm-exec ruby-2.2.1 \
 &nbsp;&nbsp;bundle exec passenger start</pre>
+  </div>
 
-</div>
+  If you created a Passengerfile.json on the server (as per the deployment walkthrough), then it is a good idea to copy that to the `shared` directory:
 
-If you created a Passengerfile.json on the server (as per the deployment walkthrough), then it is a good idea to copy that to the `shared` directory:
+  <pre class="highlight"><span class="prompt">$ </span>cp /var/www/myapp/code/Passengerfile.json /var/www/myapp/shared/</pre>
 
-<pre class="highlight"><span class="prompt">$ </span>cp /var/www/myapp/code/Passengerfile.json /var/www/myapp/shared/</pre>
-
-Modify your local computer's `config/deploy.rb` and add Passengerfile.json to `linked_files` so that it is persisted across deployments.
+  Modify your local computer's `config/deploy.rb` and add Passengerfile.json to `linked_files` so that it is persisted across deployments.
 
 ~~~ruby
 set :linked_files, fetch(:linked_files, []).push(...previous value..., 'Passengerfile.json')
@@ -539,6 +534,7 @@ Next, run Capistrano to start the deployment:
 
 <pre class="highlight"><span class="prompt">$ </span>bundle exec cap production deploy</pre>
 
+<% if integration_mode_type == :standalone %>
 ### Restart Passenger Standalone
 
 If you are using Passenger Standalone, then make sure that you stop it and restart it in the newly-created `current` directory. This only needs to be done once, not on every deploy.
@@ -557,6 +553,7 @@ Stop the Passenger that was running in the `code` directory, then start a Passen
 <span class="prompt">$ </span>sudo bundle exec passenger start</pre>
 
 (If you are on RVM, be sure to replace `sudo` with `rvmsudo`.)
+<% end %>
 
 ## Conclusion
 

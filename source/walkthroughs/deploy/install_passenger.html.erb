@@ -11,8 +11,8 @@ locals[:type] = integration_mode_type.to_s
 locals[:web_server_name] = integration_mode_name
 
 content_for(:head) do
-  canonical_url = "/install/passenger_#{edition_type}_#{integration_mode_type}/#{os_config_type}/index.html"
-  %Q{<link rel="canonical" href="#{url_for canonical_url}">}
+  canonical_url = "#{config[:url_root]}/install/#{integration_mode_type}/install/#{edition_type}/#{os_config_type}/"
+  %Q{<link rel="canonical" href="#{canonical_url}">}
 end
 %>
 

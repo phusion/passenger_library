@@ -1,3 +1,14 @@
+<%
+@page_title = "Automating deployments of #{language_name} application updates with shell scripts - #{integration_mode_name}"
+if integration_mode_type != :nginx
+  @skip_search = true
+  content_for(:head) do
+    canonical_url = "#{config[:url_root]}/deploy/nginx/automating_app_updates/#{language_type}/"
+    %Q{<link rel="canonical" href="#{canonical_url}">}
+  end
+end
+%>
+
 # Automating deployments of <%= language_name %> application updates with shell scripts
 
 If you have followed the [<%= language_name %> deployment walkthrough](../walkthroughs/deploy/<%= language_type %>/), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
@@ -7,7 +18,7 @@ This guide teaches you how to automate the deployment of application updates wit
 **Notes:**
 
  * This guide assumes that you know how to manually deploy <%= language_name %> applications and how to manually deploy updates. This guide only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [<%= language_name %> deployment walkthrough](../walkthroughs/deploy/<%= language_type %>/).
- * This guide assumes you are using at least Passenger 5.0.11. This guide does not work with earlier Passenger versions.
+ * This guide assumes you are using at least Passenger 5.0.13. This guide does not work with earlier Passenger versions.
 
 ----
 
@@ -70,7 +81,7 @@ npm install --production
 npm prune --production
 
 # Restart app
-passenger-config restart-app --ignore-app-not-running $APP_DIR/code
+passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running $APP_DIR/code
 <% elsif language_type == :meteor -%>
 # Extract newly uploaded package
 mkdir -p $APP_DIR/tmp
@@ -91,7 +102,7 @@ fi
 # Switch directories, restart app
 mv $APP_DIR/bundle $APP_DIR/bundle.old
 mv $APP_DIR/tmp/bundle $APP_DIR/bundle
-passenger-config restart-app --ignore-app-not-running $APP_DIR/bundle
+passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running $APP_DIR/bundle
 rm -rf $APP_DIR/bundle.old
 <% else -%>
 cd $APP_DIR/code
@@ -101,7 +112,7 @@ git pull
 #...put your own instructions here...
 
 # Restart app
-passenger-config restart-app --ignore-app-not-running $APP_DIR/code
+passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running $APP_DIR/code
 <% end -%>
 ~~~
 

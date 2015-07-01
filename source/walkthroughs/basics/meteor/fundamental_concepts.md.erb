@@ -103,7 +103,8 @@ Passenger does many things, but some things are currently out of scope.
    To run Meteor apps on Passenger, you must already have either Node.js installed or Meteor installed (the details depends on whether you're using Meteor in bundled form or not; more about this later). Passenger doesn't do that for you. Passenger doesn't care how you install Node.js/Meteor though; you sometimes just need to tell Passenger where Node.js is.<br>
    Having said that, the Passenger Library contains excellent [documentation on installing Node.js during a production deployment](<%= url_for "/walkthroughs/deploy/meteor/index.html" %>).
  * **Transferring the application code and files to the server**<br>
-   Passenger does not transfer the application code and files to the server for you. To do this, you must use tools like Git, scp, FTP, Capistrano, Fabric, etc. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.
+   Passenger does not transfer the application code and files to the server for you. To do this, you must use tools like Git, scp, FTP, Capistrano, Fabric, etc. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.<br>
+   The Passenger Library contains documentation on [automating releases using shell scripts](<%= url_for "/deploy/automating_app_updates/index.html" %>).
  * **Installing application dependencies**<br>
    Passenger does not install your application's dependencies for you.
  * **Managing the database**<br>
