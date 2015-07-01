@@ -1,5 +1,6 @@
 require "./lib/custom_helpers"
 require "./lib/deployment_walkthrough_helpers"
+require "./lib/kramdown_patch"
 helpers CustomHelpers
 helpers DeploymentWalkthroughHelpers
 
@@ -225,7 +226,6 @@ end
 ignore "/indepth/app_autodetection/app_autodetection.html"
 
 #################################################
-
 
 set :css_dir, 'stylesheets'
 set :js_dir, 'javascripts'
