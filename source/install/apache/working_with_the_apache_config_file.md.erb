@@ -3,6 +3,7 @@ section: misc
 ---
 <%
 locals.merge!(INTEGRATION_MODE_APACHE)
+globals.merge!(INTEGRATION_MODE_APACHE)
 content_for(:sidebar) do
   render_partial("../sidebar.html", locals: locals.merge(
     available_integration_modes: [INTEGRATION_MODE_APACHE]

@@ -1,3 +1,4 @@
+<% locals.merge!(globals) %>
 <!doctype html>
 <html lang="en">
   <head>
@@ -43,14 +44,14 @@
                   <% navbar_section :deploy_walkthrough do %><%= link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
                 </ul>
               <% end %>
-              <% navbar_dropdown_section :install, :config, :deploy, :admin, :advanced_production, :indepth, :misc do %>
+              <% navbar_dropdown_section :install, :config, :deploy, :admin, :indepth do %>
                 <a href="<%= url_for '/guides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
                 <% if locals[:integration_mode_type] %>
                   <ul class="dropdown-menu" role="menu">
-                    <% navbar_section :install do %><%= link_to "Installation, upgrade and uninstallation", "/install/#{integration_mode_type}/index.html" %><% end %>
-                    <% navbar_section :config do %><%= link_to "Configuration and optimization", "/config/#{integration_mode_type}/index.html" %><% end %>
-                    <% navbar_section :deploy do %><%= link_to "Deployment and scaling", "/deploy/#{integration_mode_type}/index.html" %><% end %>
-                    <% navbar_section :admin do %><%= link_to "Administration", "/admin/#{integration_mode_type}/index.html" %><% end %>
+                    <% navbar_section :install do %><%= link_to "Installation, upgrade and uninstallation", "/install/#{locals[:integration_mode_type]}/index.html" %><% end %>
+                    <% navbar_section :config do %><%= link_to "Configuration and optimization", "/config/#{locals[:integration_mode_type]}/index.html" %><% end %>
+                    <% navbar_section :deploy do %><%= link_to "Deployment and scaling", "/deploy/#{locals[:integration_mode_type]}/index.html" %><% end %>
+                    <% navbar_section :admin do %><%= link_to "Administration", "/admin/#{locals[:integration_mode_type]}/index.html" %><% end %>
                     <% navbar_section :indepth do %><%= link_to "In-depth", "/indepth/index.html" %><% end %>
                   </ul>
                 <% else %>
