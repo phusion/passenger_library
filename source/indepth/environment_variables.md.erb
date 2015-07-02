@@ -121,7 +121,7 @@ If you get a "command not found" error when invoking one of the Passenger admini
    As you can see, the RubyGems executable path in the example happens to be `/opt/ruby-enterprise-1.8.7-2010.01/bin`. So that directory must be added to `PATH`.
 
  * If you installed Passenger using the tarball, then the tools are in the `bin` subdirectory of the Passenger tarball directory that you extracted. For example, if you extracted `passenger-5.0.0.tar.gz` inside `/opt`, then the tools are located in `/opt/passenger-5.0.0/bin`. In that case, you need to add `/opt/passenger-5.0.0/bin` to your `PATH`.
- * If you installed Passenger through [APT](../install/apt_repo.html) or [YUM](../install/yum_repo.html), then some PPassenger administration tools are in `/usr/bin`, while others are in `/usr/sbin`. If you are not logged in as root, then `/usr/sbin` may not be in `PATH`, which would explain why you get a "command not found" when trying to invoke some of the tools. You should `/usr/sbin` to `PATH`.
+ * If you installed Passenger through [APT](../install/apt_repo.html) or [YUM](../install/yum_repo.html), then some Passenger administration tools are in `/usr/bin`, while others are in `/usr/sbin`. If you are not logged in as root, then `/usr/sbin` may not be in `PATH`, which would explain why you get a "command not found" when trying to invoke some of the tools. You should `/usr/sbin` to `PATH`.
  * If you are unsure where your Passenger directory is then you can use the `find` command to look them up. Go to the root directory and invoke `find` with `sudo`:
 
    <pre class="highlight"><span class="prompt">$ </span>cd /

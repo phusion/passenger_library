@@ -34,7 +34,7 @@ This log file contains:
 <% end %>
 
 <div class="note">
-  Do you find nothing useful in the Nginx or Apache error log? And at the same time, does it look like Passenger stopped logging to the file quite some time ago? Then you probably have a log rotation problem, causing logs to get lost. Please <a href="<%= url_for "/config/#{integration_mode_type}/log_rotation.html" %>">configure Passenger log rotation.</a>
+  Not finding anything useful in the Nginx or Apache error log? And at the same time, does it look like Passenger stopped logging to the file quite some time ago? Then you probably have a log rotation problem, causing logs to get lost. Please <a href="<%= url_for "/admin/#{integration_mode_type}/log_rotation.html" %>">configure Passenger log rotation.</a>
 </div>
 
 ### 2 Check the application log file
