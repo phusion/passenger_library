@@ -835,16 +835,12 @@ NOTE: Are you looking to prevent applications from being restarted when you rest
   <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
 
-Enables or disables resistance against deployment errors.
+Enables or disables [resistance against deployment errors](<%= url_for "/deploy/apache/deployment_error_resistance.html" %>).
 
-Suppose you've upgraded your application and you've issued a command to restart it (by touching restart.txt), but the application code contains an error that prevents Passenger from successfully spawning a process (e.g. a syntax error). Passenger would normally display an error message in response to this.
+Suppose that you have upgraded your application and you have issued a command to restart it, but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
 
-By enabling deployment error resistance, Passenger Enterprise would instead do this:
+By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
 
- * It passes the request to one of the existing application processes (that belongs to the previous version of the application). Passenger will not display an error message to the visitor.
- * It logs the error to the global web server error log file.
- * It sets an internal flag (Deployment Error Resistance Mode) so that no processes for this application will be spawned (even when the current traffic would normally result in more processes being spawned) and no processes will be idle cleaned. Processes *could* still be shutdown because of other events, e.g. because their [memory limit](#passengermemorylimit) have been reached. You can see whether the flag is set by invoking `passenger-status`. If you see the message "Resisting deployment error" then the flag is set.
+[Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/deploy/apache/deployment_error_resistance.html" %>).
 
-This way, visitors will suffer minimally from deployment errors. Passenger will attempt to restart the application again next time restart.txt is touched.
-
-Enabling deployment error resistance only works if [rolling restarts](#PassengerRollingRestarts) are also enabled.
+Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/admin/apache/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-(rolling-restart)).

@@ -9,12 +9,18 @@ case integration_mode_type
 when :nginx
   passenger_pool_idle_time_anchor = "passenger_pool_idle_time"
   passenger_memory_limit_anchor = "passenger_memory_limit"
+  passenger_resist_deployment_errors_anchor = "passenger_resist_deployment_errors"
 when :apache
   passenger_pool_idle_time_anchor = "passengerpoolidletime"
   passenger_memory_limit_anchor = "passengermemorylimit"
+  passenger_resist_deployment_errors_anchor = "passengerresistdeploymenterrors"
 when :standalone
+  # TODO: check this
   passenger_pool_idle_time_anchor = "passenger_pool_idle_time"
   passenger_memory_limit_anchor = "passenger_memory_limit"
+  passenger_resist_deployment_errors_anchor = "passenger_resist_deployment_errors"
+else
+  raise "TODO"
 end
 %>
 
@@ -40,7 +46,7 @@ You can check whether Passenger Enterprise has entered Deployment Error Resistan
 ## Enabling the feature
 
 <% if integration_mode_type == :nginx %>
-  To enable this feature, you must set [passenger_rolling_restarts on](<%= url_for "/config/nginx/reference/index.html" %>#passenger_rolling_restarts) and [passenger_resist_deployment_errors on](<%= url_for "/config/nginx/reference/index.html" %>#passenger_resist_deployment_errors). Enabling deployment error resistance only works if rolling restarts are also enabled.
+  Deployment error resistance only works when a rolling restart is performed. So to enable this feature, we recommend that you set [passenger_rolling_restarts on](<%= url_for "/config/nginx/reference/index.html" %>#passenger_rolling_restarts) and [passenger_resist_deployment_errors on](<%= url_for "/config/nginx/reference/index.html" %>#passenger_resist_deployment_errors). Enabling deployment error resistance only works if rolling restarts are also enabled.
 
   For example, open your Nginx configuration file and set:
 
@@ -49,7 +55,7 @@ passenger_resist_deployment_errors on;</pre>
 
   Then restart Nginx to activate the change.
 <% elsif integration_mode_type == :apache %>
-  To enable this feature, you must set [PassengerRollingRestarts on](<%= url_for "/config/apache/reference/index.html" %>#passengerrollingrestarts) and [PassengerResistDeploymentErrors on](<%= url_for "/config/apache/reference/index.html" %>#passengerresistdeploymenterrors). Enabling deployment error resistance only works if rolling restarts are also enabled.
+  Deployment error resistance only works when a rolling restart is performed. So to enable this feature, we recommend that you set [PassengerRollingRestarts on](<%= url_for "/config/apache/reference/index.html" %>#passengerrollingrestarts) and [PassengerResistDeploymentErrors on](<%= url_for "/config/apache/reference/index.html" %>#passengerresistdeploymenterrors). Enabling deployment error resistance only works if rolling restarts are also enabled.
 
   For example, open your Apache configuration file and set:
 
@@ -58,10 +64,13 @@ PassengerResistDeploymentErrors on</pre>
 
   Then restart Apache to activate the change.
 <% elsif integration_mode_type == :standalone %>
-  To enable this feature, pass the `--resist-deployment-errors` command line option, or set `resist_deployment_errors` to true in [Passengerfile.json](<%= url_for "/config/standalone/intro.html" %>).
+  Deployment error resistance only works when a rolling restart is performed. So to enable this feature, we recommend that you pass the `--resist-deployment-errors --rolling-restarts` command line option, or that you set `resist_deployment_errors` and `rolling_restarts` to true in [Passengerfile.json](<%= url_for "/config/standalone/intro.html" %>).
+
 <% else %>
   <% raise "TODO" %>
 <% end %>
+
+When using `passenger-config restart-app`, be sure to pass `--rolling-restart`.
 
 ## Troubleshooting
 
@@ -73,4 +82,5 @@ To solve this problem, you you should find out the exact cause of the spawn erro
 
 ## Related guides
 
+ * [Configuration reference: PassengerResistDeploymentErrors](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#<%= passenger_resist_deployment_errors_anchor %>)
  * [Zero-downtime app updates and restarts](zero_downtime_redeployments.html)
