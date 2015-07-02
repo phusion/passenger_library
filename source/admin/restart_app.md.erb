@@ -105,9 +105,9 @@ In the [Enterprise version of Passenger](https://www.phusionpassenger.com/enterp
 
 ## Deployment error resistance
 
-Closely related to zero-downtime restarts is the "Deployment error resistance" Enterprise feature. Suppose that you have upgraded your application and you have issued a command to restart it, but the application code contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
+Closely related to zero-downtime restarts is the "Deployment error resistance" Enterprise feature. Suppose that you have upgraded your application and you have issued a command to restart it, but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
 
-By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is logged, but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
+By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
 
 [Learn more about this feature in the configuration reference](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#passengerresistdeploymenterrors).
 
