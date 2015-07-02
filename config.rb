@@ -148,7 +148,7 @@ INTEGRATION_MODES.each do |integration_mode_spec|
       "/config/essential/index.html",
       locals: integration_mode_spec
   end
-  proxy "/config/#{integration_mode_type}/reference.html",
+  proxy "/config/#{integration_mode_type}/reference/index.html",
     "/config/reference/reference.html",
     locals: integration_mode_spec
 end
@@ -158,7 +158,7 @@ ignore "/config/intro.html"
 ignore "/config/optimization.html"
 ignore "/config/cloud_licensing_configuration.html"
 ignore "/config/essential/index.html"
-ignore "/config/reference/index.html"
+ignore "/config/reference/reference.html"
 
 ###### Deployment, scaling and high availability ######
 
@@ -234,7 +234,7 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/admin/#{integration_mode_type}/log_rotation.html",
       "/admin/log_rotation.html",
       locals: integration_mode_spec
-      
+
 end
 
 ignore "/admin/index2.html"
