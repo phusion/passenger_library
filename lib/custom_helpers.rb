@@ -17,6 +17,36 @@ SUPPORTED_REDHAT_VERSIONS = {
   "el6" => "Red Hat 6 / CentOS 6"
 }
 
+SUPPORTED_APP_TYPES = [
+  { name: "Ruby, Ruby on Rails",
+    type: "ruby",
+    startup_file: "config.ru" },
+  { name: "Python",
+    type: "python",
+    startup_file: "passenger_wsgi.py" },
+  { name: "Node.js, io.js or Meteor JS in bundled/packaged mode",
+    type: "node",
+    startup_file: "app.js" },
+  { name: "Meteor JS in non-bundled/packaged mode",
+    type: "meteor",
+    startup_file: ".meteor" }
+]
+
+SUPPORTED_APP_TYPE_CONVENTIONS = [
+  { name: "Ruby, Ruby on Rails",
+    type: "ruby",
+    startup_file: "config.ru" },
+  { name: "Python",
+    type: "python",
+    startup_file: "passenger_wsgi.py" },
+  { name: "Node.js",
+    type: "node",
+    startup_file: "app.js" },
+  { name: "Meteor JS in non-bundled/packaged mode",
+    type: "meteor",
+    startup_file: ".meteor" }
+]
+
 module CustomHelpers
   def globals
     @globals ||= {}

@@ -11,25 +11,23 @@
 # Conclusion
 
 module DeploymentWalkthroughHelpers
+  # If you add an entry, be sure to also update SUPPORTED_APP_TYPES and SUPPORTED_APP_TYPE_CONVENTIONS.
   DEPLOYMENT_WALKTHROUGH_LANGUAGES = [
     { language_type: :ruby,
       language_name: "Ruby",
       language_name_with_determiner: "a Ruby",
       language_runtime_name: "Ruby",
-      language_has_install_instructions: true,
-      language_startup_file: "config.ru" },
+      language_has_install_instructions: true },
     { language_type: :python,
       language_name: "Python",
       language_name_with_determiner: "a Python",
       language_runtime_name: "Python",
-      language_has_install_instructions: true,
-      language_startup_file: "passenger_wsgi.py" },
+      language_has_install_instructions: true },
     { language_type: :nodejs,
       language_name: "Node.js",
       language_name_with_determiner: "a Node.js",
       language_runtime_name: "Node.js",
-      language_has_install_instructions: true,
-      language_startup_file: "app.js" },
+      language_has_install_instructions: true },
     { language_type: :iojs,
       language_name: "io.js",
       language_name_with_determiner: "an io.js",
@@ -39,8 +37,7 @@ module DeploymentWalkthroughHelpers
       language_name: "Meteor",
       language_name_with_determiner: "a Meteor",
       language_runtime_name: "Node.js",
-      language_has_install_instructions: true,
-      language_startup_file: ".meteor" }
+      language_has_install_instructions: true }
   ]
   DEPLOYMENT_WALKTHROUGH_INFRASTRUCTURES = [
     { infrastructure_type: :aws,

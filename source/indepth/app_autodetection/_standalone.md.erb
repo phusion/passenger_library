@@ -20,11 +20,10 @@ Passenger checks whether the application directory is a Passenger-supported appl
     </tr>
   </thead>
   <tbody>
-    <% DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |spec| %>
-      <% next if spec[:language_startup_file].nil? %>
+    <% SUPPORTED_APP_TYPES.each do |spec| %>
       <tr>
-        <td><%= spec[:language_startup_file] %></td>
-        <td><%= spec[:language_name] %></td>
+        <td><%= spec[:startup_file] %></td>
+        <td><%= spec[:name] %></td>
       </tr>
     <% end -%>
   </tbody>

@@ -107,17 +107,15 @@ This option enables or disables Passenger for that particular context. Passenger
 
 Suppose that you have a Ruby application in `/apps/foo`. Suppose that you've dropped Wordpress -- a blogging application written in PHP -- in `/apps/foo/public/wordpress`. You want can then configure Passenger as follows so that Passenger doesn't interfere with the Wordpress installation:
 
-~~~
-<VirtualHost *:80>
+<pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName www.foo.com
     DocumentRoot /apps/foo/public
-    <Directory /apps/foo/public/wordpress>
+    &lt;Directory /apps/foo/public/wordpress&gt;
         PassengerEnabled off
-        # Makes Wordpress's .htaccess file work
+        <span class="c"># Makes Wordpress's .htaccess file work</span>
         AllowOverride all
-    </Directory>
-</VirtualHost>
-~~~
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
 
 
 ### PassengerBaseURI
@@ -141,6 +139,7 @@ Suppose that you have a Ruby application in `/apps/foo`. Suppose that you've dro
   </tr>
 </table>
 
+<!-- TODO: write guide for sub-URI deployments -->
 Used to specify that the given URI is an distinct application that should be served by Passenger. Please see [the deployment guide](<%= url_for "/deploy/apache/index.html" %>) for more information.
 
 
@@ -453,7 +452,11 @@ Sets the name of the application group that the current application should belon
 
 Passenger stores and caches most application spawning settings -- such as environment variables, process limits, etc -- on a per-app-group-name basis. This means that if you want to start two versions of your application, with each version having different environment variables, then you must assign them under different application group names.
 
-For example, consider a situation in which you are running multiple versions of the same app, with each version intended for a different customer. You use the `CUSTOMER_NAME` environment variable to tell the app which customer that version should serve.
+The [request queue](<%= url_for "/indepth/request_queuing.html" %>) is also per-application group, so creating multiple application groups allow you to separate requests into different queues.
+
+#### Example
+
+Consider a situation in which you are running multiple versions of the same app, with each version intended for a different customer. You use the `CUSTOMER_NAME` environment variable to tell the app which customer that version should serve.
 
 <pre class="highlight"><span class="c"># WRONG example! Doesn't work!</span>
 
@@ -536,7 +539,20 @@ By default, Passenger [autodetects](<%= url_for "/indepth/app_autodetection/apac
 
 Allowed values are:
 
-<%= render_partial("/config/reference/app_type_values.md", locals: locals) %>
+<table class="table table-bordered table-striped">
+  <thead>
+    <th>Value</th>
+    <th>Application type</th>
+  </thead>
+  <tbody>
+    <% SUPPORTED_APP_TYPES.each do |spec| %>
+      <tr>
+        <td><%= spec[:type] %></td>
+        <td><%= spec[:name] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 If you set this option, then you **must** also set [PassengerAppRoot](#passengerapproot), otherwise Passenger will not properly recognize your application.
 
@@ -593,11 +609,10 @@ Here's a list of the language-specific conventions that Phusion Passenger accept
     </tr>
   </thead>
   <tbody>
-    <% DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |spec| %>
-      <% next if spec[:language_startup_file].nil? %>
+    <% SUPPORTED_APP_TYPE_CONVENTIONS.each do |spec| %>
       <tr>
-        <td><%= spec[:language_name] %></td>
-        <td><%= spec[:language_startup_file] %></td>
+        <td><%= spec[:name] %></td>
+        <td><%= spec[:startup_file] %></td>
       </tr>
     <% end -%>
   </tbody>
