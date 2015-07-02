@@ -148,7 +148,7 @@ INTEGRATION_MODES.each do |integration_mode_spec|
       "/config/essential/index.html",
       locals: integration_mode_spec
   end
-  proxy "/config/#{integration_mode_type}/reference/index.html",
+  proxy "/config/#{integration_mode_type}/reference.html",
     "/config/reference/reference.html",
     locals: integration_mode_spec
 end
@@ -213,10 +213,6 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/admin/#{integration_mode_type}/index.html",
     "/admin/index2.html",
     locals: integration_mode_spec
-  proxy "/admin/#{integration_mode_type}/restart_app.html",
-    "/admin/restart_app.html",
-    locals: integration_mode_spec
-
   proxy "/admin/#{integration_mode_type}/troubleshooting/index.html",
     "/admin/troubleshooting/language_selection.html",
     locals: integration_mode_spec
@@ -226,6 +222,19 @@ INTEGRATION_MODES.each do |integration_mode_spec|
       "/admin/troubleshooting/troubleshooting.html",
       locals: integration_mode_spec.merge(language_spec)
   end
+  proxy "/admin/#{integration_mode_type}/admin_tools.html",
+      "/admin/admin_tools.html",
+      locals: integration_mode_spec
+  proxy "/admin/#{integration_mode_type}/restart_app.html",
+    "/admin/restart_app.html",
+    locals: integration_mode_spec
+  proxy "/admin/#{integration_mode_type}/log_file.html",
+      "/admin/log_file.html",
+      locals: integration_mode_spec
+  proxy "/admin/#{integration_mode_type}/log_rotation.html",
+      "/admin/log_rotation.html",
+      locals: integration_mode_spec
+      
 end
 
 ignore "/admin/index2.html"
@@ -241,6 +250,7 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/indepth/app_autodetection/#{integration_mode_type}/index.html",
     "/indepth/app_autodetection/app_autodetection.html",
     locals: integration_mode_spec
+
 end
 
 ignore "/indepth/app_autodetection/app_autodetection.html"
