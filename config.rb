@@ -209,6 +209,10 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/admin/#{integration_mode_type}/index.html",
     "/admin/index2.html",
     locals: integration_mode_spec
+  proxy "/admin/#{integration_mode_type}/restart_app.html",
+    "/admin/restart_app.html",
+    locals: integration_mode_spec
+
   proxy "/admin/#{integration_mode_type}/troubleshooting/index.html",
     "/admin/troubleshooting/language_selection.html",
     locals: integration_mode_spec
@@ -221,6 +225,7 @@ INTEGRATION_MODES.each do |integration_mode_spec|
 end
 
 ignore "/admin/index2.html"
+ignore "/admin/restart_app.html"
 ignore "/admin/troubleshooting/language_selection.html"
 ignore "/admin/troubleshooting/troubleshooting.html"
 
