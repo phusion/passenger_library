@@ -107,7 +107,8 @@ This option enables or disables Passenger for that particular context. Passenger
 
 Suppose that you have a Ruby application in `/apps/foo`. Suppose that you've dropped Wordpress -- a blogging application written in PHP -- in `/apps/foo/public/wordpress`. You want can then configure Passenger as follows so that Passenger doesn't interfere with the Wordpress installation:
 
-<pre class="highlight">&lt;VirtualHost *:80&gt;
+<div>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName www.foo.com
     DocumentRoot /apps/foo/public
     &lt;Directory /apps/foo/public/wordpress&gt;
@@ -116,6 +117,7 @@ Suppose that you have a Ruby application in `/apps/foo`. Suppose that you've dro
         AllowOverride all
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
+</div>
 
 
 ### PassengerBaseURI
@@ -191,16 +193,21 @@ If you are not sure what value to set `PassengerRuby` to, then you can find out 
 
 First, find out the location to the `passenger-config` tool and take note of it:
 
-<pre class="highlight"><span class="prompt">$ </span>which passenger-config
+<div>
+  <pre class="highlight"><span class="prompt">$ </span>which passenger-config
 <span class="output">/opt/passenger/bin/passenger-config</span></pre>
+</div>
 
 Next, activate the Ruby interpreter (and if applicable, the gemset) you want to use. For example, if you are on RVM and you use Ruby 2.2.1, you may want to run this:
 
-<pre class="highlight"><span class="prompt">$ </span>rvm use 2.2.1</pre>
+<div>
+  <pre class="highlight"><span class="prompt">$ </span>rvm use 2.2.1</pre>
+</div>
 
 Finally, invoke `passenger-config` with its full path, passing `--ruby-command` as parameter:
 
-<pre class="highlight"><span class="prompt">$ </span>/opt/passenger/bin/passenger-config --ruby-command
+<div>
+  <pre class="highlight"><span class="prompt">$ </span>/opt/passenger/bin/passenger-config --ruby-command
 <span class="output">passenger-config was invoked through the following Ruby interpreter:
   Command: /usr/local/rvm/wrappers/ruby-1.8.7-p358/ruby
   Version: ruby 1.8.7 (2012-02-08 patchlevel 358) [universal-darwin12.0]
@@ -211,6 +218,7 @@ Finally, invoke `passenger-config` with its full path, passing `--ruby-command` 
 
 ## Notes for RVM users
 Do you want to know which command to use for a different Ruby interpreter? 'rvm use' that Ruby interpreter, then re-run 'passenger-config --ruby-command'.</span></pre>
+</div>
 
 The output tells you what value to set.
 
@@ -414,13 +422,15 @@ See also [How Passenger + Apache autodetects applications](<%= url_for "/indepth
 
 #### Example
 
-<pre class="highlight">&lt;VirtualHost test.host&gt;
+<div>
+  <pre class="highlight">&lt;VirtualHost test.host&gt;
     DocumentRoot /var/rails/zena/sites/example.com/public
     <span class="c"># Normally Passenger would have assumed that the
     # application root is "/var/rails/zena/sites/example.com".
     # This overrides it.</span>
     PassengerAppRoot /var/rails/zena
 &lt;/VirtualHost&gt;</pre>
+</div>
 
 
 ### PassengerAppGroupName
@@ -458,7 +468,8 @@ The [request queue](<%= url_for "/indepth/request_queuing.html" %>) is also per-
 
 Consider a situation in which you are running multiple versions of the same app, with each version intended for a different customer. You use the `CUSTOMER_NAME` environment variable to tell the app which customer that version should serve.
 
-<pre class="highlight"><span class="c"># WRONG example! Doesn't work!</span>
+<div>
+  <pre class="highlight"><span class="c"># WRONG example! Doesn't work!</span>
 
 &lt;VirtualHost *:80&gt;
     ServerName customer1.foo.com
@@ -471,6 +482,7 @@ Consider a situation in which you are running multiple versions of the same app,
     DocumentRoot /webapps/foo/public
     SetEnv CUSTOMER_NAME customer2
 &lt;/VirtualHost&gt;</pre>
+</div>
 
 This example doesn't work, because Passenger thinks that they are the same application. When a user visits customer1.foo.com, Passenger will start a process with `CUSTOMER_NAME=customer1`. When another user visits customer2.foo.com, Passenger will route the request to the application process that was started earlier. Because environment variables are only set during application process startup, the second user will be served the website for customer 1.
 
@@ -494,7 +506,8 @@ To make this work, assign unique application group names:
 
 Note that it is not necessary to set `PassengerAppGroupName` if you want to run two versions of your application under different [application environment names](#passengerappenv), because the application environment name is included in the default application group name. For example, consider a situation in which you want to run a production and a staging version of your application. The following configuration will work fine:
 
-<pre class="highlight">&lt;VirtualHost *:80&gt;
+<div>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName bar.com
     DocumentRoot /webapps/bar/public
     <span class="c"># Phusion Passenger implicitly sets:
@@ -508,6 +521,7 @@ Note that it is not necessary to set `PassengerAppGroupName` if you want to run 
     <span class="c"># Phusion Passenger implicitly sets:
     # PassengerAppGroupName '/webapps/bar (staging)'</span>
 &lt;/VirtualHost&gt;</pre>
+</div>
 
 
 ### PassengerAppType
@@ -558,7 +572,8 @@ If you set this option, then you **must** also set [PassengerAppRoot](#passenger
 
 #### Example
 
-<pre class="highlight">&lt;VirtualHost test.host&gt;
+<div>
+  <pre class="highlight">&lt;VirtualHost test.host&gt;
     DocumentRoot /webapps/example.com/public
     <span class="c"># Use server.js as the startup file (entry point file) for
     # your Node.js application, instead of the default app.js</span>
@@ -566,6 +581,7 @@ If you set this option, then you **must** also set [PassengerAppRoot](#passenger
     PassengerAppType node
     PassengerAppRoot /webapps/example.com
 &lt;/VirtualHost&gt;</pre>
+</div>
 
 
 ### PassengerStartupFile
@@ -627,7 +643,8 @@ Sometimes you might not want to adhere to the convention that Passenger accepts.
 
 #### Example
 
-<pre class="highlight">&lt;VirtualHost test.host&gt;
+<div>
+  <pre class="highlight">&lt;VirtualHost test.host&gt;
     DocumentRoot /webapps/example.com/public
     <span class="c"># Use server.js as the startup file (entry point file) for
     # your Node.js application, instead of the default app.js</span>
@@ -635,6 +652,7 @@ Sometimes you might not want to adhere to the convention that Passenger accepts.
     PassengerAppType node
     PassengerAppRoot /webapps/example.com
 &lt;/VirtualHost&gt;</pre>
+</div>
 
 
 ### PassengerRestartDir
@@ -670,7 +688,8 @@ You can either set it to an absolute directory, or to a directory relative to th
 
 #### Examples
 
-<pre class="highlight">&lt;VirtualHost *:80&gt;
+<div>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName www.foo.com
     <span class="c"># Phusion Passenger will check for /apps/foo/public/tmp/restart.txt</span>
     DocumentRoot /apps/foo/public
@@ -694,6 +713,7 @@ You can either set it to an absolute directory, or to a directory relative to th
     # the value of DocumentRoot!</span>
     PassengerRestartDir restart_files
 &lt;/VirtualHost&gt;</pre>
+</div>
 
 #### Security reasons for wanting to customize PassengerRestartDir
 
