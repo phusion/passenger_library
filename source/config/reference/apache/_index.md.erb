@@ -68,7 +68,7 @@ Once you have obtained the value, [open your Apache configuration file](<%= url_
 
 This option specifies:
 
- * which Ruby interpreter Passenger should use for its internal Ruby helper tools, e.g. the one used by [PassengerPreStart](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerPreStart). See [Lightweight Ruby dependency](<%= url_for "/indepth/lightweight_ruby_dependency.html" %>) for more information.
+ * which Ruby interpreter Passenger should use for its internal Ruby helper tools, e.g. the one used by [PassengerPreStart](#passengerprestart). See [Lightweight Ruby dependency](<%= url_for "/indepth/lightweight_ruby_dependency.html" %>) for more information.
  * the default Ruby interpreter to use for Ruby web apps. Naturally, this is not applicable if you do not use Passenger to serve Ruby web apps. Please see [PassengerRuby](#passengerruby) for more information, as well as how it relates to PassengerDefaultRuby.
 
 The default value is `ruby`, meaning that the Ruby interpreter will be looked up according to [the PATH environment variable](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable).
@@ -176,51 +176,9 @@ The `PassengerRuby` option specifies the Ruby interpreter to use for serving Rub
 
 Closely related to `PassengerRuby` is [PassengerPython](#passengerpython), [PassengerNodejs](#passengernodejs), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
-<%= render_partial("/config/reference/apache/passenger_ruby_example.md") %>
+<%= render_partial("/config/reference/apache/passenger_ruby_example.md", locals: locals) %>
 
-#### Notes about multiple Ruby interpreters
-
-If your system has multiple Ruby interpreters, then it is important that you set this configuration option to the right value. If you do not set this configuration option correctly, and your app is run under the wrong Ruby interpreter, then all sorts of things may go wrong, such as:
-
- * The app won't be able to find its installed gems.
- * The app won't be able to run because of syntax and feature differences between Ruby versions.
-
-Note that a different RVM gemset also counts as "a different Ruby interpreter".
-
-#### How to set the correct value
-
-If you are not sure what value to set `PassengerRuby` to, then you can find out the correct value as follows.
-
-First, find out the location to the `passenger-config` tool and take note of it:
-
-<div>
-  <pre class="highlight"><span class="prompt">$ </span>which passenger-config
-<span class="output">/opt/passenger/bin/passenger-config</span></pre>
-</div>
-
-Next, activate the Ruby interpreter (and if applicable, the gemset) you want to use. For example, if you are on RVM and you use Ruby 2.2.1, you may want to run this:
-
-<div>
-  <pre class="highlight"><span class="prompt">$ </span>rvm use 2.2.1</pre>
-</div>
-
-Finally, invoke `passenger-config` with its full path, passing `--ruby-command` as parameter:
-
-<div>
-  <pre class="highlight"><span class="prompt">$ </span>/opt/passenger/bin/passenger-config --ruby-command
-<span class="output">passenger-config was invoked through the following Ruby interpreter:
-  Command: /usr/local/rvm/wrappers/ruby-1.8.7-p358/ruby
-  Version: ruby 1.8.7 (2012-02-08 patchlevel 358) [universal-darwin12.0]
-  To use in Apache: PassengerRuby /usr/local/rvm/wrappers/ruby-1.8.7-p358/ruby
-  To use in Nginx : passenger_ruby /usr/local/rvm/wrappers/ruby-1.8.7-p358/ruby
-  To use with Standalone: /usr/local/rvm/wrappers/ruby-1.8.7-p358/ruby /opt/passenger/bin/passenger start
-
-
-## Notes for RVM users
-Do you want to know which command to use for a different Ruby interpreter? 'rvm use' that Ruby interpreter, then re-run 'passenger-config --ruby-command'.</span></pre>
-</div>
-
-The output tells you what value to set.
+<%= render_partial("/config/reference/passenger_ruby_extra_info.md", locals: locals) %>
 
 
 ### PassengerPython
@@ -252,7 +210,7 @@ This option specifies the Python interpreter to use for serving Python web appli
 
 Closely related to this option is [PassengerRuby](#passengerruby), [PassengerNodejs](#passengernodejs), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
-<%= render_partial("/config/reference/apache/passenger_ruby_example.md") %>
+<%= render_partial("/config/reference/apache/passenger_ruby_example.md", locals: locals) %>
 
 
 ### PassengerNodejs
@@ -286,7 +244,7 @@ Passenger's support for Node.js and io.js are the same. If you want to use io.js
 
 Closely related to this option is [PassengerRuby](#passengerruby), [PassengerPython](#passengerpython), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
-<%= render_partial("/config/reference/apache/passenger_ruby_example.md") %>
+<%= render_partial("/config/reference/apache/passenger_ruby_example.md", locals: locals) %>
 
 
 ### PassengerMeteorAppSettings
@@ -294,11 +252,11 @@ Closely related to this option is [PassengerRuby](#passengerruby), [PassengerPyt
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>PassengerMeteorAppSettings <em>path</em></td>
+    <td>PassengerMeteorAppSettings <em>path-to-json-settings-file</em></td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>4.0.24</td>
+    <td>5.0.7</td>
   </tr>
   <tr>
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
@@ -328,7 +286,7 @@ Note that this option is not intended to be used for bundled/packaged Meteor app
   </tr>
   <tr>
     <th>Since</th>
-    <td>4.0.24</td>
+    <td>4.0.0</td>
   </tr>
   <tr>
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
@@ -416,7 +374,7 @@ These are aliases for [PassengerAppEnv](#passengerappenv).
   </tr>
 </table>
 
-By default, Passenger assumes that the application's root directory is the parent directory of the DocumentRoot. This option allows one to the application's root independently from the DocumentRoot, which is your application does not follow the conventions that Passenger assumes.
+By default, Passenger assumes that the application's root directory is the parent directory of the DocumentRoot. This option allows one to the application's root independently from the DocumentRoot, which is useful if your application does not follow the conventions that Passenger assumes.
 
 See also [How Passenger + Apache autodetects applications](<%= url_for "/indepth/app_autodetection/apache/index.html" %>).
 
@@ -731,7 +689,10 @@ You can prevent this from happening by pointing PassengerRestartDir to a directo
   </tr>
   <tr>
     <th>Default</th>
-    <td>PassengerSpawnMethod smart</td>
+    <td>
+      For Ruby apps: PassengerSpawnMethod smart<br>
+      For other apps: PassengerSpawnMethod direct
+    </td>
   </tr>
   <tr>
     <th>Since</th>
@@ -826,7 +787,7 @@ If Passenger Enterprise could not rolling restart a process (let's call it 'A') 
 
 Please note that `PassengerRollingRestarts` is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
 
-NOTE: Are you looking to prevent applications from being restarted when you restart the web server? That is handled by the [Flying Passenger mode](<%= url_for "/deploy/apache/flying_passenger.html" %>), not by the rolling restarts feature.
+NOTE: Are you looking to prevent applications from being restarted when you restart Apache? That is handled by the [Flying Passenger mode](<%= url_for "/deploy/apache/flying_passenger.html" %>), not by the rolling restarts feature.
 
 
 ### PassengerResistDeploymentErrors
