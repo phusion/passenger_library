@@ -744,3 +744,218 @@ By enabling deployment error resistance, Passenger Enterprise would "freeze" the
 [Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/deploy/nginx/deployment_error_resistance.html" %>).
 
 Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/admin/nginx/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-(rolling-restart)).
+
+
+## Security options
+
+### passenger_user_switching
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_user_switching <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_user_switching on;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>1.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+Whether to attempt to enable [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>), also known as user switching.
+
+<div class="note">
+  This option has no effect when you are using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
+</div>
+
+<div class="warning">
+  If you're on Red Hat or CentOS, be sure to read <a href="<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#red-hat-and-centos-caveats">the Red Hat and CentOS user account sandboxing caveats</a>.
+</div>
+
+
+### passenger_user
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_user <em>username</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See the <a href="<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>">user account sandboxing rules</a></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the owner of the application's startup file](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#how-it-works). `passenger_user` allows you to override that behavior and explicitly set a user to run the web application as, regardless of the ownership of the startup file.
+
+
+### passenger_group
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_user <em>groupname</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See the <a href="<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>">user account sandboxing rules</a></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the primary group of the owner of the application's startup file](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#how-it-works). `passenger_group` allows you to override that behavior and explicitly set a group to run the web application as, regardless of the ownership of the startup file.
+
+The value may also be set to the special value `!STARTUP_FILE!`, in which case the web application's group will be set to the startup file's group.
+
+
+### passenger_default_user
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_default_user <em>username</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_default_user nobody;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Passenger enables [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) by default. This configuration option allows you to specify the user that applications must
+run as, if user switching fails or is disabled.
+
+<div class="note">
+  This option has no effect when you are using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
+</div>
+
+
+### Passenger_default_group
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_default_group <em>groupname</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Passenger enables [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) by default. This configuration option allows you to specify the group that applications must
+run as, if user switching fails or is disabled.
+
+The default value is the primary group of the user specifified by [passenger_default_user](#passenger_default_user). So the default value on most systems is `nobody` or `nogroup`.
+
+<div class="note">
+  This option has no effect when you are using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
+</div>
+
+
+### passenger_show_version_in_header
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_show_version_in_header <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_show_version_in_header on;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+When turned on, Passenger will output its version number in the `Server` and `X-Powered-By` header in all Passenger-served requests:
+
+~~~
+Server: nginx/1.8.0 + Phusion Passenger 5.0.13
+X-Powered-By: Phusion Passenger 5.0.13
+~~~
+
+When turned off, the version number will be hidden:
+
+~~~
+Server: nginx/1.8.0 + Phusion Passenger
+X-Powered-By: Phusion Passenger
+~~~
+
+
+### passenger_friendly_error_pages
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_friendly_error_pages <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default (as of 4.0.42)</th>
+    <td>
+      <p>
+        <em>When <a href="#passenger_app_env">passenger_app_env</a> is <code>staging</code> or <code>production</code>:</em><br>
+        passenger_friendly_error_pages off;
+      </p>
+      <p>
+        <em>Otherwise:</em><br>
+        passenger_friendly_error_pages on;
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Passenger can display friendly error pages whenever an application fails to start. This friendly error page presents the startup error message, some suggestions for solving the problem, a backtrace and a dump of the environment variables.
+
+This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are turned off by default when [passenger_app_env](#passenger_app_env) (or its aliases such as `rails_env` and `rack_env`) is set to `staging` or `production`, but enabled by default otherwise. You can use this option to explicitly enable or disable this feature.
