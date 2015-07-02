@@ -6,7 +6,7 @@ section: indepth
 
 # Passenger hooks
 
-<p class="lead">Phusion Passenger provides a powerful but simple hooking system, which allows you to extend many aspects of Passenger's behavior. The hooking system works by executing commands during certain events. Event parameters are passed to the command in the form of environment variables.</p>
+<p class="lead">Passenger provides a powerful but simple hooking system, which allows you to extend many aspects of Passenger's behavior. The hooking system works by executing commands during certain events. Event parameters are passed to the command in the form of environment variables.</p>
 
 Hooks are available since Passenger version 4.0.28.
 
@@ -87,7 +87,7 @@ Here are some of the environment variables which are passed to all hooks, unless
 
 ## Blocking and concurrency
 
-Except when otherwise documented, all hooks block in the background. That is, while your hook command is running, Passenger can still handle web requests, but the background thread which is running your hook will be blocked and won't be able to perform any further operations. For example, if you wrote a hook script for the `attached_process` event, then Phusion Passenger won't be able to attach further processes until your hook script finishes. You should therefore be careful when writing hook scripts.
+Except when otherwise documented, all hooks block in the background. That is, while your hook command is running, Passenger can still handle web requests, but the background thread which is running your hook will be blocked and won't be able to perform any further operations. For example, if you wrote a hook script for the `attached_process` event, then Passenger won't be able to attach further processes until your hook script finishes. You should therefore be careful when writing hook scripts.
 
 If you have a bug in your script and it blocks, then you will be able to see that using the command `passenger-status --show=backtraces` which prints the backtraces of all threads in the Passenger core process. Look for the `runSingleHookScript` function in the backtrace. The following example shows at line 2 that Passenger is waiting for the hook script `/home/phusion/badscript.sh`.
 

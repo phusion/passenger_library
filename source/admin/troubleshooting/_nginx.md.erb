@@ -16,7 +16,7 @@ server: www.foo.com, request: "GET / HTTP/1.1", host: "www.foo.com"
 
 #### Cause
 
-Phusion Passenger tries to access your application directory in order to find out what language it's written in. This access is initiated from inside an Nginx worker process. This error indicates that the Nginx worker process does not have the proper permissions to access your application's root directory.
+Passenger tries to access your application directory in order to find out what language it's written in. This access is initiated from inside an Nginx worker process. This error indicates that the Nginx worker process does not have the proper permissions to access your application's root directory.
 
 #### Solution
 

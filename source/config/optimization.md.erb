@@ -8,7 +8,7 @@ content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
 
 # Optimizing Passenger <%= integration_mode_name_as_passenger_suffix %>
 
-There are two aspects with regard to optimizing Phusion Passenger's server performance.
+There are two aspects with regard to optimizing Passenger's server performance.
 
  * The first aspect is *settings tuning*. Passenger's default settings are not aimed at optimizing, but at *safety*. The defaults are designed to conserve resources, to prevent server overload and to keep web apps up and running. To optimize for performance, you need to tweak some settings whose values depend on your hardware and your environment.
 
@@ -74,7 +74,7 @@ For consistent performance, it is thus recommended that you configure a static p
 
 ## Maximizing throughput
 
-This section provides guidance on maximizing Phusion Passenger's throughput. The amount of throughput that Phusion Passenger handles is proportional to the number of processes or threads that you've configured. More processes/threads generally means more throughput, but there is an upper limit. Past a certain value, further increasing the number of processes/threads won't help. If you increase the number of processes/threads even further, then performance may even go down.
+This section provides guidance on maximizing Passenger's throughput. The amount of throughput that Passenger handles is proportional to the number of processes or threads that you've configured. More processes/threads generally means more throughput, but there is an upper limit. Past a certain value, further increasing the number of processes/threads won't help. If you increase the number of processes/threads even further, then performance may even go down.
 
 The optimal value depends on the hardware and the environment. This section will provide you with formulas to calculate that optimal value. The following factors are involved in calculation:
 
@@ -87,11 +87,11 @@ The optimal value depends on the hardware and the environment. This section will
    Having more processes than CPUs may decrease total throughput a little thanks to context switching overhead, but the difference is not big because OSes are good at context switching these days.
 
    On the other hand, if your CPUs are not used constantly, e.g. because they’re often blocked on I/O, then the above does not apply and increasing the number of processes/threads does increase concurrency and throughput, at least until the CPUs are saturated.
- * **Blocking I/O**. This covers all blocking I/O, including hard disk access latencies, database call latencies, web API calls, etc. Handling input from the client and output to the client does not count as blocking I/O, because Phusion Passenger has buffering layers that relief the application from worrying about this.
+ * **Blocking I/O**. This covers all blocking I/O, including hard disk access latencies, database call latencies, web API calls, etc. Handling input from the client and output to the client does not count as blocking I/O, because Passenger has buffering layers that relief the application from worrying about this.
 
    The more blocking I/O calls your application process/thread makes, the more time it spends on waiting for external components. While it’s waiting it does not use the CPU, so that’s when another process/thread should get the chance to use the CPU. If no other process/thread needs CPU right now (e.g. all processes/threads are waiting for I/O) then CPU time is essentially wasted. Increasing the number processes or threads decreases the chance of CPU time being wasted. It also increases concurrency, so that clients do not have to wait for a previous I/O call to be completed before being served.
 
-The formulas in this section assume that your machine is dedicated to Phusion Passenger. If your machine also hosts other software (e.g. a database) then you'll need to tweak the formulas a little bit.
+The formulas in this section assume that your machine is dedicated to Passenger. If your machine also hosts other software (e.g. a database) then you'll need to tweak the formulas a little bit.
 
 ### Tuning the application process and thread count
 
@@ -111,7 +111,7 @@ There are two formulas that we can use, depending on what kind of concurrency mo
 
 **Purely single-threaded multi-process formula**
 
-If you didn't explicitly configure multithreading, then you are using using this concurrency model. Or, if you are *not* using Ruby (e.g. if you using **Python, Node.js or Meteor**), then you are also using this concurrency model, because Phusion Passenger only supports multithreading for Ruby apps.
+If you didn't explicitly configure multithreading, then you are using using this concurrency model. Or, if you are *not* using Ruby (e.g. if you using **Python, Node.js or Meteor**), then you are also using this concurrency model, because Passenger only supports multithreading for Ruby apps.
 
 The formula is then as follows:
 
@@ -119,7 +119,7 @@ The formula is then as follows:
 
 It is derived as follows:
 
- * `(TOTAL_RAM * 0.75)`: We can assume that there must be at least 25% of free RAM that the operating system can use for other things. The result of this calculation is the RAM that is freely available for applications. If your system runs a lot of services and thus has less memory available for Phusion Passenger and its apps, then you should lower `0.75` to some constant that you think is appropriate.
+ * `(TOTAL_RAM * 0.75)`: We can assume that there must be at least 25% of free RAM that the operating system can use for other things. The result of this calculation is the RAM that is freely available for applications. If your system runs a lot of services and thus has less memory available for Passenger and its apps, then you should lower `0.75` to some constant that you think is appropriate.
  * `/ RAM_PER_PROCESS`: Each process consumes a roughly constant amount of RAM, so the maximum number of processes is a single devision between the aforementioned calculation and this constant.
 
 **Multithreaded formula**
@@ -163,7 +163,7 @@ Armed with this knowledge, we derive the formulas for calculating how many proce
        # Use this formula for multithreaded scenarios.
        desired_app_threads_per_process = min(max_app_threads_per_process, 2 * NUMBER_OF_CPUS)
 
-#### Step 3: configure Phusion Passenger
+#### Step 3: configure Passenger
 
 **Purely single-threaded multi-process scenarios**
 
@@ -338,7 +338,7 @@ Because of the huge number of threads, this only works on a 64-bit platform. If 
 
 ### Turbocaching
 
-Phusion Passenger supports turbocaching since version 4. Turbocaching is an HTTP cache built inside Phusion Passenger. When used correctly, the cache can accelerate your app tremendously. To utilize turbocaching, you only need to set HTTP caching headers.
+Passenger supports turbocaching since version 4. Turbocaching is an HTTP cache built inside Passenger. When used correctly, the cache can accelerate your app tremendously. To utilize turbocaching, you only need to set HTTP caching headers.
 
 #### Learning about HTTP caching headers
 
@@ -384,7 +384,7 @@ The turbocache caches a response for a maximum duration of 2 seconds, or whateve
 
 ### Out-of-band garbage collection
 
-Phusion Passenger supports out-of-band garbage collection for Ruby apps. With this feature enabled, Phusion Passenger can run the garbage collector in between requests, so that the garbage collector doesn't delay the app as much. Please refer to the Users Guide for more information about this feature.
+Passenger supports out-of-band garbage collection for Ruby apps. With this feature enabled, Passenger can run the garbage collector in between requests, so that the garbage collector doesn't delay the app as much. Please refer to the Users Guide for more information about this feature.
 
 ### Switching to Passenger Standalone with the builtin HTTP engine
 

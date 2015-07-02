@@ -133,7 +133,7 @@ if (typeof(PhusionPassenger) !== 'undefined') {
 
 ### Hapi.js solution example
 
-When using Hapi.js, you must pass `'/passenger'` (not `'passenger'`) to Hapi's server constructor. This will cause Hapi try to listen on a Unix domain socket, which allows Phusion Passenger's overrides to kick in. If you do not pass that initial slash, then Hapi will try to treat the argument as a TCP/IP domain name, and Hapi will fail with an error.
+When using Hapi.js, you must pass `'/passenger'` (not `'passenger'`) to Hapi's server constructor. This will cause Hapi try to listen on a Unix domain socket, which allows Passenger's overrides to kick in. If you do not pass that initial slash, then Hapi will try to treat the argument as a TCP/IP domain name, and Hapi will fail with an error.
 
 ~~~javascript
 if (typeof(PhusionPassenger) != 'undefined') {
@@ -144,7 +144,7 @@ var Hapi = require('hapi');
 var server;
 
 if (typeof(PhusionPassenger) != 'undefined') {
-    // Requires Phusion Passenger >= 4.0.52!
+    // Requires Passenger >= 4.0.52!
     server = new Hapi.Server('/passenger');
 } else {
     server = new Hapi.Server('localhost', 3000);

@@ -8,7 +8,7 @@ content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
 
 # Customizing the compilation process
 
-The Phusion Passenger compilation process can be customized with environment variables. You can learn more about environment variables in [About environment variables](../indepth/environment_variables.html).
+The Passenger compilation process can be customized with environment variables. You can learn more about environment variables in [About environment variables](../indepth/environment_variables.html).
 
 **Table of contents**
 
@@ -16,9 +16,9 @@ The Phusion Passenger compilation process can be customized with environment var
 
 ## Setting the compiler
 
-You can force the Phusion Passenger build system to use a specific C or C++ compiler by setting the `CC` and `CXX` environment variables. These may be set to any arbitrary shell commands.
+You can force the Passenger build system to use a specific C or C++ compiler by setting the `CC` and `CXX` environment variables. These may be set to any arbitrary shell commands.
 
-For example, contributors who want to hack on Phusion Passenger may want to use Clang for faster compilation and [ccache](http://ccache.samba.org/) for faster recompilation, and may want to enable more error-catching compilation flags:
+For example, contributors who want to hack on Passenger may want to use Clang for faster compilation and [ccache](http://ccache.samba.org/) for faster recompilation, and may want to enable more error-catching compilation flags:
 
 ~~~bash
 export CC='ccache clang -fcolor-diagnostics -Qunused-arguments -fcatch-undefined-behavior -ftrapv'
@@ -31,7 +31,7 @@ export CXX='ccache clang++ -fcolor-diagnostics -Qunused-arguments -fcatch-undefi
 
 ## Adding additional compiler or linker flags
 
-On some systems, C/C++ libraries and headers that Phusion Passenger requires may be located in a non-standard directory. You can force the Phusion Passenger build system to look in those locations by injecting compiler and linker flags using the following environment variables:
+On some systems, C/C++ libraries and headers that Passenger requires may be located in a non-standard directory. You can force the Passenger build system to look in those locations by injecting compiler and linker flags using the following environment variables:
 
 `EXTRA_PRE_CFLAGS`
 : These flags are injected into all C compiler invocations that involve compiling C source files. This also covers compiler invocations that compile *and* link. The flags are injected at the beginning of the command string, even before `EXTRA_PRE_LDFLAGS`.
@@ -64,7 +64,7 @@ On some systems, C/C++ libraries and headers that Phusion Passenger requires may
 : Similar to `EXTRA_LDFLAGS`, but only injected for C++ executable linking commands. Injected right after `EXTRA_LDFLAGS`.
 
 `PASSENGER_THREAD_LOCAL_STORAGE`
-: Setting this to 1 will enable the `PASSENGER_THREAD_LOCAL_STORAGE` macro, which forcefully disables the use of thread-local storage inside the Phusion Passenger codebase. Setting this environment variable is useful on systems that have broken support for thread-local storage, despite passing our build system's check for proper thread-local storage support. At the time of writing, one user has reported that Ubuntu 12.04 32-bit has broken thread-local storage report although neither the reporter nor us were able to reproduce the problem on any other systems running Ubuntu 12.04 32-bit. Note that this flag has no effect on non-Phusion Passenger code.
+: Setting this to 1 will enable the `PASSENGER_THREAD_LOCAL_STORAGE` macro, which forcefully disables the use of thread-local storage inside the Passenger codebase. Setting this environment variable is useful on systems that have broken support for thread-local storage, despite passing our build system's check for proper thread-local storage support. At the time of writing, one user has reported that Ubuntu 12.04 32-bit has broken thread-local storage report although neither the reporter nor us were able to reproduce the problem on any other systems running Ubuntu 12.04 32-bit. Note that this flag has no effect on non-Passenger code.
 
 <div class="note">
   If you run the installer with <code>sudo</code> then environment variables may not be passed properly. Learn more at <a href="../indepth/environment_variables.html#environment-variables-and-sudo">Environment variables and sudo</a>.
@@ -72,7 +72,7 @@ On some systems, C/C++ libraries and headers that Phusion Passenger requires may
 
 ## Forcing location of command line tools and dependencies
 
-The Phusion Passenger build system attempts to autodetect many things by locating relevant helper tools. For example, to find out which compiler flags it should use for libcurl, it queries the `curl-config` command. These commands may not be in `$PATH`, or even when they are you may want to use a different one.
+The Passenger build system attempts to autodetect many things by locating relevant helper tools. For example, to find out which compiler flags it should use for libcurl, it queries the `curl-config` command. These commands may not be in `$PATH`, or even when they are you may want to use a different one.
 
 You can force the build to find certain command line tools at certain locations by using the following environment variables:
 
@@ -89,7 +89,7 @@ You can force the build to find certain command line tools at certain locations 
 `APXS2`
 : The location of the `apxs2` executable (the Apache module developer tool). Only used by `passenger-install-apache2-module`.
 
-  This environment variable, together with `HTTPD`, are what you need to customize if you have multiple Apache installations on your system, or if your Apache is located in a non-standard location which Phusion Passenger cannot detect. By setting `APXS2` and `HTTP` to the right paths, you can force Phusion Passenger to be compiled against that specific Apache installation.
+  This environment variable, together with `HTTPD`, are what you need to customize if you have multiple Apache installations on your system, or if your Apache is located in a non-standard location which Passenger cannot detect. By setting `APXS2` and `HTTP` to the right paths, you can force Phusion Passenger to be compiled against that specific Apache installation.
 
   For example, if your Apache installation is located in `/opt/lamp/apache2`, then you can run the installer as follows:
 

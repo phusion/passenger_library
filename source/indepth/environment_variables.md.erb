@@ -89,9 +89,9 @@ We can run `frobnicator` through it's full path...
 <span class="prompt">user@localhost bash$ </span>frobnicator
 <span class="output">=&gt; success!</span></pre>
 
-### Adding Phusion Passenger's administration tools to PATH
+### Adding Passenger's administration tools to PATH
 
-If you get a "command not found" error when invoking one of the Phusion Passenger administration tools (e.g. `passenger-status` or `passenger-memory-stats` then that means the tools are not in `PATH`, so you need to add them.
+If you get a "command not found" error when invoking one of the Passenger administration tools (e.g. `passenger-status` or `passenger-memory-stats` then that means the tools are not in `PATH`, so you need to add them.
 
  * If you installed Passenger with RubyGems, then the tools are in your RubyGems executable path. You can view the gem path using the command `gem env`:
 
@@ -120,7 +120,7 @@ If you get a "command not found" error when invoking one of the Phusion Passenge
 
    As you can see, the RubyGems executable path in the example happens to be `/opt/ruby-enterprise-1.8.7-2010.01/bin`. So that directory must be added to `PATH`.
 
- * If you installed Passenger using the tarball, then the tools are in the `bin` subdirectory of the Phusion Passenger tarball directory that you extracted. For example, if you extracted `passenger-5.0.0.tar.gz` inside `/opt`, then the tools are located in `/opt/passenger-5.0.0/bin`. In that case, you need to add `/opt/passenger-5.0.0/bin` to your `PATH`.
+ * If you installed Passenger using the tarball, then the tools are in the `bin` subdirectory of the Passenger tarball directory that you extracted. For example, if you extracted `passenger-5.0.0.tar.gz` inside `/opt`, then the tools are located in `/opt/passenger-5.0.0/bin`. In that case, you need to add `/opt/passenger-5.0.0/bin` to your `PATH`.
  * If you installed Passenger through [APT](../install/apt_repo.html) or [YUM](../install/yum_repo.html), then some PPassenger administration tools are in `/usr/bin`, while others are in `/usr/sbin`. If you are not logged in as root, then `/usr/sbin` may not be in `PATH`, which would explain why you get a "command not found" when trying to invoke some of the tools. You should `/usr/sbin` to `PATH`.
  * If you are unsure where your Passenger directory is then you can use the `find` command to look them up. Go to the root directory and invoke `find` with `sudo`:
 
@@ -158,7 +158,7 @@ To make them permanent for future bash sessions **for all users**, add them to `
 ### Apache
 
 <div class="note">
-  This subsection describes how to set environment variables on Apache itself, not on apps served through Phusion Passenger for Apache. The environment variables you set here will be passed to all apps, but you cannot customize them on a per-app basis. See also <a href="#phusion-passenger-served-apps">Setting environment variables on Phusion Passenger-served apps</a>.
+  This subsection describes how to set environment variables on Apache itself, not on apps served through Passenger for Apache. The environment variables you set here will be passed to all apps, but you cannot customize them on a per-app basis. See also <a href="#phusion-passenger-served-apps">Setting environment variables on Passenger-served apps</a>.
 </div>
 
 On Debian and Ubuntu, with an Apache installed through apt, Apache environment variables are defined in the file `/etc/apache2/envvars`. This is a shell script so environment variables must be specified with the shell syntax.
@@ -172,7 +172,7 @@ On other systems, or if you did not install Apache through the system's package 
 ### Nginx
 
 <div class="note">
-  This subsection describes how to set environment variables on Nginx itself, not on apps served through Phusion Passenger for Nginx. The environment variables you set here will be passed to all apps, but you cannot customize them on a per-app basis. See also <a href="#phusion-passenger-served-apps">Setting environment variables on Phusion Passenger-served apps</a>.
+  This subsection describes how to set environment variables on Nginx itself, not on apps served through Passenger for Nginx. The environment variables you set here will be passed to all apps, but you cannot customize them on a per-app basis. See also <a href="#phusion-passenger-served-apps">Setting environment variables on Passenger-served apps</a>.
 </div>
 
 If you installed Nginx through [the Debian or Ubuntu packages](../install/apt_repo.html), then you can define environment variables in `/etc/default/nginx`. This is a shell script so you must use the `export FOO=bar` syntax.
@@ -203,7 +203,7 @@ PATH=/usr/bin:/usr/local/bin
   * *  *   *   *     frobnicator
 ~~~
 
-### Phusion Passenger-served apps
+### Passenger-served apps
 
 You can pass environment variables to Passenger-served apps through various methods:
 

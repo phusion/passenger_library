@@ -158,7 +158,7 @@ Here is an example of what you may want to add to `/etc/rc.local`. If there is a
 
 <pre class="highlight">
 <% if locals[:os_config_type] == :tarball %>
-<span class="c"># Since you installed Phusion Passenger from tarball, add its `bin` directory to PATH.</span>
+<span class="c"># Since you installed Passenger from tarball, add its `bin` directory to PATH.</span>
 <span class="nb">export</span> <span class="nv">PATH</span>=<span class="o">/path-to-passenger</span>/bin:<span class="nv">$PATH</span>
 
 <% end -%>

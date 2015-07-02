@@ -1,4 +1,4 @@
-# Passenger documentation project
+# Phusion Passenger documentation project
 
 Welcome to the Passenger documentation project. The goal of this project is to write excellent documentation for the [Phusion Passenger application server](https://www.phusionpassenger.com/).
 

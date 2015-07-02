@@ -36,7 +36,7 @@ To allow better organization, many operating systems and Apache distributions al
 If you can, you should use `mods-enabled`/`mods-available` to store Passenger configuration. Assuming that your Apache configuration directory is `/etc/apache2`:
 
  * Create `/etc/apache2/mods-available/passenger.load` and paste the `LoadModule ...` directive that `passenger-install-apache2-module` outputs.
- * Create `/etc/apache2/mods-available/passenger.conf` and paste the `PassengerRoot` and other Phusion Passenger options.
+ * Create `/etc/apache2/mods-available/passenger.conf` and paste the `PassengerRoot` and other Passenger options.
  * Enable by running `sudo a2enmod passenger`.
 
 If the `mods-enabled` mechanism is not available then you can paste configuration snippets into `httpd.conf` or `apache2.conf` directly.

@@ -184,7 +184,7 @@ To guarantee that the data written to the log file is never interleaved, you mus
 
 ### The need to revive threads
 
-Another part of the `fork()` system call's semantics is the fact that threads disappear after a fork call. So if you've created any threads in environment.rb, then those threads will no longer be running in newly created application process. You need to revive them when a new process is created. Use the `:starting_worker_process` event that Phusion Passenger provides, like this:
+Another part of the `fork()` system call's semantics is the fact that threads disappear after a fork call. So if you've created any threads in environment.rb, then those threads will no longer be running in newly created application process. You need to revive them when a new process is created. Use the `:starting_worker_process` event that Passenger provides, like this:
 
 ~~~ruby
 if defined?(PhusionPassenger)

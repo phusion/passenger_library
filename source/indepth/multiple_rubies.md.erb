@@ -16,7 +16,7 @@ Passenger is also capable of running Ruby web applications under any Ruby interp
 
 There is however one caveat if you happen to be using RVM or RVM gemsets. When you `gem install` Passenger using RVM, then RVM will install Passenger into the *currently active RVM Ruby and gemset*. This means that Passenger commands - such as `passenger`, `passenger-install-xxx-module` and `passenger-status` - are available in that same RVM Ruby and gemset only. When you switch Ruby interpreter, or when you switch gemset, the Passenger commands will no longer be available, and you will get a `command not found` error. Here's an example which demonstrates the problem.
 
-<pre class="highlight"><span class="c">## Install Phusion Passenger (open source edition) using Ruby 1.9.3
+<pre class="highlight"><span class="c">## Install Passenger (open source edition) using Ruby 1.9.3
 ## and the 'business' gemset</span>
 $ rvm use 1.9.3
 <span class="output">Using /home/phusion/.rvm/gems/ruby-1.9.3-p429</span>
@@ -55,11 +55,11 @@ $ passenger --version
 
 There are several ways to solve this problem:
 
- 1. Permanently add Phusion Passenger's command directory to your PATH, so that your shell can always find them even when you switch RVM Ruby or gemset. If you don't know what PATH means, please read [About environment variables](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#about_environment_variables) first.
+ 1. Permanently add Passenger's command directory to your PATH, so that your shell can always find them even when you switch RVM Ruby or gemset. If you don't know what PATH means, please read [About environment variables](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#about_environment_variables) first.
 
-    The drawback is that you have to redo this every time you upgrade Phusion Passenger, because the Phusion Passenger directory filename is dependent on the version number.
+    The drawback is that you have to redo this every time you upgrade Passenger, because the Passenger directory filename is dependent on the version number.
 
-    First, identify the location of the Phusion Passenger command directory, like this:
+    First, identify the location of the Passenger command directory, like this:
 
     <pre class="highlight"><span class="prompt">$</span> echo `passenger-config --root`/bin
 <span class="output">/home/phusion/.rvm/gems/ruby-1.9.3-p429/gems/passenger-4.0.15/bin</span></pre>
@@ -73,8 +73,8 @@ There are several ways to solve this problem:
         echo 'export PATH=/home/phusion/.rvm/gems/ruby-1.9.3-p429/gems/passenger-4.0.15/bin:$PATH' \
         >> ~/.bashrc
 
- 2. Switch back to the RVM Ruby and gemset that you installed Phusion Passenger with, before running any Phusion Passenger command.
- 3. Prepend any Phusion Passenger command with `rvm-exec RUBY_NAME@GEMSET_NAME ruby -S`. If the relevant Phusion Passenger command also needs root privileges, then prepend `rvmsudo` before that. For example:
+ 2. Switch back to the RVM Ruby and gemset that you installed Passenger with, before running any Passenger command.
+ 3. Prepend any Passenger command with `rvm-exec RUBY_NAME@GEMSET_NAME ruby -S`. If the relevant Passenger command also needs root privileges, then prepend `rvmsudo` before that. For example:
 
         rvm-exec 1.9.3@business ruby -S passenger --version
         rvmsudo rvm-exec 1.9.3@business ruby -S passenger-install-apache2-module
