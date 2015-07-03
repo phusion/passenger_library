@@ -48,7 +48,7 @@ There is also a distinct problem, namely that of restarting web applications wit
 
 ## Basic usage
 
-Start the Flying Passenger daemon by invoking the `flying-passenger` command. The only required option is `--socket-file`. Depending on whether you wish to enable <<user_switching,User Switching>>, you have to start `flying-passenger` with root privileges or not.
+Start the Flying Passenger daemon by invoking the `flying-passenger` command. The only required option is `--socket-file`. Depending on whether you wish to enable [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>), you have to start `flying-passenger` with root privileges or not.
 
 <pre class="highlight"><span class="prompt">$ </span>sudo flying-passenger --socket-file=/var/run/flying-passenger.sock
 <span class="output">I, [2013-06-14T09:10:13.095339 #77179]  INFO -- : Welcome to Flying Passenger 5.0.11
