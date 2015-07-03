@@ -1,1 +1,553 @@
-TODO
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Server options
+
+### `--address` / "address"
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --address <em>HOST</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"address": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>0.0.0.0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Instructs Passenger to listen for requests on the given IP address. This means that Passenger will only be able to accept requests that are sent to that IP address.
+
+The IP address may be an IPv4 address or an IPv6 address. If you want to listen on a Unix domain socket, use [`--socket` / "socket_file"](#--socket-socket_file).
+
+The default is to bind to 0.0.0.0, which means that Passenger can accept requests from any IPv4 address. If you use Passenger in a [reverse proxy setup](<%= url_for "/deploy/standalone/reverse_proxy.html" %>) then you should bind Passenger to 127.0.0.1, which means that only processes on the local host can access Passenger, not the public Internet.
+
+
+### `--port` / "port"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --port <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"port": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>3000</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Instructs Passenger to listen for requests on the given TCP port number. Only has effect if you did not use [`--socket` / "socket_file"](#--socket-socket_file).
+
+
+### `--socket` / "socket_file"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --socket <em>FILE</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"socket_file": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Instructs Passenger to listen for requests on a Unix domain socket, not on a TCP socket. Unix domain sockets are a special kind of socket provided by the operating system, that are only usable on the local computer, not over the Internet. In return for this restricted functionality, they are highly optimized and much faster than TCP sockets.
+
+A Unix domain socket appears as a file on the filesystem.
+
+There are almost no web browsers and HTTP clients that support Unix domain sockets. Unix domain sockets are mainly useful if you plan on using Passenger in a [reverse proxy setup](<%= url_for "/deploy/standalone/reverse_proxy.html" %>), where you configure a reverse proxy like Nginx, running on the local machine, to forward requests to Passenger over a Unix domain socket.
+
+
+### `--ssl` / "ssl"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --ssl</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"ssl": true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Passenger does not enable SSL</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+</table>
+
+Instructs Passenger to accept (encrypted) HTTPS requests on its socket, instead of (unencrypted) HTTP requests.
+
+If you want Passenger to be able to listen for HTTP and HTTPS at the same time (although on different port numbers), then please use  [`--ssl-port` / "ssl_port"](#--ssl-port-ssl_port). It is not possible to make passenger listen for HTTP and HTTPS on the same port.
+
+If this option is set, you must also set [`--ssl-certificate` / "ssl_certificate"](#--ssl-certificate-ssl_certificate) and [`--ssl-certificate-key` / "ssl_certificate_key"](#--ssl-certificate-key-ssl_certificate_key) to the SSL certificate and key files, respectively.
+
+### `--ssl-certificate` / "ssl_certificate"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start [...] --ssl-certificate PATH</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"ssl_certificate": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+</table>
+
+Sets the SSL certificate to use.
+
+This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
+
+
+### `--ssl-certificate-key` / "ssl_certificate_key"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start [...] --ssl-certificate-key PATH</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"ssl_certificate_key": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+</table>
+
+Sets the SSL certificate key to use.
+
+This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
+
+
+### `--ssl-port` / "ssl_port"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start [...] --ssl-port NUMBER</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"ssl_port": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+</table>
+
+Instructs Passenger to listen for HTTPS requests on the given port number, while letting [the normal port number](#--port-port) listen for regular unecrypted HTTP requests.
+
+For example, if you run the following, the Passenger will listen for HTTP requests on port 3000, while also listening for HTTPS requests on port 3005:
+
+    passenger start --ssl --ssl-certificate ... --ssl-certificate-key ... --ssl-port 3005
+
+This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
+
+<div class="note">
+  When in <a href="<%= url_for "/deploy/standalone/mass_deployment.html" %>">Mass Deployment mode</a>, you will probably want to set a default <code>ssl_port</code> instead of leaving this option unspecified. This is because some of your apps may contain a Passengerfile.json that contains <code>"ssl": true</code>, while others do not. In such a situation, this means that some apps want to listen for HTTPS requests on the default port, while others want to listen for unencrypted HTTP requests, which is a contradiction and causes Passenger to abort.
+</div>
+
+
+### `--daemonize` / "daemonize"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --daemonize</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"daemonize": true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Passenger runs in the foreground</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Instructs Passenger to daemonize into the background.
+
+
+### `--user` / "user"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --user USERNAME</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"user": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Instructs Passenger to drop its privilege to that of the given user as soon as Passenger has setup the socket. This only works if Passenger was started with root privileges.
+
+If this option is not given, then Passenger runs as the user that invoked it.
+
+
+### `--log-file` / "log_file"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --log-file PATH</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"log_file": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Log to the given log file.
+
+The default behavior is as follows:
+
+ 1. If there is a `log` subdirectory, log to `log/passenger.XXX.log`.
+ 2. Otherwise, log to `passenger.XXX.log`.
+
+In both cases, XXX is the [port number](#--port-port) that Passenger listens on.
+
+If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default log filename does not contain the `.XXX` part.
+
+
+### `--pid-file` / "pid_file"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --pid-file PATH</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"pid_file": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Store the Passenger PID in the given PID file.
+
+The default behavior is as follows:
+
+ 1. If there is a `tmp/pids` subdirectory, use the PID file `tmp/pids/passenger.XXX.pid`.
+ 2. Otherwise, use the PID file `passenger.XXX.pid`.
+
+In both cases, XXX is the [port number](#--port-port) that Passenger listens on.
+
+If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default PID filename does not contain the `.XXX` part.
+
+
+### `--instance-registry-dir` / "instance_registry_dir"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --instance-registry-dir PATH</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"instance_registry_dir": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>/tmp or /var/run/passenger-instreg</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Specifies the directory that Passenger should use for registering its current instance.
+
+When Passenger starts up, it creates a temporary directory inside the _instance registry directory_. This temporary directory is called the _instance directory_. It contains all sorts of files that are important to that specific running Passenger instance, such as Unix domain socket files so that all the different Passenger processes can communicate with each other. Command line tools such as `passenger-status` use the files in this directory in order to query Passenger's status.
+
+It is therefore important that, while Passenger is working, the instance directory is never removed or tampered with. However, the default path for the instance registry directory is the system's temporary directory, and some systems may run background jobs that periodically clean this directory. If this happens, and the files inside the instance directory are removed, then it will cause Passenger to malfunction: Passenger won't be able to communicate with its own processes, and you will see all kinds of connection errors in the log files. This malfunction can only be recovered from by restarting Apache. You can prevent such cleaning background jobs from interfering by setting this option to a different directory.
+
+This option is also useful if the partition that the temporary directory lives on doesn't have enough disk space.
+
+The instance directory is automatically removed when Nginx shuts down.
+
+#### Default value
+
+The default value for this option is as follows:
+
+ * If you are on Red Hat and CentOS, and installed Passenger through the RPMs provided by Phusion, then the default value is `/var/run/passenger-instreg`.
+ * Otherwise, the default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
+
+#### Note regarding command line tools
+
+Some Passenger command line administration tools, such as `passenger-status`, must know what Passenger's instance registry directory is in order to function properly. You can pass the directory through the `PASSENGER_INSTANCE_REGISTRY_DIR` or the `TMPDIR` environment variable.
+
+For example, if you set 'PassengerInstanceRegistryDir' to '/my_temp_dir', then invoke `passenger-status` after you've set the `PASSENGER_INSTANCE_REGISTRY_DIR`, like this:
+
+~~~bash
+export PASSENGER_INSTANCE_REGISTRY_DIR=/my_temp-dir
+sudo -E passenger-status
+~~~
+
+Notes regarding the above example:
+
+ * The -E option tells 'sudo' to preserve environment variables.
+ * If Passenger is installed through an RVM Ruby, then you must use `rvmsudo` instead of `sudo`.
+
+
+### `--data-buffer-dir` / "data_buffer_dir"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --data-buffer-dir PATH</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"data_buffer_dir": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+By default, Passenger buffers large web application responses. This prevents [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
+
+By default, such buffers are stored in the directory given by the `$TMPDIR` environment variable, or (if `$TMPDIR` is not set) the `/tmp` directory. This configuration option allows you to specify a different directory.
+
+Changing this option is especially useful if the partition that the default directory lives on doesn't have enough disk space.
+
+If you've specified such a directory (as opposed to using Passenger's default) then you *must* ensure that this directory exists.
+
+
+## Application loading options
+
+### `--environment` / "environment"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --environment NAME</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"environment": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>development</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+This option sets the value of the following environment variables:
+
+ * `RAILS_ENV`
+ * `RACK_ENV`
+ * `WSGI_ENV`
+ * `NODE_ENV`
+ * `PASSENGER_APP_ENV`
+
+Some web frameworks, for example Rails and Connect.js, adjust their behavior according to the value in one of these environment variables.
+
+### `--ruby` / "ruby"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --ruby PATH</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"ruby": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>The Ruby interpreter that was used for starting Passenger Standalone</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.7</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Specifies the Ruby interpreter to use for serving Ruby web applications.
+
+
+### `--python` / "python"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --python PATH</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"python": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>The first "python" command in <a href="<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable">PATH</a></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.7</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Specifies the Python interpreter to use for serving Python web applications.
+
+
+### `--nodejs` / "nodejs"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --nodejs PATH</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"nodejs": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>The first "node" command in <a href="<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable">PATH</a></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.7</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Specifies the Node.js/io.js comand to use for serving Node.js/io.js web applications.
+
+Passenger's support for Node.js and io.js are the same. If you want to use io.js instead of Node.js, simply set this option to your iojs binary.
