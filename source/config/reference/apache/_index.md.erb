@@ -842,7 +842,7 @@ Note that enabling deployment error resistance only works if you perform a [roll
   </tr>
   <tr>
     <th>Since</th>
-    <td>2.2.0</td>
+    <td>3.0.0</td>
   </tr>
   <tr>
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
@@ -2054,7 +2054,8 @@ Is it important that you turn on both `AllowEncodedSlashes` *and* `PassengerAllo
 
 Please note however that turning on support for encoded slashes will break support for `mod_rewrite` passthrough rules. Because of bugs/limitations in Apache, Passenger can support either encoded slashes or `mod_rewrite` passthrough rules, but not both at the same time. Luckily this option can be specified anywhere, so you can enable it only for virtual hosts or URLs that need it:
 
-<pre class="highlight">&lt;VirtualHost *:80&gt;
+<div>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName www.example.com
     DocumentRoot /webapps/example/public
     AllowEncodedSlashes on
@@ -2074,6 +2075,7 @@ Please note however that turning on support for encoded slashes will break suppo
         PassengerAllowEncodedSlashes on
     &lt;/Location&gt;
 &lt;/VirtualHost&gt;</pre>
+</div>
 
 With this, `http://www.example.com/users/fujikura%2fyuu` will work properly, and accessing `http://www.example.com/about` will properly display the result of `http://www.example.com/info/about`. Notice that `PassengerAllowEncodedSlashes` only interferes with passthrough rules, not with any other `mod_rewrite` rules. The rules for displaying maintenance.html will work fine even for URLs starting with "/users".
 
@@ -2120,7 +2122,7 @@ Possible values are:
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>PassengerLogFile <em>filename</em></td>
+    <td>PassengerLogFile <em>path</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -2137,6 +2139,8 @@ Possible values are:
 </table>
 
 By default Passenger log messages are written to the Apache global error log. With this option, you can have those messages logged to a different file instead.
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--log-file")) %>
 
 
 ### PassengerFileDescriptorLogFile
@@ -2168,6 +2172,8 @@ File descriptor activity is logged as follows:
 
  * If `PassengerFileDescriptorLogFile` is not set, then file descriptor activity is logged to the [main log file](#passengerlogfile), but only if the [log level](#passengerloglevel) is 5 (debug) or higher.
  * If `PassengerFileDescriptorLogFile` is set, then file descriptor activity is logged to the specified file, regardless of the log level.
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--file-descriptor-log-file")) %>
 
 
 ### PassengerDebugger
@@ -2244,6 +2250,8 @@ This option is also useful if Apache is not allowed to write to the system's tem
 
 The instance directory is automatically removed when Apache shuts down.
 
+<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--instance-registry-dir")) %>
+
 #### Default value
 
 The default value for this option is as follows:
@@ -2291,7 +2299,7 @@ Notes regarding the above example:
 
 By default, Passenger buffers the following things to disk:
 
- * Large HTTP client request bodies. This prevents slow HTTP clients from blocking web applications by sending request bodies very slowly. Read [PassengerBufferUpload](#passengerbufferupload) to learn more.
+ * Large HTTP client request bodies. This prevents [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) from blocking web applications by sending request bodies very slowly. Read [PassengerBufferUpload](#passengerbufferupload) to learn more.
  * Large web application responses. This prevents slow HTTP clients from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
 
 By default, such buffers are stored in the directory given by the `$TMPDIR` environment variable, or (if `$TMPDIR` is not set) the `/tmp` directory. This configuration directive allows you to specify a different directory.
@@ -2332,3 +2340,48 @@ This option may be specified once, in the global server configuration.
 </table>
 
 Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) mode, and configures Apache to connect to the Flying Passenger daemon that's listening on the given socket filename.
+
+
+## Deprecated or removed options
+
+The following options have been deprecated or removed. Some are still supported for backwards compatibility reasons.
+
+### RailsRuby
+
+Deprecated in 3.0.0 in favor of [PassengerRuby](#passengerruby).
+
+### RailsBaseURI, RackBaseURI
+
+Deprecated in 3.0.0 in favor of [PassengerBaseURI](#passengerbaseuri).
+
+### RailsUserSwitching
+
+Deprecated in 3.0.0 in favor of [PassengerUserSwitching](#passengeruserswitching).
+
+### RailsDefaultUser
+
+Deprecated in 3.0.0 in favor of [PassengerDefaultUser](#passengerdefaultuser).
+
+### RailsAllowModRewrite
+
+This option doesn't do anything anymore in since version 4.0.0.
+
+### RailsSpawnMethod
+
+Deprecated in 3.0.0 in favor of [PassengerSpawnMethod](#passengerspawnmethod).
+
+### RailsAutoDetect, RackAutoDetect and WsgiAutoDetect
+
+These options have been removed in version 4.0.0 as part of an optimization. You should use [PassengerEnabled](#passengerenabled) instead.
+
+### RailsAppSpawnerIdleTime
+
+This option has been removed in version 4.0.0, and replaced with [PassengerMaxPreloaderIdleTime](#passengermaxpreloaderidletime).
+
+### RailsFrameworkSpawnerIdleTime
+
+This option is no longer available in version 4.0.0. There is no alternative because framework spawning has been removed altogether. You should use smart spawning instead.
+
+### PassengerDebugLogFile
+
+This option has been renamed in version 5.0.5 to [PassengerLogFile](#passengerlogfile).
