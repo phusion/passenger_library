@@ -882,7 +882,7 @@ Whether to attempt to enable [user account sandboxing](<%= url_for "/deploy/#{in
   </tr>
 </table>
 
-If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the owner of the application's startup file](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#how-it-works). `passenger_user` allows you to override that behavior and explicitly set a user to run the web application as, regardless of the ownership of the startup file.
+If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the owner of the application's startup file](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#how-it-works). `PassengerUser` allows you to override that behavior and explicitly set a user to run the web application as, regardless of the ownership of the startup file.
 
 
 ### PassengerGroup
@@ -906,7 +906,7 @@ If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_
   </tr>
 </table>
 
-If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the primary group of the owner of the application's startup file](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#how-it-works). `passenger_group` allows you to override that behavior and explicitly set a group to run the web application as, regardless of the ownership of the startup file.
+If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the primary group of the owner of the application's startup file](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#how-it-works). `PassengetGroup` allows you to override that behavior and explicitly set a group to run the web application as, regardless of the ownership of the startup file.
 
 The value may also be set to the special value `!STARTUP_FILE!`, in which case the web application's group will be set to the startup file's group.
 
@@ -964,7 +964,7 @@ run as, if user switching fails or is disabled.
 Passenger enables [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) by default. This configuration option allows you to specify the group that applications must
 run as, if user switching fails or is disabled.
 
-The default value is the primary group of the user specifified by [passenger_default_user](#passenger_default_user). So the default value on most systems is `nobody` or `nogroup`.
+The default value is the primary group of the user specifified by [PassengerDefaultUser](#passengerdefaultuser). So the default value on most systems is `nobody` or `nogroup`.
 
 <div class="note">
   This option has no effect when you are using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
@@ -1008,3 +1008,718 @@ The default value is the primary group of the user specifified by [passenger_def
 Passenger can display friendly error pages whenever an application fails to start. This friendly error page presents the startup error message, some suggestions for solving the problem, a backtrace and a dump of the environment variables.
 
 This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are disabled by default when [PassengerAppEnv](#passengerappenv) (or its aliases such as `RailsEnv` and `RackEnv`) is set to `staging` or `production`, but enabled by default otherwise. You can use this option to explicitly enable or disable this feature.
+
+
+## Resource control and optimization options
+
+### PassengerMaxPoolSize
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxPoolSize <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxPoolSize 6</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>1.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The maximum number of application processes that may simultaneously exist. A larger number results in higher memory usage,
+but improves the ability to handle concurrent HTTP requests.
+
+The optimal value depends on your system's hardware and your workload. Please read the [optimization guide](<%= url_for "/config/#{integration_mode_type}/optimization.html" %>) to learn how to find out the optimal value.
+
+If you find that your server is running out of memory then you should lower this value. In order to prevent your server from crashing due to out-of-memory conditions, the default value is relatively low (6).
+
+
+### PassengerMinInstances
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMinInstances <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMinInstances 1</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+</table>
+
+This specifies the minimum number of application processes that should exist for a given application. You should set this option to a non-zero value if you want to avoid potentially long startup times after a website has been [idle](#passengerpoolidletime) for an extended period of time.
+
+Please note that this option does *not* pre-start application processes during Apache startup. It just makes sure that when the application is first accessed:
+
+ 1. at least the given number of processes will be spawned.
+ 2. the given number of processes will be kept around even when processes are being [idle cleaned](#passengerpoolidletime).
+
+If you want to pre-start application processes during Apache startup, then you should use the [PassengerPreStart](#passengerprestart) option, possibly in combination with `PassengerMinInstances`. This behavior might seem counter-intuitive at first sight, but `PassengerPreStart` explains the rationale behind it.
+
+#### Example
+
+Suppose that you have the following configuration:
+
+~~~
+PassengerMaxPoolSize 15
+PassengerPoolIdleTime 10
+
+<VirtualHost *:80>
+    ServerName foobar.com
+    DocumentRoot /webapps/foobar/public
+    PassengerMinInstances 3
+</VirtualHost>
+~~~
+
+When you start Apache, there are 0 application processes for 'foobar.com'. Things will stay that way until someone visits 'foobar.com'. Suppose that there is only one visitor. One application process will be started immediately to serve the visitor, while two will be spawned in the background. After 10 seconds, when the idle timeout has been reached, these 3 application processes will not be cleaned up.
+
+Now suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.com' simultaneously. Passenger will start 12 more application processes. After the idle timeout of 10 seconds have passed, Passenger will clean up 12 application processes, keeping 3 processes around.
+
+
+### PassengerMaxInstances
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxInstances <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxInstances 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+The maximum number of application processes that may simultaneously exist for an application. This helps to make sure that a single application will not occupy all available slots in the application pool.
+
+This value must be less than [PassengerMaxPoolSize](#passengermaxpoolsize). A value of 0 means that there is no limit placed on the number of processes a single application may spawn, i.e. only the global limit of `PassengerMaxPoolSize` will be enforced.
+
+#### Example
+
+Suppose that you're hosting two web applications on your server, a personal blog and an e-commerce website. You've set [PassengerMaxPoolSize](#passengermaxpoolsize) to 10. The e-commerce website is more important to you. You can then set `PassengerMaxInstances` to 3 for your blog, so that it will never spawn more than 3 processes, even if it suddenly gets a lot of traffic. Your e-commerce website on the other hand will be free to spawn up to 10 processes if it gets a lot of traffic.
+
+
+### PassengerMaxInstancesPerApp
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxInstancesPerApp <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxInstancesPerApp 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The maximum number of application processes that may simultaneously exist for a single application. This helps to make sure that a single application will not occupy all available slots in the application pool.
+
+This value must be less than [PassengerMaxPoolSize](#passengermaxpoolsize). A value of 0 means that there is no limit placed on the number of processes a single application may use, i.e. only the global limit of `PassengerMaxPoolSize` will be enforced.
+
+#### Example
+
+Suppose that you're hosting two blogs (blog A and B) on your server, and that you've set [PassengerMaxPoolSize](#passengermaxpoolsize) to 10. Under normal circumstances, if blog A suddenly gets a lot of traffic, then A will use all 10 pool slots. If blog B suddenly gets some traffic, then it will only be able to use 1 pool slot (forcefully releasing 1 slot from A) until A's traffic has settled down and it has released more pool slots.
+
+If you consider both blogs equally important, then you can set `PassengerMaxInstancesPerApp` to 5. This way, both blogs will never use more than 5 pool slots.
+
+#### Relation to PassengerMaxInstances
+
+Unlike [PassengerMaxInstances](#passengermaxinstances), this configuration option is global and applies to all applications. `PassengerMaxInstances` on the other hand is per-virtual host.
+
+Suppose that you're hosting two web applications on your server, a personal blog and an e-commerce website. You've set [PassengerMaxPoolSize](#passengermaxpoolsize) to 10. The e-commerce website is more important to you. You can then set `PassengerMaxInstances` to 3 for your blog, so that it will never use more than 3 pool slots, even if it suddenly gets a lot of traffic. Your e-commerce website on the other hand will be free to use up all 10 slots if it gets a lot of traffic.
+
+In summary, `PassengerMaxInstancesPerApp` divides the pool equally among the different web applications, while 'PassengerMaxInstances' allows one to divide the pool unequally, according to each web application's relative importance.
+
+
+### PassengerPoolIdleTime
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerPoolIdleTime <em>seconds</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerPoolIdleTime 300 <em>(5 minutes)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>1.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The maximum number of seconds that an application process may be idle. That is, if an application process hasn't received any traffic after the given number of seconds, then it will be shutdown in order to conserve memory.
+
+Decreasing this value means that applications will have to be spawned more often. Since spawning is a relatively slow operation, some visitors may notice a small delay when they visit your web app. However, it will also free up resources used by applications more quickly.
+
+The optimal value depends on the average time that a visitor spends on a single dynamic page. We recommend a value of `2 * x`, where `x` is the average number of seconds that a visitor spends on a single dynamic page. But your mileage may vary.
+
+When this value is set to `0`, application processes will not be shutdown unless it's really necessary. Here is a situation where Passenger seems necessary to shutdown an application process. Suppose that you have two apps on your server, foo and bar. If a user visits foo, but there are no processes for foo, and at the same time there are lots of application processes for bar (as many as the [pool limit](#passengermaxpoolsize)), then Passenger will wait until one of those bar processes is no longer handling a request. At time time, that process will be shutdown so that Passenger can spawn a foo process.
+
+Setting the value to 0 is recommended if you're on a non-shared host that's only running a few applications, each which must be available at all times.
+
+
+### PassengerMaxPreloaderIdleTime
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxPreloaderIdleTime <em>seconds</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxPreloaderIdleTime 300 <em>(5 minutes)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host</td>
+  </tr>
+</table>
+
+The preloader process (explained in [Spawn methods](<%= url_for "/indepth/spawn_methods.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#passengerpoolidletime). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
+
+This option allows you to set the preloader's idle timeout, in seconds. A value of `0` means that it should never idle timeout.
+
+Setting a higher value will mean that the preloader is kept around longer, which may slightly increase memory usage. But as long as the preloader server is running, the time to spawn a Ruby application process only takes about 10% of the time that is normally needed, assuming that you're using the `smart` [spawn method](#passengerspawnmethod). So if your system has enough memory, then is it recommended that you set this option to a high value or to `0`.
+
+
+### PassengerStartTimeout
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerStartTimeout <em>seconds</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerStartTimeout 90</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.15</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+</table>
+
+Specifies a timeout for the startup of application processes. If an application process fails to start within the timeout period then it will be forcefully killed with SIGKILL, and the error will be logged.
+
+
+### PassengerConcurrencyModel
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerConcurrencyModel <em>process|thread</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerConcurrencyModel process</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Specifies the I/O concurrency model that should be used for Ruby application processes. Passenger supports two concurrency models:
+
+ * `process` -- single-threaded, multi-processed I/O concurrency. Each application process only has a single thread and can only handle 1 request at a time. This is the concurrency model that Ruby applications traditionally used. It has excellent compatiblity (can work with applications that are not designed to be thread-safe) but is unsuitable for workloads in which the application has to wait for a lot of external I/O (e.g. HTTP API calls), and uses more memory because each process has a large memory overhead.
+ * `thread` -- multi-threaded, multi-processed I/O concurrency. Each application process has multiple threads (customizable via [PassengerThreadCount](#passengerthreadcount). This model provides much better I/O concurrency and uses less memory because threads share memory with each other within the same process. However, using this model may cause compatibility problems if the application is not designed to be thread-safe.
+
+<div class="note">
+  <ul>
+    <li>This option only has effect on Ruby applications.</li>
+    <li>Multithreading is not supported for Python.</li>
+    <li>Multithreading is not applicable to Node.js, io.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+  </ul>
+</div>
+
+
+### PassengerThreadCount
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerThreadCount <em>process|thread</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerThreadCount 1</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Specifies the number of threads that Passenger should spawn per Ruby application process. This option only has effect if [PassengerConcurrencyModel](#passengerconcurrencymodel) is `thread`.
+
+<div class="note">
+  <ul>
+    <li>This option only has effect on Ruby applications.</li>
+    <li>Multithreading is not supported for Python.</li>
+    <li>Multithreading is not applicable to Node.js, io.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+  </ul>
+</div>
+
+
+### PassengerMaxRequests
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxRequests <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxRequests 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+</table>
+
+The maximum number of requests an application process will process. After serving that many requests, the application process will be shut down and Passenger will restart it. A value of 0 means that there is no maximum: an application process will thus be shut down when its [idle timeout](#passengerpoolidletime) has been reached.
+
+This option is useful if your application is leaking memory. By shutting it down after a certain number of requests, all of its memory is guaranteed to be freed by the operating system. An alternative (and better) mechanism for dealing with memory leaks is [PassengerMemoryLimit](#passengermemorylimit).
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
+</div>
+
+
+### PassengerMaxRequestTime
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxRequestTime <em>seconds</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxRequestTime 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+The maximum amount of time, in seconds, that an application process may take to process a request. If the request takes longer than this amount of time, then the application process will be forcefully shut down, and possibly restarted upon the next request. A value of 0 means that there is no time limit.
+
+This option is useful for preventing your application from getting stuck for an indefinite period of time.
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid stuck applications.
+</div>
+
+#### Example
+
+Suppose that most of your requests are known to finish within 2 seconds. However, there is one URI, `/expensive_computation`, which is known to take up to 10 seconds. You can then configure Passenger as follows:
+
+~~~
+<VirtualHost *:80>
+    ServerName www.example.com
+    DocumentRoot /webapps/my_app/public
+
+    PassengerMaxRequestTime 2
+    <Location /expensive_computation>
+        PassengerMaxRequestTime 10
+    </Location>
+</VirtualHost>
+~~~
+
+If a request to '/expensive_computation' takes more than 10 seconds, or if a request to any other URI takes more than 2 seconds, then the corresponding application process will be forced to shutdown.
+
+
+### PassengerMemoryLimit
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMemoryLimit <em>megabytes</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMemoryLimit 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will let finish processing all its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
+
+This option is useful if your application is leaking memory. By shutting it down, all of its memory is guaranteed to be freed by the operating system.
+
+<div class="info">
+  <h3 class="notoc">A word about permissions</h3>
+  <p>
+    This option uses the <code>ps</code> command to query memory usage information. On Linux, it further queries <code>/proc</code> to obtain additional memory usage information that's not obtainable through <code>ps</code>. You should ensure that the <code>ps</code> works correctly and that the <code>/proc</code> filesystem is accessible by the <code>Passenger core</code> process.
+  </p>
+</div>
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
+</div>
+
+
+### PassengerStatThrottleRate
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerStatThrottleRate <em>seconds</em></td>
+  </tr>
+  <tr>
+    <th>Default (as of 5.0.0)</th>
+    <td>PassengerStatThrottleRate 10</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>2.2.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+By default, Passenger performs several filesystem checks (or, in programmers jargon, "`stat()` calls") each time a request is processed:
+
+ * It checks which the application [startup files](<%= url_for "/indepth/app_autodetection/#{integration_mode_type}/" %>) are present, in order to autodetect the application type.
+ * It checks whether [restart.txt](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>) has changed or whether `always_restart.txt` exists, in order to determine whether the application should be restarted.
+
+On some systems where disk I/O is expensive, e.g. systems where the harddisk is already being heavily loaded, or systems where applications are stored on NFS shares, these filesystem checks can incur a lot of overhead.
+
+You can decrease or almost entirely eliminate this overhead by setting `PassengerStatThrottleRate`. Setting this option to a value of `x` means that the above list of filesystem checks will be performed at most once every `x` seconds. Setting it to a value of '0' means that no throttling will take place, or in other words, that the above list of filesystem checks will be performed on every request.
+
+
+### PassengerPreStart
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerPreStart <em>url</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host</td>
+  </tr>
+</table>
+
+By default, Passenger does not start any application processes until said web application is first accessed. The result is that the first visitor of said web application might experience a small delay as Passenger is starting the web application on demand. If that is undesirable, then this directive can be used to pre-started application processes during Apache startup.
+
+A few things to be careful of:
+
+ * This directive accepts the *URL* of the web application you want to pre-start, not a on/off value! This might seem a bit weird, but read on for rationale. As for the specifics of the URL:
+   - The domain part of the URL must be equal to the value of the `ServerName` directive of the VirtualHost block that defines the web application.
+   - Unless the web application is deployed on port 80, the URL should contain the web application's port number too.
+   - The path part of the URL must point to some URI that the web application handles.
+ * You will probably want to combine this option with [PassengerMinInstances](#passengermininstances) because application processes started with `PassengerPreStart` are subject to the usual idle timeout rules. See the example below for an explanation.
+
+#### Example 1: basic usage
+
+Suppose that you have the following web applications.
+
+~~~
+<VirtualHost *:80>
+   ServerName foo.com
+   DocumentRoot /webapps/foo/public
+</VirtualHost>
+
+<VirtualHost *:3500>
+   ServerName bar.com
+   DocumentRoot /webapps/bar/public
+</VirtualHost>
+~~~
+
+You want both of them to be pre-started during Apache startup. The URL for foo.com is `http://foo.com/` (or, equivalently, `http://foo.com:80/`) and the URL for bar.com is 'http://bar.com:3500/'. So we add two `PassengerPreStart` directives, like this:
+
+~~~
+<VirtualHost *:80>
+   ServerName foo.com
+   DocumentRoot /webapps/foo/public
+</VirtualHost>
+
+<VirtualHost *:3500>
+   ServerName bar.com
+   DocumentRoot /webapps/bar/public
+</VirtualHost>
+
+PassengerPreStart http://foo.com/           # <--- added
+PassengerPreStart http://bar.com:3500/      # <--- added
+~~~
+
+#### Example 2: pre-starting apps that are deployed in sub-URIs
+
+Suppose that you have a web application deployed in a sub-URI `/store`, like this:
+
+~~~
+<VirtualHost *:80>
+   ServerName myblog.com
+   DocumentRoot /webapps/wordpress
+
+   Alias /store /websites/store/public
+    <Location /store>
+        PassengerBaseURI /store
+        PassengerAppRoot /websites/store
+    </Location>
+    <Directory /websites/store/public>
+        Allow from all
+        Options -MultiViews
+        # Uncomment this if you're on Apache >= 2.4:
+        #Require all granted
+    </Directory>
+</VirtualHost>
+~~~
+
+Then specify the domain name of its containing virtual host followed by the sub-URI, like this:
+
+~~~
+<VirtualHost *:80>
+   ServerName myblog.com
+   DocumentRoot /webapps/wordpress
+
+   Alias /store /websites/store/public
+    <Location /store>
+        PassengerBaseURI /store
+        PassengerAppRoot /websites/store
+    </Location>
+    <Directory /websites/store/public>
+        Allow from all
+        Options -MultiViews
+        # Uncomment this if you're on Apache >= 2.4:
+        #Require all granted
+    </Directory>
+</VirtualHost>
+
+PassengerPreStart http://myblog.com/store    # <----- added
+~~~
+
+The sub-URI *must* be included; if you don't then the directive will have no effect. The following example is wrong and won't pre-start the store web application:
+
+~~~
+PassengerPreStart http://myblog.com/    # <----- WRONG! Missing "/store" part.
+~~~
+
+#### Example 3: combining with PassengerMinInstances
+
+Application processes started with `PassengerPreStart` are also subject to the idle timeout rules as specified by [PassengerPoolIdleTime](#passengerpoolidletime)! That means that by default, the pre-started application processes for foo.com and bar.com are shut down after a few minutes of inactivity. If you don't want that to happen, then you should combine PassengerPreStart with [PassengerMinInstances](#passengermininstances), like this:
+
+~~~
+<VirtualHost *:80>
+   ServerName foo.com
+   DocumentRoot /webapps/foo/public
+   # Added!
+   PassengerMinInstances 1
+</VirtualHost>
+
+<VirtualHost *:3500>
+   ServerName bar.com
+   DocumentRoot /webapps/bar/public
+   # Added!
+   PassengerMinInstances 1
+</VirtualHost>
+
+PassengerPreStart http://foo.com/
+PassengerPreStart http://bar.com:3500/
+~~~
+
+#### So why a URL? Why not just an on/off flag?
+
+A directive that accepts a simple on/off flag is definitely more intuitive, but due technical difficulties w.r.t. the way Apache works, it's very hard to implement it like that:
+
+ * It is very hard to obtain a full list of web applications defined in the Apache configuration file(s). In other words, it's hard for Passenger to know which web applications are deployed on Apache until a web application is first accessed, and without such a list Passenger wouldn't know which web applications to pre-start. It's probably not completely impossible to obtain such a list, but this brings us to the following point;
+ * Users expect things like `mod_env` to work even in combination with Passenger. For example some people put `SetEnv PATH ....` in their virtual host block and they expect the web application to pick that environment variable up when it's started. Information like this is stored in module-specific locations that Passenger cannot access directly. Even if the previous bullet point is solved and we can obtain a list of web applications, we cannot start the application with the correct `mod_env` information. `mod_env` is just one such example; there are probably many other Apache modules, all of which people expect to work, but we cannot answer to those expectations if `PassengerPreStart` is implemented as a simple on/off flag.
+
+So as a compromise, we made it accept a URL. This is easier to implement for us and altough it looks weird, it behaves consistently w.r.t. cooperation with other Apache modules.
+
+#### What does Passenger do with the URL?
+
+During Apache startup, Passenger will send a dummy HEAD request to the given URL and discard the result. In other words, Passenger simulates a web access at the given URL. However this simulated request is always sent to localhost, *not* to the IP that the domain resolves to. Suppose that bar.com in example 1 resolves to 209.85.227.99; Passenger will send the following HTTP request to 127.0.0.1 port 3500 (and not to 209.85.227.99 port 3500):
+
+~~~
+HEAD / HTTP/1.1
+Host: bar.com
+Connection: close
+~~~
+
+Similarly, for example 2, Passenger will send the following HTTP request to 127.0.0.1 port 80:
+
+~~~
+HEAD /store HTTP/1.1
+Host: myblog.com
+Connection: close
+~~~
+
+#### Do I need to edit /etc/hosts and point the domain in the URL to 127.0.0.1?
+
+No. See previous subsection.
+
+#### My web application consists of multiple web servers. What URL do I need to specify, and in which web server's Apache config file?
+
+Put the web application's virtual host's `ServerName` value and the virtual host's port in the URL, and put `PassengerPreStart` on all machines that you want to pre-start the web application on. The simulated web request is always sent to 127.0.0.1, with the domain name in the URL as value for the `Host` HTTP header, so you don't need to worry about the request ending up at a different web server in the cluster.
+
+#### Does PassengerPreStart support https:// URLs?
+
+Yes. And it does not perform any certificate validation.
+
+
+### PassengerHighPerformance
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerHighPerformance <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerHighPerformance off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>2.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+By default, Passenger is compatible with `mod_rewrite` and most other Apache modules. However, a lot of effort is required in order to be compatible. If you turn `PassengerHighPerformance` on, then Passenger will be a little faster, in return for reduced compatibility with other Apache modules.
+
+In places where `PassengerHighPerformance` is turned on, `mod_rewrite` rules will likely not work. `mod_autoindex` (the module which displays a directory index) will also not work. Other Apache modules may or may not work, depending on what
+they exactly do. We recommend you to find out how other modules behave in high performance mode via testing.
+
+This option is *not* an all-or-nothing global option: you can enable high performance mode for certain virtual hosts or certain URLs only.
+
+#### When to enable high performance mode?
+
+If you do not use `mod_rewrite` or other Apache modules then it might make sense to enable high performance mode.
+
+It's likely that some of your applications depend on `mod_rewrite` or other Apache modules, while some do not. In that case you can enable high performance for only those applications that don't use other Apache modules. For example:
+
+~~~
+<VirtualHost *:80>
+    ServerName www.foo.com
+    DocumentRoot /apps/foo/public
+    .... mod_rewrite rules or options for other Apache modules here ...
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName www.bar.com
+    DocumentRoot /apps/bar/public
+    PassengerHighPerformance on
+</VirtualHost>
+~~~
+
+In the above example, high performance mode is only enabled for www.bar.com. It is disabled for everything else.
+
+If your application generally depends on `mod_rewrite` or other Apache modules, but a certain URL that's accessed often doesn't depend on those other modules, then you can enable high performance mode for a certain URL only. For example:
+
+~~~
+<VirtualHost *:80>
+    ServerName www.foo.com
+    DocumentRoot /apps/foo/public
+    .... mod_rewrite rules or options for other Apache modules here ...
+
+    <Location /chatroom/ajax_update_poll>
+        PassengerHighPerformance on
+    </Location>
+</VirtualHost>
+~~~
+
+This enables high performance mode for http://www.foo.com/chatroom/ajax_update_poll only.
