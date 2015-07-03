@@ -106,9 +106,9 @@
   </p>
   <!-- TODO: fix link -->
   <% if integration_mode_type == :apache %>
-    <p>You tell Passenger which Ruby interpreter to use for a specific app, by using the <a href="https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerRuby">PassengerRuby</a> directive. This can be customized on a per-application basis.</p>
+    <p>You tell Passenger which Ruby interpreter to use for a specific app, by using the <a href="<%= url_for "/config/apache/reference/index.html" %>#passengerruby">PassengerRuby</a> directive. This can be customized on a per-application basis.</p>
   <% elsif integration_mode_type == :nginx %>
-    <p>You tell Passenger which Ruby interpreter to use for a specific app, by using the <a href="https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerRuby">passenger_ruby</a> directive. This can be customized on a per-application basis.</p>
+    <p>You tell Passenger which Ruby interpreter to use for a specific app, by using the <a href="<%= url_for "/config/nginx/reference/index.html" %>#passenger_ruby">passenger_ruby</a> directive. This can be customized on a per-application basis.</p>
   <% else %>
     <p>You tell Passenger which Ruby interpreter to use by using the <code>--ruby</code> command line option.</p>
   <% end %>

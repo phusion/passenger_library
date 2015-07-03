@@ -4,30 +4,30 @@ This section lists some common problems that are specific to the Ruby on Rails w
 
 The "About your application's environment" link only works if the application is started in the "development" environment.  Passenger starts the application in the "production" environment by default.
 
-Use the 
+Use the
 <% if integration_mode_type == :nginx %>
-[rails_env](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#RailsEnv) configuration option
+[rails_env](<%= url_for "/config/nginx/reference/index.html" %>#rails_env) configuration option
 <% end %>
 <% if integration_mode_type == :apache %>
-[RailsEnv](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#RailsEnv) configuration option
+[RailsEnv](<%= url_for "/config/apache/reference/index.html" %>#railsenv) configuration option
 <% end %>
 <% if integration_mode_type == :standalone %>
-`--environment` command line parameter 
+`--environment` command line parameter
 <% end %>
 to change this.
 
 ### The Rails application reports that it's unable to start because of a permission error
 
-Please check whether your Rails application's directory has the correct permissions. By default, Rails applications are started as the owner of the file `config.ru`, except if the file is owned by root. If the file is owned by root, then the Rails application will be started as 'nobody' 
+Please check whether your Rails application's directory has the correct permissions. By default, Rails applications are started as the owner of the file `config.ru`, except if the file is owned by root. If the file is owned by root, then the Rails application will be started as 'nobody'
 <% if integration_mode_type == :nginx -%>
-(or as the user specified by [passenger_default_user](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerDefaultUser)).
+(or as the user specified by [passenger_default_user](<%= url_for "/config/nginx/reference/index.html" %>#passenger_default_user)).
 
-Please read [User switching](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#user_switching) for details.
+Please read [User account sandboxing](<%= url_for "/deploy/nginx/user_sandboxing.html" %>) for details.
 <% end -%>
 <% if integration_mode_type == :apache -%>
-(or as the user specified by [PassengerDefaultUser](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerDefaultUser)).
+(or as the user specified by [PassengerDefaultUser](<%= url_for "/config/nginx/reference/index.html" %>#passengerdefaultuser)).
 
-Please read [User switching](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#user_switching) for details.
+Please read [User account sandboxing](<%= url_for "/deploy/apache/user_sandboxing.html" %>) for details.
 <% end -%>
 <% if integration_mode_type == :standalone -%>
 (or as the user specified by the `--user` command line parameter)).

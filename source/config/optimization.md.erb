@@ -44,7 +44,7 @@ For consistent performance, it is thus recommended that you configure a static p
   <pre class="highlight">passenger_min_instances N;</pre>
 
   <p>
-    You should also configure <a href="https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerPreStart">passenger_pre_start</a> in the <code>http</code> block so that your app is started during web server launch:
+    You should also configure <a href="<%= url_for "/config/nginx/reference/index.html" %>#passenger_pre_start">passenger_pre_start</a> in the <code>http</code> block so that your app is started during web server launch:
   </p>
 
   <pre class="highlight">passenger_pre_start http://your-website-url.com;</pre>
@@ -62,7 +62,7 @@ For consistent performance, it is thus recommended that you configure a static p
   <pre class="highlight">PassengerMinInstances N</pre>
 
   <p>
-    You should also configure <a href="https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerPreStart">PassengerPreStart</a> in the global context so that your app is started during web server launch:
+    You should also configure <a href="<%= url_for "/config/apache/reference/index.html" %>#passengerprestart">PassengerPreStart</a> in the global context so that your app is started during web server launch:
   </p>
 
   <pre class="highlight">PassengerPreStart http://your-website-url.com</pre>
