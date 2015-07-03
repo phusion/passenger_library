@@ -468,7 +468,7 @@ Note that it is not necessary to set `PassengerAppGroupName` if you want to run 
   <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName bar.com
     DocumentRoot /webapps/bar/public
-    <span class="c"># Phusion Passenger implicitly sets:
+    <span class="c"># Passenger implicitly sets:
     # PassengerAppGroupName /webapps/bar</span>
 &lt;/VirtualHost&gt;
 
@@ -476,7 +476,7 @@ Note that it is not necessary to set `PassengerAppGroupName` if you want to run 
     ServerName staging.bar.com
     DocumentRoot /webapps/bar/public
     PassengerAppEnv staging
-    <span class="c"># Phusion Passenger implicitly sets:
+    <span class="c"># Passenger implicitly sets:
     # PassengerAppGroupName '/webapps/bar (staging)'</span>
 &lt;/VirtualHost&gt;</pre>
 </div>
@@ -573,7 +573,7 @@ Every application has a *startup file* or *entry point file*: a file where the a
 
 Other languages have no conventions at all, and so Passenger invents one (e.g. Python WSGI with `passenger_wsgi.py`).
 
-Here's a list of the language-specific conventions that Phusion Passenger accepts:
+Here's a list of the language-specific conventions that Passenger accepts:
 
 <table class="table table-striped table-bordered">
   <thead>
@@ -649,7 +649,7 @@ You can either set it to an absolute directory, or to a directory relative to th
 <div>
   <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName www.foo.com
-    <span class="c"># Phusion Passenger will check for /apps/foo/public/tmp/restart.txt</span>
+    <span class="c"># Passenger will check for /apps/foo/public/tmp/restart.txt</span>
     DocumentRoot /apps/foo/public
 &lt;/VirtualHost&gt;
 
@@ -1040,6 +1040,8 @@ The optimal value depends on your system's hardware and your workload. Please re
 
 If you find that your server is running out of memory then you should lower this value. In order to prevent your server from crashing due to out-of-memory conditions, the default value is relatively low (6).
 
+<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--max-pool-size")) %>
+
 
 ### PassengerMinInstances
 
@@ -1197,6 +1199,8 @@ When this value is set to `0`, application processes will not be shutdown unless
 
 Setting the value to 0 is recommended if you're on a non-shared host that's only running a few applications, each which must be available at all times.
 
+<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--pool-idle-time")) %>
+
 
 ### PassengerMaxPreloaderIdleTime
 
@@ -1295,7 +1299,7 @@ Specifies the I/O concurrency model that should be used for Ruby application pro
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>PassengerThreadCount <em>process|thread</em></td>
+    <td>PassengerThreadCount <em>integer</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -1500,15 +1504,19 @@ You can decrease or almost entirely eliminate this overhead by setting `Passenge
   </tr>
 </table>
 
-By default, Passenger does not start any application processes until said web application is first accessed. The result is that the first visitor of said web application might experience a small delay as Passenger is starting the web application on demand. If that is undesirable, then this directive can be used to pre-started application processes during Apache startup.
+By default, Passenger does not start any application processes until said web application is first accessed. The result is that the first visitor of said web application might experience a small delay as Passenger is starting the web application on demand. If that is undesirable, then this option can be used to pre-started application processes during Apache startup.
 
 A few things to be careful of:
 
- * This directive accepts the *URL* of the web application you want to pre-start, not a on/off value! This might seem a bit weird, but read on for rationale. As for the specifics of the URL:
-   - The domain part of the URL must be equal to the value of the `ServerName` directive of the VirtualHost block that defines the web application.
+ * This option accepts the *URL* of the web application you want to pre-start, not a on/off value! This might seem a bit weird, but read on for rationale. As for the specifics of the URL:
+   - The domain part of the URL must be equal to the value of the `ServerName` option of the VirtualHost block that defines the web application.
    - Unless the web application is deployed on port 80, the URL should contain the web application's port number too.
    - The path part of the URL must point to some URI that the web application handles.
  * You will probably want to combine this option with [PassengerMinInstances](#passengermininstances) because application processes started with `PassengerPreStart` are subject to the usual idle timeout rules. See the example below for an explanation.
+
+<div class="note">
+  This option is currently not available when using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>.
+</div>
 
 #### Example 1: basic usage
 
@@ -1526,7 +1534,7 @@ Suppose that you have the following web applications.
 </VirtualHost>
 ~~~
 
-You want both of them to be pre-started during Apache startup. The URL for foo.com is `http://foo.com/` (or, equivalently, `http://foo.com:80/`) and the URL for bar.com is 'http://bar.com:3500/'. So we add two `PassengerPreStart` directives, like this:
+You want both of them to be pre-started during Apache startup. The URL for foo.com is `http://foo.com/` (or, equivalently, `http://foo.com:80/`) and the URL for bar.com is `http://bar.com:3500/`. So we add two `PassengerPreStart` options, like this:
 
 ~~~
 <VirtualHost *:80>
@@ -1589,7 +1597,7 @@ Then specify the domain name of its containing virtual host followed by the sub-
 PassengerPreStart http://myblog.com/store    # <----- added
 ~~~
 
-The sub-URI *must* be included; if you don't then the directive will have no effect. The following example is wrong and won't pre-start the store web application:
+The sub-URI *must* be included; if you don't then the option will have no effect. The following example is wrong and won't pre-start the store web application:
 
 ~~~
 PassengerPreStart http://myblog.com/    # <----- WRONG! Missing "/store" part.
@@ -1597,7 +1605,7 @@ PassengerPreStart http://myblog.com/    # <----- WRONG! Missing "/store" part.
 
 #### Example 3: combining with PassengerMinInstances
 
-Application processes started with `PassengerPreStart` are also subject to the idle timeout rules as specified by [PassengerPoolIdleTime](#passengerpoolidletime)! That means that by default, the pre-started application processes for foo.com and bar.com are shut down after a few minutes of inactivity. If you don't want that to happen, then you should combine PassengerPreStart with [PassengerMinInstances](#passengermininstances), like this:
+Application processes started with `PassengerPreStart` are also subject to the idle timeout rules as specified by [PassengerPoolIdleTime](#passengerpoolidletime)! That means that by default, the pre-started application processes for foo.com and bar.com are shut down after a few minutes of inactivity. If you don't want that to happen, then you should combine `PassengerPreStart` with [PassengerMinInstances](#passengermininstances), like this:
 
 ~~~
 <VirtualHost *:80>
@@ -1620,7 +1628,7 @@ PassengerPreStart http://bar.com:3500/
 
 #### So why a URL? Why not just an on/off flag?
 
-A directive that accepts a simple on/off flag is definitely more intuitive, but due technical difficulties w.r.t. the way Apache works, it's very hard to implement it like that:
+An option that accepts a simple on/off flag is definitely more intuitive, but due technical difficulties w.r.t. the way Apache works, it's very hard to implement it like that:
 
  * It is very hard to obtain a full list of web applications defined in the Apache configuration file(s). In other words, it's hard for Passenger to know which web applications are deployed on Apache until a web application is first accessed, and without such a list Passenger wouldn't know which web applications to pre-start. It's probably not completely impossible to obtain such a list, but this brings us to the following point;
  * Users expect things like `mod_env` to work even in combination with Passenger. For example some people put `SetEnv PATH ....` in their virtual host block and they expect the web application to pick that environment variable up when it's started. Information like this is stored in module-specific locations that Passenger cannot access directly. Even if the previous bullet point is solved and we can obtain a list of web applications, we cannot start the application with the correct `mod_env` information. `mod_env` is just one such example; there are probably many other Apache modules, all of which people expect to work, but we cannot answer to those expectations if `PassengerPreStart` is implemented as a simple on/off flag.
