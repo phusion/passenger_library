@@ -761,7 +761,7 @@ Note that enabling deployment error resistance only works if you perform a [roll
   </tr>
   <tr>
     <th>Since</th>
-    <td>1.0.0</td>
+    <td>2.0.0</td>
   </tr>
   <tr>
     <th>Context</th>
@@ -843,7 +843,7 @@ The value may also be set to the special value `!STARTUP_FILE!`, in which case t
   </tr>
   <tr>
     <th>Since</th>
-    <td>4.0.0</td>
+    <td>3.0.0</td>
   </tr>
   <tr>
     <th>Context</th>
@@ -872,7 +872,7 @@ run as, if user switching fails or is disabled.
   </tr>
   <tr>
     <th>Since</th>
-    <td>4.0.0</td>
+    <td>3.0.0</td>
   </tr>
   <tr>
     <th>Context</th>
@@ -958,4 +958,4 @@ X-Powered-By: Phusion Passenger
 
 Passenger can display friendly error pages whenever an application fails to start. This friendly error page presents the startup error message, some suggestions for solving the problem, a backtrace and a dump of the environment variables.
 
-This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are turned off by default when [passenger_app_env](#passenger_app_env) (or its aliases such as `rails_env` and `rack_env`) is set to `staging` or `production`, but enabled by default otherwise. You can use this option to explicitly enable or disable this feature.
+This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are disabled by default when [passenger_app_env](#passenger_app_env) (or its aliases such as `rails_env` and `rack_env`) is set to `staging` or `production`, but enabled by default otherwise. You can use this option to explicitly enable or disable this feature.
