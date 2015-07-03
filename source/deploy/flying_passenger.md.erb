@@ -161,14 +161,22 @@ Requests in top-level queue : 0
 ## Configuring Flying Passenger
 
 <% if integration_mode_type == :nginx %>
-Flying Passenger gets *some* configuration from Nginx, but not all. In particular, most web server directives that are only valid in the `http` context, e.g. `passenger_log_level`, have no effect when using Flying Passenger.
+Flying Passenger gets *some* configuration from Nginx, but not all. In particular, most web server directives that are only valid in the `http` context, e.g. [passenger_log_level](<%= url_for "/config/nginx/reference/index.html" %>#passenger_log_level), have no effect when using Flying Passenger.
 <% end %>
 <% if integration_mode_type == :apache %>
-Flying Passenger gets *some* configuration from Apache, but not all. In particular, most web server directives that are only valid in the global context, e.g. `PassengerLogLevel`, have no effect when using Flying Passenger.
+Flying Passenger gets *some* configuration from Apache, but not all. In particular, most web server directives that are only valid in the global context, e.g. [PassengerLogLevel](<%= url_for "/config/apache/reference/index.html" %>#passengerloglevel), have no effect when using Flying Passenger.
 <% end %>
 Instead, you are supposed to pass these configuration directives through command line options to the Flying Passenger daemon. Configuration directives that have no effect on Flying Passenger are documented as such. You can assume that configuration directives that are not documented as such, work fine on Flying Passenger.
 
-For example, to achieve the same effect as setting `passenger_log_level`/`PassengerLogLevel` to 2, run the Flying Passenger daemon as follows:
+For example, to achieve the same effect as setting
+<% if integration_mode_type == :nginx -%>
+  `passenger_log_level`
+<% elsif integration_mode_type == :apache -%>
+  `PassengerLogLevel`
+<% else %>
+  <% raise "TODO" %>
+<% end -%>
+to 2, run the Flying Passenger daemon as follows:
 
 <pre class="highlight"><span class="prompt">$ </span>sudo flying-passenger --socket-file=/var/run/flying-passenger.sock --log-level=2</pre>
 
@@ -272,17 +280,24 @@ Beware of the following caveats and limitations when using Flying Passenger.
 
 The Flying Passenger daemon is written in Ruby. It requires a Ruby interpreter with proper `Process#spawn` support. At the time of writing, all Ruby interpreters in existance satisfy this requirement, except for MRI Ruby 1.8 and JRuby. See [Using Flying Passenger with MRI 1.8 or JRuby](#using-flying-passenger-with-mri-18-or-jruby) for more information.
 
-When you add a new application to the web server configuration, Flying Passenger will automatically pick up the application's settings and spawn this new application upon the first request to it. However it is not capable of automatically starting the new app before a request has been sent to it (i.e. `passenger_pre_start`/`PassengerPreStart`-like
- behavior is not available in this case). As a workaround, you can send an HTTP request to your application after starting the daemon, which forces it to spawn application processes.
+When you add a new application to the web server configuration, Flying Passenger will automatically pick up the application's settings and spawn this new application upon the first request to it. However it is not capable of automatically starting the new app before a request has been sent to it (i.e.
+<% if integration_mode_type == :nginx -%>
+  [passenger_pre_start](<%= url_for "/config/nginx/reference/index.html" %>#passenger_pre_start)-like
+<% elsif integration_mode_type == :apache -%>
+  [PassengerPreStart](<%= url_for "/config/apache/reference/index.html" %>#passengerprestart)-like
+<% else -%>
+  <% raise "TODO" %>
+<% end -%>
+behavior is not available in this case). As a workaround, you can send an HTTP request to your application after starting the daemon, which forces it to spawn application processes.
 
 <% if integration_mode_type == :nginx %>
 ### Nginx
 
 The Nginx executable **must** be compiled with the same version of Passenger as the Flying Passenger daemon. Failing to meet this requirement may result in cryptic errors, or may result in certain features not working, until you've fixed the situation. When upgrading Passenger, you must restart both Nginx and the Flying Passenger daemon.
 
-The `passenger_root` directive has no effect. When using Flying Passenger, you are not supposed to set `passenger_root`.
+The [passenger_root](<%= url_for "/config/nginx/reference/index.html" %>#passenger_root) directive has no effect. When using Flying Passenger, you are not supposed to set `passenger_root`.
 
-When you remove an application from the web server configuration, Flying Passenger will not detect the removal and will not shut down the associated application processes. Killing the application processes will also not help, because Flying Passenger will restart them per the (now-removed, but still in the Flying Passenger daemon's memory) `passengerMin_instances` settings. At the moment, there are two ways to get rid of those processes:
+When you remove an application from the web server configuration, Flying Passenger will not detect the removal and will not shut down the associated application processes. Killing the application processes will also not help, because Flying Passenger will restart them per the (now-removed, but still in the Flying Passenger daemon's memory) [passenger_min_instances](<%= url_for "/config/nginx/reference/index.html" %>#passenger_min_instances) setting. At the moment, there are two ways to get rid of those processes:
 
  1. Before removing the application from the web server configuration, explicitly set its `passenger_min_instances` to 0. Next, send a request to it, which will cause the Flying Passenger daemon to take over the new `passenger_min_instances 0` option. You can then proceed with removing the application from the web server configuration, and restarting the web server. Finally, kill the PIDs associated to those application processes and remove the application configuration.
  2. Restart the Flying Passenger daemon.
@@ -292,9 +307,9 @@ When you remove an application from the web server configuration, Flying Passeng
 
 The Passenger module that is loaded into Apache, **must** be of the same version as the Flying Passenger daemon. Failing to meet this requirement may result in cryptic errors, or may result in certain features not working, until you've fixed the situation. When upgrading Passenger, you must restart both Apache and the Flying Passenger daemon.
 
-The `PassengerRoot` directive has no effect. When using Flying Passenger, you are not supposed to set `PassengerRoot`.
+The [PassengerRoot](<%= url_for "/config/apache/reference/index.html" %>#passengerroot) directive has no effect. When using Flying Passenger, you are not supposed to set `PassengerRoot`.
 
-When you remove an application from the web server configuration, Flying Passenger will not detect the removal and will not shut down the associated application processes. Killing the application processes will also not help, because Flying Passenger will restart them per the (now-removed, but still in the Flying Passenger daemon's memory) `PassengerMinInstances` settings. At the moment, there are two ways to get rid of those processes:
+When you remove an application from the web server configuration, Flying Passenger will not detect the removal and will not shut down the associated application processes. Killing the application processes will also not help, because Flying Passenger will restart them per the (now-removed, but still in the Flying Passenger daemon's memory) [PassengerMinInstances](<%= url_for "/config/apache/reference/index.html" %>#passengermininstances) setting. At the moment, there are two ways to get rid of those processes:
 
  1. Before removing the application from the web server configuration, explicitly set its `PassengerMinInstances` to 0. Next, send a request to it, which will cause the Flying Passenger daemon to take over the new `PassengerMinInstances 0` option. You can then proceed with removing the application from the web server configuration, and restarting the web server. Finally, kill the PIDs associated to those application processes and remove the application configuration.
  2. Restart the Flying Passenger daemon.
