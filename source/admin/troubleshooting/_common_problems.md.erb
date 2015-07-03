@@ -12,9 +12,9 @@ Passenger starts your application the first time it is accessed, not during web 
 #### Solution
 
 <% if integration_mode_type == :nginx %>
-  Use the [passenger_pre_start](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerPreStart) configuration option.
+  Use the [passenger_pre_start](<%= url_for "/config/nginx/reference/index.html" %>#passenger_pre_start) configuration option.
 <% else %>
-  [PassengerPreStart (Apache)](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerPreStart)
+  [PassengerPreStart (Apache)](<%= url_for "/config/nginx/reference/index.html" %>#passengerprestart)
 <% end %>
 <% end %>
 
