@@ -2308,3 +2308,27 @@ You can disable client request body buffering by turning [PassengerBufferUpload]
 This option may be specified once, in the global server configuration.
 
 <%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--data-buffer-dir")) %>
+
+
+### PassengerFlyWith
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerFlyWith <em>path-to-socket</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Flying Passenger mode disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.45</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) mode, and configures Apache to connect to the Flying Passenger daemon that's listening on the given socket filename.
