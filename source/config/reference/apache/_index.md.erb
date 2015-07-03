@@ -1992,3 +1992,319 @@ If you have a load balancer in front end of Passenger + Apache, then you must co
 </table>
 
 Sets the name of the [sticky sessions](#passengerstickysessions) cookie.
+
+
+## Compatibility options
+
+### PassengerResolveSymlinksInDocumentRoot
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerResolveSymlinksInDocumentRoot <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerResolveSymlinksInDocumentRoot off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+Configures whether Passenger should resolve symlinks in the document root. Please read [How Passenger autodetects applications](<%= url_for "/indepth/app_autodetection/apache/index.html" %>) for more information.
+
+### PassengerAllowEncodedSlashes
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAllowEncodedSlashes <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerAllowEncodedSlashes off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+By default, Apache doesn't support URLs with encoded slashes (%2f), e.g. URLs like this: `/users/fujikura%2fyuu`. If you access such an URL then Apache will return a 404 Not Found error. This can be solved by turning on `PassengerAllowEncodedSlashes` as well as Apache's [AllowEncodedSlashes](http://httpd.apache.org/docs/2.4/mod/core.html#allowencodedslashes).
+
+Is it important that you turn on both `AllowEncodedSlashes` *and* `PassengerAllowEncodedSlashes`, otherwise this feature will not work properly.
+
+Please note however that turning on support for encoded slashes will break support for `mod_rewrite` passthrough rules. Because of bugs/limitations in Apache, Passenger can support either encoded slashes or `mod_rewrite` passthrough rules, but not both at the same time. Luckily this option can be specified anywhere, so you can enable it only for virtual hosts or URLs that need it:
+
+<pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.example.com
+    DocumentRoot /webapps/example/public
+    AllowEncodedSlashes on
+    RewriteEngine on
+
+    <span class="c"># Check for maintenance file and redirect all requests</span>
+    RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+    RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+    RewriteRule ^.*$ /system/maintenance.html [L]
+
+    <span class="c"># Make /about an alias for /info/about.</span>
+    RewriteRule ^/about$ /info/about [PT,L]
+
+    &lt;Location ~ "^/users/"&gt;
+        <span class="c"># In a location block so that it doesn't interfere with the
+        # above /about mod_rewrite rule.</span>
+        PassengerAllowEncodedSlashes on
+    &lt;/Location&gt;
+&lt;/VirtualHost&gt;</pre>
+
+With this, `http://www.example.com/users/fujikura%2fyuu` will work properly, and accessing `http://www.example.com/about` will properly display the result of `http://www.example.com/info/about`. Notice that `PassengerAllowEncodedSlashes` only interferes with passthrough rules, not with any other `mod_rewrite` rules. The rules for displaying maintenance.html will work fine even for URLs starting with "/users".
+
+
+## Logging and debugging options
+
+### PassengerLogLevel
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerLogLevel <em>number</em></td>
+  </tr>
+  <tr>
+    <th>Default (as of 5.0.0)</th>
+    <td>PassengerLogLevel 3</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+This option allows one to specify how much information Passenger should write to the Apache error log file. A higher log level value means that more information will be logged.
+
+Possible values are:
+
+ * `0` (crit): Show only critical errors which would cause Passenger to abort.
+ * `1` (error): Also show non-critical errors -- errors that do not cause Passenger to abort.
+ * `2` (warn): Also show warnings. These are not errors, and Passenger continues to operate correctly, but they might be an indication that something is wrong with the system.
+ * `3` (notice): Also show important informational messages. These give you a high-level overview of what Passenger is doing.
+ * `4` (info): Also show less important informational messages. These messages show more details about what Passenger is doing. They're high-level enough to be readable by users.
+ * `5` (debug): Also show the most important debugging information. Reading this information requires some system or programming knowledge, but the information shown is typically high-level enough to be understood by experienced system administrators.
+ * `6` (debug2): Show more debugging information. This is typically only useful for developers.
+ * `7` (debug3): Show even more debugging information.
+
+
+### PassengerLogFile
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerLogFile <em>filename</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerLogFile <em>path-to-apache-global-error-log</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.5</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+By default Passenger log messages are written to the Apache global error log. With this option, you can have those messages logged to a different file instead.
+
+
+### PassengerFileDescriptorLogFile
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerFileDescriptorLogFile <em>filename</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerFileDescriptorLogFile <em>path-to-apache-global-error-log</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.5</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+Log file descriptor debug tracing messages to the given file.
+
+Passenger has the ability to log all file descriptors that it opens and closes. These logs are useful to the Passenger developers for the purpose of analyzing file descriptor leaks.
+
+File descriptor activity is logged as follows:
+
+ * If `PassengerFileDescriptorLogFile` is not set, then file descriptor activity is logged to the [main log file](#passengerlogfile), but only if the [log level](#passengerloglevel) is 5 (debug) or higher.
+ * If `PassengerFileDescriptorLogFile` is set, then file descriptor activity is logged to the specified file, regardless of the log level.
+
+
+### PassengerDebugger
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDebugger <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerDebugger off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+<div class="note">
+  At this time, this feature is supported for Ruby applications only.
+</div>
+
+Turns support for application debugging on or off. In case of Ruby applications, turning this option on will cause them to load the `ruby-debug` gem (when on Ruby 1.8), the `debugger` gem (when on Ruby 1.9) or the `byebug` gem (when on Ruby >= 2.0). If you're using Bundler, you should add this to your Gemfile:
+
+~~~ruby
+gem 'ruby-debug', :platforms => :ruby_18
+gem 'debugger', :platforms => :ruby_19
+gem 'byebug', :platforms => :ruby_20
+~~~
+
+Once debugging is turned on, you can use the command `passenger-irb --debug <PID>` to attach an debugging console to the application process with the given PID. Attaching will succeed once the application process executes a `debugger` command.
+
+
+## Advanced options
+
+### PassengerInstanceRegistryDir
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerInstanceRegistryDir <em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerInstanceRegistryDir /tmp|/var/run/passenger-instreg</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+Specifies the directory that Passenger should use for registering its current instance.
+
+When Passenger starts up, it creates a temporary directory inside the _instance registry directory_. This temporary directory is called the _instance directory_. It contains all sorts of files that are important to that specific running Passenger instance, such as Unix domain socket files so that all the different Passenger processes can communicate with each other. Command line tools such as `passenger-status` use the files in this directory in order to query Passenger's status.
+
+It is therefore important that, while Passenger is working, the instance directory is never removed or tampered with. However, the default path for the instance registry directory is the system's temporary directory, and some systems may run background jobs that periodically clean this directory. If this happens, and the files inside the instance directory are removed, then it will cause Passenger to malfunction: Passenger won't be able to communicate with its own processes, and you will see all kinds of connection errors in the log files. This malfunction can only be recovered from by restarting Apache. You can prevent such cleaning background jobs from interfering by setting this option to a different directory.
+
+This option is also useful if Apache is not allowed to write to the system's temporary directory (which is the case on some systems with strict SELinux policies) or if the partition that the temporary directory lives on doesn't have enough disk space.
+
+The instance directory is automatically removed when Apache shuts down.
+
+#### Default value
+
+The default value for this option is as follows:
+
+ * If you are on Red Hat and CentOS, and installed Passenger through the RPMs provided by Phusion, then the default value is `/var/run/passenger-instreg`.
+ * Otherwise, the default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
+
+#### Note regarding command line tools
+
+Some Passenger command line administration tools, such as `passenger-status`, must know what Passenger's instance registry directory is in order to function properly. You can pass the directory through the `PASSENGER_INSTANCE_REGISTRY_DIR` or the `TMPDIR` environment variable.
+
+For example, if you set 'PassengerInstanceRegistryDir' to '/my_temp_dir', then invoke `passenger-status` after you've set the `PASSENGER_INSTANCE_REGISTRY_DIR`, like this:
+
+~~~bash
+export PASSENGER_INSTANCE_REGISTRY_DIR=/my_temp-dir
+sudo -E passenger-status
+~~~
+
+Notes regarding the above example:
+
+ * The -E option tells 'sudo' to preserve environment variables.
+ * If Passenger is installed through an RVM Ruby, then you must use `rvmsudo` instead of `sudo`.
+
+
+### PassengerDataBufferDir
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDataBufferDir <em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+By default, Passenger buffers the following things to disk:
+
+ * Large HTTP client request bodies. This prevents slow HTTP clients from blocking web applications by sending request bodies very slowly. Read [PassengerBufferUpload](#passengerbufferupload) to learn more.
+ * Large web application responses. This prevents slow HTTP clients from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
+
+By default, such buffers are stored in the directory given by the `$TMPDIR` environment variable, or (if `$TMPDIR` is not set) the `/tmp` directory. This configuration directive allows you to specify a different directory.
+
+Changing this option is especially useful in the following cases:
+
+ * If Apache is not allowed to write to the system's temporary directory. This is the case on some systems with strict SELinux policies.
+ * If the partition that the default directory lives on doesn't have enough disk space.
+
+If you've specified such a directory (as opposed to using Passenger's default) then you **must** ensure that this directory exists.
+
+You can disable client request body buffering by turning [PassengerBufferUpload](#passengerbufferupload) off. It is not possible to turn off real-time disk-backed response buffering.
+
+This option may be specified once, in the global server configuration.
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--data-buffer-dir")) %>
