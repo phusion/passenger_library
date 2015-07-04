@@ -773,7 +773,7 @@ If Passenger Enterprise could not rolling restart a process (let's call it 'A') 
  * If deployment error resistance is disabled (the default), then Passenger Enterprise will proceed with trying to restart the remaining processes.
  * If deployment error resistance is enabled, the Passenger Enterprise will give up rolling restarting immediately. The application group will be put into Deployment Error Resistance Mode.
 
-Please note that `PassengerRollingRestarts` is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
+Please note that `passenger_rolling_restarts` is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
 
 NOTE: Are you looking to prevent applications from being restarted when you restart Nginx? That is handled by the [Flying Passenger mode](<%= url_for "/deploy/nginx/flying_passenger.html" %>), not by the rolling restarts feature.
 
@@ -1110,7 +1110,7 @@ http {
 
 When you start Nginx, there are 0 application processes for 'foobar.com'. Things will stay that way until someone visits 'foobar.com'. Suppose that there is only one visitor. One application process will be started immediately to serve the visitor, while two will be spawned in the background. After 10 seconds, when the idle timeout has been reached, these 3 application processes will not be cleaned up.
 
-Now suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.com' simultaneously. Passenger will start 12 more application processes. After the idle timeout of 10 seconds have passed, Passenger will clean up 12 application processes, keeping 3 processes around.
+Now suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.com' simultaneously. Passenger will start 12 more application processes (`15 - 3 = 12`). After the idle timeout of 10 seconds has passed, Passenger will clean up 12 application processes, keeping 3 processes around.
 
 
 ### passenger_max_instances

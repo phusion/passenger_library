@@ -953,3 +953,543 @@ gem 'byebug', :platforms => :ruby_20
 ~~~
 
 Once debugging is turned on, you can use the command `passenger-irb --debug <PID>` to attach an debugging console to the application process with the given PID. Attaching will succeed once the application process executes a `debugger` command.
+
+
+### "envvars"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Config file syntax</th>
+    <td>"envvars": { "name1": "value1", "name2": "value2", ... }</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.1</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Sets arbitrary environment variables.
+
+
+## Process management options
+
+### `--max-pool-size` / "max_pool_size"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --max-pool-size <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"max_pool_size": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>6</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+The maximum number of application processes that may simultaneously exist. A larger number results in higher memory usage,
+but improves the ability to handle concurrent HTTP requests.
+
+The optimal value depends on your system's hardware and your workload. Please read the [optimization guide](<%= url_for "/config/#{integration_mode_type}/optimization.html" %>) to learn how to find out the optimal value.
+
+If you find that your server is running out of memory then you should lower this value. In order to prevent your server from crashing due to out-of-memory conditions, the default value is relatively low (6).
+
+
+### `--min-instances` / "min_instances"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --min-instances <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"min_instances": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>1</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+This specifies the minimum number of application processes that should exist for a given application. You should set this option to a non-zero value if you want to avoid potentially long startup times after a website has been [idle](#--pool-idle-time-pool_idle_time) for an extended period of time.
+
+#### Example
+
+Suppose that you have the following configuration:
+
+~~~json
+{
+  "max_pool_size": 15,
+  "pool_idle_time": 10
+  "min_instances": 3
+}
+~~~
+
+When you start Passenger, it spawns 3 application processes. Suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.com' simultaneously. Passenger will start 12 more application processes (`15 - 3 = 12`). After the idle timeout of 10 seconds has passed, Passenger will clean up 12 application processes, keeping 3 processes around.
+
+
+### `--pool-idle-time` / "pool_idle_time"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --pool-idle-time <em>SECONDS</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"pool_idle_time": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>300 <em>(5 minutes)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+The maximum number of seconds that an application process may be idle. That is, if an application process hasn't received any traffic after the given number of seconds, then it will be shutdown in order to conserve memory.
+
+Decreasing this value means that appliction processes will have to be spawned more often. Since spawning is a relatively slow operation, some visitors may notice a small delay when they visit your web app. However, it will also free up resources used by the processes more quickly.
+
+The optimal value depends on the average time that a visitor spends on a single dynamic page. We recommend a value of `2 * x`, where `x` is the average number of seconds that a visitor spends on a single dynamic page. But your mileage may vary.
+
+When this value is set to `0`, application processes never not be shutdown (unless they crash or are manually killed, of course).
+
+Setting the value to 0 is recommended if you favor resource savings more than predictable performance.
+
+
+### `--max-preloader-idle-time` / "max_preloader_idle_time"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --max-preloader-idle-time <em>SECONDS</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"max_preloader_idle_time": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>300 <em>(5 minutes)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+The preloader process (explained in [Spawn methods](<%= url_for "/indepth/spawn_methods.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#--pool-idle-time-pool_idle_time). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
+
+This option allows you to set the preloader's idle timeout, in seconds. A value of `0` means that it should never idle timeout.
+
+Setting a higher value will mean that the preloader is kept around longer, which may slightly increase memory usage. But as long as the preloader server is running, the time to spawn a Ruby application process only takes about 10% of the time that is normally needed, assuming that you're using the `smart` [spawn method](#--spawn-method-spawn_method). So if your system has enough memory, then is it recommended that you set this option to a high value or to `0`.
+
+
+### `--concurrency-model` / "concurrency_model"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --concurrency_model <em>&lt;process|thread&gt;</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"max_preloader_idle_time": <em>"process"|"thread"</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>process</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Specifies the I/O concurrency model that should be used for Ruby application processes. Passenger supports two concurrency models:
+
+ * `process` -- single-threaded, multi-processed I/O concurrency. Each application process only has a single thread and can only handle 1 request at a time. This is the concurrency model that Ruby applications traditionally used. It has excellent compatiblity (can work with applications that are not designed to be thread-safe) but is unsuitable for workloads in which the application has to wait for a lot of external I/O (e.g. HTTP API calls), and uses more memory because each process has a large memory overhead.
+ * `thread` -- multi-threaded, multi-processed I/O concurrency. Each application process has multiple threads (customizable via [`--thread-count` / "thread_count"](#--thread-count-thread_count). This model provides much better I/O concurrency and uses less memory because threads share memory with each other within the same process. However, using this model may cause compatibility problems if the application is not designed to be thread-safe.
+
+<div class="note">
+  <ul>
+    <li>This option only has effect on Ruby applications.</li>
+    <li>Multithreading is not supported for Python.</li>
+    <li>Multithreading is not applicable to Node.js, io.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+  </ul>
+</div>
+
+
+### `--thread-count` / "thread_count"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start [...] --thread-count <em>INTEGER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"thread_count": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>1</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Specifies the number of threads that Passenger should spawn per Ruby application process. This option only has effect if [`--concurrency-model` / "concurrency-model"](#--concurrency-model-concurrency_model) is `thread`.
+
+<div class="note">
+  <ul>
+    <li>This option only has effect on Ruby applications.</li>
+    <li>Multithreading is not supported for Python.</li>
+    <li>Multithreading is not applicable to Node.js, io.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+  </ul>
+</div>
+
+
+### `--rolling-restarts` / "rolling_restarts"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --rolling-restarts</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"rolling_restarts": true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/standalone/zero_downtime_redeployments.html" %>) through `restart.txt`. Normally, when you [restart an application](<%= url_for "/admin/standalone/restart_app.html" %>) through `restart.txt`, Passenger would shut down all processes for that application and spawn a new one. The spawning of a new application process could take a while, and any requests that come in during this time will be blocked until this first application process has spawned, which users may experience as "downtime".
+
+But when rolling restarts are enabled, Passenger Enterprise will:
+
+ 1. Spawn a new process in the background.
+ 2. When it's done spawning, Passenger Enterprise will replace one of the old processes with this newly spawned one.
+ 3. Step 1 and 2 are repeated until all processes have been replaced.
+
+This way, visitors will not experience any delays when you are restarting your application. This allows you to, for example, deploy application updates often without degrading user experience.
+
+Rolling restarts have a few caveat however that you should be aware of:
+
+ * Upgrading an application sometimes involves upgrading the database schema. With rolling restarts, there may be a point in time during which processes belonging to the previous version and processes belonging to the new version both exist at the same time. Any database schema upgrades you perform must therefore be backwards-compatible with the old application version.
+ * Because there's no telling which process will serve a request, users may not see changes brought about by the new version until all processes have been restarted. It is for this reason that you should not use rolling restarts in development, only in production.
+
+If Passenger Enterprise could not rolling restart a process (let's call it 'A') because it is unable to spawn a new process (let's call it 'B'), then Passenger Enterprise will give up trying to rolling restart that particular process 'A'. What happens next depends on whether [deployment error resistance](#--resist-deployment-errors-resist_deployment_errors) is enabled:
+
+ * If deployment error resistance is disabled (the default), then Passenger Enterprise will proceed with trying to restart the remaining processes.
+ * If deployment error resistance is enabled, the Passenger Enterprise will give up rolling restarting immediately. The application group will be put into Deployment Error Resistance Mode.
+
+Please note that this option is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
+
+
+### `--resist-deployment-errors` / "resist_deployment_errors"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --resist-deployment-errors</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"resist_deployment_errors": true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Enables or disables [resistance against deployment errors](<%= url_for "/deploy/standalone/deployment_error_resistance.html" %>).
+
+Suppose that you have upgraded your application and you have issued a command to restart it, but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
+
+By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
+
+[Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/deploy/standalone/deployment_error_resistance.html" %>).
+
+Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/admin/standalone/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-(rolling-restart)).
+
+
+## Request handling options
+
+### `--max-request-time` / "max_request_time"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --max-request-time <em>SECONDS</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"max_request_time": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+
+### `--sticky-sessions` / "sticky_sessions"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --sticky-sessions</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"sticky_sessions": true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.1</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+
+### `--sticky-sessions-cookie-name` / "sticky_sessions_cookie_name"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --sticky-sessions-cookie-name <em>NAME</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"sticky_sessions_cookie_name": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>_passenger_route</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.1</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+
+### `--disable-turbocaching` / "turbocaching"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --disable-turbocaching</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"turbocaching": false</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Enabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+
+## Nginx engine options
+
+### `--nginx-config-template` / "nginx_config_template"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --nginx-config-template <em>PATH</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"nginx_config_template": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Enabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.1</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+</table>
+
+
+## Advanced options
+
+### `--engine` / "engine"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --engine <em>nginx|builtin</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"engine": <em>"nginx"|"builtin"</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>nginx</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+</table>
+
+
+### `--log-level` / "log_level"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --log-level <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"log_level": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>3</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+
+### `--ctl` / "ctls"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --log-level <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"ctls": [ "var1=value1", "var2=value2", ... ]</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>3</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+</table>
+
+Low-level mechanism to set arbitrary internal options.
