@@ -1811,7 +1811,7 @@ So prominent examples where sticky sessions should (or even *must*) be enabled, 
 
 Sticky sessions work through the use of a special cookie, whose name can be customized with [passenger_sticky_sessions_cookie_name](#passenger_sticky_sessions_cookie_name). Passenger puts an identifier in this cookie, which tells Passenger what the originating process is. Next time the client sends a request, Passenger reads this cookie and uses the value in the cookie to route the request back to the originating process. If the originating process no longer exists (e.g. because it has crashed or restarted) then Passenger will route the request to some other process, and reset the cookie.
 
-If you have a load balancer in front end of Passenger + Nginx, then you must configure sticky sessions on that load balancer too. Otherwise, the load balancer could route the request to a different server.
+If you have a load balancer in front end of Passenger, then you must configure sticky sessions on that load balancer too. Otherwise, the load balancer could route the request to a different server.
 
 
 ### passenger_sticky_sessions_cookie_name
@@ -2146,7 +2146,7 @@ These options have the same effect as [ngx_http_proxy_module](http://nginx.org/e
   </tr>
 </table>
 
-This option allows one to specify how much information Passenger should write to the Nginx error log file. A higher log level value means that more information will be logged.
+This option allows one to specify how much information Passenger should log to its log file. A higher log level value means that more information will be logged.
 
 Possible values are:
 

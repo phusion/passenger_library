@@ -1310,6 +1310,14 @@ Note that enabling deployment error resistance only works if you perform a [roll
   <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
 
+The maximum amount of time, in seconds, that an application process may take to process a request. If the request takes longer than this amount of time, then the application process will be forcefully shut down, and possibly restarted upon the next request. A value of 0 means that there is no time limit.
+
+This option is useful for preventing your application from getting stuck for an indefinite period of time.
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid stuck applications.
+</div>
+
 
 ### `--sticky-sessions` / "sticky_sessions"
 
@@ -1335,6 +1343,23 @@ Note that enabling deployment error resistance only works if you perform a [roll
     <td>nginx, builtin</td>
   </tr>
 </table>
+
+When sticky sessions are enabled, all requests that a client sends will be routed to the same originating application process, whenever possible. When sticky sessions are disabled, requests may be distributed over multiple processes, and may not necessarily be routed to the originating process, in order to balance traffic over multiple CPU cores. Because of this, sticky sessions should only be enabled in specific circumstances.
+
+For applications that store important state inside the process's own memory -- that is, as opposed to storing state in a distributed data store, such as the database or Redis -- sticky sessions *should* be enabled. This is because otherwise, some requests could be routed to a different process, which stores different state data. Because processes don't share memory with each other, there's no way for one process to know about the state in another process, and then things can go wrong.
+
+One prominent example is the popular [SockJS library](http://sockjs.org/), which is capable of emulating WebSockets through long polling. This is implemented through two HTTP endpoints, `/SESSION_ID/xhr_stream` (a long polling end point which sends data from the server to the client), and `/SESSION_ID/xhr_send` (a normal POST endpoint which is used for sending data from the client to the server). SockJS correlates the two requests with each other through a session identifier. At the same time, in its default configuration, it stores all known session identifiers in an in-memory data structure. It is therefore important that a particular `/SESSION_ID/xhr_send` request is sent to the same process where the corresponding `/SESSION_ID/xhr_stream` request originates from; otherwise, SockJS cannot correlate the two requests, and an error occurs.
+
+So prominent examples where sticky sessions should (or even *must*) be enabled, include:
+
+ * Applications that use the SockJS library (unless configured with a distributed data store)
+ * Applications that use the Socket.io library (unless configured with a distributed data store)
+ * Applications that use the faye-websocket gem (unless configured with a distributed data store)
+ * Meteor JS applications (because Meteor uses SockJS)
+
+Sticky sessions work through the use of a special cookie, whose name can be customized with [`--sticky-sessions-cookie-name` / "sticky_sessions_cookie_name"](#--sticky-sessions-cookie-name-sticky_sessions_cookie_name). Passenger puts an identifier in this cookie, which tells Passenger what the originating process is. Next time the client sends a request, Passenger reads this cookie and uses the value in the cookie to route the request back to the originating process. If the originating process no longer exists (e.g. because it has crashed or restarted) then Passenger will route the request to some other process, and reset the cookie.
+
+If you have a load balancer in front end of Passenger + Nginx, then you must configure sticky sessions on that load balancer too. Otherwise, the load balancer could route the request to a different server.
 
 
 ### `--sticky-sessions-cookie-name` / "sticky_sessions_cookie_name"
@@ -1362,6 +1387,8 @@ Note that enabling deployment error resistance only works if you perform a [roll
   </tr>
 </table>
 
+Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cookie.
+
 
 ### `--disable-turbocaching` / "turbocaching"
 
@@ -1387,6 +1414,8 @@ Note that enabling deployment error resistance only works if you perform a [roll
     <td>nginx, builtin</td>
   </tr>
 </table>
+
+Disables [turbocaching](<%= url_for "/indepth/turbocaching.html" %>).
 
 
 ## Nginx engine options
@@ -1415,6 +1444,8 @@ Note that enabling deployment error resistance only works if you perform a [roll
     <td>nginx</td>
   </tr>
 </table>
+
+Sets the Passenger Standalone engine to use.
 
 
 ## Advanced options
@@ -1465,6 +1496,19 @@ Note that enabling deployment error resistance only works if you perform a [roll
     <td>nginx, builtin</td>
   </tr>
 </table>
+
+This option allows one to specify how much information Passenger should write to the log file. A higher log level value means that more information will be logged.
+
+Possible values are:
+
+ * `0` (crit): Show only critical errors which would cause Passenger to abort.
+ * `1` (error): Also show non-critical errors -- errors that do not cause Passenger to abort.
+ * `2` (warn): Also show warnings. These are not errors, and Passenger continues to operate correctly, but they might be an indication that something is wrong with the system.
+ * `3` (notice): Also show important informational messages. These give you a high-level overview of what Passenger is doing.
+ * `4` (info): Also show less important informational messages. These messages show more details about what Passenger is doing. They're high-level enough to be readable by users.
+ * `5` (debug): Also show the most important debugging information. Reading this information requires some system or programming knowledge, but the information shown is typically high-level enough to be understood by experienced system administrators.
+ * `6` (debug2): Show more debugging information. This is typically only useful for developers.
+ * `7` (debug3): Show even more debugging information.
 
 
 ### `--ctl` / "ctls"
