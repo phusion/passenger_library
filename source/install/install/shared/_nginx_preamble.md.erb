@@ -8,6 +8,9 @@ The fact that Nginx needs to be recompiled, has some implications:
 
  * Init scripts, e.g. `/etc/init.d/nginx` and `service nginx restart`, are not provided by the default Nginx source code. Init scripts are actually extensions provided by the operating system's Nginx package. If you install Nginx from source, then you can't use init scripts to control Nginx anymore. Instead, you will use more generic operating system primitives to control Nginx, such as PID files and signals. Don't worry, this installation guide will teach you.
 
-If you do not like having to recompile Nginx then consider [using Passenger Standalone in a reverse proxy configuration to Nginx](<%= url_for "/deploy/passenger_standalone_reverse_proxy.html" %>). Passenger Standalone + reverse proxy is fully supported and supports the same features as Passenger's Nginx integration mode.
+If you do not like having to recompile Nginx then there are several alternatives you can choose:
+
+ 1. Use the Phusion Passenger [APT repository](<%= url_for "/install/nginx/apt_repo.html" %>) (for Debian, Ubuntu) or the [YUM repository](<%= url_for "/install/nginx/yum_repo.html" %>) (RPMs for Red Hat, CentOS) to install Passenger and Nginx. Through our APT/YUM repository, we provide a Passenger-enabled Nginx package that uses the same structure as the Nginx package provided by the OS. This means that you will be able to use the `service` script, your config files are at places where you expect them, etc.
+ 2. Consider [using Passenger Standalone in a reverse proxy configuration to Nginx](<%= url_for "/deploy/standalone/reverse_proxy.html" %>). Passenger Standalone + reverse proxy is fully supported and supports the same features as Passenger's Nginx integration mode.
 
 If you understand this and choose to use Passenger with its Nginx integration mode, then read on. :-)
