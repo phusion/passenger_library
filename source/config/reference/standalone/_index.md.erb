@@ -1,3 +1,5 @@
+<p class="lead">This page lists all the configuration options available for Passenger Standalone, through either command line options or <code>Passengerfile.json</code> options.</p>
+
 **Table of contents**
 
 <ol class="toc-container"><li>Loading...</li></ol>
@@ -1445,7 +1447,19 @@ Disables [turbocaching](<%= url_for "/indepth/turbocaching.html" %>).
   </tr>
 </table>
 
-Sets the Passenger Standalone engine to use.
+Instructs Passenger Standalone's [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>) to use a specific Nginx config template, instead of the default. Learn more about this in the [configuration introduction](<%= url_for "/config/standalone/intro.html" %>#nginx-configuration-template).
+
+Please note that this option only works if Passenger Standalone is [configured](#--engine-engine) to use the [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>).
+
+<div class="warning">
+  <h3 class="notoc">The Nginx config file must follow a specific format</h3>
+  <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone *must* be based on the one provided by Passenger Standalone. Learn more about this in the [configuration introduction](<%= url_for "/config/standalone/intro.html" %>#nginx-configuration-template).</p>
+</div>
+
+<div class="note">
+  <h3 class="notoc">Keep your configuration template up to date</h3>
+  <p>The original configuration template file may change from time to time, e.g. because new features are introduced into Passenger. If your configuration template file does not contain the required changes, then these new features may not work properly. In the worst case, Passenger Standalone might even malfunction. Therefore, every time you upgrade Passenger, you should check whether the original configuration template file has changed, and merge back any changes into your own file.</p>
+</div>
 
 
 ## Advanced options
@@ -1470,6 +1484,8 @@ Sets the Passenger Standalone engine to use.
     <td>5.0.0</td>
   </tr>
 </table>
+
+Sets the Passenger Standalone engine to use. [Learn more about Passenger Standalone engines.](<%= url_for "/indepth/standalone_engines.html" %>)
 
 
 ### `--log-level` / "log_level"

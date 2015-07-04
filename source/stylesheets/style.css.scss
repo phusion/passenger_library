@@ -265,6 +265,10 @@ p.guide-description + p.guide-description {
   margin-top: 0.5em;
 }
 
+a code {
+  text-decoration: underline;
+}
+
 
 figure {
   text-align: center;
@@ -318,10 +322,6 @@ figcaption {
 .edit-on-github .btn-label {
   display: block;
   font-size: 12px;
-}
-
-.label-ruby {
-  background-color: #b94e4b;
 }
 
 #os_install_select,

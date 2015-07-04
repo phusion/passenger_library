@@ -89,7 +89,20 @@ Passenger provides a wide range of features and customization options. Some of t
 <% elsif integration_mode_type == :standalone %>
 <!-- ****** Standalone ****** -->
 
-Passenger in its Standalone mode can be configured through two mechanisms. The first is through *command line arguments* passed to the `passenger start` command. The second is through the configuration file `Passengerfile.json`.
+Passenger in its Standalone mode can be configured through several mechanisms.
+
+You usually only deal with these two mechanisms:
+
+ 1. The first is through *command line arguments* passed to the `passenger start` command.
+ 2. The second is through the configuration file `Passengerfile.json`.
+
+There is also a third, more powerful but also more complicated mechanism. Namely configuration through an Nginx configuration template. This is reserved for more advanced uses.
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Configuring through command line options and Passengerfile.json
 
 Here is an example which shows you how to configure Passenger Standalone to start on port 4000 instead of the default port 3000, through a command line option:
 
@@ -108,17 +121,47 @@ And here is an example which achieves the same, through `Passengerfile.json`.
 
    <pre class="highlight"><span class="prompt">$ </span> passenger start</pre>
 
-## Location of Passengerfile.json
+### Location of Passengerfile.json
 
 `Passengerfile.json` must be located in the application directory. This allows you to configure Passenger differently on a per-application basis.
 
-## Command line arguments have precedence
+### Command line options have precedence
 
-Since version 5.0, command line arguments take precedence over `Passengerfile.json`. In earlier versions, the opposite was true.
+Since version 5.0, command line options take precedence over `Passengerfile.json`. In earlier versions, the opposite was true.
 
-## Start configuring Passenger
+### Configuration reference
 
-Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
+To learn which command line and Passengerfile.json configuration options are available, please check the [configuration reference](reference/) and the [configuration section index page](.). Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc.
+
+## Nginx configuration template
+
+Passenger Standalone is built on the same technology that powers [Passenger for Nginx](<%= url_for "/indepth/integration_modes.html" %>), so any configuration option supported by Passenger for Nginx can be applied to Passenger Standalone as well. You can do this by direct editing the Nginx configuration template that is used by Passenger Standalone.
+
+First, create a copy of the default Passenger Nginx configuration template file:
+
+~~~bash
+cp $(passenger-config about resourcesdir)/templates/standalone/config.erb nginx.conf.erb
+~~~
+
+Then open `nginx.conf.erb` and modify it as you see fit. The file is a normal Nginx configuration file, in the ERB template format.
+
+Every time you start Standalone, you must pass the [`--nginx-config-template`](reference/#--nginx-config-template-nginx_config_template) parameter, which tells Standalone to use your specific Nginx configuration template file. For example:
+
+~~~bash
+passenger start --nginx-config-template nginx.conf.erb
+~~~
+
+Alternatively, if you don't want to pass this parameter every time, you can also set the [nginx_config_template option in Passengerfile.json](reference/#--nginx-config-template-nginx_config_template).
+
+<div class="warning">
+  <h3 class="notoc">The Nginx config file must follow a specific format</h3>
+  <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone *must* be based on the one provided by Passenger Standalone.</p>
+</div>
+
+<div class="note">
+  <h3 class="notoc">Keep your configuration template up to date</h3>
+  <p>The original configuration template file may change from time to time, e.g. because new features are introduced into Passenger. If your configuration template file does not contain the required changes, then these new features may not work properly. In the worst case, Passenger Standalone might even malfunction. Therefore, every time you upgrade Passenger, you should check whether the original configuration template file has changed, and merge back any changes into your own file.</p>
+</div>
 
 
 <% else %>
