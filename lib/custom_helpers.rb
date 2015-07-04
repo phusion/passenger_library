@@ -19,7 +19,7 @@ SUPPORTED_REDHAT_VERSIONS = {
 
 SUPPORTED_APP_TYPES = [
   { name: "Ruby, Ruby on Rails",
-    type: "ruby",
+    type: "rack",
     startup_file: "config.ru" },
   { name: "Python",
     type: "python",
@@ -34,7 +34,7 @@ SUPPORTED_APP_TYPES = [
 
 SUPPORTED_APP_TYPE_CONVENTIONS = [
   { name: "Ruby, Ruby on Rails",
-    type: "ruby",
+    type: "rack",
     startup_file: "config.ru" },
   { name: "Python",
     type: "python",
