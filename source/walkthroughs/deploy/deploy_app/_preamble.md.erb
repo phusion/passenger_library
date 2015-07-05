@@ -194,7 +194,7 @@ Replace `adminuser` with the name of an account with administrator privileges or
 
 <div class="alert alert-info">Starting from this point, unless stated otherwise, all commands that we instruct you to run should be run on the server, not on your local computer!</div>
 
-Now that you have logged in, you should create an operating system user account for your app. For security reasons, it is a good idea to run each app under its own user account, in order to limit the damage that security vulnerabilities in the app can do. Passenger will automatically run your app under this user account as part of its [user sandboxing feature](<%= url_for "/deploy/user_sandboxing.html" %>).
+Now that you have logged in, you should create an operating system user account for your app. For security reasons, it is a good idea to run each app under its own user account, in order to limit the damage that security vulnerabilities in the app can do. Passenger will automatically run your app under this user account as part of its [user account sandboxing feature](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>).
 
 You should give the user account the same name as your app. But for demonstration purposes, this tutorial names the user account `myappuser`.
 

@@ -174,6 +174,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/deploy/#{integration_mode_type}/user_sandboxing.html",
     "/deploy/user_sandboxing.html",
     locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/zero_downtime_redeployments.html",
+    "/deploy/zero_downtime_redeployments.html",
+    locals: integration_mode_spec
   proxy "/deploy/#{integration_mode_type}/flying_passenger.html",
     "/deploy/flying_passenger.html",
     locals: integration_mode_spec
@@ -204,6 +207,7 @@ ignore "/deploy/deploy/language_selection.html"
 ignore "/deploy/automating_app_updates/language_selection.html"
 ignore "/deploy/automating_app_updates/automating_app_updates.html"
 ignore "/deploy/user_sandboxing.html"
+ignore "/deploy/zero_downtime_redeployments.html"
 ignore "/deploy/flying_passenger.html"
 ignore "/deploy/deployment_error_resistance.html"
 

@@ -381,7 +381,7 @@ Sets the name of the application group that the current application should belon
 
 Passenger stores and caches most application spawning settings -- such as environment variables, process limits, etc -- on a per-app-group-name basis. This means that if you want to start two versions of your application, with each version having different environment variables, then you must assign them under different application group names.
 
-The [request queue](<%= url_for "/indepth/request_queuing.html" %>) is also per-application group, so creating multiple application groups allow you to separate requests into different queues.
+The [request queue](<%= url_for "/indepth/request_queueing.html" %>) is also per-application group, so creating multiple application groups allow you to separate requests into different queues.
 
 #### Example
 

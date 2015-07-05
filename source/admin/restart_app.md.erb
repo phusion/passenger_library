@@ -138,5 +138,7 @@ Restarting an application does not activate any <%= integration_mode_web_server_
  * [Configuration reference: PassengerRollingRestarts](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#<%= passenger_rolling_restarts_anchor %>)
  * [Configuration reference: PassengerResistDeploymentErrors](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#<%= passenger_resist_deployment_errors_anchor %>)
  * [Deployment: Zero-downtime app updates and restarts](<%= url_for "/deploy/#{integration_mode_type}/zero_downtime_redeployments.html" %>)
+<% if integration_mode_type == :nginx || integration_mode_type == :apache -%>
  * [Deployment: Zero-downtime web server restarts with Flying Passenger Enterprise](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>)
+<% end -%>
  * [Deployment: Deployment error resistance](<%= url_for "/deploy/#{integration_mode_type}/deployment_error_resistance.html" %>)
