@@ -37,7 +37,7 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
         The Nginx integration mode is, along with the Standalone mode, highly optimized for performance.
       </p>
       <p>
-        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/nginx/open_source_vs_enterprise.html" %>" class="btn btn-primary">Continue with Nginx mode &raquo;</a>
+        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/nginx/open_source_vs_enterprise.html" %>" class="btn btn-primary" onclick="rememberIntegrationMode('nginx')">Continue with Nginx mode &raquo;</a>
       </p>
     </div>
     <div role="tabpanel" class="tab-pane" id="apache">
@@ -46,7 +46,7 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
         Passenger integrates directly into <a href="http://httpd.apache.org">Apache</a> as an Apache module. You operate Passenger mostly through Apache and through Apache configuration files.
       </p>
       <p>
-        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/apache/open_source_vs_enterprise.html" %>" class="btn btn-primary">Continue with Apache mode &raquo;</a>
+        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/apache/open_source_vs_enterprise.html" %>" class="btn btn-primary" onclick="rememberIntegrationMode('apache')">Continue with Apache mode &raquo;</a>
       </p>
     </div>
     <div role="tabpanel" class="tab-pane" id="standalone">
@@ -64,7 +64,7 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
       </ul>
       <p>Along with the Nginx mode, the Standalone mode is highly optimized for performance.</p>
       <p>
-        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/standalone/open_source_vs_enterprise.html" %>" class="btn btn-primary">Continue with Standalone mode &raquo;</a>
+        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/standalone/open_source_vs_enterprise.html" %>" class="btn btn-primary" onclick="rememberIntegrationMode('standalone')">Continue with Standalone mode &raquo;</a>
       </p>
     </div>
   </div>
