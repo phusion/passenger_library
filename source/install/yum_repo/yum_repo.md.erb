@@ -19,7 +19,11 @@ These packages are automatically built by our build server after we push out a s
   </p>
 </div>
 
-If you use these packages to install Passenger then you do not need to run `passenger-install-apache2-module` or `passenger-install-nginx-module`. These packages contain all the binaries that you need. These packages also come with SELinux policy modules so that Passenger works nicely with SELinux.
+<% if integration_mode_type == :nginx %>
+  If you use these packages to install Passenger then you do not need to run `passenger-install-nginx-module`. These packages contain all the binaries that you need, including a Passenger-enabled Nginx binary. These packages also come with SELinux policy modules so that Passenger works nicely with SELinux.
+<% elsif integration_mode_type == :apache %>
+  If you use these packages to install Passenger then you do not need to run `passenger-install-apache2-module`. These packages contain all the binaries that you need. These packages also come with SELinux policy modules so that Passenger works nicely with SELinux.
+<% end %>
 
 Packages are available for the x86 and x86_64 architectures. Our policy is to support all Red Hat and CentOS releases that still receive full updates by their vendors. The earliest Red Hat and CentOS version we support is version 5.
 

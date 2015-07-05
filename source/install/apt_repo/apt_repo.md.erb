@@ -12,7 +12,11 @@ We provide APT repositories for installing Passenger on Debian and Ubuntu system
 
 These APT repositories contain Passenger packages for multiple versions of Debian and Ubuntu. These packages are automatically built by our build server after we push out a source release, and thus are always up to date with the official source releases.
 
-If you use these packages to install Passenger then you do not need to run `passenger-install-apache2-module` or `passenger-install-nginx-module`. These packages contain all the binaries that you need.
+<% if integration_mode_type == :nginx %>
+  If you use these packages to install Passenger then you do not need to run `passenger-install-nginx-module`. These packages contain all the binaries that you need, including a Passenger-enabled Nginx binary.
+<% elsif integration_mode_type == :apache %>
+  If you use these packages to install Passenger then you do not need to run `passenger-install-apache2-module`. These packages contain all the binaries that you need.
+<% end %>
 
 Packages are available for the x86 and x86_64 architectures. Our policy is to support all Ubuntu LTS releases that are still supported by Canonical, plus the latest Ubuntu release, plus all Debian releases that are still supported by Debian.
 
