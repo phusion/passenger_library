@@ -120,6 +120,7 @@ ignore "/install/disable.html"
 ignore "/install/moving.html"
 ignore "/install/noninteractive_install.html"
 ignore "/install/upgrading_from_oss_to_enterprise.html"
+ignore "/install/customizing_compilation_process.html"
 ignore "/install/apt_repo.html"
 ignore "/install/yum_repo.html"
 ignore "/install/install/step1.html"
@@ -159,6 +160,7 @@ end
 ignore "/config/index2.html"
 ignore "/config/intro.html"
 ignore "/config/optimization.html"
+ignore "/config/tuning_sse_and_websockets.html"
 ignore "/config/cloud_licensing_configuration.html"
 ignore "/config/reference/reference.html"
 
@@ -177,12 +179,16 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/deploy/#{integration_mode_type}/zero_downtime_redeployments.html",
     "/deploy/zero_downtime_redeployments.html",
     locals: integration_mode_spec
-  proxy "/deploy/#{integration_mode_type}/flying_passenger.html",
-    "/deploy/flying_passenger.html",
-    locals: integration_mode_spec
   proxy "/deploy/#{integration_mode_type}/deployment_error_resistance.html",
     "/deploy/deployment_error_resistance.html",
     locals: integration_mode_spec
+
+
+  if integration_mode_type == :nginx || integration_mode_type == :apache
+    proxy "/deploy/#{integration_mode_type}/flying_passenger.html",
+      "/deploy/flying_passenger.html",
+      locals: integration_mode_spec
+  end
 
   proxy "/deploy/#{integration_mode_type}/deploy/index.html",
     "/deploy/deploy/language_selection.html",
@@ -204,6 +210,7 @@ end
 
 ignore "/deploy/index2.html"
 ignore "/deploy/deploy/language_selection.html"
+ignore "/deploy/deploy/deploy.html"
 ignore "/deploy/automating_app_updates/language_selection.html"
 ignore "/deploy/automating_app_updates/automating_app_updates.html"
 ignore "/deploy/user_sandboxing.html"
@@ -244,7 +251,10 @@ INTEGRATION_MODES.each do |integration_mode_spec|
 end
 
 ignore "/admin/index2.html"
+ignore "/admin/admin_tools.html"
 ignore "/admin/restart_app.html"
+ignore "/admin/log_file.html"
+ignore "/admin/log_rotation.html"
 ignore "/admin/troubleshooting/language_selection.html"
 ignore "/admin/troubleshooting/troubleshooting.html"
 
