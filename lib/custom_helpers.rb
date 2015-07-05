@@ -209,7 +209,7 @@ module CustomHelpers
   end
 
   def current_page_path
-    path = "#{config[:root_url]}/#{current_page.path}"
+    path = "#{config[:url_root]}/#{current_page.path}"
     path.sub(/\/index\.html$/, "/")
   end
 
