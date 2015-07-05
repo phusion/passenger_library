@@ -1,4 +1,11 @@
-<% step = 0 %>
+<%
+if edition_type == :oss
+  tarball_basename = "passenger"
+else
+  tarball_basename = "passenger-enterprise-server"
+end
+step = 0
+%>
 
 <% if integration_mode_type == :nginx %>
   <h2 id="note_about_nginx">Before you begin: a note about Nginx</h2>
@@ -80,7 +87,7 @@
 <p>
   Open your shell's system-wide startup file. If you're using bash, this is usually <code>/etc/bashrc</code> or <code>/etc/bash.bashrc</code>. Inside that file, add this to the end:
 </p>
-<pre class="highlight shell">PATH=<span class="o">/somewhere-permanent</span>/passenger-<span class="o">X.X.X</span>/bin:$PATH
+<pre class="highlight shell">PATH=<span class="o">/somewhere-permanent</span>/<%= tarball_basename %>-<span class="o">X.X.X</span>/bin:$PATH
 export PATH</pre>
 <p>
   Again, replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with the actual directory path.
