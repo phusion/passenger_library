@@ -6,13 +6,13 @@
 
 <figure><a href="http://capistranorb.com/"><img src="<%= url_for '/images/CapistranoLogo.png' %>" alt="Capistrano"></a></figure>
 
-If you have followed the [Ruby deployment walkthrough](<%= url_for "/walkthroughs/deploy/ruby/" %>), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
+If you have followed the [Ruby deployment walkthrough](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
 
 This guide teaches you how to automate the deployment of application updates through [Capistrano](http://capistranorb.com/). Capistrano is a popular task automation tool among Ruby developers. Once Capistrano is set up, deploying further application updates only takes a single command.
 
 **Notes:**
 
- * This guide assumes that you know how to manually deploy Ruby applications and how to manually deploy updates. Capistrano only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [Ruby deployment walkthrough](<%= url_for "/walkthroughs/deploy/ruby/" %>).
+ * This guide assumes that you know how to manually deploy Ruby applications and how to manually deploy updates. Capistrano only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [Ruby deployment walkthrough](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>).
  * This guide assumes you are using at least Passenger 5.0.13. This guide does not work with earlier Passenger versions.
 
 ----
@@ -55,7 +55,7 @@ Both of these are covered in this guide.
 
 ### Capistrano-style directory structure
 
-In the [deployment walkthrough](../walkthroughs/deploy/ruby/), we simply cloned our application code to `/var/www/myapp/code` and instructed Passenger serve the app from there. But if you use Capistrano's `capistrano/deploy` recipe to clone/pull from Git, it will use [a strictly defined directory structure](http://capistranorb.com/documentation/getting-started/structure/) on the server. Here is an example of how `/var/www/myapp` -- an example application directory -- will look like when Capistrano is used:
+In the [deployment walkthrough](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), we simply cloned our application code to `/var/www/myapp/code` and instructed Passenger serve the app from there. But if you use Capistrano's `capistrano/deploy` recipe to clone/pull from Git, it will use [a strictly defined directory structure](http://capistranorb.com/documentation/getting-started/structure/) on the server. Here is an example of how `/var/www/myapp` -- an example application directory -- will look like when Capistrano is used:
 
 <pre class="highlight">
 myapp

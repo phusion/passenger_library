@@ -230,8 +230,21 @@ module CustomHelpers
     path.gsub(/(nginx|apache|standalone)/, other_integration_mode.to_s)
   end
 
-  def current_url_with_other_edition(other_edition)
-    current_page_path.gsub(/(oss|enterprise)/, other_edition.to_s)
+  def current_url_with_other_edition(other_edition, available_editions, section_path)
+    available = false
+    available_editions.each do |spec|
+      if spec[:edition_type] == other_edition
+        available = true
+        break
+      end
+    end
+
+    if available
+      path = current_page_path
+    else
+      path = section_path
+    end
+    path.gsub(/(oss|enterprise)/, other_edition.to_s)
   end
 
   def current_url_prefix_without_programming_language

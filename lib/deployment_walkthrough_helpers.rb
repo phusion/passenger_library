@@ -65,15 +65,21 @@ module DeploymentWalkthroughHelpers
       infrastructure_has_launch_instructions: false,
       infrastructure_needs_install_language_runtime: true }
   ]
+  PASSENGER_OSS_EDITION = {
+    edition_type: :oss,
+    edition_name: "open source",
+    edition_title: "Passenger",
+    edition_long_title: "Passenger open source"
+  }
+  PASSENGER_ENTERPRISE_EDITION = {
+    edition_type: :enterprise,
+    edition_name: "Enterprise",
+    edition_title: "Passenger Enterprise",
+    edition_long_title: "Passenger Enterprise"
+  }
   PASSENGER_EDITIONS = [
-    { edition_type: :oss,
-      edition_name: "open source",
-      edition_title: "Passenger",
-      edition_long_title: "Passenger open source" },
-    { edition_type: :enterprise,
-      edition_name: "Enterprise",
-      edition_title: "Passenger Enterprise",
-      edition_long_title: "Passenger Enterprise" }
+    PASSENGER_OSS_EDITION,
+    PASSENGER_ENTERPRISE_EDITION
   ]
   INTEGRATION_MODE_NGINX = {
     integration_mode_type: :nginx,
