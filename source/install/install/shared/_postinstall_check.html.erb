@@ -10,7 +10,7 @@ sudo = locals[:sudo] || "sudo"
 </p>
 
 
-<% if type == "apache" %>
+<% if integration_mode_type == :apache %>
 <!-- ******** Apache ******** -->
 <p>
   Finally, check whether Apache has started the Passenger core processes. Run <code><%= sudo %> passenger-memory-stats</code>. You should see Apache processes as well as Passenger processes. For example:
@@ -33,11 +33,11 @@ PID    VMSize    Private   Name
 12531  149.5 MB  1.4 MB    PassengerAgent logger
 ...</span></pre>
 <p>
-  If you do not see any Apache processes or Passenger processes, then you probably have some kind of installation problem or configuration problem. Please refer to the <a href="<%= url_for "/admin/troubleshooting/" %>">troubleshooting guide</a>.
+  If you do not see any Apache processes or Passenger processes, then you probably have some kind of installation problem or configuration problem. Please refer to the <a href="<%= url_for "/admin/apache/troubleshooting/" %>">troubleshooting guide</a>.
 </p>
 
 
-<% elsif type == "nginx" %>
+<% elsif integration_mode_type == :nginx %>
 <!-- ******** Nginx ******** -->
 <p>
   Finally, check whether Nginx has started the Passenger core processes. Run <code><%= sudo %> passenger-memory-stats</code>. You should see Nginx processes as well as Passenger processes. For example:
@@ -63,6 +63,6 @@ PID    VMSize    Private   Name
 12531  149.5 MB  1.4 MB    PassengerAgent logger
 ...</span></pre>
 <p>
-  If you do not see any Nginx processes or Passenger processes, then you probably have some kind of installation problem or configuration problem. Please refer to the <a href="<%= url_for "/admin/troubleshooting/" %>">troubleshooting guide</a>.
+  If you do not see any Nginx processes or Passenger processes, then you probably have some kind of installation problem or configuration problem. Please refer to the <a href="<%= url_for "/admin/nginx/troubleshooting/" %>">troubleshooting guide</a>.
 </p>
 <% end %>

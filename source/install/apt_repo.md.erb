@@ -16,6 +16,14 @@ If you use these packages to install Passenger then you do not need to run `pass
 
 Packages are available for the x86 and x86_64 architectures. Our policy is to support all Ubuntu LTS releases that are still supported by Canonical, plus the latest Ubuntu release, plus all Debian releases that are still supported by Debian.
 
+## Limited package support for non-LTS Ubuntu versions
+
+Some Ubuntu releases are Long Term Supported (LTS) by Canonical, the company that created Ubuntu, for a period of 5 years. Other (non-LTS) Ubuntu versions are only supported by Canonical for 1 year.
+
+We provide Passenger package updates for LTS Ubuntu versions for 5 years. But for non-LTS Ubuntu versions, we only provide Passenger package updates for 6 months. That is around the time when the next Ubuntu version is out.
+
+So if you are using a non-LTS Ubuntu version, then when the next Ubuntu version is released, you must upgrade your system to that new Ubuntu version. Otherwise you won't receive Passenger updates in the form of .deb packages from us anymore.
+
 ## Installation guides
 
 To learn more about installing Passenger or Passenger Enterprise through APT, please refer to one of the installation guides. When asked to select an operating system, select <strong>"Debian, Ubuntu"</strong>.

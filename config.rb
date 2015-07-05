@@ -54,8 +54,8 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/install/#{integration_mode_type}/install/index.html",
     "/install/install/step1.html",
     locals: integration_mode_spec
-  proxy "/install/#{integration_mode_type}/upgrade.html",
-    "/install/upgrade.html",
+  proxy "/install/#{integration_mode_type}/upgrade/index.html",
+    "/install/upgrade/edition_selection.html",
     locals: integration_mode_spec
   proxy "/install/#{integration_mode_type}/uninstall/index.html",
     "/install/uninstall/step1.html",
@@ -86,16 +86,23 @@ INTEGRATION_MODES.each do |integration_mode_spec|
     proxy "/install/#{integration_mode_type}/install/#{edition_type}/index.html",
       "/install/install/step2.html",
       locals: locals
+    proxy "/install/#{integration_mode_type}/upgrade/#{edition_type}/index.html",
+      "/install/upgrade/upgrade.html",
+      locals: locals
+    proxy "/install/#{integration_mode_type}/upgrade/#{edition_type}/tarball_upgrade.html",
+      "/install/upgrade/tarball_upgrade.html",
+      locals: locals
     proxy "/install/#{integration_mode_type}/uninstall/#{edition_type}/index.html",
       "/install/uninstall/step2.html",
       locals: locals
 
     available_os_configs(locals).each do |os_config_spec|
       os_config = os_config_spec[:os_config_type]
+      locals = integration_mode_spec.merge(edition_spec).merge(os_config_spec)
 
       proxy "/install/#{integration_mode_type}/install/#{edition_type}/#{os_config}/index.html",
         "/install/install/step3.html",
-        locals: locals.merge(os_config_spec)
+        locals: locals
     end
   end
 end
@@ -109,7 +116,6 @@ proxy "/install/apache/disable.html",
   locals: INTEGRATION_MODE_APACHE
 
 ignore "/install/index2.html"
-ignore "/install/upgrade.html"
 ignore "/install/disable.html"
 ignore "/install/moving.html"
 ignore "/install/noninteractive_install.html"
@@ -119,6 +125,9 @@ ignore "/install/yum_repo.html"
 ignore "/install/install/step1.html"
 ignore "/install/install/step2.html"
 ignore "/install/install/step3.html"
+ignore "/install/upgrade/edition_selection.html"
+ignore "/install/upgrade/upgrade.html"
+ignore "/install/upgrade/tarball_upgrade.html"
 ignore "/install/uninstall/step1.html"
 ignore "/install/uninstall/step2.html"
 
