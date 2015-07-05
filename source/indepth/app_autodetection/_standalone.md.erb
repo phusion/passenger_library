@@ -39,8 +39,8 @@ So if you see a "404 Not Found" response page instead of your application, then 
 
 If Passenger's autodetection has failed you, or if your application uses directory structure that does not match Passenger's autodetection defaults, then you can add a few configuration options to tell Passenger how your application looks like. The relevant configuration options are:
 
- * `--app-type` -- Tells Passenger what kind of application it is.
- * `--startup-file` -- Tells Passenger where your application's entry point file is.
+ * [`--app-type` / "app_type"](<%= url_for "/config/standalone/reference/index.html" %>#--app-type-app_type) -- Tells Passenger what kind of application it is.
+ * [`--startup-file` / "startup_file"](<%= url_for "/config/standalone/reference/index.html" %>#--startup-file-startup_file) -- Tells Passenger where your application's entry point file is.
 
 Suppose that you have a Node.js application whose entry point file is `server.js` instead of `app.js`. Here is an example that shows you how to configure Passenger:
 
@@ -50,4 +50,4 @@ passenger start --app-type node --startup-file server.js
 
 ### Static assets
 
-Passenger Standalone automatically serves static assets from the `public` directory in the application directory. This can be overridden with the `--static-files-dir` command line option.
+Passenger Standalone automatically serves static assets from the `public` directory in the application directory. This can be overridden with the [`--static-files-dir` / "static_files_dir"](<%= url_for "/config/standalone/reference/index.html" %>#--static-files-dir-static_files_dir) option.
