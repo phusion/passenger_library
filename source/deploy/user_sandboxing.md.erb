@@ -155,10 +155,10 @@ Whatever user your application runs as, it must have read access to the applicat
 ## Red Hat and CentOS caveats
 
 <div class="note">
-  This information only applies if you <a href="<%= url_for "/install/#{integration_mode_type}/yum_repo.html" %>">installed Passenger through the RPM packages provided by Phusion</a>. If you did not installed Passenger through the RPM packages provided by Phusion, then you can ignore this section.
+  This information only applies if you <a href="<%= url_for "/install/#{integration_mode_type}/yum_repo/index.html" %>">installed Passenger through the RPM packages provided by Phusion</a>. If you did not installed Passenger through the RPM packages provided by Phusion, then you can ignore this section.
 </div>
 
-If you installed Passenger through <a href="<%= url_for "/install/#{integration_mode_type}/yum_repo.html" %>">Phusion's YUM repository</a>, and you want to disable user account sandboxing, then you must also change [the location of the instance registry directory](<%= passenger_instance_registry_dir_doc %>).
+If you installed Passenger through <a href="<%= url_for "/install/#{integration_mode_type}/yum_repo/index.html" %>">Phusion's YUM repository</a>, and you want to disable user account sandboxing, then you must also change [the location of the instance registry directory](<%= passenger_instance_registry_dir_doc %>).
 
 This is because our RPMs configure the default instance registry directory to `/var/run/passenger-instreg`, which is only writable by root. If you disable user switching, then the Passenger processes will run as [<%= passenger_default_user %>](<%= passenger_default_user_doc %>) which (as long as it's not root) won't be able to write to that directory.
 

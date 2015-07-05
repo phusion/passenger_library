@@ -72,11 +72,11 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/install/#{integration_mode_type}/upgrading_from_oss_to_enterprise.html",
     "/install/upgrading_from_oss_to_enterprise.html",
     locals: integration_mode_spec
-  proxy "/install/#{integration_mode_type}/apt_repo.html",
-    "/install/apt_repo.html",
+  proxy "/install/#{integration_mode_type}/apt_repo/index.html",
+    "/install/apt_repo/apt_repo.html",
     locals: integration_mode_spec
-  proxy "/install/#{integration_mode_type}/yum_repo.html",
-    "/install/yum_repo.html",
+  proxy "/install/#{integration_mode_type}/yum_repo/index.html",
+    "/install/yum_repo/yum_repo.html",
     locals: integration_mode_spec
 
   PASSENGER_EDITIONS.each do |edition_spec|
@@ -108,6 +108,10 @@ INTEGRATION_MODES.each do |integration_mode_spec|
 end
 
 # Miscellaneous pages
+proxy "/install/apt_repo/index.html",
+  "/install/apt_repo/integration_mode_selection.html"
+proxy "/install/yum_repo/index.html",
+  "/install/yum_repo/integration_mode_selection.html"
 proxy "/install/nginx/disable.html",
   "/install/disable.html",
   locals: INTEGRATION_MODE_NGINX
@@ -121,8 +125,10 @@ ignore "/install/moving.html"
 ignore "/install/noninteractive_install.html"
 ignore "/install/upgrading_from_oss_to_enterprise.html"
 ignore "/install/customizing_compilation_process.html"
-ignore "/install/apt_repo.html"
-ignore "/install/yum_repo.html"
+ignore "/install/apt_repo/integration_mode_selection.html"
+ignore "/install/apt_repo/apt_repo.html"
+ignore "/install/yum_repo/integration_mode_selection.html"
+ignore "/install/yum_repo/yum_repo.html"
 ignore "/install/install/step1.html"
 ignore "/install/install/step2.html"
 ignore "/install/install/step3.html"

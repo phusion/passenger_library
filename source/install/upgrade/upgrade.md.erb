@@ -26,7 +26,7 @@ end
 
 ## Debian packages (Debian, Ubuntu)
 
-If <%= edition_title %> was installed through the Phusion Passenger [APT repository](<%= url_for "/install/#{integration_mode_type}/apt_repo.html" %>), then you can upgrade <%= edition_title %>
+If <%= edition_title %> was installed through the Phusion Passenger [APT repository](<%= url_for "/install/#{integration_mode_type}/apt_repo/index.html" %>), then you can upgrade <%= edition_title %>
 <% if integration_mode_type != :standalone -%>
   along with <%= integration_mode_name %>
 <% end -%>
@@ -40,11 +40,11 @@ through APT using the following command:
 If you don't see any updates, then there are two possible reasons:
 
  1. Our Debian packages haven't been released yet. When we release a new version of <%= edition_title %>, it typically takes 1-2 hours for our server to build Debian packages.
- 2. If you are using a non-Long Term Support version of Ubuntu, then it is possible that we have [dropped support for that Ubuntu version](<%= url_for "/install/#{integration_mode_type}/apt_repo.html" %>#limited-package-support-for-non-lts-ubuntu-versions).
+ 2. If you are using a non-Long Term Support version of Ubuntu, then it is possible that we have [dropped support for that Ubuntu version](<%= url_for "/install/#{integration_mode_type}/apt_repo/index.html" %>#limited-package-support-for-non-lts-ubuntu-versions).
 
 ## RPM packages (Red Hat, CentOS)
 
-If <%= edition_title %> was installed through the Phusion Passenger [YUM repository](<%= url_for "/install/#{integration_mode_type}/yum_repo.html" %>), then you can upgrade <%= edition_title %>
+If <%= edition_title %> was installed through the Phusion Passenger [YUM repository](<%= url_for "/install/#{integration_mode_type}/yum_repo/index.html" %>), then you can upgrade <%= edition_title %>
 <% if integration_mode_type != :standalone -%>
   along with <%= integration_mode_name %>
 <% end -%>

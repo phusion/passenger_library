@@ -10,7 +10,7 @@ The fact that Nginx needs to be recompiled, has some implications:
 
 If you do not like having to recompile Nginx then there are several alternatives you can choose:
 
- 1. Use the Phusion Passenger [APT repository](<%= url_for "/install/nginx/apt_repo.html" %>) (for Debian, Ubuntu) or the [YUM repository](<%= url_for "/install/nginx/yum_repo.html" %>) (RPMs for Red Hat, CentOS) to install Passenger and Nginx. Through our APT/YUM repository, we provide a Passenger-enabled Nginx package that uses the same structure as the Nginx package provided by the OS. This means that you will be able to use the `service` script, your config files are at places where you expect them, etc.
+ 1. Use the Phusion Passenger [APT repository](<%= url_for "/install/nginx/apt_repo/index.html" %>) (for Debian, Ubuntu) or the [YUM repository](<%= url_for "/install/nginx/yum_repo/index.html" %>) (RPMs for Red Hat, CentOS) to install Passenger and Nginx. Through our APT/YUM repository, we provide a Passenger-enabled Nginx package that uses the same structure as the Nginx package provided by the OS. This means that you will be able to use the `service` script, your config files are at places where you expect them, etc.
  2. Consider [using Passenger Standalone in a reverse proxy configuration to Nginx](<%= url_for "/deploy/standalone/reverse_proxy.html" %>). Passenger Standalone + reverse proxy is fully supported and supports the same features as Passenger's Nginx integration mode.
 
 If you understand this and choose to use Passenger with its Nginx integration mode, then read on. :-)
