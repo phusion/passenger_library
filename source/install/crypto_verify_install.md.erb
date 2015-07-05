@@ -1,8 +1,9 @@
 ---
 title: Cryptographic verification of installation files
 section: install
-sidebar: sidebar
 ---
+<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
+
 # Cryptographic verification of installation files
 
 We digitally sign various files with our GPG key so that you can check whether they're legit, i.e. whether they really came from Phusion and haven't been tampered with by a third party. We apply signing since the open source version 4.0.0 RC 4, or the Enterprise version 4.0.0 RC 1.

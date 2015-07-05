@@ -1,8 +1,9 @@
 ---
 title: Out-of-band work and out-of-band garbage collection
 section: indepth
-sidebar: sidebar
 ---
+<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
+
 # Out-of-band work garbage collection
 
 <div class="note">Only available with Ruby web apps using Passenger 4 or later.</div>

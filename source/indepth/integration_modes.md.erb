@@ -1,8 +1,9 @@
 ---
 title: Integration modes
 section: indepth
-sidebar: sidebar
 ---
+<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
+
 # Integration modes
 
 As explained in [the basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>), Passenger collaborates with other components. This is why Passenger supports multiple *integration modes*. Each integration mode is designed for easy collaboration with a different component.
