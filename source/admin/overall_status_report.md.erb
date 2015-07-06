@@ -1,0 +1,337 @@
+---
+section: admin
+---
+<%
+@page_title = "Overall server status reporting: passenger-status"
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+
+doc_url = url_for("/config/#{integration_mode_type}/reference/index.html")
+case integration_mode_type
+when :nginx
+  passenger_max_pool_size = "passenger_max_pool_size"
+  passenger_max_pool_size_doc = "#{doc_url}#passenger_max_pool_size"
+  passenger_app_group_name_doc = "#{doc_url}#passenger_app_group_name"
+  passenger_max_request_time = "passenger_max_request_time"
+  passenger_max_request_time_doc = "#{doc_url}#passenger_max_request_time"
+  passenger_memory_limit = "passenger_memory_limit"
+  passenger_memory_limit_doc = "#{doc_url}#passenger_memory_limit"
+when :apache
+  passenger_max_pool_size = "PassengerMaxPoolSize"
+  passenger_max_pool_size_doc = "#{doc_url}#passengermaxpoolsize"
+  passenger_app_group_name_doc = "#{doc_url}#passengerappgroupname"
+  passenger_max_request_time = "PassengerMaxRequestTime"
+  passenger_max_request_time_doc = "#{doc_url}#passengermaxrequesttime"
+  passenger_memory_limit = "PassengerMemoryLimit"
+  passenger_memory_limit_doc = "#{doc_url}#passengermemorylimit"
+when :standalone
+  nginx_doc_url = url_for("/config/nginx/reference/index.html")
+  passenger_max_pool_size = '`--max-pool-size` / "max_pool_size"'
+  passenger_max_pool_size_doc = "#{doc_url}#--max-pool-size-max_pool_size"
+  passenger_app_group_name_doc = "#{nginx_doc_url}#passenger_app_group_name"
+  passenger_memory_limit = 'passenger_memory_limit'
+  passenger_memory_limit_doc = "#{nginx_doc_url}#passenger_memory_limit"
+  passenger_max_request_time = '`--max-request-time` / "max_request_time"'
+  passenger_max_request_time_doc = "#{doc_url}#--max-request-time-max_request_time"
+else
+  raise "TODO"
+end
+%>
+
+<h1>Overall server status reporting: <code>passenger-status</code><br>
+<small>on Passenger <%= integration_mode_name_as_passenger_suffix %></small></h1>
+
+At its core, Passenger is an HTTP router and process manager that forwards requests and supervises application processes for you. Many things are taken care of for you, but sometimes you may want to see what Passenger is doing and what is going on, perhaps for troubleshooting reasons. The main tool for doing that is `passenger-status`.
+
+`passenger-status` reports:
+
+ * Which applications Passenger is serving.
+ * Which application processes Passenger is managing, and their status such as CPU and memory usage.
+ * The status of the [request queues](<%= url_for "/indepth/request_queueing.html" %>).
+ * Any currently active requests.
+ * Various internal state.
+
+Based on the information in `passenger-status`, you can detect and diagnose various problems.
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Viewing process and request queue information
+
+Here is a basic `passenger-status` invocation. If you run it without any further arguments, then `passenger-status` will report process and request queue information. Please read on for a breakdown of the output.
+
+<div>
+  <pre class="highlight"><span class="prompt">$ </span>sudo passenger-status
+<span class="output">Version : 5.0.13                      <span class="label label-info">1</span>
+Date    : 2015-07-06 12:18:38 +0200   <span class="label label-info">2</span>
+Instance: bdVuBLEf (nginx/1.8.0 Phusion_Passenger/5.0.13)
+
+----------- General information -----------
+Max pool size : 9                 <span class="label label-info">3</span>
+App groups    : 2                 <span class="label label-info">4</span>
+Processes     : 3
+Requests in top-level queue : 0   <span class="label label-info">5</span>
+
+----------- Application groups -----------
+/var/www/passenger_status_service/current/public:   <span class="label label-info">6</span>
+  App root: /var/www/passenger_status_service/current
+  Requests in queue: 0   <span class="label label-info">7</span>
+  * PID: 18257   Sessions: 0       Processed: 66179   Uptime: 5h 53m 29s   <span class="label label-info">8</span>
+    CPU: 3%      Memory  : 110M    Last used: 0s ago
+
+/var/www/phusion_blog/current/public:
+  App root: /var/www/phusion_blog/current
+  Requests in queue: 0
+  * PID: 18334   Sessions: 0       Processed: 4595    Uptime: 5h 53m 29s
+    CPU: 0%      Memory  : 99M     Last used: 4s ago
+  * PID: 18339   Sessions: 0       Processed: 2873    Uptime: 5h 53m 26s
+    CPU: 0%      Memory  : 96M     Last used: 29s ago</span></pre>
+</div>
+
+Breakdown:
+
+ 1. The version number of the `passenger-status` tool. This is usually the same as, but not necessarily, the version number of the Passenger instance that is running.
+ 2. The current date and time when `passenger-status` was run.
+ 3. The value of the [<%= passenger_max_pool_size %>](<%= passenger_max_pool_size_doc %>) configuration option.
+<% if integration_mode_type == :standalone %>
+ 4. The number of [application groups](<%= passenger_app_group_name_doc %>) that Passenger is serving. For Passenger Standalone, this is always 1, except when using [Mass Deployment](<%= url_for "/deploy/standalone/mass_deployment.html" %>).
+<% else %>
+ 4. The number of [application groups](<%= passenger_app_group_name_doc %>) that Passenger is serving.
+<% end %>
+ 5. The amount of requests in the top-level request queue. Due to the way Passenger is implemented, this value is supposed to be almost always zero. If it is non-zero for an extended period of time, then there is something very wrong, possibly a Passenger bug.
+ 6. An application group entry and its processes. The [application group name](<%= passenger_app_group_name_doc %>) and the path to the application root are shown here.
+ 7. The number of requests in the application-group-specific request queue. If this number is higher than 0, then it means that all application processes are busy handling requests, and that none of them can currently handle one more request. A request waits in this queue until one of the application processes is done handling a request.
+ 8. Various statistics about the processes belonging to this application group.
+
+    * `PID` is the operating system process ID of this process.
+    * `Sessions` is the number requests that this application process is currently handling.
+    * `Processed` is the number of requests this application process has handled so far.
+    * `Uptime` is the uptime of this application process.
+    * `CPU` is the amount of CPU that this application process is currently using.
+    * `Memory` is the memory usage. This value here deserves [special explanation](#memory-usage-reporting).
+    * `Last used` is the time when a request was last routed to this application processes.
+
+### Dealing with common process-related problems
+
+There are several fields that you should pay attention to to detect common problems.
+
+#### Requests in queue
+
+Is `Requests in queue` higher than ~2 for a long time? Then it indicates that the application is either stuck or not fast enough to handle the traffic. To deal with stuck applications, please read [Dealing with common request-related problems](#dealing-with-common-request-related-problems). To handle traffic more quickly, please read the [optimization guide](<%= "/config/#{integration_mode_type}/optimization.html" %>) or [scale your cluster](<%= url_for "/deploy/#{integration_mode_type}/index.html" %>).
+
+#### Sessions
+
+Is `Sessions` non-zero for a long time? Then may mean that the process is stuck on a request. Please read [Dealing with common request-related problems](#dealing-with-common-request-related-problems).
+
+#### Memory
+
+Does `Memory` look much higher than the average memory usage of your other processes in the same application group? Or does it keep increasing over time, with no sign of stopping? Then you may have a memory leak. Here's what you can do about that:
+
+ * Terminate the process with the command `kill <PID>`. This will allow the operating system to completely release that process's memory. The memory leak will come back eventually, but it will buy you some time.
+ * Enable the configuration option [<%= passenger_memory_limit %>](<%= passenger_memory_limit_doc %>). This will allow Passenger to automatically terminate a process when its memory usage grows too high. It won't solve your memory leak, but will keep the server stable until you have solved the underlying cause.
+ * Read [Debugging memory leaks in Ruby](http://samsaffron.com/archive/2015/03/31/debugging-memory-leaks-in-ruby) by Sam Saffron.
+ * Read [What I Learned About Hunting Memory Leaks in Ruby 2.1](http://blog.skylight.io/hunting-for-leaks-in-ruby/) by Peter Wagenet.
+ * Use [the Rbkit memory profiler](http://rbkit.codemancers.com/).
+
+## Viewing active requests
+
+You can see which HTTP requests Passenger is currently handling by passing `--show=requests`:
+
+<div>
+  <pre class="highlight"><span class="prompt">$ </span>sudo passenger-status --show=requests</pre>
+</div>
+
+This will output a JSON representation of the router's state:
+
+~~~
+{
+   "threads" : 2,
+   "thread1" : {
+      "active_client_count" : 1,
+      "active_clients" : {
+         "2-2315" : {
+            "connected_at" : {
+               "local" : "Mon Jul  6 13:19:13 2015",
+               "relative" : "0s ago",
+               "timestamp" : 1436181553.120679
+            },
+            "connection_state" : "ACTIVE",
+            "current_request" : {
+               "app_response_http_state" : "PARSING_HEADERS",
+               "app_sink_state" : {
+                  "callback_in_progress" : false,
+                  "initialized" : true,
+                  "io_watcher_active" : false
+               },
+               "app_source_state" : {
+                  "callback_in_progress" : false,
+                  "initialized" : true,
+                  "io_watcher_active" : true
+               },
+               "flags" : {
+                  "dechunk_response" : true,
+                  "https" : true,
+                  "request_body_buffering" : false
+               },
+               "host" : "blog.phusion.nl",
+               "http_major" : 1,
+               "http_minor" : 1,
+               "http_state" : "COMPLETE",
+               "method" : "GET",
+               "path" : "/",
+               "refcount" : 1,
+               "request_body_already_read" : 0,
+               "request_body_fully_read" : true,
+               "request_body_type" : "NO_BODY",
+               "response_begun" : false,
+               "session" : {
+                  "gupid" : "16d1dbc-9VEXQm82is",
+                  "pid" : 18334
+               },
+               "session_checkout_try" : 1,
+               "started_at" : {
+                  "local" : "Mon Jul  6 13:19:13 2015",
+                  "relative" : "0s ago",
+                  "timestamp" : 1436181553.121373
+               },
+               "state" : "WAITING_FOR_APP_OUTPUT",
+               "sticky_session" : false,
+               "want_keep_alive" : false
+            },
+            "lingering_request_count" : 0,
+            "name" : "2-2315",
+            "number" : 2315,
+            "output_channel_state" : {
+               "bytes_buffered" : {
+                  "bytes" : 0,
+                  "human_readable" : "0 bytes"
+               },
+               "callback_in_progress" : false,
+               "mode" : "IN_MEMORY_MODE",
+               "nbuffers" : 0,
+               "reader_state" : "RS_INACTIVE"
+            },
+            "refcount" : 2,
+            "requests_begun" : 1
+         }
+      },
+      "disconnected_client_count" : 0,
+      "disconnected_clients" : {},
+      "free_client_count" : 127,
+      "free_request_count" : 3,
+      "mbuf_pool" : {
+         "active_blocks" : 4,
+         "active_memory" : {
+            "bytes" : 2048,
+            "human_readable" : "2.0 KB"
+         },
+         "chunk_size" : 512,
+         "free_blocks" : 10,
+         "offset" : 448,
+         "spare_memory" : {
+            "bytes" : 5120,
+            "human_readable" : "5.0 KB"
+         }
+      },
+      "pid" : 5171,
+      "server_state" : "ACTIVE",
+      "total_bytes_consumed" : 9209549,
+      "total_clients_accepted" : 2315,
+      "total_requests_begun" : 2315,
+      "turbocaching" : {
+         "fetches" : 1,
+         "hit_ratio" : 0.0,
+         "hits" : 0,
+         "store_success_ratio" : null,
+         "store_successes" : 0,
+         "stores" : 1
+      }
+   },
+   "thread2": {
+      ...
+   }
+}
+~~~
+
+Here is the breakdown of the most important fields:
+
+ * `threads` is the number of threads that the Passenger core process uses. The Passenger core process is the one that routes requests to application processes. The number of threads is usually equal to the number of CPU cores on the system.
+ * `threadN` contains the state of a particular thread.
+ * `host` and `path` allow you to infer the URL of a request.
+ * `session` -&gt; `pid` indicates the application process that is currently handling the request.
+ * `started_at` indicates how long this request has been running.
+
+### Dealing with common request-related problems
+
+Pay special attention to the `started_at` field. If a request has been running for a long time (e.g. longer than 30 seconds) then it may be indication that the application process is stuck on this request. There are several things you can do in response to this:
+
+ * (Ruby) Send the SIGQUIT signal to the application process's PID. This will make it log its backtrace to the [Passenger log file](log_file.html). With this backtrace, you can diagnose the underlying problem.
+ * Terminate the process with the command `kill <PID>`. The request will be aborted, and Passenger will.
+ * Setup the feature [<%= passenger_max_request_time %>](<%= passenger_max_request_time_doc %>). This way, Passenger will automatically terminate the process when it gets stuck on a request.
+
+## Viewing the internal state; machine-readable output
+
+You can instruct `passenger-status` to dump an XML representation of the Passenger instance's state. You can do this by passing `--show=xml`:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo passenger-status --show=xml</pre>
+
+## Miscellaneous considerations
+
+### To sudo or not to sudo
+
+For security reasons, access to `passenger-status` is restricted in the following manner:
+
+ * If you invoke `passenger-status` without root privileges, then you can only see information about the processes and application groups that are running as the same user that invoked `passenger-status`. This requires version 5.0.10 or later.
+ * If you invoke `passenger-status` with root privileges, then you can see everything.
+
+<div class="note">
+  <h3 class="notoc">Ruby users sudo notes</h3>
+
+  <p>
+    Are you using RVM, and did you install Passenger via RubyGems or source tarball? Then be sure to use <code>rvmsudo</code> instead of <code>sudo</code>.
+  </p>
+
+  <p>
+    Do you have Passenger as an entry in your Gemfile? Then be sure to prepend <code>bundle exec</code> to the command (but after sudo/rvmsudo).
+  </p>
+
+  <p>
+    So for example, suppose that you are using RVM, and you have Passenger as an entry in your Gemfile. Here's how you invoke <code>passenger-status</code> with root privileges:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span>cd /path-to-your-app
+<span class="prompt">$ </span>rvmsudo bundle exec passenger-status</pre>
+</div>
+
+### Memory usage reporting
+
+The way `passenger-status` reports memory usage deserves special attention. You probably have experience with reading memory usage statistics in `ps` and `top`. You may have seen that there are various memory usage metrics, such as "RSS" and "VMSize". Different metrics represent different things, but which one is the most accurate representation of "real" memory usage? And which one does `passenger-status` report?
+
+Well, this is actually quite a hard question to answer. Intuitively, we think that the question of "how much memory does a process use?" is simple. But the reality is that memory management on modern operating systems is quite complicated, and the concepts behind them is quite complicated too. Because of this, there is not one single right answer to this question, nor is there a short answer.
+
+#### Basic memory usage metrics
+
+The _RSS_ (Resident Set Size) is the amount of memory usage that is present in RAM. But modern operating systems rely heavily on shared memory. If two processes use the same system library, then the system library's memory usage is shared between those processes. However, the shared memory still shows up in the RSS metric, making you believe that actual memory usage is higher than it actually is. The RSS also does not include memory that the OS has written away from swap, so it may also lead you to believe that memory usage is lower than what it actually is.
+
+The _VMSize_ (virtual memory size) is the size of the [virtual memory address space](https://en.wikipedia.org/wiki/Virtual_address_space). This is a complicated topic to explain, and explaining it fully probably requires a few chapters. Suffice to say that for most users, this is a totally useless and misleading metric. The VMSize may report something like 5 GB of memory usage, while in reality the application only uses 2 MB. We recommend that you never look at the VMSize.
+
+#### Metric used by Passenger
+
+The memory usage that `passenger-status` reports is what we believe is the closest approximation to the "intuitive memory usage". We report the sum of the following metrics:
+
+ 1. The _private dirty RSS_. This is like the RSS, minus any shared memory.
+ 2. The amount of process memory written to swap.
+
+The metric we use isn't perfect and has some flaws:
+
+ * Because we don't take shared memory into account, the memory usage that we report may be lower than the actual memory usage if the shared memory is only shared between a single process.
+ * The amount of swapped memory includes shared memory (there is no way to obtain that amount without shared memory), so it may lead you to believe that the memory usage is higher than what it actually is.
+
+Having said that, we believe that it's a "good enough" metric.
+
+#### Why not PSS?
+
+Finally, there is also the the _PSS_ (Proportional Set Size) metric. This is like the RSS, with the shared memory divided between all processes that use it. For example, if there are three processes, each using 5 MB of memory and sharing a 6 MB memory block, then the PSS of each process is `5 + (6 / 3) = 7` MB.
+
+At first glance, this may sound like the perfect metric (with the exception that swap still isn't taken into account), so why don't we use it? It's because the PSS has one counter-intuitive property: if one of the processes exit, then the PSS of the remaining processes suddenly become higher, because the shared memory is now shared between fewer processes. This may lead you to believe that they suddenly allocated more memory.
+
+For the sake of making the reported memory usage as intuitively correct as possible, Passenger does not use the PSS metric.

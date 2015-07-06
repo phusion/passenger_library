@@ -242,8 +242,11 @@ INTEGRATION_MODES.each do |integration_mode_spec|
       locals: integration_mode_spec.merge(language_spec)
   end
   proxy "/admin/#{integration_mode_type}/admin_tools.html",
-      "/admin/admin_tools.html",
-      locals: integration_mode_spec
+    "/admin/admin_tools.html",
+    locals: integration_mode_spec
+  proxy "/admin/#{integration_mode_type}/overall_status_report.html",
+    "/admin/overall_status_report.html",
+    locals: integration_mode_spec
   proxy "/admin/#{integration_mode_type}/restart_app.html",
     "/admin/restart_app.html",
     locals: integration_mode_spec
@@ -258,6 +261,7 @@ end
 
 ignore "/admin/index2.html"
 ignore "/admin/admin_tools.html"
+ignore "/admin/overall_status_report.html"
 ignore "/admin/restart_app.html"
 ignore "/admin/log_file.html"
 ignore "/admin/log_rotation.html"
