@@ -432,4 +432,16 @@ module DeploymentWalkthroughHelpers
         subsection: :install_passenger }
     end
   end
+  
+  def deployment_walkthrough_next_html_after_edition(locals)
+    if needs_launch_server?(locals)
+      return "launch_server.html"
+    elsif needs_install_language_runtime?(locals)
+      return "install_language_runtime.html"
+    elsif locals[:language_type] == :ruby && locals[:integration_mode_type] == :standalone
+      return "deploy_app_main.html"
+    else
+      return "install_passenger_main.html"
+    end
+  end
 end

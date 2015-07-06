@@ -8,64 +8,12 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
 %>
 
 <h1>Pick an integration mode</h1>
-
 <p>
-  When deploying an application to production, you may want to use Passenger together with a web server like Nginx or Apache. For this purpose. Passenger provides a number of <em>integration modes</em>. To deploy your app in production, you need to pick one.
+  Passenger in <em>standalone</em> mode is highly optimized for performance and great for development or detailed control in production environments. The <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics</a> walkthroughs use this mode.
 </p>
-
 <p>
-  <a href="<%= url_for "/indepth/integration_modes.html" %>">Learn more about integration modes</a> |
-  <a href="<%= url_for "/indepth/integration_modes.html#which-mode-should-you-choose" %>">Which one should I choose?</a>
+  If you plan on hosting multiple applications, or if you are already familiar with the <a href="http://nginx.org/">Nginx</a> or <a href="http://httpd.apache.org">Apache</a> webserver, it is easier to use one of those modes. This allows you configure and run Passenger through the familiar webserver config and control mechanisms.
 </p>
+<div class="note">If you need Websockets, be aware of <a href="https://github.com/phusion/passenger/issues/1202">issues with Apache</a>.</div>
 
-<div id="integration_mode_selector" role="tabpanel">
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#nginx" aria-controls="nginx" role="tab" data-toggle="tab"><span class="name">Nginx</span><br>integration mode</a></li>
-    <li role="presentation"><a href="#apache" aria-controls="apache" role="tab" data-toggle="tab"><span class="name">Apache</span><br> integration mode</a></li>
-    <li role="presentation"><a href="#standalone" aria-controls="standalone" role="tab" data-toggle="tab"><span class="name">Standalone</span><br>mode</a></li>
-  </ul>
-
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="nginx">
-      <img src="<%= url_for '/images/nginx.png' %>" alt="Nginx" width="96" height="96" class="image-float-right">
-      <p>
-        Passenger integrates directly into <a href="http://nginx.org/">Nginx</a> as an Nginx module. You operate Passenger mostly through Nginx and through Nginx configuration files.
-      </p>
-      <p>
-        The Nginx integration mode is, along with the Standalone mode, highly optimized for performance.
-      </p>
-      <p>
-        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/nginx/open_source_vs_enterprise.html" %>" class="btn btn-primary" onclick="rememberIntegrationMode('nginx')">Continue with Nginx mode &raquo;</a>
-      </p>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="apache">
-      <img src="<%= url_for '/images/apache.png' %>" alt="Apache" width="96" class="image-float-right">
-      <p class="first">
-        Passenger integrates directly into <a href="http://httpd.apache.org">Apache</a> as an Apache module. You operate Passenger mostly through Apache and through Apache configuration files.
-      </p>
-      <p>
-        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/apache/open_source_vs_enterprise.html" %>" class="btn btn-primary" onclick="rememberIntegrationMode('apache')">Continue with Apache mode &raquo;</a>
-      </p>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="standalone">
-      <img src="<%= url_for '/images/passenger.png' %>" alt="Standalone server" width="106" height="128" class="image-float-right">
-      <p class="first">
-        This mode is what you used in the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics walkthrough</a>.
-      </p>
-      <p>
-        In this mode, Passenger operates as a fully-featured, secure standalone HTTP server. You do not need to have an existing web server like Apache or Nginx. This mode is ideal...
-      </p>
-      <ul>
-        <li>...if you are not familiar with Apache or Nginx</li>
-        <li>...when you want to quickly start up a server without editing configuration files (e.g. during development)</li>
-        <li>...or when you want to decouple the web server from the application server, by setting up reverse proxies.</li>
-      </ul>
-      <p>Along with the Nginx mode, the Standalone mode is highly optimized for performance.</p>
-      <p>
-        <a href="<%= url_for "/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/standalone/open_source_vs_enterprise.html" %>" class="btn btn-primary" onclick="rememberIntegrationMode('standalone')">Continue with Standalone mode &raquo;</a>
-      </p>
-    </div>
-  </div>
-</div>
+<%= render_partial("/shared/ask_intmode.html", locals: { dest: ":intmode:/open_source_vs_enterprise.html", force_choice: true }) %>

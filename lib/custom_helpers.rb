@@ -213,6 +213,16 @@ module CustomHelpers
     path.sub(/\/index\.html$/, "/")
   end
 
+  def current_url_generalized(generalized_param, scan_for)
+    regex_str = ""
+    scan_for.each_with_index do |entry, idx|
+      regex_str << "|" if idx > 0
+      regex_str << entry
+    end
+    regex = /(#{regex_str})/
+    path = current_page_path.gsub(regex, generalized_param)
+  end
+  
   def current_url_with_other_integration_mode(other_integration_mode, available_integration_modes, section_path)
     available = false
     available_integration_modes.each do |spec|

@@ -1,0 +1,118 @@
+<%
+# This matrix selector can be entered from two different flows:
+# 1) As part of a partial include chain, from custom made pages
+#    - The forwarding uri's are statically known (through locals[:dest])
+# 2) Through a generic js router (link.html?dest=..)
+#    - The forwarding uri's are dynamically known (through url param "dest")
+# Although flow 2) is more general and can handle any choice combination, only flow 1) writes out (hidden) links for all 
+# possible choice combinations, for crawler discovery. Prefer 2) for crosslinks, 1) for regular routes. 
+data = locals[:ask_data]
+
+# optionals
+dest_from_locals = locals.has_key?(:dest) ? locals[:dest] : ""
+force_choice = locals.has_key?(:force_choice) ? locals[:force_choice] : false
+
+uuid_partial = UUIDTools::UUID.random_create.to_s.gsub("-","")
+forward_button_id = "continue_" + uuid_partial
+choicerow_div_base_id = "choicerow_" + uuid_partial + "_"
+choice_map = "choiceMap_" + uuid_partial 
+%>
+<script>var <%= choice_map %> = knownChoices;</script>
+
+<% content_for :head do # this doesn't work for the sidebar, but that shouldn't redirect anyway %>
+<script type="text/javascript">
+  // In flow 1), this script does a quick redirect if all choices are known. If choices are partially known,
+  // there is more scripting below to hide those choices. (flow 2) redirects earlier, in link.html already)
+  destFromLocals = "<%= dest_from_locals %>";
+  var knownChoices = {};
+  if (<%= dest_from_locals.length > 0 %> && window.localStorage && !<%= force_choice %>) {
+    intModeSel = destFromLocals.indexOf(":intmode:") >= 0;
+    intModeStore = window.localStorage.getItem('library_integration_mode');
+    if (intModeStore) {
+      intModeSel = false;
+      destFromLocals = destFromLocals.replace(":intmode:", intModeStore);
+      knownChoices["intmode"] = intModeStore;
+    }
+
+    langSel = destFromLocals.indexOf(":lang:") >= 0;
+    langStore = window.localStorage.getItem('programming_language');
+    if (langStore) {
+      langSel = false;
+      destFromLocals = destFromLocals.replace(":lang:", langStore);
+      knownChoices["lang"] = langStore;
+    }
+
+    editionSel = destFromLocals.indexOf(":edition:") >= 0;
+    editionStore = window.localStorage.getItem('product_edition');
+    if (editionStore) {
+      editionSel = false;
+      destFromLocals = destFromLocals.replace(":edition:", editionStore);
+      knownChoices["edition"] = editionStore;
+    }
+    
+    if (!intModeSel && !langSel && !editionSel) {
+      <% # dest is already filled in, or could be satisfied from local storage %>
+      window.location.replace(destFromLocals);
+    }
+  }
+</script>
+<% end %>
+
+<% data.each do |choicerow| %>
+<div id="<%= choicerow_div_base_id + choicerow[:uri_key] %>" class="icon-selection-row-container icon-selection-row-container-tabs">
+  <div class="icon-selection-row-intro icon-selection-row-intro-small">
+    <p class="lead">Please select the relevant <%= choicerow[:header] %>.</p>
+    <p>
+<% choicerow[:header_links].each_with_index do |header, hdridx| %>
+      <%= " &middot; " if hdridx > 0 %><a href="<%= header[:href] %>"><%= header[:desc] %></a>
+<% end %>
+    </p>
+  </div>
+
+  <div class="icon-selection-row-items" role="tablist">
+
+<% choicerow[:choices].each do |choice| %>
+    <a href="#<%= choice[:val] %>_choices" aria-controls="<%= choice[:val] %>_choices" data-toggle="tab" class="icon-selection-row-item <%= choice[:val] %>" 
+       onclick="applyChoice(<%= choice_map %>, '<%= choicerow[:store_key] %>', '<%= choicerow[:uri_key] %>', '<%= choice[:val] %>', '<%= forward_button_id %>', 'dest', '<%= dest_from_locals %>');">
+      <img src="<%= choice[:img] %>" width="<%= choice[:w] %>" height="<%= choice[:h] %>" alt="<%= choice[:alt] %>">
+      <span class="icon-selection-row-item-label"><%= choice[:alt] %></span>
+    </a>
+<% end %>
+
+  </div>
+</div>
+
+<% if !force_choice && dest_from_locals.length > 0 %>
+<script type="text/javascript">
+// The statically linking flow (1)) needs to hide options that are already known.
+if (destFromLocals.indexOf(':<%= choicerow[:uri_key] %>:') < 0) {
+  document.getElementById('<%= choicerow_div_base_id + choicerow[:uri_key] %>').style.display = "none";
+}
+</script>
+<% end %>
+
+<% end %>
+
+<div style="width: 100%; text-align: center; margin-left: auto; margin-right:auto">
+  <a id="<%= forward_button_id %>" href="" class="btn btn-primary btn-lg">Continue</a>
+</div>
+<% if !dest_from_locals.empty? # statically linking flow can multiply out all choices for crawler discovery
+  def recurseChoices(links, data, rowIdx, curLink, curId)
+    if (rowIdx == data.length)
+      links << { id: curId, href: curLink }
+      return
+    end
+  
+    data[rowIdx][:choices].each do |choice|
+      passLink = curLink.gsub(':' + data[rowIdx][:uri_key] + ':', choice[:val])
+      recurseChoices(links, data, rowIdx + 1, passLink, curId + choice[:val])
+    end
+  end
+  
+  links = []
+  recurseChoices(links, data, 0, dest_from_locals, "")
+  
+  links.each do |link| %>
+<a id="<%= link[:id] %>" href="<%= link[:href] %>" style="display:none" class="btn btn-primary btn-lg">Continue</a>
+  <% end %>
+<% end %>

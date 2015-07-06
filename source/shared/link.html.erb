@@ -1,0 +1,73 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    function getUrlVar(key) {
+	  var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search); 
+	  return result && unescape(result[1]) || ""; 
+    }
+  
+    function collectAskParams(s) {
+      splitS = s.split(":");
+      isParam = false;
+      askFor = [];
+      askIdx = 0;
+      for (i=0; i < splitS.length; i++) {
+        if (isParam) {
+          askFor[askIdx++] = splitS[i];
+        }
+        isParam = !isParam;
+      }
+      return askFor;
+    }
+    
+    (function() {
+      dest = getUrlVar("dest");
+      if (!dest) {
+        // Buggy on non-intended use: go to frontpage
+        location.href = "/";
+        return;
+      }
+ 
+      // Apply already stored choices
+      askFor = collectAskParams(dest);
+
+      intModeSel = (askFor.indexOf("intmode") >= 0);
+      langSel = (askFor.indexOf("lang") >= 0);
+      editionSel = (askFor.indexOf("edition") >= 0);
+        
+      if (window.localStorage) {
+        intModeStore = window.localStorage.getItem('library_integration_mode');
+        if (intModeStore) {
+          intModeSel = false;
+          dest = dest.replace(":intmode:", intModeStore);
+        }
+        
+        langStore = window.localStorage.getItem('programming_language');
+        if (langStore) {
+          langSel = false;
+          dest = dest.replace(":lang:", langStore);
+        }
+        
+        editionStore = window.localStorage.getItem('product_edition');
+        if (editionStore) {
+          editionSel = false;
+          dest = dest.replace(":edition:", editionStore);
+        }
+        
+      }
+
+      if (intModeSel && langSel) {
+        window.location.replace("<%= url_for('/shared/ask_intmode_lang.html?dest=') %>" + dest);
+      } else if (intModeSel) {
+        window.location.replace("<%= url_for('/shared/ask_intmode.html?dest=') %>" + dest);
+      } else if (langSel) {
+        window.location.replace("<%= url_for('/shared/ask_lang.html?dest=') %>" + dest);
+      } else if (editionSel) {
+        window.location.replace("<%= url_for('/shared/ask_edition.html?dest=') %>" + dest);
+      } else {
+        // No questions asked or all choices known
+        window.location.replace(dest);
+      }
+    })();
+  </script>
+<% end %>
+

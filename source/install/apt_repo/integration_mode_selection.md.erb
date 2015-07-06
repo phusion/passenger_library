@@ -6,8 +6,4 @@ section: install
 
 # Passenger APT repository
 
-<%= render_partial("/shared/integration_mode_selector.html", locals: {
-  nginx_url: url_for('/install/nginx/apt_repo/index.html'),
-  apache_url: url_for('/install/apache/apt_repo/index.html'),
-  standalone_url: url_for('/install/standalone/apt_repo/index.html')
-}) %>
+<%= render_partial("/shared/ask_intmode.html", locals: { dest: "../:intmode:/apt_repo/" }) %>

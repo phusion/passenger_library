@@ -13,16 +13,10 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
   Are you using Passenger open source, or are you using Passenger Enterprise? We need to know this because the rest of this walkthrough depends on it.
 </p>
 
-<%=
-oss_spec = deployment_walkthrough_next_step_after_selecting_passenger_edition(locals.merge(edition_type: :oss))
-enterprise_spec = deployment_walkthrough_next_step_after_selecting_passenger_edition(locals.merge(edition_type: :enterprise))
-render_partial("/shared/edition_selector.html", locals: {
-  oss_url: oss_spec[:url],
-  enterprise_url: enterprise_spec[:url],
-  title: false
-})
+<%= render_partial("/shared/ask_edition.html", locals: { 
+  dest: ":edition:/" + deployment_walkthrough_next_html_after_edition(locals),
+  force_choice: true })
 %>
-
 
 <h3>More information</h3>
 

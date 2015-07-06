@@ -6,8 +6,4 @@ section: indepth
 
 # How Passenger autodetects an application
 
-<%= render_partial("/shared/integration_mode_selector.html", locals: {
-  nginx_url: url_for('/indepth/app_autodetection/nginx/index.html'),
-  apache_url: url_for('/indepth/app_autodetection/apache/index.html'),
-  standalone_url: url_for('/indepth/app_autodetection/standalone/index.html')
-}) %>
+<%= render_partial("/shared/ask_intmode.html", locals: { dest: ":intmode:/" }) %>
