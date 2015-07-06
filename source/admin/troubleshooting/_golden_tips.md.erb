@@ -12,7 +12,7 @@ This log file contains:
     The Passenger log file is the <strong>global</strong> Nginx error log file. This is one specified by the <code>error_log</code> directive in the main context (that is, <strong>not</strong> the one inside the <code>http</code> context). The file is typically located in <code>/var/log/nginx/error.log</code>.
   </p>
   <p>
-    Or, if you configured the <code>passenger_log_file</code> directive, then the log file is in the referenced file.
+    Or, if you configured the <a href="<%= url_for "/config/nginx/reference/index.html" %>#passenger_log_file">passenger_log_file</a> directive, then the log file is in the referenced file.
   </p>
 <% elsif integration_mode_type == :apache %>
   <p>
@@ -22,14 +22,14 @@ This log file contains:
     You can find out the exact location of the error log by running <code>passenger-config --detect-apache2</code>.
   </p>
   <p>
-    Or, if you configured the <code>PassengerLogFile</code> directive, then the log file is in the referenced file.
+    Or, if you configured the <a href="<%= url_for "/config/apache/reference/index.html" %>#passengerlogfile">PassengerLogFile</a> directive, then the log file is in the referenced file.
   </p>
 <% else %>
   <p>
     The default log file is located in <code>log/passenger.XXX.log</code>, where <code>XXX</code> is the port number that Passenger listens on.
   </p>
   <p>
-    Or, if you passed the <code>--log-file</code> command line parameter, then the log file is in the referenced file.
+    Or, if you passed the <a href="<%= url_for "/config/standalone/reference/index.html" %>#--log-file-log_file"><code>--log-file</code> / "log_file"</a> configuration, then the log file is in the referenced file.
   </p>
 <% end %>
 
