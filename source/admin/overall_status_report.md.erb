@@ -108,7 +108,7 @@ Breakdown:
     * `Processed` is the number of requests this application process has handled so far.
     * `Uptime` is the uptime of this application process.
     * `CPU` is the amount of CPU that this application process is currently using.
-    * `Memory` is the memory usage. This value here deserves [special explanation](#memory-usage-reporting).
+    * `Memory` is the memory usage. This value here deserves [special explanation](<%= url_for "/indepth/accurately_measuring_memory_usage.html" %>).
     * `Last used` is the time when a request was last routed to this application processes.
 
 ### Dealing with common process-related problems
@@ -302,36 +302,10 @@ For security reasons, access to `passenger-status` is restricted in the followin
 <span class="prompt">$ </span>rvmsudo bundle exec passenger-status</pre>
 </div>
 
-### Memory usage reporting
+### Accurately measuring memory usage
 
-The way `passenger-status` reports memory usage deserves special attention. You probably have experience with reading memory usage statistics in `ps` and `top`. You may have seen that there are various memory usage metrics, such as "RSS" and "VMSize". Different metrics represent different things, but which one is the most accurate representation of "real" memory usage? And which one does `passenger-status` report?
+The way Passenger tools report memory usage deserves special attention. You probably have experience with reading memory usage statistics in `ps` and `top`. But did you know they are not accurate and may even be misleading? You may have seen that those tools present various memory usage metrics, such as "RSS" and "VMSize". Different metrics represent different things, but which one is the most accurate representation of "real" memory usage? What metric does Passenger use?
 
-Well, this is actually quite a hard question to answer. Intuitively, we think that the question of "how much memory does a process use?" is simple. But the reality is that memory management on modern operating systems is quite complicated, and the concepts behind them is quite complicated too. Because of this, there is not one single right answer to this question, nor is there a short answer.
+This is actually quite a hard question to answer. Intuitively, we think that the question of "how much memory does a process use?" is simple. But the reality is that memory management on modern operating systems ia quite complicated, and the concepts behind them are quite complicated too. Because of this, there is not one single right answer to this question, nor is there a short answer.
 
-#### Basic memory usage metrics
-
-The _RSS_ (Resident Set Size) is the amount of memory usage that is present in RAM. But modern operating systems rely heavily on shared memory. If two processes use the same system library, then the system library's memory usage is shared between those processes. However, the shared memory still shows up in the RSS metric, making you believe that actual memory usage is higher than it actually is. The RSS also does not include memory that the OS has written away from swap, so it may also lead you to believe that memory usage is lower than what it actually is.
-
-The _VMSize_ (virtual memory size) is the size of the [virtual memory address space](https://en.wikipedia.org/wiki/Virtual_address_space). This is a complicated topic to explain, and explaining it fully probably requires a few chapters. Suffice to say that for most users, this is a totally useless and misleading metric. The VMSize may report something like 5 GB of memory usage, while in reality the application only uses 2 MB. We recommend that you never look at the VMSize.
-
-#### Metric used by Passenger
-
-The memory usage that `passenger-status` reports is what we believe is the closest approximation to the "intuitive memory usage". We report the sum of the following metrics:
-
- 1. The _private dirty RSS_. This is like the RSS, minus any shared memory.
- 2. The amount of process memory written to swap.
-
-The metric we use isn't perfect and has some flaws:
-
- * Because we don't take shared memory into account, the memory usage that we report may be lower than the actual memory usage if the shared memory is only shared between a single process.
- * The amount of swapped memory includes shared memory (there is no way to obtain that amount without shared memory), so it may lead you to believe that the memory usage is higher than what it actually is.
-
-Having said that, we believe that it's a "good enough" metric.
-
-#### Why not PSS?
-
-Finally, there is also the the _PSS_ (Proportional Set Size) metric. This is like the RSS, with the shared memory divided between all processes that use it. For example, if there are three processes, each using 5 MB of memory and sharing a 6 MB memory block, then the PSS of each process is `5 + (6 / 3) = 7` MB.
-
-At first glance, this may sound like the perfect metric (with the exception that swap still isn't taken into account), so why don't we use it? It's because the PSS has one counter-intuitive property: if one of the processes exit, then the PSS of the remaining processes suddenly become higher, because the shared memory is now shared between fewer processes. This may lead you to believe that they suddenly allocated more memory.
-
-For the sake of making the reported memory usage as intuitively correct as possible, Passenger does not use the PSS metric.
+In the article [Accurately measuring memory usage](<%= url_for "/indepth/accurately_measuring_memory_usage.html" %>) we will explain why a naive reading of `ps` and `top` output can be misleading, and how Passenger more accurately reports memory usage than those tools.
