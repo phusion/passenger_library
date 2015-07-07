@@ -1,6 +1,6 @@
 ### 1 Check the Passenger log file
 
-One of the first things you should do upon encountering a problem, is to check the Passenger log file. The log file is where Passenger prints to when it encounters a problem or when it wants to tell you something.
+One of the first things you should do upon encountering a problem, is to check [the Passenger log file](<%= url_for "/admin/#{integration_mode_type}/log_file.html" %>). The log file is where Passenger prints to when it encounters a problem or when it wants to tell you something.
 
 This log file contains:
 
@@ -34,7 +34,7 @@ This log file contains:
 <% end %>
 
 <div class="note">
-  Not finding anything useful in the Nginx or Apache error log? And at the same time, does it look like Passenger stopped logging to the file quite some time ago? Then you probably have a log rotation problem, causing logs to get lost. Please <a href="<%= url_for "/admin/#{integration_mode_type}/log_rotation.html" %>">configure Passenger log rotation.</a>
+  Not finding anything useful in the Passenger error log? Please read <a href="<%= url_for "/admin/#{integration_mode_type}/log_file.html" %>#troubleshooting-logging-problems">Troubleshooting logging problems.</a>
 </div>
 
 ### 2 Check the application log file
