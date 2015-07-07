@@ -244,6 +244,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/admin/#{integration_mode_type}/admin_tools.html",
     "/admin/admin_tools.html",
     locals: integration_mode_spec
+  proxy "/admin/#{integration_mode_type}/request_individual_processes.html",
+    "/admin/request_individual_processes.html",
+    locals: integration_mode_spec
   proxy "/admin/#{integration_mode_type}/overall_status_report.html",
     "/admin/overall_status_report.html",
     locals: integration_mode_spec
@@ -261,6 +264,7 @@ end
 
 ignore "/admin/index2.html"
 ignore "/admin/admin_tools.html"
+ignore "/admin/accessing_individual_processes.html"
 ignore "/admin/overall_status_report.html"
 ignore "/admin/restart_app.html"
 ignore "/admin/log_file.html"

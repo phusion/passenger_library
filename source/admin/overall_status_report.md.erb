@@ -2,7 +2,7 @@
 section: admin
 ---
 <%
-@page_title = "Overall server status reporting: passenger-status"
+@page_title = "Viewing overall server status report: passenger-status"
 content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
 
 doc_url = url_for("/config/#{integration_mode_type}/reference/index.html")
@@ -37,7 +37,7 @@ else
 end
 %>
 
-<h1>Overall server status reporting: <code>passenger-status</code><br>
+<h1>Viewing overall server status report: <code>passenger-status</code><br>
 <small>on Passenger <%= integration_mode_name_as_passenger_suffix %></small></h1>
 
 At its core, Passenger is an HTTP router and process manager that forwards requests and supervises application processes for you. Many things are taken care of for you, but sometimes you may want to see what Passenger is doing and what is going on, perhaps for troubleshooting reasons. The main tool for doing that is `passenger-status`.

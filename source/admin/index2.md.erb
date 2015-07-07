@@ -2,21 +2,44 @@
 section: admin
 ---
 <%
-@page_title = "Administration and troubleshooting - #{integration_mode_name}"
+@page_title = "Administration, debugging and troubleshooting - #{integration_mode_name}"
 content_for(:sidebar) { render_partial("sidebar.html", locals: locals.merge(context: :index)) }
 %>
 
-<h1>Administration and troubleshooting<br>
+<h1>Administration, debugging and troubleshooting<br>
 <small>in <%= integration_mode_name %> mode</small></h1>
 
-<ul class="list-unstyled list-links">
-  <li><a href="overall_status_report.html">Overall server status reporting: <code>passenger-status</code></a></li>
-  <li><a href="troubleshooting/">Troubleshooting</a></li>
-  <li><a href="admin_tools.html">Administration tools</a> <span class="label label-warning">todo</span></li>
-  <li><a href="restart_app.html">Restarting applications</a></li>
-  <li><a href="log_file.html">Log file</a> <span class="label label-warning">todo</span></li>
-  <li><a href="log_rotation.html">Log rotation</a> <span class="label label-warning">todo</span></li>
-</ul>
+<div class="row hidden-xs hidden-sm">
+  <div class="col-md-6">
+    <h3>Administration</h3>
+  </div>
+  <div class="col-md-6">
+    <h3>Troubleshooting and debugging</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h3 class="visible-sm visible-xs">Administration tasks</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="overall_status_report.html">Viewing overall server status report: <code>passenger-status</code></a></li>
+      <li><a href="admin_tools.html">Administration tools</a> <span class="label label-warning">todo</span></li>
+      <li><a href="restart_app.html">Restarting applications</a></li>
+      <li><a href="log_file.html">Log file</a> <span class="label label-warning">todo</span></li>
+      <li><a href="log_rotation.html">Log rotation</a> <span class="label label-warning">todo</span></li>
+    </ul>
+  </div>
+
+  <div class="col-md-6">
+    <h3 class="visible-sm visible-xs">Troubleshooting and debugging</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="troubleshooting/">Troubleshooting guide</a></li>
+      <li><a href="request_individual_processes.html">Sending HTTP requests to individual application processes</a></li>
+    </ul>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-md-12">
