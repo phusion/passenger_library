@@ -85,6 +85,14 @@ Merb::BootLoader.run
 run Merb::Rack::Application.new
 ~~~
 
+## Padrino
+
+~~~ruby
+require File.expand_path("../config/boot.rb", __FILE__)
+
+run Padrino.application
+~~~
+
 ## Ramaze
 
 ~~~ruby
