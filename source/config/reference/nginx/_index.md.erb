@@ -2245,15 +2245,7 @@ File descriptor activity is logged as follows:
   At this time, this feature is supported for Ruby applications only.
 </div>
 
-Turns support for application debugging on or off. In case of Ruby applications, turning this option on will cause them to load the `ruby-debug` gem (when on Ruby 1.8), the `debugger` gem (when on Ruby 1.9) or the `byebug` gem (when on Ruby >= 2.0). If you're using Bundler, you should add this to your Gemfile:
-
-~~~ruby
-gem 'ruby-debug', :platforms => :ruby_18
-gem 'debugger', :platforms => :ruby_19
-gem 'byebug', :platforms => :ruby_20
-~~~
-
-Once debugging is turned on, you can use the command `passenger-irb --debug <PID>` to attach an debugging console to the application process with the given PID. Attaching will succeed once the application process executes a `debugger` command.
+Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/admin/#{integration_mode_type}/debugging_console/ruby/index.html" %>) guide for more information.
 
 
 ## Advanced options

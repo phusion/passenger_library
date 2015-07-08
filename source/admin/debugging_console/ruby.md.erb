@@ -28,16 +28,16 @@ Next, attach an IRB console to the desired process by running the `passenger-irb
 Inside this IRB console, you can execute arbitrary Ruby code in the context of the application process. `passenger-irb` will print the result of the evaluation. For example:
 
 <pre class="highlight"><span class="prompt">$ </span>passenger-irb
-<span class="o">*** Attaching to process 28373: /var/www/passenger_status_service/current/public
+<span class="output">*** Attaching to process 28373: /var/www/passenger_status_service/current/public
 Attached. You can now evaluate any arbitrary Ruby code in this process. Type 'help' for useful commands.</span>
 &gt;&gt; 1 + 2
-<span class="o">=&gt; 3</span>
+<span class="output">=&gt; 3</span>
 &gt;&gt;</pre>
 
 `passenger-irb` also provides some useful helper methods. To obtain a list of all helper methods, run `help`. For example, the `backtraces` helper method displays the backtraces of all threads:
 
 <pre class="highlight"><span class="prompt">&gt;&gt; </span>backtraces
-<span class="o">========== Process 28373: backtrace dump ==========
+<span class="output">========== Process 28373: backtrace dump ==========
 ------------------------------------------------------------
 # Thread: #&lt;Thread:0x00000000bbb3b8 sleep&gt;(Main thread), [main thread], alive = true
 ------------------------------------------------------------
