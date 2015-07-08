@@ -273,7 +273,7 @@ end
 
 ignore "/admin/index2.html"
 ignore "/admin/admin_tools.html"
-ignore "/admin/accessing_individual_processes.html"
+ignore "/admin/request_individual_processes.html"
 ignore "/admin/overall_status_report.html"
 ignore "/admin/restart_app.html"
 ignore "/admin/log_file.html"
