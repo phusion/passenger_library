@@ -125,9 +125,47 @@ And here is an example which achieves the same, through `Passengerfile.json`.
 
 `Passengerfile.json` must be located in the application directory. This allows you to configure Passenger differently on a per-application basis.
 
+However, if you are using the [Mass deployment](<%= url_for "/deploy/standalone/mass_deployment.html" %>) feature, then Passengerfile.json is handled [differently](#mass-deployment-configuration).
+
 ### Command line options have precedence
 
 Since version 5.0, command line options take precedence over `Passengerfile.json`. In earlier versions, the opposite was true.
+
+There is just one exception to this rule. In [Mass deployment mode](<%= url_for "/deploy/standalone/mass_deployment.html" %>), per-app configuration [overrides](#mass-deployment-configuration) command line options.
+
+### Mass deployment configuration
+
+If you are using the [Mass deployment](<%= url_for "/deploy/standalone/mass_deployment.html" %>) feature, then Passengerfile.json is handled differently than normal.
+
+#### Main vs per-application configuration
+
+In Mass deployment mode, there may be a _main configuration file_ that configures the behavior of all served applications. Any options passed through command line options are considered part of the main configuration.
+
+Each application may have its own Passengerfile.json, which we call the _per-app configuration file_. The per-app configuration file overrides configuration in the main configuration. Even command line options are overridden.
+
+#### Context-specific configuration
+
+Some configuration options can only be specified in the main configuration. They will have no effect when specified in the per-app configuration file. Examples include [`--log-file` / "log_file"](reference/#--log-file-log_file) and [`--pid-file` / "pid_file"](reference/#--pid-file-pid_file).
+
+The [reference](reference/) documents whether a configuration option can only be specified in the main configuration file, or also in the per-app configuration file.
+
+#### Locations of the configuration files
+
+The main configuration file is also named Passengerfile.json and is looked up as follows:
+
+ * If a single directory argument is passed to `passenger start`, then Passenger looks for in that directory.
+ * Otherwise (if no directory arguments are passed, or if two or more directory arguments are passed), Passenger looks for the main configuration file in the current working directory.
+
+The per-app configuration file is looked up in the application directory.
+
+### Relative path handling
+
+Since version 5.0.14, Passenger Standalone accepts relative paths for all its options. Relative paths are handled as follows:
+
+ * If the path is specified via a command line argument, then it is considered relative to the current working directory.
+ * If the path is specified via Passengerfile.json, then the path is considered relative to that Passengerfile.json.
+
+Relative path handling in earlier Passenger versions was consistent, so we recommend that you upgrade to 5.0.14 or later.
 
 ### Configuration reference
 
@@ -155,7 +193,7 @@ Alternatively, if you don't want to pass this parameter every time, you can also
 
 <div class="warning">
   <h3 class="notoc">The Nginx config file must follow a specific format</h3>
-  <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone *must* be based on the one provided by Passenger Standalone.</p>
+  <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone <strong>must</strong> be based on the one provided by Passenger Standalone.</p>
 </div>
 
 <div class="note">

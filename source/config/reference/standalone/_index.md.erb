@@ -29,6 +29,10 @@
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Instructs Passenger to listen for requests on the given IP address. This means that Passenger will only be able to accept requests that are sent to that IP address.
@@ -61,6 +65,10 @@ The default is to bind to 0.0.0.0, which means that Passenger can accept request
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Instructs Passenger to listen for requests on the given TCP port number. Only has effect if you did not use [`--socket` / "socket_file"](#--socket-socket_file).
@@ -84,6 +92,10 @@ Instructs Passenger to listen for requests on the given TCP port number. Only ha
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
   </tr>
 </table>
 
@@ -117,6 +129,10 @@ There are almost no web browsers and HTTP clients that support Unix domain socke
     <th>Engines</th>
     <td>nginx</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Instructs Passenger to accept (encrypted) HTTPS requests on its socket, instead of (unencrypted) HTTP requests.
@@ -125,12 +141,13 @@ If you want Passenger to be able to listen for HTTP and HTTPS at the same time (
 
 If this option is set, you must also set [`--ssl-certificate` / "ssl_certificate"](#--ssl-certificate-ssl_certificate) and [`--ssl-certificate-key` / "ssl_certificate_key"](#--ssl-certificate-key-ssl_certificate_key) to the SSL certificate and key files, respectively.
 
+
 ### `--ssl-certificate` / "ssl_certificate"
 
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start [...] --ssl-certificate <em>PATH</em></td>
+    <td>passenger start [...] --ssl-certificate <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -144,6 +161,10 @@ If this option is set, you must also set [`--ssl-certificate` / "ssl_certificate
     <th>Engines</th>
     <td>nginx</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Sets the SSL certificate to use.
@@ -156,7 +177,7 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start [...] --ssl-certificate-key <em>PATH</em></td>
+    <td>passenger start [...] --ssl-certificate-key <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -169,6 +190,10 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
   <tr>
     <th>Engines</th>
     <td>nginx</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
   </tr>
 </table>
 
@@ -195,6 +220,10 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
   <tr>
     <th>Engines</th>
     <td>nginx</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
   </tr>
 </table>
 
@@ -234,6 +263,10 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
 </table>
 
 Instructs Passenger to daemonize into the background.
@@ -258,6 +291,10 @@ Instructs Passenger to daemonize into the background.
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
 </table>
 
 Instructs Passenger to drop its privilege to that of the given user as soon as Passenger has setup the socket. This only works if Passenger was started with root privileges.
@@ -270,7 +307,7 @@ If this option is not given, then Passenger runs as the user that invoked it.
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --log-file <em>PATH</em></td>
+    <td>passenger start --log-file <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -287,6 +324,10 @@ If this option is not given, then Passenger runs as the user that invoked it.
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
   </tr>
 </table>
 
@@ -307,7 +348,7 @@ If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default 
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --pid-file <em>PATH</em></td>
+    <td>passenger start --pid-file <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -324,6 +365,10 @@ If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default 
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
   </tr>
 </table>
 
@@ -344,7 +389,7 @@ If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default 
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --instance-registry-dir <em>PATH</em></td>
+    <td>passenger start --instance-registry-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -361,6 +406,10 @@ If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default 
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
   </tr>
 </table>
 
@@ -403,7 +452,7 @@ Notes regarding the above example:
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --data-buffer-dir <em>PATH</em></td>
+    <td>passenger start --data-buffer-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -420,6 +469,10 @@ Notes regarding the above example:
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
   </tr>
 </table>
 
@@ -457,6 +510,10 @@ If you've specified such a directory (as opposed to using Passenger's default) t
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 This option sets the value of the following environment variables:
@@ -475,7 +532,7 @@ Some web frameworks, for example Rails and Connect.js, adjust their behavior acc
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --ruby <em>PATH</em></td>
+    <td>passenger start --ruby <em>COMMAND_PATH</em></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -493,6 +550,10 @@ Some web frameworks, for example Rails and Connect.js, adjust their behavior acc
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Specifies the Ruby interpreter to use for serving Ruby web applications.
@@ -503,7 +564,7 @@ Specifies the Ruby interpreter to use for serving Ruby web applications.
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --python <em>PATH</em></td>
+    <td>passenger start --python <em>COMMAND_PATH</em></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -521,6 +582,10 @@ Specifies the Ruby interpreter to use for serving Ruby web applications.
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Specifies the Python interpreter to use for serving Python web applications.
@@ -531,7 +596,7 @@ Specifies the Python interpreter to use for serving Python web applications.
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --nodejs <em>PATH</em></td>
+    <td>passenger start --nodejs <em>COMMAND_PATH</em></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -549,6 +614,10 @@ Specifies the Python interpreter to use for serving Python web applications.
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Specifies the Node.js/io.js comand to use for serving Node.js/io.js web applications.
@@ -561,7 +630,7 @@ Passenger's support for Node.js and io.js are the same. If you want to use io.js
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --meteor-app-settings <em>PATH_TO_JSON_SETTINGS_FILE</em></td>
+    <td>passenger start --meteor-app-settings <a href="../intro.html#relative-path-handling"><em>PATH_TO_JSON_SETTINGS_FILE</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -575,6 +644,10 @@ Passenger's support for Node.js and io.js are the same. If you want to use io.js
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 When using a Meteor application in non-bundled mode, use this option to specify a JSON file with settings for the application. The `meteor run` command will be run with the `--settings` parameter set to this option.
@@ -587,7 +660,7 @@ Note that this option is not intended to be used for bundled/packaged Meteor app
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --rackup <em>RELATIVE_PATH</em></td>
+    <td>passenger start --rackup <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -597,9 +670,13 @@ Note that this option is not intended to be used for bundled/packaged Meteor app
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
-Consider application a Ruby app, and use the given Rackup file instead of the default `config.ru`. The filename is relative to the application directory.
+Consider application a Ruby app, and use the given Rackup file instead of the default `config.ru`.
 
 The corresponding Passengerfile.json looks as follows:
 
@@ -633,6 +710,10 @@ The corresponding Passengerfile.json looks as follows:
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
   </tr>
 </table>
 
@@ -672,7 +753,7 @@ Use server.js as the startup file (entry point file) for your Node.js applicatio
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --startup-file <em>RELATIVE_PATH</em></td>
+    <td>passenger start --startup-file <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -690,9 +771,13 @@ Use server.js as the startup file (entry point file) for your Node.js applicatio
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
-This option specifies the startup file that Passenger should use when loading the application. This path is relative to the application directory.
+This option specifies the startup file that Passenger should use when loading the application.
 
 Every application has a *startup file* or *entry point file*: a file where the application begins execution. Some languages have widely accepted conventions about how such a file should be called (e.g. Ruby, with its `config.ru`). Other languages have somewhat-accepted conventions (e.g. Node.js, with its `app.js`). In these cases, Passenger reuses these conventions, and executes applications through those files.
 
@@ -759,6 +844,10 @@ Sometimes you might not want to adhere to the convention that Passenger accepts.
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 This option controls whether Passenger spawns applications directly, or using a prefork copy-on-write mechanism. The [spawn methods guide](<%= url_for "/indepth/spawn_methods.html" %>) explains this in detail.
@@ -769,7 +858,7 @@ This option controls whether Passenger spawns applications directly, or using a 
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --static-files-dir <em>PATH</em></td>
+    <td>passenger start --static-files-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -787,6 +876,10 @@ This option controls whether Passenger spawns applications directly, or using a 
     <th>Engines</th>
     <td>nginx</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 By default, Passenger automatically serves static files in the application's `public` subdirectory. Your application is offloaded from having to serve static files. In case your static files are not located in `public` but somewhere else, then use this option to specify the location.
@@ -797,7 +890,7 @@ By default, Passenger automatically serves static files in the application's `pu
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --restart-dir <em>RELATIVE_PATH</em></td>
+    <td>passenger start --restart-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -815,11 +908,13 @@ By default, Passenger automatically serves static files in the application's `pu
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 As described in [Restarting applications](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>), Passenger checks the file `tmp/restart.txt` in the application directory to determine whether it should restart the application. Sometimes it may be desirable for Passenger to look in a different directory instead. This option allows you to customize the directory in which `restart.txt` is searched for.
-
-You can either set it to an absolute directory, or to a directory relative to the application directory.
 
 #### Example 1: default behavior
 
@@ -878,6 +973,10 @@ A relative filename is given. Passenger will check for /apps/baz/restart_files/r
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Passenger can display friendly error pages whenever an application fails to start. This friendly error page presents the startup error message, some suggestions for solving the problem, a backtrace and a dump of the environment variables.
@@ -910,6 +1009,10 @@ You can use this option to explicitly enable or disable this feature. `--friendl
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Enables or disables the loading of shell environment variables before spawning the application.
@@ -939,6 +1042,10 @@ If this option is turned on, and the user's shell is `bash`, then applications a
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
   </tr>
 </table>
 
@@ -972,9 +1079,13 @@ Once debugging is turned on, you can use the command `passenger-irb --debug <PID
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
-Sets arbitrary environment variables.
+Sets arbitrary environment variables for the application.
 
 
 ## Process management options
@@ -1001,6 +1112,10 @@ Sets arbitrary environment variables.
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
   </tr>
 </table>
 
@@ -1034,6 +1149,10 @@ If you find that your server is running out of memory then you should lower this
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
   </tr>
 </table>
 
@@ -1077,6 +1196,10 @@ When you start Passenger, it spawns 3 application processes. Suppose that there'
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
 </table>
 
 The maximum number of seconds that an application process may be idle. That is, if an application process hasn't received any traffic after the given number of seconds, then it will be shutdown in order to conserve memory.
@@ -1113,6 +1236,10 @@ Setting the value to 0 is recommended if you favor resource savings more than pr
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
 </table>
 
 The preloader process (explained in [Spawn methods](<%= url_for "/indepth/spawn_methods.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#--pool-idle-time-pool_idle_time). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
@@ -1144,6 +1271,10 @@ Setting a higher value will mean that the preloader is kept around longer, which
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
@@ -1185,6 +1316,10 @@ Specifies the I/O concurrency model that should be used for Ruby application pro
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Specifies the number of threads that Passenger should spawn per Ruby application process. This option only has effect if [`--concurrency-model` / "concurrency-model"](#--concurrency-model-concurrency_model) is `thread`.
@@ -1220,6 +1355,10 @@ Specifies the number of threads that Passenger should spawn per Ruby application
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
@@ -1270,6 +1409,10 @@ Please note that this option is completely unrelated to the `passenger-config re
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
   <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
 
@@ -1309,6 +1452,10 @@ Note that enabling deployment error resistance only works if you perform a [roll
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
   <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
 
@@ -1343,6 +1490,10 @@ This option is useful for preventing your application from getting stuck for an 
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
   </tr>
 </table>
 
@@ -1387,6 +1538,10 @@ If you have a load balancer in front end of Passenger + Nginx, then you must con
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
 </table>
 
 Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cookie.
@@ -1415,6 +1570,10 @@ Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cooki
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
 </table>
 
 Disables [turbocaching](<%= url_for "/indepth/turbocaching.html" %>).
@@ -1427,7 +1586,7 @@ Disables [turbocaching](<%= url_for "/indepth/turbocaching.html" %>).
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --nginx-config-template <em>PATH</em></td>
+    <td>passenger start --nginx-config-template <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -1444,6 +1603,10 @@ Disables [turbocaching](<%= url_for "/indepth/turbocaching.html" %>).
   <tr>
     <th>Engines</th>
     <td>nginx</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
   </tr>
 </table>
 
@@ -1483,6 +1646,10 @@ Please note that this option only works if Passenger Standalone is [configured](
     <th>Since</th>
     <td>5.0.0</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
 </table>
 
 Sets the Passenger Standalone engine to use. [Learn more about Passenger Standalone engines.](<%= url_for "/indepth/standalone_engines.html" %>)
@@ -1511,6 +1678,10 @@ Sets the Passenger Standalone engine to use. [Learn more about Passenger Standal
     <th>Engines</th>
     <td>nginx, builtin</td>
   </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
 </table>
 
 This option allows one to specify how much information Passenger should write to the log file. A higher log level value means that more information will be logged.
@@ -1532,7 +1703,7 @@ Possible values are:
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --log-level <em>NUMBER</em></td>
+    <td>passenger start --ctl <em>var1=value1</em> <em>var2=value2</em></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -1549,6 +1720,10 @@ Possible values are:
   <tr>
     <th>Engines</th>
     <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
   </tr>
 </table>
 
