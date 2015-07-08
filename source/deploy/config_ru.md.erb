@@ -1,0 +1,98 @@
+---
+title: Sample config.ru for various Ruby web frameworks
+section: deploy
+---
+<%
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+%>
+
+# Sample config.ru for various Ruby web frameworks
+
+This guide shows example `config.ru` files for various Ruby web frameworks.
+
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+## Camping
+
+~~~ruby
+require 'camping'
+
+##### Begin Camping application
+Camping.goes :Blog
+
+...your application code here...
+##### End Camping application
+
+run Rack::Adapter::Camping.new(Blog)
+~~~
+
+For Camping versions 2.0 and up, using run Blog as the final line will do.
+
+## Halcyon
+
+~~~ruby
+require 'halcyon'
+$LOAD_PATH.unshift(Halcyon.root / 'lib')
+Halcyon::Runner.load_config Halcyon.root/'config'/'config.yml'
+run Halcyon::Runner.new
+~~~
+
+## Mack
+
+~~~ruby
+ENV["MACK_ENV"] ||= ENV["RACK_ENV"]
+load("Rakefile")
+require 'mack'
+run Mack::Utils::Server.build_app
+~~~
+
+## Merb
+
+~~~ruby
+require 'rubygems'
+require 'merb-core'
+
+Merb::Config.setup(
+  :merb_root   => ::File.expand_path(::File.dirname(__FILE__)),
+  :environment => ENV['RACK_ENV']
+)
+Merb.environment = Merb::Config[:environment]
+Merb.root = Merb::Config[:merb_root]
+Merb::BootLoader.run
+
+run Merb::Rack::Application.new
+~~~
+
+## Ramaze
+
+~~~ruby
+require "ramaze"
+Ramaze.trait[:essentials].delete Ramaze::Adapter
+require "start"
+Ramaze.start!
+run Ramaze::Adapter::Base
+~~~
+
+## Sinatra
+
+In `config.ru`:
+
+~~~ruby
+require File.expand_path('my_app', File.dirname(__FILE__))
+
+run MyApp
+~~~
+
+In `my_app.rb`:
+
+~~~ruby
+require 'sinatra/base'
+
+class MyApp < Sinatra::Base
+  get "/" do
+    "hello world"
+  end
+end
+~~~
