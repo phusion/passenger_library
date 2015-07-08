@@ -30,6 +30,26 @@ run Rack::Adapter::Camping.new(Blog)
 
 For Camping versions 2.0 and up, using run Blog as the final line will do.
 
+## Grape
+
+In `config.ru`:
+
+~~~ruby
+require File.expand_path('my_app', File.dirname(__FILE__))
+
+run MyApp
+~~~
+
+In `my_app.rb`:
+
+~~~ruby
+require 'grape'
+
+class MyApp < Grape::API
+  ...
+end
+~~~
+
 ## Halcyon
 
 ~~~ruby
