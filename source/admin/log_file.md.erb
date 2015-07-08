@@ -87,6 +87,10 @@ Note that Passenger runs applications in the "production" environment by default
   Is your Passenger log file the <%= integration_mode_name %> error log? And do you not find anything useful inside it, while at the same time it looks like Passenger stopped logging to the file quite some time ago? Then you probably have a log rotation problem, causing logs to get lost. Please [configure Passenger log rotation.](<%= url_for "/admin/#{integration_mode_type}/log_rotation.html" %>)
 <% end %>
 
-<h3>Application stdout/stderr problems</h3>
+### Application stdout/stderr problems
 
 Are you expecting to find application output in the log file, but don't actually see it? Then the cause may be that the application has modified stdout and stderr. [Learn more about this.](<%= url_for "/indepth/std_channels.html" %>)
+
+### Try raising the log level
+
+Sometimes there's actually nothing wrong with the log file. Try raising the log level so that you see more messages.
