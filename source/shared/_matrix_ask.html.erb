@@ -17,7 +17,12 @@ forward_button_id = "continue_" + uuid_partial
 choicerow_div_base_id = "choicerow_" + uuid_partial + "_"
 choice_map = "choiceMap_" + uuid_partial 
 %>
-<script>var <%= choice_map %> = knownChoices;</script>
+<script>
+var <%= choice_map %> = {};
+if (typeof knownChoices !== 'undefined') {
+  <%= choice_map %> = knownChoices;
+}
+</script>
 
 <% content_for :head do # this doesn't work for the sidebar, but that shouldn't redirect anyway %>
 <script type="text/javascript">
