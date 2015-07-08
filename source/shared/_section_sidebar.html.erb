@@ -49,10 +49,10 @@ end
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <%= render_partial("/shared/ask_intmode.html", locals: {
+            <%= render_partial("/shared/ask_intmode.html", locals: locals.merge(
               dest: current_url_generalized(":intmode:", ["nginx", "apache", "standalone"]),
               force_choice: true
-            }) %>
+            )) %>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -91,10 +91,10 @@ end
               options[:combine_nodejs_and_iojs] = locals[:combine_nodejs_and_iojs]
             end
             
-            render_partial("/shared/ask_lang.html", locals: {
+            render_partial("/shared/ask_lang.html", locals: locals.merge(
               dest: current_url_generalized(":lang:", ["ruby", "python", "nodejs", "iojs", "meteor"]), 
               force_choice: true
-              })
+              ))
             %>
           </div>
           <div class="modal-footer">
@@ -125,10 +125,10 @@ end
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <%= render_partial("/shared/ask_edition.html", locals: { 
+            <%= render_partial("/shared/ask_edition.html", locals: locals.merge( 
               dest: current_url_generalized(":edition:", ["oss", "enterprise"]),
               force_choice: true
-              })
+              ))
             %>
           </div>
           <div class="modal-footer">
