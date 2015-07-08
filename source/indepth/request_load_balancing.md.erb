@@ -4,4 +4,39 @@ section: indepth
 ---
 <% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
 
-TODO
+# Request load balancing
+
+At its core, Passenger is a process manager and HTTP request router. In order to minimize response times, and to distribute load over multiple CPU cores for optimal performance, Passenger load balances requests over proceses in a "first free process first" manner.
+
+## How it works
+
+First, you should know that Passenger understands the concept of "application concurrency", which is the amount of requests that an application process can concurrently process.
+
+ * By default, Ruby apps have an application concurrency of 1. This means that a single Ruby process can handle 1 request at the same time.
+ * If you enable multithreading for Ruby apps, then the Ruby app's concurrency will equal the number of threads.
+ * By default, Node.js, io.js and Meteor apps have an unlimited concurrency, because Node.js/io.js/Meteor use evented I/O.
+
+When a request is received, Passenger forwards the request to the process that is currently handling the least number of requests.
+
+But when all processes have reached their maximum concurrency, then Passenger will put the request in a queue, and wait until one of the processes is done with a request. Passenger will then immediately forward the request to that process. The queue is shared between all processes belonging to the same application group.
+
+## How Passenger solves the head-of-line blocking problem
+
+The fact that Passenger load balances requests in this way, and the fact that Passenger shares a single queue between multiple processes, means that Passenger automatically solves the so-called **head-of-line blocking problem** for you.
+
+Imagine a supermarket with a number of cashiers and a queue behind each of them. You pick a queue, and as it turns out the person in front of you has a lot of items in his basket, slowing down the checkout process for everyone else behind him. The queue next to you is empty but you cannot move to another queue once you've picked one. This is exactly what happens with many web servers and load balancers: HTTP requests are queued behind another long-running request.
+
+The fact that Passenger utilizes a shared queue, means that this problem is avoided.
+
+This problem isn't relevant to Node.js, io.js and Meteor apps because they have an unlimited concurrency, but it is very relevant to Ruby and Python apps.
+
+## Multiple request queues
+
+Sometimes it may make sense to have multiple request queues. For example, imagine that your web app has a public area and an admin interface. If there are a lot of visitors on the public area, then it may get overloaded. When overloaded, your app is not able to handle requests fast enough, and so the request queue grows longer and longer, making response times worse and worse.
+
+For safety purposes, you want the admin interface to be available even if the the public area is overloaded. This can be achieved by putting the admin interface on its own request queues, so that admin requests are never queued behind public visitors.
+
+To achieve this, you can assign the admin area URL to its own application group name. The request queue is on a per-application group basis. Please learn more here:
+
+ * Passenger for Nginx: [passenger_app_group_name](<%= url_for "/config/nginx/reference/index.html" %>#passenger_app_group_name).
+ * Passenger for Apache: [PassengerAppGroupName](<%= url_for "/config/apache/reference/index.html" %>#passengerappgroupname).
