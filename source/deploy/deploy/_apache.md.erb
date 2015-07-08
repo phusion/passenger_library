@@ -1,0 +1,173 @@
+<% step = 0 %>
+
+<% if language_type == :ruby %>
+  **Table of contents**
+
+  <ul class="toc-container"><li>Loading...</li></ul>
+
+  <% step += 1 %>
+  <h2 id="determine_ruby_command">Step <%= step %>: determine the Ruby command that Passenger should use</h2>
+
+  <p>
+    We need to tell Passenger which Ruby command it should use to run your app, just in case there are multiple Ruby interpreters on your system. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
+<span class="output">passenger-config was invoked through the following Ruby interpreter:
+  Command: /usr/local/rvm/gems/ruby-<%= LATEST_RUBY_VERSION %>/wrappers/ruby
+  Version: ruby <%= LATEST_RUBY_VERSION %>p85 (2015-02-26 revision 49769) [x86_64-linux]
+  ...</span></pre>
+
+  Please take note of the path after "Command" (in this example, `/usr/local/rvm/gems/ruby-<%= LATEST_RUBY_VERSION %>/wrappers/ruby`). You will need it in one of the next steps.
+<% end %>
+
+
+<% step += 1 %>
+<% if step == 1 %>
+  <h2>Instructions</h2>
+<% else %>
+  <h2>Step <%= step %>: edit Apache configuration file</h2>
+<% end %>
+
+Open your [Apache configuration file](<%= url_for "/install/apache/working_with_the_apache_config_file.html" %>) and add:
+
+<% if language_type == :ruby %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's 'public' directory is</span>
+    DocumentRoot <span class="o">/path-to-your-app</span>/public
+
+    PassengerRuby <span class="o">/path-to-ruby</span>
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/path-to-your-app</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt; 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name, and replace `/path-to-your-app` with your application's code directory path. However, make sure that Apache is configured to point to the `public` subdirectory inside it!
+
+  Replace `/path-to-ruby` with the Ruby command that you obtained in [step 1](#determine_ruby_command).
+<% elsif language_type == :python %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's code directory is</span>
+    DocumentRoot <span class="o">/path-to-your-app</span>/public
+    PassengerAppRoot <span class="o">/path-to-your-app</span>
+
+    <span class="c"># Tell Passenger that your app is a <%= language_name %> app</span>
+    PassengerAppType python
+    PassengerStartupFile <span class="o">passenger_wsgi.py</span>
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/path-to-your-app</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name, replace `/path-to-your-app` with your application's code directory path and replace `passenger_wsgi.py` with your app's WSGI entry point file.
+<% elsif language_type == :nodejs %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's code directory is</span>
+    DocumentRoot <span class="o">/path-to-your-app</span>/public
+    PassengerAppRoot <span class="o">/path-to-your-app</span>
+
+    <span class="c"># Tell Passenger that your app is a <%= language_name %> app</span>
+    PassengerAppType node
+    PassengerStartupFile <span class="o">app.js</span>
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/path-to-your-app</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name, replace `/path-to-your-app` with your application's code directory path and replace `app.js` with your app's entry point file.
+<% elsif language_type == :iojs %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's code directory is</span>
+    DocumentRoot <span class="o">/path-to-your-app</span>/public
+    PassengerAppRoot <span class="o">/path-to-your-app</span>
+
+    <span class="c"># Tell Passenger that your app is an io.js app</span>
+    PassengerAppType node
+    PassengerStartupFile <span class="o">app.js</span>
+    PassengerNode /usr/bin/iojs
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/path-to-your-app</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name, replace `/path-to-your-app` with your application's code directory path and replace `app.js` with your app's entry point file.
+
+  This configuration also assumes that the io.js binary is located in `/usr/bin/iojs`. If this is not the case, please specify the full path to the io.js binary.
+<% elsif language_type == :meteor %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's code directory is</span>
+    DocumentRoot <span class="o">/path-to-your-app-package</span>/public
+    PassengerAppRoot <span class="o">/path-to-your-app-package</span>
+
+    <span class="c"># Tell Passenger that your app is a bundled Meteor app</span>
+    PassengerAppType node
+    PassengerStartupFile main.js
+
+    <span class="c"># Tell your app where MongoDB is</span>
+    SetEnv MONGO_URL mongodb://localhost:27017/<span class="o">myappdb</span>
+    <span class="c"># Tell your app what its root URL is</span>
+    SetEnv ROOT_URL <span class="o">http://yourserver.com</span>
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/path-to-your-app-package</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name and replace `/path-to-your-app-package` with your application's package directory path. Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
+<% else %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's 'public' directory is</span>
+    DocumentRoot <span class="o">/var/www/myapp/code</span>/public
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name, and replace `/var/www/myapp/code` with your application's code directory path. However, make sure that Apache is configured to point to the `public` subdirectory inside it!
+<% end %>
+
+When you are done, restart Apache:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo apachectl restart</pre>
+
+(Depending on your operating system, the right command may be `apache2ctl` instead of `apachectl`.)

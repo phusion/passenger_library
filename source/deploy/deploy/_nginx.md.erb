@@ -1,0 +1,127 @@
+<% step = 0 %>
+
+<% if language_type == :ruby %>
+  **Table of contents**
+
+  <ul class="toc-container"><li>Loading...</li></ul>
+
+  <% step += 1 %>
+  <h2 id="determine_ruby_command">Step <%= step %>: determine the Ruby command that Passenger should use</h2>
+
+  <p>
+    We need to tell Passenger which Ruby command it should use to run your app, just in case there are multiple Ruby interpreters on your system. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
+<span class="output">passenger-config was invoked through the following Ruby interpreter:
+  Command: /usr/local/rvm/gems/ruby-<%= LATEST_RUBY_VERSION %>/wrappers/ruby
+  Version: ruby <%= LATEST_RUBY_VERSION %>p85 (2015-02-26 revision 49769) [x86_64-linux]
+  ...</span></pre>
+
+  Please take note of the path after "Command" (in this example, `/usr/local/rvm/gems/ruby-<%= LATEST_RUBY_VERSION %>/wrappers/ruby`). You will need it in one of the next steps.
+<% end %>
+
+
+<% step += 1 %>
+<% if step == 1 %>
+  <h2>Instructions</h2>
+<% else %>
+  <h2>Step <%= step %>: edit Nginx configuration file</h2>
+<% end %>
+
+Open your Nginx configuration file and add:
+
+<% if language_type == :ruby %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/path-to-app</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+    passenger_ruby <span class="o">/path-to-ruby</span>;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name, and replace `/path-to-app` with your application's code directory path. However, make sure that Nginx is configured to point to the `public` subdirectory inside it!
+
+  Replace `/path-to-ruby` with the Ruby command that you obtained in [step 1](#determine_ruby_command).
+<% elsif language_type == :nodejs %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/path-to-app</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+    <span class="c"># Tell Passenger that your app is a Node.js app</span>
+    passenger_app_type node;
+    passenger_startup_file <span class="o">app.js</span>;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name, replace `/path-to-app` with your application's code directory path and replace `app.js` with your app's entry point file.
+<% elsif language_type == :iojs %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/path-to-app</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+    <span class="c"># Tell Passenger that your app is an io.js app</span>
+    passenger_app_type node;
+    passenger_startup_file <span class="o">app.js</span>;
+    passenger_node /usr/bin/iojs;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name, replace `/path-to-app` with your application's code directory path and replace `app.js` with your app's entry point file.
+
+  This configuration also assumes that the io.js binary is located in `/usr/bin/iojs`. If this is not the case, please specify the full path to the io.js binary.
+<% elsif language_type == :meteor %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/path-to-app-package</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+    <span class="c"># Tell Passenger that your app is a Meteor app</span>
+    passenger_app_type node;
+    passenger_startup_file main.js;
+
+    <span class="c"># Tell your app where MongoDB is</span>
+    passenger_env_var MONGO_URL mongodb://localhost:27017/<span class="o">myappdb</span>;
+    <span class="c"># Tell your app what its root URL is</span>
+    passenger_env_var ROOT_URL <span class="o">http://yourserver.com</span>;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name and replace `/path-to-app-package` with your application's package directory path. Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
+<% else %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/path-to-app</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name, and replace `/path-to-app` with your application's code directory path. However, make sure that Nginx is configured to point to the `public` subdirectory inside it!
+<% end %>
+
+When you are done, restart Nginx. If you installed Nginx via our Debian or RPM packages:
+
+<pre class="highlight"><span style="prompt">$ </span>sudo service nginx restart</pre>
+
+Otherwise, if you installed Nginx from source and don't have an init script:
+
+  <pre class="highlight"><span style="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
+<span style="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>

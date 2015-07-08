@@ -19,7 +19,7 @@ Now that you are done with transferring your app's code to the server and settin
   <%= h3(id_prefix, "#{header_step}.#{substep} Determine the Ruby command that Passenger should use") %>
 
   <p>
-    We need to tell Passenger which Ruby command it should use to run your app, just in case there are multiple Ruby interpreters on your system. Please run `passenger-config about ruby-command` to find out which Ruby interpreter you are using. For example:
+    We need to tell Passenger which Ruby command it should use to run your app, just in case there are multiple Ruby interpreters on your system. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
   </p>
   <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
 <span class="output">passenger-config was invoked through the following Ruby interpreter:
@@ -90,7 +90,7 @@ myappuser$ ...</span>
     &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
       Allow from all
       Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache >= 2.4:</span>
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
       <span class="c">#Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
@@ -114,7 +114,7 @@ myappuser$ ...</span>
     &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
       Allow from all
       Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache >= 2.4:</span>
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
       <span class="c">#Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
@@ -136,7 +136,7 @@ myappuser$ ...</span>
     &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
       Allow from all
       Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache >= 2.4:</span>
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
       <span class="c">#Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
@@ -159,7 +159,7 @@ myappuser$ ...</span>
     &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
       Allow from all
       Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache >= 2.4:</span>
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
       <span class="c">#Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
@@ -188,12 +188,12 @@ myappuser$ ...</span>
     &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
       Allow from all
       Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache >= 2.4:</span>
+      <span class="c"># Uncomment this if you're on Apache &gt; 2.4:</span>
       <span class="c">#Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
 
-  Replace `yourserver.com` with your server's host name and replace `/var/www/myapp/bundle` with your application's code directory path. Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
+  Replace `yourserver.com` with your server's host name and replace `/var/www/myapp/bundle` with your application's package directory path. Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
 <% else %>
   <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName <span class="o">yourserver.com</span>
@@ -205,7 +205,7 @@ myappuser$ ...</span>
     &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
       Allow from all
       Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache >= 2.4:</span>
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
       <span class="c">#Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>

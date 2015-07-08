@@ -25,7 +25,7 @@ Now that you are done with transferring your app's code to the server and settin
   <%= h3(id_prefix, "#{header_step}.#{substep} Determine the Ruby command that Passenger should use") %>
 
   <p>
-    We need to tell Passenger which Ruby command it should use to run your app, just in case there are multiple Ruby interpreters on your system. Please run `passenger-config about ruby-command` to find out which Ruby interpreter you are using. For example:
+    We need to tell Passenger which Ruby command it should use to run your app, just in case there are multiple Ruby interpreters on your system. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
   </p>
   <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
 <span class="output">passenger-config was invoked through the following Ruby interpreter:
