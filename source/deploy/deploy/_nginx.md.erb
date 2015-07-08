@@ -1,15 +1,12 @@
-<% step = 0 %>
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
 
 <% if language_type == :ruby %>
-  **Table of contents**
-
-  <ul class="toc-container"><li>Loading...</li></ul>
-
-  <% step += 1 %>
-  <h2 id="determine_ruby_command">Step <%= step %>: determine the Ruby command that Passenger should use</h2>
+  <h2 id="determine_ruby_command">Determine the Ruby command that Passenger should use</h2>
 
   <p>
-    We need to tell Passenger which Ruby command it should use to run your app, just in case there are multiple Ruby interpreters on your system. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
+    Before you begin, you need to tell Passenger which Ruby command it should use to run your app, just in case there are <a href="<%= url_for "/indepth/multiple_rubies.html" %>">multiple Ruby interpreters on your system</a>. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
   </p>
   <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
 <span class="output">passenger-config was invoked through the following Ruby interpreter:
@@ -21,14 +18,15 @@
 <% end %>
 
 
-<% step += 1 %>
-<% if step == 1 %>
-  <h2>Instructions</h2>
-<% else %>
-  <h2>Step <%= step %>: edit Nginx configuration file</h2>
-<% end %>
+## Deploying an app to a virtual host's root
 
-Open your Nginx configuration file and add:
+To deploy an app to an Nginx virtual host's root path, the following steps must be taken:
+
+ * Add a virtual host entry (`server` block) to your Nginx configuration file.
+ * The `server` block's root must point to your application's `public` subdirectory.
+ * You must also set `passenger_enabled on` in the `server` block.
+
+Here is an example:
 
 <% if language_type == :ruby %>
   <pre class="highlight">server {
@@ -45,7 +43,7 @@ Open your Nginx configuration file and add:
 
   Replace `yourserver.com` with your server's host name, and replace `/path-to-app` with your application's code directory path. However, make sure that Nginx is configured to point to the `public` subdirectory inside it!
 
-  Replace `/path-to-ruby` with the Ruby command that you obtained in [step 1](#determine_ruby_command).
+  Replace `/path-to-ruby` with the Ruby command that you obtained in [Determine the Ruby command that Passenger should use](#determine_ruby_command).
 <% elsif language_type == :nodejs %>
   <pre class="highlight">server {
     listen 80;
@@ -125,3 +123,78 @@ Otherwise, if you installed Nginx from source and don't have an init script:
 
   <pre class="highlight"><span style="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
 <span style="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
+
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/nginx/troubleshooting/#{language_type}/index.html" %>).
+
+
+## Deploying an app to a sub-URI
+
+You can also deploy an app to a sub-URI instead of the root URI. For example, suppose that you already have a virtual host for the application `/websites/phusion`:
+
+~~~nginx
+http {
+    ...
+
+    server {
+        listen 80;
+        server_name www.phusion.nl;
+        root /websites/phusion/public;
+        passenger_enabled on;
+    }
+}
+~~~
+
+And you want your application, located in `/websites/secondapp`, to be accessible from the URL `http://www.phusion.nl/subpath`. To do this, you need to perform the following:
+
+ * Create a location with parameter `~ ^/<SUBURI>(/.*|$)`. This is a regular expression that says: "match everything that is exactly <SUBURI>, or starts with <SUBDURI>/".
+ * Inside the location block, set `alias <PATH TO YOUR APPLICATION PUBLIC SUBDIRECTORY>$1`.
+ * Inside the location block, set `passenger_base_uri <SUBURI>`.
+ * Inside the location block, set `passenger_app_root <PATH TO YOUR APPLICATION ROOT>`.
+ * Inside the location block, set `passenger_document_root <PATH TO YOUR APPLICATIOS PUBLIC SUBDIRECTORY>`.
+ * Inside the location block, set `app_type` and `startup_file` accordingly.
+
+Here is an example:
+
+~~~nginx
+http {
+    ...
+
+    server {
+        listen 80;
+        server_name www.phusion.nl;
+        root /websites/phusion/public;
+        passenger_enabled on;
+
+        # This block has been added.
+        location ~ ^/subpath(/.*|$) {
+            alias /websites/secondapp/public$1;  # <-- be sure to point to 'public'!
+            passenger_base_uri /subpath;
+            passenger_app_root /websites/secondapp;
+            passenger_document_root /websites/secondapp/public;
+            passenger_enabled on;
+
+            <% if language_type == :python %>
+            passenger_app_type wsgi;
+            passenger_startup_file passenger_wsgi.py;
+            <% elsif language_type == :nodejs || language_type == :iojs %>
+            passenger_app_type node;
+            passenger_startup_file app.js;
+            <% elsif language_type == :meteor %>
+            passenger_app_type node;
+            passenger_startup_file main.js;
+            <% end %>
+        }
+    }
+}
+~~~
+
+When you are done, restart Nginx. If you installed Nginx via our Debian or RPM packages:
+
+<pre class="highlight"><span style="prompt">$ </span>sudo service nginx restart</pre>
+
+Otherwise, if you installed Nginx from source and don't have an init script:
+
+  <pre class="highlight"><span style="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
+<span style="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
+
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/nginx/troubleshooting/#{language_type}/index.html" %>).

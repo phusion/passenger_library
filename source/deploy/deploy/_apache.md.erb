@@ -1,15 +1,12 @@
-<% step = 0 %>
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
 
 <% if language_type == :ruby %>
-  **Table of contents**
-
-  <ul class="toc-container"><li>Loading...</li></ul>
-
-  <% step += 1 %>
-  <h2 id="determine_ruby_command">Step <%= step %>: determine the Ruby command that Passenger should use</h2>
+  <h2 id="determine_ruby_command">Determine the Ruby command that Passenger should use</h2>
 
   <p>
-    We need to tell Passenger which Ruby command it should use to run your app, just in case there are multiple Ruby interpreters on your system. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
+    We need to tell Passenger which Ruby command it should use to run your app, just in case there are <a href="<%= url_for "/indepth/multiple_rubies.html" %>">multiple Ruby interpreters on your system</a>. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
   </p>
   <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
 <span class="output">passenger-config was invoked through the following Ruby interpreter:
@@ -21,14 +18,16 @@
 <% end %>
 
 
-<% step += 1 %>
-<% if step == 1 %>
-  <h2>Instructions</h2>
-<% else %>
-  <h2>Step <%= step %>: edit Apache configuration file</h2>
-<% end %>
+## Deploying an app to a virtual host's root
 
-Open your [Apache configuration file](<%= url_for "/install/apache/working_with_the_apache_config_file.html" %>) and add:
+To deploy an app to an Apache virtual host's root path, the following steps must be taken:
+
+ * Add a virtual host entry to your [Apache configuration file](<%= url_for "/install/apache/working_with_the_apache_config_file.html" %>).
+ * The virtual host's document root must point to your application's public subdirectory.
+ * The Apache per-directory permissions must allow access to this directory.
+ * MultiViews must be disabled for this directory.
+
+Here is an example:
 
 <% if language_type == :ruby %>
   <pre class="highlight">&lt;VirtualHost *:80&gt;
@@ -50,7 +49,7 @@ Open your [Apache configuration file](<%= url_for "/install/apache/working_with_
 
   Replace `yourserver.com` with your server's host name, and replace `/path-to-your-app` with your application's code directory path. However, make sure that Apache is configured to point to the `public` subdirectory inside it!
 
-  Replace `/path-to-ruby` with the Ruby command that you obtained in [step 1](#determine_ruby_command).
+  Replace `/path-to-ruby` with the Ruby command that you obtained in [Determine the Ruby command that Passenger should use](#determine_ruby_command).
 <% elsif language_type == :python %>
   <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName <span class="o">yourserver.com</span>
@@ -171,3 +170,76 @@ When you are done, restart Apache:
 <pre class="highlight"><span class="prompt">$ </span>sudo apachectl restart</pre>
 
 (Depending on your operating system, the right command may be `apache2ctl` instead of `apachectl`.)
+
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/apache/troubleshooting/#{language_type}/index.html" %>).
+
+
+## Deploying an app to a sub-URI
+
+You can also deploy an app to a sub-URI instead of the root URI. For example, suppose that you already have a virtual host for the application `/websites/phusion`:
+
+<pre class="highlight">&lt;VirtualHost *:80>
+    ServerName www.phusion.nl
+    DocumentRoot /websites/phusion/public
+    &lt;Directory /websites/phusion&gt;
+        Allow from all
+        Options -MultiViews
+        <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:
+        #Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+And you want your application, located in `/websites/secondapp`, to be accessible from the URL `http://www.phusion.nl/subpath`. To do this, you need to perform the following:
+
+ * Set `Alias {SUBURI} {PATH TO YOUR APPLICATION'S PUBLIC DIRECTORY}`.
+ * Create a `<Location /{SUBURI}> block`.
+ * Inside the Location block, set `PassengerBaseURI /{SUBURI}`.
+ * Inside the Location block, set `PassengerAppRoot {PATH TO YOUR APPLICATION ROOT}`.
+ * Create a `<Directory {PATH TO YOUR APPLICATION PUBLIC SUBDIRECTORY}>` block.
+ * Inside the Directory block, set `Allow from all`, and (if you’re on Apache >= 2.4) `Require all granted`.
+ * Inside the Directory block, disable MultiViews.
+
+Here is an example:
+
+<pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.phusion.nl
+    DocumentRoot /websites/phusion/public
+    &lt;Directory /websites/phusion&gt;
+        Allow from all
+        Options -MultiViews
+        <span class="c"># Uncomment this if you're on Apache >= 2.4:
+        #Require all granted</span>
+    &lt;/Directory&gt;
+
+    <span class="c"># These have been added:</span>
+    Alias /subapp /websites/python/public
+    &lt;Location /subapp&gt;
+        PassengerBaseURI /subapp
+        PassengerAppRoot /websites/python
+
+        <% if language_type == :python %>
+        PassengerAppType wsgi;
+        PassengerStartupFile passenger_wsgi.py
+        <% elsif language_type == :nodejs || language_type == :iojs %>
+        PassengerAppType node;
+        PassengerStartupFile app.js
+        <% elsif language_type == :meteor %>
+        PassengerAppType node;
+        PassengerStartupFile main.js
+        <% end %>
+    &lt;/Location&gt;
+    &lt;Directory /websites/python/public&gt;
+        Allow from all
+        Options -MultiViews
+        <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:
+        #Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+When you are done, restart Apache:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo apachectl restart</pre>
+
+(Depending on your operating system, the right command may be `apache2ctl` instead of `apachectl`.)
+
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/apache/troubleshooting/#{language_type}/index.html" %>).
