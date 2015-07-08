@@ -1,0 +1,87 @@
+---
+section: admin
+---
+<%
+@page_title = "Ruby debugging console - #{integration_mode_name}"
+content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
+%>
+
+<h1>Ruby debugging console<br>
+<small>on Passenger <%= integration_mode_name_as_passenger_suffix %></small></h1>
+
+If you use [Passenger Enterprise](https://www.phusionpassenger.com/enterprise) then you have can use various debugging consoles to debug your application.
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## IRB console (Ruby REPL console)
+
+You can attach an IRB console to any application process and inspect its state by executing arbitrary Ruby code. This works even in production environments. There is no flag to turn on. There is no performance impact, other than (obviously) the performance impact of any code you run inside the console.
+
+First, lookup the PID of the application you want to attach to, using [passenger-status](<%= url_for "/admin/#{integration_mode_type}/overall_status_report.html" %>).
+
+Next, attach an IRB console to the desired process by running the `passenger-irb` command with the process's PID as argument. For example:
+
+<pre class="highlight"><span class="prompt">$ </span>passenger-irb 28373</pre>
+
+Inside this IRB console, you can execute arbitrary Ruby code in the context of the application process. `passenger-irb` will print the result of the evaluation. For example:
+
+<pre class="highlight"><span class="prompt">$ </span>passenger-irb
+<span class="o">*** Attaching to process 28373: /var/www/passenger_status_service/current/public
+Attached. You can now evaluate any arbitrary Ruby code in this process. Type 'help' for useful commands.</span>
+&gt;&gt; 1 + 2
+<span class="o">=&gt; 3</span>
+&gt;&gt;</pre>
+
+`passenger-irb` also provides some useful helper methods. To obtain a list of all helper methods, run `help`. For example, the `backtraces` helper method displays the backtraces of all threads:
+
+<pre class="highlight"><span class="prompt">&gt;&gt; </span>backtraces
+<span class="o">========== Process 28373: backtrace dump ==========
+------------------------------------------------------------
+# Thread: #&lt;Thread:0x00000000bbb3b8 sleep&gt;(Main thread), [main thread], alive = true
+------------------------------------------------------------
+    /opt/passenger-enterprise/lib/phusion_passenger/request_handler.rb:506:in `select'
+    /opt/passenger-enterprise/lib/phusion_passenger/request_handler.rb:506:in `wait_until_termination_requested'
+    /opt/passenger-enterprise/lib/phusion_passenger/request_handler.rb:224:in `main_loop'
+    /opt/passenger-enterprise/helper-scripts/rack-loader.rb:112:in `&lt;module:App&gt;'
+    /opt/passenger-enterprise/helper-scripts/rack-loader.rb:11:in `&lt;module:PhusionPassenger&gt;'
+    /opt/passenger-enterprise/helper-scripts/rack-loader.rb:10:in `&lt;main&gt;'
+...</span>
+&gt;&gt;</pre>
+
+## Ruby debugger console
+
+Besides the IRB console, you can also attach a debugger console based on the `ruby-debug`, `debugger` or `byebug` gem. These gems are for Ruby 1.8, 1.9 and 2.0+, respectively.
+
+Before you can use the Ruby debugger console, you must have the appropriate gem installed. If you're using Bundler, you should add this to your application's Gemfile:
+
+~~~ruby
+gem 'ruby-debug', :platforms => :ruby_18
+gem 'debugger', :platforms => :ruby_19
+gem 'byebug', :platforms => :ruby_20
+~~~
+
+<% if integration_mode_type == :nginx %>
+  Next, you must enable the [passenger_debugger](<%= url_for "/config/nginx/reference/index.html" %>#passenger_debugger) configuration option:
+
+  <pre class="highlight">passenger_debugger on;</pre>
+<% elsif integration_mode_type == :apache %>
+  Next, you must enable the [PassengerDebugger](<%= url_for "/config/nginx/reference/index.html" %>#passengerdebugger) configuration option:
+
+  <pre class="highlight">PassengerDebugger on</pre>
+<% elsif integration_mode_type == :standalone %>
+  Next, you must enable the [`--debugger` / "debugger"](<%= url_for "/config/standalone/reference/index.html" %>#--debugger-debugger) configuration option:
+
+  <pre class="highlight">{
+  "debugger": true
+}</pre>
+<% else %>
+  <% raise "TODO" %>
+<% end %>
+
+Note that this option has a performance impact, so you should not turn it on unless you really need the debugger console.
+
+Finally, attach the Ruby debugger console to the application process you desire with the `passenger-irb --debug <PID>` command, like this:
+
+    passenger-irb --debug 28373
