@@ -11,33 +11,55 @@
 # Conclusion
 
 module DeploymentWalkthroughHelpers
+  LANG_RUBY = {
+    choice_val: "ruby",
+    language_type: :ruby,
+    language_name: "Ruby",
+    language_name_with_determiner: "a Ruby",
+    language_runtime_name: "Ruby",
+    language_has_install_instructions: true
+  }
+  LANG_PYTHON = {
+    choice_val: "python",
+    language_type: :python,
+    language_name: "Python",
+    language_name_with_determiner: "a Python",
+    language_runtime_name: "Python",
+    language_has_install_instructions: true
+  }
+  LANG_NODEJS = {
+    choice_val: "nodejs",
+    language_type: :nodejs,
+    language_name: "Node.js",
+    language_name_with_determiner: "a Node.js",
+    language_runtime_name: "Node.js",
+    language_has_install_instructions: true 
+  }
+  LANG_IOJS = {
+    choice_val: "iojs",
+    language_type: :iojs,
+    language_name: "io.js",
+    language_name_with_determiner: "an io.js",
+    language_runtime_name: "io.js",
+    language_has_install_instructions: true
+  }
+  LANG_METEOR = {
+    choice_val: "meteor",
+    language_type: :meteor,
+    language_name: "Meteor",
+    language_name_with_determiner: "a Meteor",
+    language_runtime_name: "Node.js",
+    language_has_install_instructions: true 
+  }
+  
+  
   # If you add an entry, be sure to also update SUPPORTED_APP_TYPES and SUPPORTED_APP_TYPE_CONVENTIONS.
   DEPLOYMENT_WALKTHROUGH_LANGUAGES = [
-    { language_type: :ruby,
-      language_name: "Ruby",
-      language_name_with_determiner: "a Ruby",
-      language_runtime_name: "Ruby",
-      language_has_install_instructions: true },
-    { language_type: :python,
-      language_name: "Python",
-      language_name_with_determiner: "a Python",
-      language_runtime_name: "Python",
-      language_has_install_instructions: true },
-    { language_type: :nodejs,
-      language_name: "Node.js",
-      language_name_with_determiner: "a Node.js",
-      language_runtime_name: "Node.js",
-      language_has_install_instructions: true },
-    { language_type: :iojs,
-      language_name: "io.js",
-      language_name_with_determiner: "an io.js",
-      language_runtime_name: "io.js",
-      language_has_install_instructions: true },
-    { language_type: :meteor,
-      language_name: "Meteor",
-      language_name_with_determiner: "a Meteor",
-      language_runtime_name: "Node.js",
-      language_has_install_instructions: true }
+    LANG_RUBY,
+    LANG_PYTHON,
+    LANG_NODEJS,
+    LANG_IOJS,
+    LANG_METEOR
   ]
   DEPLOYMENT_WALKTHROUGH_INFRASTRUCTURES = [
     { infrastructure_type: :aws,
@@ -65,13 +87,16 @@ module DeploymentWalkthroughHelpers
       infrastructure_has_launch_instructions: false,
       infrastructure_needs_install_language_runtime: true }
   ]
+  
   PASSENGER_OSS_EDITION = {
+    choice_val: "oss",
     edition_type: :oss,
     edition_name: "open source",
     edition_title: "Passenger",
     edition_long_title: "Passenger open source"
   }
   PASSENGER_ENTERPRISE_EDITION = {
+    choice_val: "enterprise",
     edition_type: :enterprise,
     edition_name: "Enterprise",
     edition_title: "Passenger Enterprise",
@@ -82,6 +107,7 @@ module DeploymentWalkthroughHelpers
     PASSENGER_ENTERPRISE_EDITION
   ]
   INTEGRATION_MODE_NGINX = {
+    choice_val: "nginx",
     integration_mode_type: :nginx,
     integration_mode_name: "Nginx",
     integration_mode_name_with_determiner: "an Nginx",
@@ -89,6 +115,7 @@ module DeploymentWalkthroughHelpers
     integration_mode_web_server_name: "Nginx"
   }
   INTEGRATION_MODE_APACHE = {
+    choice_val: "apache",
     integration_mode_type: :apache,
     integration_mode_name: "Apache",
     integration_mode_name_with_determiner: "an Nginx",
@@ -96,6 +123,7 @@ module DeploymentWalkthroughHelpers
     integration_mode_web_server_name: "Apache"
   }
   INTEGRATION_MODE_STANDALONE = {
+    choice_val: "standalone",
     integration_mode_type: :standalone,
     integration_mode_name: "Standalone",
     integration_mode_name_with_determiner: "a Passenger Standalone",

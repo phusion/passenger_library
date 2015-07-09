@@ -118,6 +118,9 @@ proxy "/install/nginx/disable.html",
 proxy "/install/apache/disable.html",
   "/install/disable.html",
   locals: INTEGRATION_MODE_APACHE
+proxy "/install/standalone/disable.html",
+  "/install/disable.html",
+  locals: INTEGRATION_MODE_STANDALONE
 
 ignore "/install/index2.html"
 ignore "/install/disable.html"
@@ -246,10 +249,10 @@ INTEGRATION_MODES.each do |integration_mode_spec|
     locals: integration_mode_spec
   proxy "/admin/#{integration_mode_type}/debugging_console/ruby/index.html",
     "/admin/debugging_console/ruby.html",
-    locals: integration_mode_spec
+    locals: integration_mode_spec.merge(LANG_RUBY)
   proxy "/admin/#{integration_mode_type}/debugging_console/nodejs/index.html",
     "/admin/debugging_console/nodejs.html",
-    locals: integration_mode_spec
+    locals: integration_mode_spec.merge(LANG_NODEJS)
   proxy "/admin/#{integration_mode_type}/admin_tools.html",
     "/admin/admin_tools.html",
     locals: integration_mode_spec
