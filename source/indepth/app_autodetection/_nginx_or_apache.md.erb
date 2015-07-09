@@ -27,7 +27,9 @@ Passenger checks whether the virtual host is a Passenger-supported application t
         </tr>
       </thead>
       <tbody>
-        <% SUPPORTED_APP_TYPES.each do |spec| %>
+        <% SUPPORTED_APP_TYPES.each do |spec|
+           next unless spec[:lang_key].include? language_type.to_s
+         %>
           <tr>
             <td><%= spec[:startup_file] %></td>
             <td><%= spec[:name] %></td>
@@ -69,9 +71,16 @@ If Passenger's autodetection has failed you, or if your application uses directo
  * [passenger_app_root](<%= url_for("/config/nginx/reference/index.html") %>#passenger_app_root) -- Tells Passenger where your application root is.
  * [passenger_app_type](<%= url_for("/config/nginx/reference/index.html") %>#passenger_app_type) -- Tells Passenger what kind of application it is.
  * [passenger_startup_file](<%= url_for("/config/nginx/reference/index.html") %>#passenger_startup_file) -- Tells Passenger where your application's entry point file is.
+<% else %>
+ * [PassengerAppRoot](<%= url_for("/config/apache/reference/index.html") %>#passengerapproot) -- Tells Passenger where your application root is.
+ * [PassengerAppType](<%= url_for("/config/apache/reference/index.html") %>#passengerapptype) -- Tells Passenger what kind of application it is.
+ * [PassengerStartupFile](<%= url_for("/config/apache/reference/index.html") %>#passengerstartupfile) -- Tells Passenger where your application's entry point file is.
+<% end %>
 
+<% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
 Suppose that you have a Node.js application whose entry point file is `server.js` instead of `app.js`. Here is an example that shows you how to configure Passenger:
 
+<% if integration_mode_type == :nginx %>
 ~~~nginx
 server {
     server_name example.com;
@@ -84,12 +93,6 @@ server {
 }
 ~~~
 <% else %>
- * [PassengerAppRoot](<%= url_for("/config/apache/reference/index.html") %>#passengerapproot) -- Tells Passenger where your application root is.
- * [PassengerAppType](<%= url_for("/config/apache/reference/index.html") %>#passengerapptype) -- Tells Passenger what kind of application it is.
- * [PassengerStartupFile](<%= url_for("/config/apache/reference/index.html") %>#passengerstartupfile) -- Tells Passenger where your application's entry point file is.
-
-Suppose that you have a Node.js application whose entry point file is `server.js` instead of `app.js`. Here is an example that shows you how to configure Passenger:
-
 ~~~
 <VirtualHost test.host>
     DocumentRoot /webapps/example.com/public
@@ -101,3 +104,5 @@ Suppose that you have a Node.js application whose entry point file is `server.js
 </VirtualHost>
 ~~~
 <% end %>
+
+<% end # not showing the example for ruby, config.ru renaming not so relevant %>

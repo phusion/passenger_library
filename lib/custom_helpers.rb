@@ -18,16 +18,20 @@ SUPPORTED_REDHAT_VERSIONS = {
 }
 
 SUPPORTED_APP_TYPES = [
-  { name: "Ruby, Ruby on Rails",
+  { lang_key: "ruby",
+    name: "Ruby, Ruby on Rails",
     type: "rack",
     startup_file: "config.ru" },
-  { name: "Python",
+  { lang_key: "python",
+    name: "Python",
     type: "python",
     startup_file: "passenger_wsgi.py" },
-  { name: "Node.js, io.js or Meteor JS in bundled/packaged mode",
+  { lang_key: "meteor nodejs iojs",
+    name: "Node.js, io.js or Meteor JS in bundled/packaged mode",
     type: "node",
     startup_file: "app.js" },
-  { name: "Meteor JS in non-bundled/packaged mode",
+  { lang_key: "meteor",
+    name: "Meteor JS in non-bundled/packaged mode",
     type: "meteor",
     startup_file: ".meteor" }
 ]

@@ -2,7 +2,9 @@
 title: Ruby Bundler support
 section: indepth
 ---
-<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
+<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals.merge(
+  limit_choices: { "lang" => [LANG_RUBY] }
+)) } %>
 
 # Ruby Bundler support
 

@@ -1,5 +1,4 @@
 <div><!-- Put everything in a container div so that when included from a Markdown file, the Markdown parser won't try to render our content. -->
-
 <%
 # This matrix selector can be entered from two different flows:
 # 1) As part of a partial include chain, from custom made pages
@@ -17,6 +16,9 @@ dest_from_locals = locals.has_key?(:dest) ? locals[:dest] : ""
 force_choice = locals.has_key?(:force_choice) ? locals[:force_choice] : false
 # { key => [choice1, choice2] }: limits the selector of type key to choice1, choice2
 limit_choices = locals.has_key?(:limit_choices) ? locals[:limit_choices] : {}
+# anchor passed through the url param a will be #attached to the destination
+anchor = request[:params][:a]
+dest_from_locals << ("#" + anchor) unless anchor.nil?
 
 # Because this partial can be included multiple times (with different choices) in the same page.
 uuid_partial = UUIDTools::UUID.random_create.to_s.gsub("-","")

@@ -6,7 +6,7 @@
   <h2 id="determine_ruby_command">Determine the Ruby command that Passenger should use</h2>
 
   <p>
-    We need to tell Passenger which Ruby command it should use to run your app, just in case there are <a href="<%= url_for "/indepth/multiple_rubies.html" %>">multiple Ruby interpreters on your system</a>. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
+    We need to tell Passenger which Ruby command it should use to run your app, just in case there are <a href="<%= url_for "/indepth/ruby/multiple_rubies.html" %>">multiple Ruby interpreters on your system</a>. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
   </p>
   <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
 <span class="output">passenger-config was invoked through the following Ruby interpreter:

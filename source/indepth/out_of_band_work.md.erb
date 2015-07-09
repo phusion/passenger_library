@@ -2,7 +2,9 @@
 title: Out-of-band work and out-of-band garbage collection
 section: indepth
 ---
-<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
+<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals.merge(
+  limit_choices: { "lang" => [LANG_RUBY] }
+)) } %>
 
 # Out-of-band work and out-of-band garbage collection
 
@@ -67,7 +69,7 @@ if defined?(PhusionPassenger)
 end
 ~~~
 
-It should be noted that, although the application uses the Passenger Ruby API, it is [*not* necessary to add Passenger to the Gemfile](../indepth/bundler.html#does-passenger-itself-need-to-be-added-to-the-gemfile).
+It should be noted that, although the application uses the Passenger Ruby API, it is [*not* necessary to add Passenger to the Gemfile](../indepth/ruby/bundler.html#does-passenger-itself-need-to-be-added-to-the-gemfile).
 
 ## Further reading
 

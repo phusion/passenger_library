@@ -298,15 +298,46 @@ ignore "/admin/debugging_console/nodejs.html"
 
 ###### In-depth ######
 
-INTEGRATION_MODES.each do |integration_mode_spec|
-  integration_mode_type = integration_mode_spec[:integration_mode_type]
-
-  proxy "/indepth/app_autodetection/#{integration_mode_type}/index.html",
-    "/indepth/app_autodetection/app_autodetection.html",
-    locals: integration_mode_spec
-
+DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
+  language_type = language_spec[:language_type]
+  proxy "/indepth/#{language_type}/index.html",
+    "/indepth/index2.html",
+    locals: language_spec  
+  INTEGRATION_MODES.each do |integration_mode_spec|
+    integration_mode_type = integration_mode_spec[:integration_mode_type]
+  
+    proxy "/indepth/#{language_type}/app_autodetection/index.html",
+          "/indepth/app_autodetection/index.html",
+          locals: integration_mode_spec.merge(language_spec)
+    proxy "/indepth/#{language_type}/app_autodetection/#{integration_mode_type}/index.html",
+          "/indepth/app_autodetection/app_autodetection.html",
+          locals: integration_mode_spec.merge(language_spec)
+  end
 end
 
+proxy "/indepth/ruby/multiple_rubies.html",
+      "/indepth/multiple_rubies.html",
+      locals: LANG_RUBY
+proxy "/indepth/ruby/out_of_band_work.html",
+      "/indepth/out_of_band_work.html",
+      locals: LANG_RUBY
+proxy "/indepth/ruby/spawn_methods.html",
+      "/indepth/spawn_methods.html",
+      locals: LANG_RUBY
+proxy "/indepth/ruby/bundler.html",
+      "/indepth/bundler.html",
+      locals: LANG_RUBY
+proxy "/indepth/nodejs/reverse_port_binding.html",
+      "/indepth/reverse_port_binding.html",
+      locals: LANG_NODEJS
+proxy "/indepth/iojs/reverse_port_binding.html",
+      "/indepth/reverse_port_binding.html",
+      locals: LANG_IOJS
+proxy "/indepth/meteor/meteor.html",
+      "/indepth/meteor.html",
+      locals: LANG_METEOR
+      
+ignore "/indepth/index2.html"
 ignore "/indepth/app_autodetection/app_autodetection.html"
 
 #################################################

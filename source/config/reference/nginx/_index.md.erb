@@ -340,7 +340,7 @@ These are aliases for [passenger_app_env](#passenger_app_env).
 
 By default, Passenger assumes that the application's root directory is the parent directory of the virtual host's (`server` block's) root directory. This option allows one to the application's root independently from the virtual host root, which is useful if your application does not follow the conventions that Passenger assumes.
 
-See also [How Passenger + Nginx autodetects applications](<%= url_for "/indepth/app_autodetection/nginx/index.html" %>).
+See also [How Passenger + Nginx autodetects applications](<%= url_for "/indepth/app_autodetection/" %>).
 
 #### Example
 
@@ -464,7 +464,7 @@ server {
   </tr>
   <tr>
     <th>Default</th>
-    <td><a href="<%= url_for "/indepth/app_autodetection/nginx/index.html" %>">Autodetected</a></td>
+    <td><a href="<%= url_for "/indepth/app_autodetection/" %>">Autodetected</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -476,7 +476,7 @@ server {
   </tr>
 </table>
 
-By default, Passenger [autodetects](<%= url_for "/indepth/app_autodetection/nginx/index.html" %>) the type of the application, e.g. whether it's a Ruby, Python, Node.js or Meteor app. If it's unable to autodetect the type of the application (e.g. because you've specified a custom [passenger_startup_file](#passenger_startup_file)) then you can use this option to force Passenger to recognize the application as a specific type.
+By default, Passenger [autodetects](<%= url_for "/indepth/app_autodetection/" %>) the type of the application, e.g. whether it's a Ruby, Python, Node.js or Meteor app. If it's unable to autodetect the type of the application (e.g. because you've specified a custom [passenger_startup_file](#passenger_startup_file)) then you can use this option to force Passenger to recognize the application as a specific type.
 
 Allowed values are:
 
@@ -519,7 +519,7 @@ server {
   </tr>
   <tr>
     <th>Default</th>
-    <td><a href="<%= url_for "/indepth/app_autodetection/nginx/index.html" %>">Autodetected</a></td>
+    <td><a href="<%= url_for "/indepth/app_autodetection/" %>">Autodetected</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -1463,7 +1463,7 @@ This option is useful if your application is leaking memory. By shutting it down
 
 By default, Passenger performs several filesystem checks (or, in programmers jargon, "`stat()` calls") each time a request is processed:
 
- * It checks which the application [startup files](<%= url_for "/indepth/app_autodetection/#{integration_mode_type}/" %>) are present, in order to autodetect the application type.
+ * It checks which the application [startup files](<%= url_for "/indepth/app_autodetection/" %>) are present, in order to autodetect the application type.
  * It checks whether [restart.txt](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>) has changed or whether `always_restart.txt` exists, in order to determine whether the application should be restarted.
 
 On some systems where disk I/O is expensive, e.g. systems where the harddisk is already being heavily loaded, or systems where applications are stored on NFS shares, these filesystem checks can incur a lot of overhead.
