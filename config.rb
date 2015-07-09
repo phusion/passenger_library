@@ -263,12 +263,17 @@ INTEGRATION_MODES.each do |integration_mode_spec|
     "/admin/restart_app.html",
     locals: integration_mode_spec
   proxy "/admin/#{integration_mode_type}/log_file.html",
-      "/admin/log_file.html",
-      locals: integration_mode_spec
+    "/admin/log_file.html",
+    locals: integration_mode_spec
   proxy "/admin/#{integration_mode_type}/log_rotation.html",
-      "/admin/log_rotation.html",
-      locals: integration_mode_spec
-
+    "/admin/log_rotation.html",
+    locals: integration_mode_spec
+  proxy "/admin/#{integration_mode_type}/stuck_apps.html",
+    "/admin/stuck_apps.html",
+    locals: integration_mode_spec
+  proxy "/admin/#{integration_mode_type}/memory_leaks.html",
+    "/admin/memory_leaks.html",
+    locals: integration_mode_spec
 end
 
 ignore "/admin/index2.html"
@@ -278,6 +283,8 @@ ignore "/admin/overall_status_report.html"
 ignore "/admin/restart_app.html"
 ignore "/admin/log_file.html"
 ignore "/admin/log_rotation.html"
+ignore "/admin/stuck_apps.html"
+ignore "/admin/memory_leaks.html"
 ignore "/admin/troubleshooting/language_selection.html"
 ignore "/admin/troubleshooting/troubleshooting.html"
 ignore "/admin/debugging_console/language_selection.html"
