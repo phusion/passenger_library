@@ -41,25 +41,31 @@ if (typeof knownChoices !== 'undefined') {
     intModeSel = destFromLocals.indexOf(":intmode:") >= 0;
     intModeStore = window.localStorage.getItem('library_integration_mode');
     if (intModeStore) {
-      intModeSel = false;
-      destFromLocals = destFromLocals.replace(":intmode:", intModeStore);
-      knownChoices["intmode"] = intModeStore;
+      if (<%= limit_choices["intmode"].nil? %> || <%= get_choices_as_jsarray(limit_choices["intmode"]) %>.indexOf(langStore) >= 0) {
+        intModeSel = false;
+        destFromLocals = destFromLocals.replace(":intmode:", intModeStore);
+        knownChoices["intmode"] = intModeStore;
+      }
     }
 
     langSel = destFromLocals.indexOf(":lang:") >= 0;
     langStore = window.localStorage.getItem('programming_language');
     if (langStore) {
-      langSel = false;
-      destFromLocals = destFromLocals.replace(":lang:", langStore);
-      knownChoices["lang"] = langStore;
+      if (<%= limit_choices["lang"].nil? %> || <%= get_choices_as_jsarray(limit_choices["lang"]) %>.indexOf(langStore) >= 0) {
+        langSel = false;
+        destFromLocals = destFromLocals.replace(":lang:", langStore);
+        knownChoices["lang"] = langStore;
+      }
     }
 
     editionSel = destFromLocals.indexOf(":edition:") >= 0;
     editionStore = window.localStorage.getItem('product_edition');
     if (editionStore) {
-      editionSel = false;
-      destFromLocals = destFromLocals.replace(":edition:", editionStore);
-      knownChoices["edition"] = editionStore;
+      if (<%= limit_choices["edition"].nil? %> || <%= get_choices_as_jsarray(limit_choices["edition"]) %>.indexOf(langStore) >= 0) {
+        editionSel = false;
+        destFromLocals = destFromLocals.replace(":edition:", editionStore);
+        knownChoices["edition"] = editionStore;
+      }
     }
     
     if (!intModeSel && !langSel && !editionSel) {

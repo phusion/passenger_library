@@ -6,6 +6,9 @@ section: admin
 content_for(:sidebar) do
   render_partial("../sidebar.html", locals: locals.merge(
     context: :index,
+    limit_choices: {"lang" => [LANG_RUBY, LANG_PYTHON, LANG_NODEJS, LANG_METEOR]},
+    filtered_choice_uri: "/",
+    hide_filtered: true,
     combine_nodejs_and_iojs: true
   ))
 end

@@ -283,4 +283,15 @@ module CustomHelpers
     end
     return true
   end
+  
+  def get_choices_as_jsarray(limit_choices)
+    return "[]" if limit_choices.nil? 
+    jsarray = "['"
+    limit_choices.each_with_index do |limit_choice, idx|
+      jsarray << "', '" if idx > 0
+      jsarray << limit_choice[:choice_val] 
+    end
+    jsarray << "']"
+    return jsarray
+  end
 end
