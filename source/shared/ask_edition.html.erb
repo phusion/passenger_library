@@ -1,0 +1,24 @@
+<%
+ask_data = [
+  {
+    header: "Passenger edition",
+    header_links: [
+      { href: url_for('/indepth/open_source_vs_enterprise.html'), desc: "Open Source vs. Enterprise differences" }
+    ],
+    store_key: "product_edition",
+    uri_key: "edition",
+    choices: [
+       { img: url_for("/images/passenger144.png"), w: 122, h:144, alt: "Passenger open source", val: "oss" },
+       { img: url_for("/images/passenger-enterprise144.png"), w: 122, h:144, alt: "Passenger Enterprise", val: "enterprise" }
+    ]
+  }
+]
+%>
+
+<%= render_partial("/shared/matrix_ask.html", locals: locals.merge( ask_data: ask_data )) %>
+
+<div class="icon-selection-row-footer">
+  <p>
+    <strong>Hint:</strong> if you don't remember buying the Enterprise edition, then you are probably using the open source edition.
+  </p>
+</div>

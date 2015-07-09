@@ -13,8 +13,4 @@ skip_search_index: true
   </div>
 <% end %>
 
-<%= render_partial("/shared/integration_mode_selector.html", locals: {
-  nginx_url: url_for('/admin/nginx/index.html'),
-  apache_url: url_for('/admin/apache/index.html'),
-  standalone_url: url_for('/admin/standalone/index.html')
-}) %>
+<%= render_partial("/shared/ask_intmode.html", locals: { dest: ":intmode:/" }) %>

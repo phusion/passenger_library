@@ -14,7 +14,4 @@ skip_search_index: true
   </div>
 <% end %>
 
-<%= render_partial("/shared/programming_language_selector.html", locals: locals.merge(
-  url_prefix: "#{config[:url_root]}/walkthroughs/basics/",
-  intro_text: nil
-)) %>
+<%= render_partial("/shared/ask_lang.html", locals: { dest: ":lang:/", force_choice: true }) %>

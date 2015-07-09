@@ -426,17 +426,12 @@ figcaption {
 
 .icon-selection-row-items {
   text-align: center;
-  // .integration-mode-selections has a negative right margin
-  // in order to get rid of the extra right margin of the last
-  // icon in a row.
-  margin: 2em -2em 0 0;
 }
 
 .icon-selection-row-item {
   display: inline-block;
   text-align: center;
-  margin-right: 2em;
-  margin-bottom: 2em;
+  margin-bottom: 0.5em;
   max-width: 200px;
 }
 

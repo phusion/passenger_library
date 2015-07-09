@@ -1,8 +1,5 @@
 <%
-locals[:available_integration_modes] ||= INTEGRATION_MODES
 section_has_integration_mode_selector = locals.fetch(:section_has_integration_mode_selector, true)
-
-locals[:available_editions] ||= PASSENGER_EDITIONS
 
 if locals[:integration_mode_type] && section_has_integration_mode_selector
   section_path = "#{config[:url_root]}#{locals[:section_path]}/#{locals[:integration_mode_type]}/"
@@ -49,12 +46,10 @@ end
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <%= render_partial("/shared/integration_mode_selector.html", locals: {
-              nginx_url: current_url_with_other_integration_mode(:nginx, locals[:available_integration_modes], section_path),
-              apache_url: current_url_with_other_integration_mode(:apache, locals[:available_integration_modes], section_path),
-              standalone_url: current_url_with_other_integration_mode(:standalone, locals[:available_integration_modes], section_path),
-              auto_select_integration_mode: false
-            }) %>
+            <%= render_partial("/shared/ask_intmode.html", locals: locals.merge(
+              dest: current_url_generalized(":intmode:", ["nginx", "apache", "standalone"]),
+              force_choice: true
+            )) %>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -92,7 +87,11 @@ end
             if locals.has_key?(:combine_nodejs_and_iojs)
               options[:combine_nodejs_and_iojs] = locals[:combine_nodejs_and_iojs]
             end
-            render_partial("/shared/programming_language_selector.html", locals: options)
+            
+            render_partial("/shared/ask_lang.html", locals: locals.merge(
+              dest: current_url_generalized(":lang:", ["ruby", "python", "nodejs", "iojs", "meteor"]), 
+              force_choice: true
+              ))
             %>
           </div>
           <div class="modal-footer">
@@ -123,10 +122,11 @@ end
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <%= render_partial("/shared/edition_selector.html", locals: {
-              oss_url: current_url_with_other_edition(:oss, locals[:available_editions], section_path),
-              enterprise_url: current_url_with_other_edition(:enterprise, locals[:available_editions], section_path)
-            }) %>
+            <%= render_partial("/shared/ask_edition.html", locals: locals.merge( 
+              dest: current_url_generalized(":edition:", ["oss", "enterprise"]),
+              force_choice: true
+              ))
+            %>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

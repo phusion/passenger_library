@@ -127,6 +127,7 @@ GEM
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    uuidtools (2.1.5)
 
 PLATFORMS
   ruby
@@ -139,6 +140,7 @@ DEPENDENCIES
   middleman-syntax
   rake
   tzinfo-data
+  uuidtools
   wdm (~> 0.1.0)
 
 BUNDLED WITH
