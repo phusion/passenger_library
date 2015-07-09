@@ -5,11 +5,8 @@ section: install
 @page_title = "Installing #{edition_title} #{integration_mode_name_as_passenger_suffix} #{os_config_description_with_preposition}"
 
 content_for(:sidebar) do
-  options = locals.dup
-  if os_config_type == :osx
-    options[:available_editions] = [PASSENGER_OSS_EDITION]
-  end
-  render_partial("../sidebar.html", locals: options)
+  limit_choices = (os_config_type == :osx) ? { "edition" => [PASSENGER_OSS_EDITION] } : {}
+  render_partial("../sidebar.html", locals: locals.merge(limit_choices: limit_choices))
 end
 
 locals[:enterprise] = edition_type == :enterprise

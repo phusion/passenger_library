@@ -62,7 +62,7 @@ restart.txt
 <% if integration_mode_type == :nginx || integration_mode_type == :apache %>
 Restarting <%= integration_mode_name %>
 
-: Normally, Passenger restarts all your applications when you restart <%= integration_mode_name %>. If you want to prevent this from happening, please use the [Flying Passenger](flying_passenger.html) feature.
+: Normally, Passenger restarts all your applications when you restart <%= integration_mode_name %>. If you want to prevent this from happening, please use the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) feature.
 <% end %>
 
 <div>
@@ -135,11 +135,11 @@ Processes that have not yet been rolling restarted have a high uptime. Process 1
 
 ## Deployment error resistance
 
-A related feature is [deployment error resistance](deployment_error_resistance.html). This feature reduces the chance of visitors experiencing any errors in case the deployment of an application update failed. If you use zero-downtime restarts, then we.
+A related feature is [deployment error resistance](<%= url_for "/deploy/#{integration_mode_type}/deployment_error_resistance.html" %>). This feature reduces the chance of visitors experiencing any errors in case the deployment of an application update failed. If you use zero-downtime restarts, then we.
 
 ## Error handling and troubleshooting
 
-If Passenger Enterprise could not rolling restart a process (let's call it 'A') because it is unable to spawn a new process (let's call it 'B'), then Passenger Enterprise will give up trying to rolling restart that particular process 'A'. What happens next depends on whether [deployment error resistance](deployment_error_resistance.html) is enabled:
+If Passenger Enterprise could not rolling restart a process (let's call it 'A') because it is unable to spawn a new process (let's call it 'B'), then Passenger Enterprise will give up trying to rolling restart that particular process 'A'. What happens next depends on whether [deployment error resistance](<%= url_for "/deploy/#{integration_mode_type}/deployment_error_resistance.html" %>) is enabled:
 
  * If deployment error resistance is disabled (the default), then Passenger Enterprise will proceed with trying to restart the remaining processes.
  * If deployment error resistance is enabled, the Passenger Enterprise will give up rolling restarting immediately. The application group will be put into Deployment Error Resistance Mode.
