@@ -182,9 +182,6 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/deploy/#{integration_mode_type}/user_sandboxing.html",
     "/deploy/user_sandboxing.html",
     locals: integration_mode_spec
-  proxy "/deploy/#{integration_mode_type}/zero_downtime_redeployments.html",
-    "/deploy/zero_downtime_redeployments.html",
-    locals: integration_mode_spec
   proxy "/deploy/#{integration_mode_type}/deployment_error_resistance.html",
     "/deploy/deployment_error_resistance.html",
     locals: integration_mode_spec
@@ -202,6 +199,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/deploy/#{integration_mode_type}/automating_app_updates/index.html",
     "/deploy/automating_app_updates/language_selection.html",
     locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/zero_downtime_redeployments/index.html",
+    "/deploy/zero_downtime_redeployments/language_selection.html",
+    locals: integration_mode_spec
   DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
     locals = integration_mode_spec.merge(language_spec)
 
@@ -211,6 +211,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
     proxy "/deploy/#{integration_mode_type}/automating_app_updates/#{language_spec[:language_type]}/index.html",
       "/deploy/automating_app_updates/automating_app_updates.html",
       locals: locals
+    proxy "/deploy/#{integration_mode_type}/zero_downtime_redeployments/#{language_spec[:language_type]}/index.html",
+      "/deploy/zero_downtime_redeployments/zero_downtime_redeployments.html",
+      locals: locals
   end
 end
 
@@ -219,6 +222,8 @@ ignore "/deploy/deploy/language_selection.html"
 ignore "/deploy/deploy/deploy.html"
 ignore "/deploy/automating_app_updates/language_selection.html"
 ignore "/deploy/automating_app_updates/automating_app_updates.html"
+ignore "/deploy/zero_downtime_redeployments/language_selection.html"
+ignore "/deploy/zero_downtime_redeployments/zero_downtime_redeployments.html"
 ignore "/deploy/user_sandboxing.html"
 ignore "/deploy/zero_downtime_redeployments.html"
 ignore "/deploy/flying_passenger.html"

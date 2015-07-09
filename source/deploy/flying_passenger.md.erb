@@ -6,7 +6,7 @@ section: deploy
 content_for(:sidebar) do
   render_partial("sidebar.html", locals: locals.merge(
     limit_choices: { "intmode" => [INTEGRATION_MODE_NGINX, INTEGRATION_MODE_APACHE] },
-    filtered_choice_uri: url_for("/deploy/") 
+    filtered_choice_uri: url_for("/deploy/")
   ))
 end
 %>
@@ -16,7 +16,7 @@ end
 Flying Passenger allows one to decouple Passenger's life time from the web server's life time, so that the web server can be independently restarted from Passenger, and from any of the application processes served by Passenger.
 
 <div class="note">
-  Flying Passenger isn't the same as <a href="zero_downtime_redeployments.html">zero-downtime application updates and restarts</a>! It is a distinct feature. To achieve full zero-downtime, you will want <strong>both</strong> features enabled.
+  Flying Passenger isn't the same as <a href="zero_downtime_redeployments/">zero-downtime application updates and restarts</a>! It is a distinct feature. To achieve full zero-downtime, you will want <strong>both</strong> features enabled.
 </div>
 
 **Table of contents**
@@ -35,7 +35,7 @@ This problem is solved by 'Flying Passenger', which is an advanced mode of opera
 
 The Flying Passenger mode is off by default. You have to explicitly enable it.
 
-There is also a distinct problem, namely that of restarting web applications without downtime after you have deployed application updates. That problem is solved by [the rolling restarts feature](zero_downtime_redeployments.html), not by Flying Passenger. To achieve full zero-downtime, you will want to enable both rolling restarts **and** Flying Passenger.
+There is also a distinct problem, namely that of restarting web applications without downtime after you have deployed application updates. That problem is solved by [the rolling restarts feature](zero_downtime_redeployments/), not by Flying Passenger. To achieve full zero-downtime, you will want to enable both rolling restarts **and** Flying Passenger.
 
 ## Requirements
 

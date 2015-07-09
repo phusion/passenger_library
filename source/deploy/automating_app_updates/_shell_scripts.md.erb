@@ -57,6 +57,7 @@ APP_DIR=/var/www/myapp
 <% if language_type != :meteor -%>
 GIT_URL=git://github.com/myusername/myapp
 <% end -%>
+RESTART_ARGS=
 
 # Uncomment and modify the following if you installed Passenger from tarball
 #export PATH=/path-to-passenger/bin:$PATH
@@ -81,7 +82,7 @@ npm install --production
 npm prune --production
 
 # Restart app
-passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running $APP_DIR/code
+passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running $RESTART_ARGS $APP_DIR/code
 <% elsif language_type == :meteor -%>
 # Extract newly uploaded package
 mkdir -p $APP_DIR/tmp
@@ -102,7 +103,7 @@ fi
 # Switch directories, restart app
 mv $APP_DIR/bundle $APP_DIR/bundle.old
 mv $APP_DIR/tmp/bundle $APP_DIR/bundle
-passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running $APP_DIR/bundle
+passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running $RESTART_ARGS $APP_DIR/bundle
 rm -rf $APP_DIR/bundle.old
 <% else -%>
 cd $APP_DIR/code
@@ -112,7 +113,7 @@ git pull
 #...put your own instructions here...
 
 # Restart app
-passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running $APP_DIR/code
+passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running $RESTART_ARGS $APP_DIR/code
 <% end -%>
 ~~~
 
@@ -186,3 +187,7 @@ Add these files to your Git repository, commit and test the the script:
 <span class="prompt">$ </span>./deploy/initiate.sh</pre>
 
 Congratulations, you are done automating redeployments.
+
+## Related guides
+
+ * [Zero-downtime app updates and restarts](<%= url_for "/deploy/#{integration_mode_type}/zero_downtime_redeployments/#{language_type}/index.html" %>)

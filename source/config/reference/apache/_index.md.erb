@@ -763,25 +763,7 @@ If this option is turned off, applications are loaded by running them directly f
   <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
 
-Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/apache/zero_downtime_redeployments.html" %>) through `restart.txt`. Normally, when you [restart an application](<%= url_for "/admin/apache/restart_app.html" %>) through `restart.txt`, Passenger would shut down all processes for that application and spawn a new one. The spawning of a new application process could take a while, and any requests that come in during this time will be blocked until this first application process has spawned, which users may experience as "downtime".
-
-But when rolling restarts are enabled, Passenger Enterprise will:
-
- 1. Spawn a new process in the background.
- 2. When it's done spawning, Passenger Enterprise will replace one of the old processes with this newly spawned one.
- 3. Step 1 and 2 are repeated until all processes have been replaced.
-
-This way, visitors will not experience any delays when you are restarting your application. This allows you to, for example, deploy application updates often without degrading user experience.
-
-Rolling restarts have a few caveat however that you should be aware of:
-
- * Upgrading an application sometimes involves upgrading the database schema. With rolling restarts, there may be a point in time during which processes belonging to the previous version and processes belonging to the new version both exist at the same time. Any database schema upgrades you perform must therefore be backwards-compatible with the old application version.
- * Because there's no telling which process will serve a request, users may not see changes brought about by the new version until all processes have been restarted. It is for this reason that you should not use rolling restarts in development, only in production.
-
-If Passenger Enterprise could not rolling restart a process (let's call it 'A') because it is unable to spawn a new process (let's call it 'B'), then Passenger Enterprise will give up trying to rolling restart that particular process 'A'. What happens next depends on whether [deployment error resistance](#passengerresistdeploymenterrors) is enabled:
-
- * If deployment error resistance is disabled (the default), then Passenger Enterprise will proceed with trying to restart the remaining processes.
- * If deployment error resistance is enabled, the Passenger Enterprise will give up rolling restarting immediately. The application group will be put into Deployment Error Resistance Mode.
+Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/apache/zero_downtime_redeployments/index.html" %>) through `restart.txt`.
 
 Please note that `PassengerRollingRestarts` is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
 
