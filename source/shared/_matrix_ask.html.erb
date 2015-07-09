@@ -1,3 +1,5 @@
+<div><!-- Put everything in a container div so that when included from a Markdown file, the Markdown parser won't try to render our content. -->
+
 <%
 # This matrix selector can be entered from two different flows:
 # 1) As part of a partial include chain, from custom made pages
@@ -24,6 +26,7 @@ forward_button_id = "continue_" + uuid_partial
 choicerow_div_base_id = "choicerow_" + uuid_partial + "_"
 choice_map = "choiceMap_" + uuid_partial
 %>
+
 <script>
 var <%= choice_map %> = {};
 if (typeof knownChoices !== 'undefined') {
@@ -146,3 +149,5 @@ if (destFromLocals.indexOf(':<%= choicerow[:uri_key] %>:') < 0) {
     <p><a href="<%= link[:href] %>" style="display:none" class="btn btn-primary btn-lg">Continue &raquo;</a></p>
   <% end %>
 <% end %>
+
+</div><!-- End container div for Markdown safety -->
