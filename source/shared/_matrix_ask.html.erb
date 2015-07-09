@@ -15,10 +15,8 @@ data = locals[:ask_data]
 dest_from_locals = locals.has_key?(:dest) ? locals[:dest] : ""
 # True ignores choices from localStore and asks anyway
 force_choice = locals.has_key?(:force_choice) ? locals[:force_choice] : false
-# If specified, an url that will be filled in for all choices that are not in the limit_choices list (i.e. choice not allowed)
-filtered_choice_uri = locals.has_key?(:filtered_choice_uri) ? locals[:filtered_choice_uri] : ""
+# { key => [choice1, choice2] }: limits the selector of type key to choice1, choice2
 limit_choices = locals.has_key?(:limit_choices) ? locals[:limit_choices] : {}
-hide_filtered = locals.has_key?(:hide_filtered) ? locals[:hide_filtered] : false
 
 # Because this partial can be included multiple times (with different choices) in the same page.
 uuid_partial = UUIDTools::UUID.random_create.to_s.gsub("-","")
@@ -93,15 +91,10 @@ if (typeof knownChoices !== 'undefined') {
   <div class="icon-selection-row-items" role="tablist">
 
 <% choicerow[:choices].each do |choice|
-if is_choice_filtered?(choice, limit_choices[choicerow[:uri_key]], filtered_choice_uri)
-  next if hide_filtered
-  dest_filtered = filtered_choice_uri
-else
-  dest_filtered = dest_from_locals
-end
+next if is_choice_filtered?(choice, limit_choices[choicerow[:uri_key]])
 %>
     <a href="#<%= choice[:val] %>_choices" aria-controls="<%= choice[:val] %>_choices" data-toggle="tab" class="icon-selection-row-item <%= choice[:val] %>"
-       onclick="applyChoice(<%= choice_map %>, '<%= choicerow[:store_key] %>', '<%= choicerow[:uri_key] %>', '<%= choice[:val] %>', '<%= forward_button_id %>', 'dest', '<%= dest_filtered %>');">
+       onclick="applyChoice(<%= choice_map %>, '<%= choicerow[:store_key] %>', '<%= choicerow[:uri_key] %>', '<%= choice[:val] %>', '<%= forward_button_id %>', 'dest', '<%= dest_from_locals %>');">
       <img src="<%= choice[:img] %>" width="<%= choice[:w] %>" height="<%= choice[:h] %>" alt="<%= choice[:alt] %>">
       <span class="icon-selection-row-item-label"><%= choice[:alt] %></span>
     </a>
@@ -125,25 +118,21 @@ if (destFromLocals.indexOf(':<%= choicerow[:uri_key] %>:') < 0) {
   <p><a id="<%= forward_button_id %>" href="" class="btn btn-primary btn-lg">Continue &raquo;</a></p>
 </div>
 <% if !dest_from_locals.empty? # statically linking flow can multiply out all choices for crawler discovery
-  def recurseChoices(links, data, rowIdx, curLink, curId, limit_choices, filtered_choice_uri, hide_filtered)
+  def recurseChoices(links, data, rowIdx, curLink, curId, limit_choices)
     if (rowIdx == data.length)
       links << { id: curId, href: curLink }
       return
     end
 
     data[rowIdx][:choices].each do |choice|
-      if is_choice_filtered?(choice, limit_choices[data[rowIdx][:uri_key]], filtered_choice_uri)
-        next if hide_filtered
-        passLink = filtered_choice_uri
-      else
-        passLink = curLink.gsub(':' + data[rowIdx][:uri_key] + ':', choice[:val])
-      end
-      recurseChoices(links, data, rowIdx + 1, passLink, curId + choice[:val], limit_choices, filtered_choice_uri, hide_filtered)
+      next if is_choice_filtered?(choice, limit_choices[data[rowIdx][:uri_key]])
+      passLink = curLink.gsub(':' + data[rowIdx][:uri_key] + ':', choice[:val])
+      recurseChoices(links, data, rowIdx + 1, passLink, curId + choice[:val], limit_choices)
     end
   end
 
   links = []
-  recurseChoices(links, data, 0, dest_from_locals, "", limit_choices, filtered_choice_uri, hide_filtered)
+  recurseChoices(links, data, 0, dest_from_locals, "", limit_choices)
 
   links.each do |link| %>
     <p><a href="<%= link[:href] %>" style="display:none" class="btn btn-primary btn-lg">Continue &raquo;</a></p>

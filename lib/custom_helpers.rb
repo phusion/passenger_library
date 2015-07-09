@@ -275,8 +275,8 @@ module CustomHelpers
     $3
   end
   
-  def is_choice_filtered?(choice, limit_choices, filtered_uri)
-    return false if filtered_uri.empty? || limit_choices.nil? 
+  def is_choice_filtered?(choice, limit_choices)
+    return false if limit_choices.nil? 
     
     limit_choices.each do |limit_choice|
       return false if choice[:val].eql? limit_choice[:choice_val] 
