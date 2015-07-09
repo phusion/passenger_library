@@ -1,8 +1,5 @@
 <%
-locals[:available_integration_modes] ||= INTEGRATION_MODES
 section_has_integration_mode_selector = locals.fetch(:section_has_integration_mode_selector, true)
-
-locals[:available_editions] ||= PASSENGER_EDITIONS
 
 if locals[:integration_mode_type] && section_has_integration_mode_selector
   section_path = "#{config[:url_root]}#{locals[:section_path]}/#{locals[:integration_mode_type]}/"

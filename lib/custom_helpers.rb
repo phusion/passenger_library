@@ -217,10 +217,10 @@ module CustomHelpers
     regex_str = ""
     scan_for.each_with_index do |entry, idx|
       regex_str << "|" if idx > 0
-      regex_str << entry
+      regex_str << "/" + entry + "/"
     end
     regex = /(#{regex_str})/
-    path = current_page_path.gsub(regex, generalized_param)
+    path = current_page_path.gsub(regex, "/" + generalized_param + "/")
   end
   
   def current_url_with_other_integration_mode(other_integration_mode, available_integration_modes, section_path)
@@ -273,5 +273,14 @@ module CustomHelpers
     end
     current_page_path =~ /(.*)(#{language_types.join("|")})(.*)/
     $3
+  end
+  
+  def is_choice_filtered?(choice, limit_choices, filtered_uri)
+    return false if filtered_uri.empty? || limit_choices.nil? 
+    
+    limit_choices.each do |limit_choice|
+      return false if choice[:val].eql? limit_choice[:choice_val] 
+    end
+    return true
   end
 end
