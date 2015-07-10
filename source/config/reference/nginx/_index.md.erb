@@ -431,7 +431,7 @@ server {
 }
 ~~~
 
-Note that it is not necessary to set `passenger_app_group_name` if you want to run two versions of your application under different [application environment names]#(#passenger_app_env), because the application environment name is included in the default application group name. For example, consider a situation in which you want to run a production and a staging version of your application. The following configuration will work fine:
+Note that it is not necessary to set `passenger_app_group_name` if you want to run two versions of your application under different [application environment names](#passenger_app_env), because the application environment name is included in the default application group name. For example, consider a situation in which you want to run a production and a staging version of your application. The following configuration will work fine:
 
 ~~~nginx
 server {
