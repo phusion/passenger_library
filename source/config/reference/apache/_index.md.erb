@@ -1,3 +1,14 @@
+<script>
+// The apache options are named like the nginx options but without _, so this trick allows us to deeplink to apache/nginx
+// with the same url.
+if (window.location.hash) {
+  var anchor = window.location.hash;
+  if (anchor.indexOf("_") >= 0) {
+    anchor = anchor.replace(/_/g, "");
+    window.location.hash = anchor;
+  }
+}
+</script>
 **Table of contents**
 
 <ol class="toc-container"><li>Loading...</li></ol>
