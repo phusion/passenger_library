@@ -17,7 +17,7 @@ Passenger checks whether the virtual host is a Passenger-supported application t
 <% else -%>
  1. First, it extracts the directory name from the virtual host root, like this: `dirname(DocumentRoot)`. For example, if you set `DocumentRoot /webapps/foo/public` , then Passenger extracts the `/webapps/foo` portion of it. We call this the "application root".
 <% end -%>
- 2. Passenger checks whether one of the following files exist inside the application root in order to autodetect the application type.
+ 2. Passenger checks whether one of the following file(s) exist inside the application root in order to autodetect the application type.
 
     <table class="table table-striped table-bordered">
       <thead>

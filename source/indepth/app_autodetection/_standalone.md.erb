@@ -10,7 +10,7 @@ The reason why Passenger tries to autodetect the application, is because it stri
 
 ## Autodetection algorithm
 
-Passenger checks whether the application directory is a Passenger-supported application by checking whether one of the following files exist:
+Passenger checks whether the application directory is a Passenger-supported application by checking whether one of the following file(s) exist:
 
 <table class="table table-striped table-bordered">
   <thead>
@@ -20,7 +20,9 @@ Passenger checks whether the application directory is a Passenger-supported appl
     </tr>
   </thead>
   <tbody>
-    <% SUPPORTED_APP_TYPES.each do |spec| %>
+    <% SUPPORTED_APP_TYPES.each do |spec| 
+       next unless spec[:lang_key].include? language_type.to_s
+     %>
       <tr>
         <td><%= spec[:startup_file] %></td>
         <td><%= spec[:name] %></td>
