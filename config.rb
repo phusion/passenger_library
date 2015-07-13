@@ -313,6 +313,11 @@ DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
           "/indepth/app_autodetection/app_autodetection.html",
           locals: integration_mode_spec.merge(language_spec)
   end
+  
+  proxy "/indepth/#{language_type}/request_load_balancing.html",
+        "/indepth/request_load_balancing.html",
+        locals: language_spec
+
 end
 
 proxy "/indepth/ruby/multiple_rubies.html",

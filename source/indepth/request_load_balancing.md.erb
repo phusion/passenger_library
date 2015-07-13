@@ -6,37 +6,53 @@ section: indepth
 
 # Request load balancing
 
-At its core, Passenger is a process manager and HTTP request router. In order to minimize response times, and to distribute load over multiple CPU cores for optimal performance, Passenger load balances requests over proceses in a "first free process first" manner.
+At its core, Passenger is a process manager and HTTP request router. In order to minimize response times, and to distribute load over multiple CPU cores for optimal performance, Passenger load balances requests over processes in a "least busy process first" manner.
 
 ## How it works
 
-First, you should know that Passenger understands the concept of "application concurrency", which is the amount of requests that an application process can concurrently process.
+<% if language_type == :ruby || language_type == :python %>
+<% if language_type == :ruby %>
+  Ruby apps can normally handle only 1 request at the same time.
+<% else %>
+  Python apps can only handle 1 request at the same time.
+<% end %> 
+With Passenger this is improved by running multiple instances of the app using pooled application groups. For each request from the incoming request queue, a non-busy (free) app instance is selected to handle the request.
+<div><img src="../request_load_balancing.png"/></div>
 
- * By default, Ruby apps have an application concurrency of 1. This means that a single Ruby process can handle 1 request at the same time.
- * If you enable multithreading for Ruby apps, then the Ruby app's concurrency will equal the number of threads.
- * By default, Node.js, io.js and Meteor apps have an unlimited concurrency, because Node.js/io.js/Meteor use evented I/O.
+<% if language_type == :ruby %>
+  For thread-safe Ruby apps it is also possible to enable multithreading, which allows the app instance to concurrently handle multiple requests at the same time - up to the amount of threads configured. In this case, Passenger forwards the request to the instance that is currently handling the least number of requests.
+<% end %>
 
-When a request is received, Passenger forwards the request to the process that is currently handling the least number of requests.
+If all application instances and threads are busy, Passenger spawns a new instance, up to the instance limit for the group. The amount of instances of the groups combined may also not exceed the limit for the application pool. If either limit is reached, the request remains in the queue (which has its own [limit](#request-queue-overflow)).
+<% else %>
+<%= language_name %> apps normally execute in a single thread/process, using a single CPU core. Passenger enables running multiple instances of the app using pooled application groups, distributing requests to the instance that is currently handling the least amount of requests.
 
-But when all processes have reached their maximum concurrency, then Passenger will put the request in a queue, and wait until one of the processes is done with a request. Passenger will then immediately forward the request to that process. The queue is shared between all processes belonging to the same application group.
+<div><img src="../request_load_balancing.png"/></div>
 
-## How Passenger solves the head-of-line blocking problem
+In this way, load can be distributed across multiple cores without using cluster programming. Assuming a properly written asynchronous app, incoming requests will be handled concurrently (i.e. the next request can already start being handled while the previous is still being handled), and the Passenger request queue will remain empty.
 
-The fact that Passenger load balances requests in this way, and the fact that Passenger shares a single queue between multiple processes, means that Passenger automatically solves the so-called **head-of-line blocking problem** for you.
+<% end %>
 
-Imagine a supermarket with a number of cashiers and a queue behind each of them. You pick a queue, and as it turns out the person in front of you has a lot of items in his basket, slowing down the checkout process for everyone else behind him. The queue next to you is empty but you cannot move to another queue once you've picked one. This is exactly what happens with many web servers and load balancers: HTTP requests are queued behind another long-running request.
+<% if language_type == :ruby || language_type == :python %>
+### No head-of-line blocking problem
 
-The fact that Passenger utilizes a shared queue, means that this problem is avoided.
+Many web servers and load balancers use independent queues, which causes the problem of head-of-line blocking, whereby HTTP requests to your app are queued behind slow or long-running requests. Passenger avoids this problem by using a single (per application group) shared queue.
 
-This problem isn't relevant to Node.js, io.js and Meteor apps because they have an unlimited concurrency, but it is very relevant to Ruby and Python apps.
+Imagine a supermarket with a number of (independent) checkout lanes and a queue in each of them. If someone in one of the queues has trouble with the checkout, everyone already in that queue will be delayed, which is especially unfair if the other queues keep moving fast.
 
-## Multiple request queues
+Instead, the Passenger implementation can be compared to using a single (shared) queue and sending only 1 person per checkout lane at a time, thereby preventing head-of-line blocking.
+<% end %>
 
-Sometimes it may make sense to have multiple request queues. For example, imagine that your web app has a public area and an admin interface. If there are a lot of visitors on the public area, then it may get overloaded. When overloaded, your app is not able to handle requests fast enough, and so the request queue grows longer and longer, making response times worse and worse.
+## Customized balancing
 
-For safety purposes, you want the admin interface to be available even if the the public area is overloaded. This can be achieved by putting the admin interface on its own request queues, so that admin requests are never queued behind public visitors.
+By default, all requests for an application are balanced in a fair way. You may want to adjust this behavior; for example if your app consists of pages for visitors as well as some kind of webservice, you probably want to make sure the visitor requests don't get stuck behind webservice requests when under heavy load.
 
-To achieve this, you can assign the admin area URL to its own application group name. The request queue is on a per-application group basis. Please learn more here:
+This can be solved by configuring two application groups for your app: one for the webservice URL and one for the visitor pages, each with their own request queue. The requests for the visitor pages will keep being handled even if there is an overload of requests for the webservice. See the "app group name" option: [nginx](<%= url_for "/config/nginx/reference/index.html" %>#passenger_app_group_name) \| [apache](<%= url_for "/config/apache/reference/index.html" %>#passengerappgroupname).
 
- * Passenger for Nginx: [passenger_app_group_name](<%= url_for "/config/nginx/reference/index.html" %>#passenger_app_group_name).
- * Passenger for Apache: [PassengerAppGroupName](<%= url_for "/config/apache/reference/index.html" %>#passengerappgroupname).
+The two application groups will still compete with each other for server resources. You can control how many instances are allowed per application group, for example allowing more instances to serve the visitor pages than the webservice URL. See the "max instances" option: [nginx](<%= url_for "/config/nginx/reference/index.html" %>#passenger_max_instances) \| [apache](<%= url_for "/config/apache/reference/index.html" %>#passengermaxinstances).
+
+<% if language_type == :ruby || language_type == :python %>
+## Request queue overflow
+
+If a request arrives for an application group, and all its instances are busy, and the application pool is full, the request remains in the Passenger request queue. If this keeps happening (e.g. due to a flood of requests) the queue will eventually overflow its limit (see the "max request queue size" option: [nginx](<%= url_for "/config/nginx/reference/index.html" %>#passenger_max_request_queue_size) \| [apache](<%= url_for "/config/apache/reference/index.html" %>#passengermaxrequestqueuesize)). Overflowing requests will no longer be balanced, but simply dropped (with a HTTP 503 error).
+<% end %>
