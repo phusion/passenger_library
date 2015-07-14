@@ -466,17 +466,11 @@ figcaption {
   display: block;
 }
 
-.icon-selection-row-container-disabled {
+.icon-selection-row-icon-disable, .icon-selection-row-icon-disable:hover, .icon-selection-row-icon-disable:focus {
   opacity: 0.4;
+  cursor: default;
+  color: inherit;
 }
-
-.icon-selection-row-container-disabled {
-  .icon-selection-row-item {
-    cursor: default;
-    color: inherit;
-  }
-}
-
 
 .info,
 .note,

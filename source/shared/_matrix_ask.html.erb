@@ -92,11 +92,15 @@ if (typeof knownChoices !== 'undefined') {
 
   <div class="icon-selection-row-items" role="tablist">
 
-<% choicerow[:choices].each do |choice|
-next if is_choice_filtered?(choice, limit_choices[choicerow[:uri_key]])
-%>
+<% choicerow[:choices].each do |choice| %>
+
+<% if is_choice_filtered?(choice, limit_choices[choicerow[:uri_key]]) %>
+    <a href="#" class="icon-selection-row-item icon-selection-row-icon-disable">
+<% else %>
     <a href="#<%= choice[:val] %>_choices" aria-controls="<%= choice[:val] %>_choices" data-toggle="tab" class="icon-selection-row-item <%= choice[:val] %>"
        onclick="applyChoice(<%= choice_map %>, '<%= choicerow[:store_key] %>', '<%= choicerow[:uri_key] %>', '<%= choice[:val] %>', '<%= forward_button_id %>', 'dest', '<%= dest_from_locals %>');">
+<% end %>
+         
       <img src="<%= choice[:img] %>" width="<%= choice[:w] %>" height="<%= choice[:h] %>" alt="<%= choice[:alt] %>">
       <span class="icon-selection-row-item-label"><%= choice[:alt] %></span>
     </a>
