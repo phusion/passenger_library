@@ -117,7 +117,7 @@ if (destFromLocals.indexOf(':<%= choicerow[:uri_key] %>:') < 0) {
 <% end %>
 
 <div style="width: 100%; text-align: center; margin-left: auto; margin-right:auto">
-  <p><a id="<%= forward_button_id %>" href="" class="btn btn-primary btn-lg">Continue &raquo;</a></p>
+  <p><a id="<%= forward_button_id %>" href="" class="btn btn-primary btn-lg disabled">Continue &raquo;</a></p>
 </div>
 <% if !dest_from_locals.empty? # statically linking flow can multiply out all choices for crawler discovery
   def recurseChoices(links, data, rowIdx, curLink, curId, limit_choices)
