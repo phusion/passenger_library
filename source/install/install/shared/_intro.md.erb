@@ -10,34 +10,14 @@ else
 end
 -%>
 
-<% if integration_mode_type == :nginx %>
-  <div style="text-align: center">
-    <img src="<%= url_for '/images/passenger.png' %>" width="106" height="128" style="margin-right: 2em" alt="Passenger">
-    <img src="<%= url_for '/images/nginx.png' %>" width="128" height="128" alt="Nginx">
-  </div>
-<% elsif integration_mode_type == :apache %>
-  <div style="text-align: center">
-    <img src="<%= url_for '/images/passenger.png' %>" width="106" height="128" style="margin-right: 2em" alt="Passenger">
-    <img src="<%= url_for '/images/apache.png' %>" width="128" height="128" alt="Apache">
-  </div>
-<% else %>
-  <div class="image-float-right hidden-xs">
-    <p><img src="<%= url_for '/images/passenger.png' %>" alt="Passenger"></p>
-  </div>
-  <div class="visible-xs" style="text-align: center">
-    <img src="<%= url_for '/images/passenger.png' %>" alt="Passenger">
-  </div>
-<% end %>
-
-This guide teaches you how to install Passenger.
 <% if integration_mode_type == :apache || integration_mode_type == :nginx -%>
-It assumes that you are already familiar with Passenger's basic concepts and that you are already familiar with <%= integration_mode_name %> (and thus that you chose <%= integration_mode_name %> for a reason).
+This guide assumes that you are already familiar with Passenger's basic concepts and that you are already familiar with <%= integration_mode_name %> (and thus that you chose <%= integration_mode_name %> for a reason).
 
  * Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the [quickstart](<%= url_for '/walkthroughs/start/index.html' %>) and the [basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>).
  * Not familiar with <%= integration_mode_name %>? Please follow [the end-to-end deployment walkthroughs](<%= url_for '/walkthroughs/deploy/index.html' %>) instead, which guide you through the entire installation process, including installing the programming language runtime that your application needs.
  * This guide is for *first time installations* only. If you are upgrading, please refer to the [upgrade guide](<%= url_for "/install/#{integration_mode_type}/upgrade/#{edition_type}/index.html" %>).
 <% else %>
-It assumes you are already familiar with Passenger's basic concepts. Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the [quickstart](<%= url_for '/walkthroughs/start/index.html' %>) and the [basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>).
+This guide assumes you are already familiar with Passenger's basic concepts. Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the [quickstart](<%= url_for '/walkthroughs/start/index.html' %>) and the [basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>).
 
 This guide is for *first time installations* only. If you are upgrading, please refer to the [upgrade guide](<%= url_for "/install/#{integration_mode_type}/upgrade/#{edition_type}/index.html" %>).
 <% end %>
