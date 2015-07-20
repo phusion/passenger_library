@@ -12,4 +12,9 @@ end
 
 # Spawn methods explained
 
-<%= render_partial("/shared/ask_lang.html", locals: { dest: "../:lang:/spawn_methods/" }) %>
+<%=
+render_partial("/shared/ask_lang.html", locals: locals.merge(
+  dest: "../:lang:/spawn_methods/",
+  limit_choices: { "lang" => [LANG_RUBY] }
+))
+%>
