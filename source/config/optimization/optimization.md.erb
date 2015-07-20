@@ -3,7 +3,7 @@ section: config
 ---
 <%
 @page_title = "Optimizing Passenger #{integration_mode_name_as_passenger_suffix}"
-content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
 %>
 
 # Optimizing Passenger <%= integration_mode_name_as_passenger_suffix %>
@@ -411,7 +411,7 @@ It should be noted that the builtin HTTP engine has fewer features than the Ngin
   <div class="note">
     <h3 class="notoc">There is a version of this Optimization Guide for the Standalone mode</h3>
     <p>
-      You are currently reading the <%= integration_mode_name %> version of this Optimization Guide. Have you decided to switch to Passenger Standalone? <a href="<%= url_for "/config/standalone/optimization.html" %>">Read the Passenger Standalone version of this guide.</a>
+      You are currently reading the <%= integration_mode_name %> version of this Optimization Guide. Have you decided to switch to Passenger Standalone? <a href="<%= url_for "/config/standalone/optimization/" %>">Read the Passenger Standalone version of this guide.</a>
     </p>
   </div>
 <% end %>

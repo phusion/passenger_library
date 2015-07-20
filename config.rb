@@ -149,25 +149,33 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/config/#{integration_mode_type}/intro.html",
     "/config/intro.html",
     locals: integration_mode_spec
-  proxy "/config/#{integration_mode_type}/optimization.html",
-    "/config/optimization.html",
-    locals: integration_mode_spec
   proxy "/config/#{integration_mode_type}/tuning_sse_and_websockets.html",
     "/config/tuning_sse_and_websockets.html",
     locals: integration_mode_spec
-  proxy "/config/#{integration_mode_type}/cloud_licensing_configuration.html",
-    "/config/cloud_licensing_configuration.html",
+  proxy "/config/#{integration_mode_type}/optimization/index.html",
+    "/config/optimization/optimization.html",
+    locals: integration_mode_spec
+  proxy "/config/#{integration_mode_type}/cloud_licensing_configuration/index.html",
+    "/config/cloud_licensing_configuration/cloud_licensing_configuration.html",
     locals: integration_mode_spec
   proxy "/config/#{integration_mode_type}/reference/index.html",
     "/config/reference/reference.html",
     locals: integration_mode_spec
 end
 
+proxy "/config/optimization/index.html",
+  "/config/optimization/integration_mode_selection.html"
+proxy "/config/cloud_licensing_configuration/index.html",
+  "/config/cloud_licensing_configuration/integration_mode_selection.html"
+
 ignore "/config/index2.html"
 ignore "/config/intro.html"
 ignore "/config/optimization.html"
 ignore "/config/tuning_sse_and_websockets.html"
-ignore "/config/cloud_licensing_configuration.html"
+ignore "/config/optimization/optimization.html"
+ignore "/config/optimization/integration_mode_selection.html"
+ignore "/config/cloud_licensing_configuration/cloud_licensing_configuration.html"
+ignore "/config/cloud_licensing_configuration/integration_mode_selection.html"
 ignore "/config/reference/reference.html"
 
 ###### Deployment, scaling and high availability ######
