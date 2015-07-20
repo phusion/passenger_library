@@ -36,24 +36,26 @@ section: indepth
   </div>
 </div>
 
-<h3 style="margin-bottom: 0">Language-specific</h3>
+<% if [:ruby, :nodejs, :iojs, :meteor].include?(language_type) %>
+  <h3>Language-specific</h3>
 
-<div class="row">
-  <div class="col-md-6">
-    <ul class="list-unstyled list-links">
-      <% if language_type == :ruby %>
-        <li><a href="multiple_rubies.html">How having multiple Ruby interpreters affects Passenger</a></li>
-        <li><a href="out_of_band_work.html">Out-of-band work and garbage collection</a></li>
-        <li><a href="spawn_methods.html">Smart spawning</a></li>
-        <li><a href="bundler.html">Bundler support</a></li>
-      <% elsif language_type == :nodejs || language_type == :iojs %>
-        <li><a href="reverse_port_binding.html">Reverse port binding</a></li>
-      <% elsif language_type == :meteor %>
-        <li><a href="meteor.html">About Meteor support</a></li>
-      <% end %>
-    </ul>
+  <div class="row">
+    <div class="col-md-6">
+      <ul class="list-unstyled list-links">
+        <% if language_type == :ruby %>
+          <li><a href="multiple_rubies.html">How having multiple Ruby interpreters affects Passenger</a></li>
+          <li><a href="out_of_band_work.html">Out-of-band work and garbage collection</a></li>
+          <li><a href="spawn_methods.html">Smart spawning</a></li>
+          <li><a href="bundler.html">Bundler support</a></li>
+        <% elsif language_type == :nodejs || language_type == :iojs %>
+          <li><a href="reverse_port_binding.html">Reverse port binding</a></li>
+        <% elsif language_type == :meteor %>
+          <li><a href="meteor.html">About Meteor support</a></li>
+        <% end %>
+      </ul>
+    </div>
   </div>
-</div>
+<% end %>
 
 <div class="row">
   <div class="col-md-12">
