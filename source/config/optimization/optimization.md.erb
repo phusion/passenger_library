@@ -195,7 +195,7 @@ Configure:
  * `passenger_concurrency_model thread;`
  * `passenger_thread_count <desired_app_threads_per_process>;`
  * `passenger_pre_start` to have your app started automatically at web server boot.
- * If `desired_app_processes` is 1, then you should set `passenger_spawn_method direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
+ * If `desired_app_processes` is 1, then you should set `passenger_spawn_method direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
 <% elsif integration_mode_type == :apache %>
 Configure:
 
@@ -204,10 +204,10 @@ Configure:
  * `PassengerConcurrencyModel thread`
  * `PassengerThreadCount <desired_app_threads_per_process>`
  * `PassengerPreStart` to have your app started automatically at web server boot.
- * If `desired_app_processes` is 1, then you should set `PassengerSpawnMethod direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
+ * If `desired_app_processes` is 1, then you should set `PassengerSpawnMethod direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
 <% else %>
  * Run `passenger start` with `--max-pool-size=<CHOSEN_NUMBER_OF_PROCESSES> --min-instances=<CHOSEN_NUMBER_OF_PROCESSES> --concurrency-model=thread --thread-count=<desired_app_threads_per_process>`
- * If `desired_app_processes` is 1, then you should also add `--spawn-method=direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
+ * If `desired_app_processes` is 1, then you should also add `--spawn-method=direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
 <% end %>
 
 #### Possible step 4: configure Rails

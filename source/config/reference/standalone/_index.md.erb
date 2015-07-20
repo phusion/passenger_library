@@ -852,7 +852,7 @@ Sometimes you might not want to adhere to the convention that Passenger accepts.
   </tr>
 </table>
 
-This option controls whether Passenger spawns applications directly, or using a prefork copy-on-write mechanism. The [spawn methods guide](<%= url_for "/indepth/spawn_methods.html" %>) explains this in detail.
+This option controls whether Passenger spawns applications directly, or using a prefork copy-on-write mechanism. The [spawn methods guide](<%= url_for "/indepth/spawn_methods/index.html" %>) explains this in detail.
 
 
 ### `--static-files-dir` / "static_files_dir"
@@ -1236,7 +1236,7 @@ Setting the value to 0 is recommended if you favor resource savings more than pr
   </tr>
 </table>
 
-The preloader process (explained in [Spawn methods](<%= url_for "/indepth/spawn_methods.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#--pool-idle-time-pool_idle_time). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
+The preloader process (explained in [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#--pool-idle-time-pool_idle_time). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
 
 This option allows you to set the preloader's idle timeout, in seconds. A value of `0` means that it should never idle timeout.
 

@@ -32,7 +32,7 @@ It is never **necessary** to add Passenger to the application's Gemfile, though 
 
 In case of Passenger Standalone, it is not necessary to execute the `passenger` command through `bundle exec`. The reason for this is because Passenger automatically loads the Gemfile environment. Most other Ruby application servers do not automatically load the Gemfile environment, which is why they must be added to the Gemfile and be executed with `bundle exec`.
 
-Even when your application uses any of the Passenger Ruby APIs (e.g. [the smart spawning hooks](spawn_methods.html#smart-spawning-hooks)), you still do not need to add Passenger to the Gemfile. The only thing you need to do is to put Passenger Ruby API calls inside `if` blocks that check whether Passenger is active, by checking whether the `PhusionPassenger` namespace is defined:
+Even when your application uses any of the Passenger Ruby APIs (e.g. [the smart spawning hooks](spawn_methods/#smart-spawning-hooks)), you still do not need to add Passenger to the Gemfile. The only thing you need to do is to put Passenger Ruby API calls inside `if` blocks that check whether Passenger is active, by checking whether the `PhusionPassenger` namespace is defined:
 
 ~~~ruby
 if defined?(PhusionPassenger)

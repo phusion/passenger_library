@@ -1,12 +1,17 @@
 ---
-title: Spawn methods explained
 section: indepth
 ---
-<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals.merge(
-  limit_choices: { "lang" => [LANG_RUBY] }
-)) } %>
+<%
+@page_title = "Spawn methods explained - #{language_name}"
+content_for(:sidebar) do
+  render_partial("../sidebar.html", locals: locals.merge(
+    limit_choices: { "lang" => [LANG_RUBY] }
+  ))
+end
+%>
 
-# Spawn methods explained
+<h1>Spawn methods explained<br>
+<small>for <%= language_name %> developers</small></h1>
 
 At its core, Passenger is an HTTP proxy and process manager. It spawns application processes and forwards incoming HTTP request to one of them.
 
@@ -29,7 +34,7 @@ This is the most straightforward way to spawn processes, and each process contai
 While this works well, it's not as efficient as it could be because each process has its own **private** copy of the application code as well as the web framework. This wastes memory as well as startup time.
 
 <figure>
-  <img src="../direct_spawning.png" alt="Application processes and direct spawning">
+  <img src="<%= url_for "/indepth/spawn_methods/direct_spawning.png" %>" alt="Application processes and direct spawning">
   <figcaption>Application processes and direct spawning. Each process has its
 own private copy of the application code and web framework code.</figcaption>
 </figure>
@@ -50,7 +55,7 @@ Creating a process like this is very fast, about 10 times faster than loading th
 process hasn't modified, is shared with the parent process.
 
 <figure>
-  <img src="../smart_spawning.png" alt="Application processes and smart spawning">
+  <img src="<%= url_for "/indepth/spawn_methods/smart_spawning.png" %>" alt="Application processes and smart spawning">
   <figcaption>Application processes and the smart spawn method. All processes, as well as the preloader, share the same application code and web framework code.</figcaption>
 </figure>
 
