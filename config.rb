@@ -317,20 +317,13 @@ DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
   proxy "/indepth/#{language_type}/request_load_balancing.html",
     "/indepth/request_load_balancing.html",
     locals: language_spec
-
 end
 
-proxy "/indepth/ruby/multiple_rubies.html",
-  "/indepth/multiple_rubies.html",
-  locals: LANG_RUBY
 proxy "/indepth/ruby/out_of_band_work.html",
   "/indepth/out_of_band_work.html",
   locals: LANG_RUBY
 proxy "/indepth/ruby/spawn_methods.html",
   "/indepth/spawn_methods.html",
-  locals: LANG_RUBY
-proxy "/indepth/ruby/bundler.html",
-  "/indepth/bundler.html",
   locals: LANG_RUBY
 proxy "/indepth/nodejs/reverse_port_binding.html",
   "/indepth/reverse_port_binding.html",
@@ -338,12 +331,13 @@ proxy "/indepth/nodejs/reverse_port_binding.html",
 proxy "/indepth/iojs/reverse_port_binding.html",
   "/indepth/reverse_port_binding.html",
   locals: LANG_IOJS
-proxy "/indepth/meteor/meteor.html",
-  "/indepth/meteor.html",
-  locals: LANG_METEOR
 
 ignore "/indepth/index2.html"
 ignore "/indepth/app_autodetection/app_autodetection.html"
+ignore "/indepth/request_load_balancing.html"
+ignore "/indepth/out_of_band_work.html"
+ignore "/indepth/spawn_methods.html"
+ignore "/indepth/reverse_port_binding.html"
 
 #################################################
 
