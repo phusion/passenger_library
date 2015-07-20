@@ -328,7 +328,7 @@ DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
 end
 
 proxy "/indepth/spawn_methods/index.html",
-  "/indepth/spawn_methods/integration_mode_selection.html",
+  "/indepth/spawn_methods/language_selection.html",
   locals: LANG_RUBY
 
 proxy "/indepth/ruby/out_of_band_work.html",
@@ -349,7 +349,7 @@ ignore "/indepth/app_autodetection/app_autodetection.html"
 ignore "/indepth/request_load_balancing.html"
 ignore "/indepth/out_of_band_work.html"
 ignore "/indepth/spawn_methods/spawn_methods.html"
-ignore "/indepth/spawn_methods/integration_mode_selection.html"
+ignore "/indepth/spawn_methods/language_selection.html"
 ignore "/indepth/reverse_port_binding.html"
 
 #################################################
