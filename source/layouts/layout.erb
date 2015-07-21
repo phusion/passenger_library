@@ -68,6 +68,21 @@
                     <% navbar_section :indepth do %><%= link_to "In-depth", "/indepth/index.html" %><% end %>
                   </ul>
                 <% end %>
+                <% navbar_dropdown_section :reference do %>
+                  <% if locals[:integration_mode_type] %>
+                    <a href="<%= url_for "/config/#{locals[:integration_mode_type]}/index.html" %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <% navbar_section :reference do %><%= link_to "Configuration reference", "/config/#{locals[:integration_mode_type]}/reference/index.html" %><% end %>
+                      <% navbar_section :reference do %><%= link_to "Hooks", "/indepth/hooks.html" %><% end %>
+                    </ul>
+                  <% else %>
+                    <a href="<%= url_for "/config/index.html" %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <% navbar_section :reference do %><%= link_to "Configuration reference", "/config/reference/index.html" %><% end %>
+                      <% navbar_section :reference do %><%= link_to "Hooks", "/indepth/hooks.html" %><% end %>
+                    </ul>
+                  <% end %>
+                <% end %>
               <% end %>
             <% else %>
               <% navbar_section :start do %><%= link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
