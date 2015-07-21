@@ -24,7 +24,7 @@ If you did enable Passenger with `passenger_enabled on`, then maybe the problem 
 
 If you did enable Passenger with `passenger_enabled on`, and `passenger_root` is also specified in your Nginx config file, then it is likely that Passenger encountered an error during initialization. If Passenger was not able to initialize, then it will log the error, and then Nginx will behave as if Passenger was never installed in the first place. As a result, Nginx will try to serve static files in your web app's static files directory, fail to do so, then report a 404 Not Found error.
 
-To solve this problem, please open the [Passenger log file](<%= url_for "/admin/nginx/log_file.html" %>) and look for any error messages there. The error messages will tell you why Passenger failed to initialize. Please take action accordingly.
+To solve this problem, please open the [Passenger log file](<%= url_for "/admin/nginx/log_file/log_file.html" %>) and look for any error messages there. The error messages will tell you why Passenger failed to initialize. Please take action accordingly.
 
 ### Upon accessing the web app, Nginx reports a "Permission denied" error
 

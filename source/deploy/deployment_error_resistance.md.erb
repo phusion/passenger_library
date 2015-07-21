@@ -38,7 +38,7 @@ By enabling deployment error resistance, Passenger Enterprise would "freeze" the
 When deployment error resistance is enabled, Passenger Enterprise would perform the following steps whenever it finds that it is unable to start an application process:
 
  1. It ensures that all requests are routed to existing application processes (that belongs to the previous version of the application). Passenger will not display an error message to the visitor.
- 2. It logs the error to [the log file](<%= url_for "/admin/#{integration_mode_type}/log_file.html" %>).
+ 2. It logs the error to [the log file](<%= url_for "/admin/#{integration_mode_type}/log_file/log_file.html" %>).
  3. It sets an internal flag (Deployment Error Resistance Mode) so that no processes for this application will be spawned (even when the current traffic would normally result in more processes being spawned) and no processes will be [idle cleaned](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#<%= passenger_pool_idle_time_anchor %>). Processes *could* still be shutdown because of other events, e.g. because their [memory limit](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#<%= passenger_memory_limit_anchor %>) have been reached.
 
 You can check whether Passenger Enterprise has entered Deployment Error Resistance mode by invoking `passenger-status` and checking for the message "Resisting deployment error" then the flag is set.
@@ -78,7 +78,7 @@ A common problem is that Passenger Enterprise may appear to erroneously enter de
 
 You should know that deployment error resistance mode is entered on *any* application process spawning error. By default, Passenger Enterprise changes the number of processes dynamically based on traffic conditions. If there is a (temporary) traffic spike, then Passenger Enterprise may decide at that moment to spawn another process in order to handle the traffic. If an error occurs at that time, e.g. Passenger Enterprise is unable to spawn the process because of an out-of-memory condition, then Passenger Enterprise will enter deployment error resistance mode.
 
-To solve this problem, you you should find out the exact cause of the spawn error by [checking the log file for error messages](<%= url_for "/admin/#{integration_mode_type}/log_file.html" %>). Passenger Enterprise will have logged the error reason. For example, if the error message says that the spawn error is caused by an out-of-memory condition, try increasing the server's RAM or swap.
+To solve this problem, you you should find out the exact cause of the spawn error by [checking the log file for error messages](<%= url_for "/admin/#{integration_mode_type}/log_file/log_file.html" %>). Passenger Enterprise will have logged the error reason. For example, if the error message says that the spawn error is caused by an out-of-memory condition, try increasing the server's RAM or swap.
 
 ## Related guides
 

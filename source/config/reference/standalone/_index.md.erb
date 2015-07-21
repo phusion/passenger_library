@@ -1396,7 +1396,7 @@ Enables or disables [resistance against deployment errors](<%= url_for "/deploy/
 
 Suppose that you have upgraded your application and you have issued a command to restart it, but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
 
-By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
+By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file/log_file.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
 
 [Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/deploy/standalone/deployment_error_resistance.html" %>).
 
