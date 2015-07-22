@@ -1,36 +1,39 @@
 var removeClass = function (elm, className) {
-    if (document.documentElement.classList) {
-        removeClass = function (elm, className) {
-            elm.classList.remove(className);
-        }
-    } else {
-        removeClass = function (elm, className) {
-            if (!elm || !elm.className) {
-                return false;
-            }
-            var regexp = new RegExp("(^|\\s)" + className + "(\\s|$)", "g");
-            elm.className = elm.className.replace(regexp, "$2");
-        }
+  if (document.documentElement.classList) {
+    removeClass = function (elm, className) {
+      elm.classList.remove(className);
     }
-    removeClass(elm, className);
+  } else {
+    removeClass = function (elm, className) {
+      if (!elm || !elm.className) {
+          return false;
+      }
+      var regexp = new RegExp("(^|\\s)" + className + "(\\s|$)", "g");
+      elm.className = elm.className.replace(regexp, "$2");
+    }
+  }
+  removeClass(elm, className);
 }
 
 function getUrlVar(key) {
-	var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search); 
-	return result && unescape(result[1]) || ""; 
+  var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search); 
+  return result && unescape(result[1]) || ""; 
 }
 
-function applyChoice(choiceMap, storageKey, uriKey, value, linkId, uriParamName, uriFromLocal) {
+function getDestWithAnchor(dest) {
+  anchorParm = getUrlVar("a"); // destination anchors can be passed through the "a" URL param
+  if (anchorParm) {
+    dest += "#" + anchorParm;
+  }
+  return dest;
+}
+
+function applyChoice(choiceMap, storageKey, uriKey, value, linkId, uri) {
   if (window.localStorage) {
     window.localStorage.setItem(storageKey, value); 
   }
   choiceMap[uriKey] = value;
 
-  if (uriFromLocal) {
-    uri = uriFromLocal;
-  } else {
-    uri = getUrlVar(uriParamName);
-  }
   for (var key in choiceMap) {
     // (filter out keys from the Object.prototype)
     if (choiceMap.hasOwnProperty(key)) {

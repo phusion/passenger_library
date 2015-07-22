@@ -1,12 +1,8 @@
 <div><!-- Put everything in a container div so that when included from a Markdown file, the Markdown parser won't try to render our content. -->
 <%
-# This matrix selector can be entered from two different flows:
-# 1) As part of a partial include chain, from custom made pages
-#    - The forwarding uri's are statically known (through locals[:dest])
-# 2) Through a generic js router (link.html?dest=..)
-#    - The forwarding uri's are dynamically known (through url param "dest")
-# Although flow 2) is more general and can handle any choice combination, only flow 1) writes out (hidden) links for all
-# possible choice combinations, for crawler discovery. Prefer 2) for crosslinks, 1) for regular routes.
+# This is a generic selector, to be included from ask_xxx partials that contain a structure in locals[:ask_data] of choices,
+# links, icons, etc. to present). Additionally, locals[:dest] should contain the url to forward to.
+#
 data = locals[:ask_data]
 
 # Optionals
@@ -16,9 +12,6 @@ dest_from_locals = locals.has_key?(:dest) ? locals[:dest] : ""
 force_choice = locals.has_key?(:force_choice) ? locals[:force_choice] : false
 # { key => [choice1, choice2] }: limits the selector of type key to choice1, choice2
 limit_choices = locals.has_key?(:limit_choices) ? locals[:limit_choices] : {}
-# anchor passed through the url param a will be #attached to the destination
-anchor = request[:params][:a]
-dest_from_locals << ("#" + anchor) unless anchor.nil?
 
 # Because this partial can be included multiple times (with different choices) in the same page.
 uuid_partial = UUIDTools::UUID.random_create.to_s.gsub("-","")
@@ -36,9 +29,24 @@ if (typeof knownChoices !== 'undefined') {
 
 <% content_for :head do # this doesn't work for the sidebar, but that shouldn't redirect anyway %>
 <script type="text/javascript">
-  // In flow 1), this script does a quick redirect if all choices are known. If choices are partially known,
-  // there is more scripting below to hide those choices. (flow 2) redirects earlier, in link.html already)
-  destFromLocals = "<%= dest_from_locals %>";
+
+  // This script part executes a quick redirect if all choices are known. If choices are partially known, then the known 
+  // ones will be hidden through additional scripting further on.
+  function getUrlVar(key) {
+    var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search); 
+    return result && unescape(result[1]) || ""; 
+  }
+  
+  function getDestWithAnchor(dest) {
+    anchorParm = getUrlVar("a"); // destination anchors can be passed through the "a" URL param
+    if (anchorParm) {
+      dest += "#" + anchorParm;
+    }
+    return dest;
+  }
+
+  destFromLocals = getDestWithAnchor("<%= dest_from_locals %>");
+  
   var knownChoices = {};
   if (<%= dest_from_locals.length > 0 %> && window.localStorage && !<%= force_choice %>) {
     intModeSel = destFromLocals.indexOf(":intmode:") >= 0;
@@ -98,7 +106,7 @@ if (typeof knownChoices !== 'undefined') {
     <a href="#" class="icon-selection-row-item icon-selection-row-icon-disable">
 <% else %>
     <a href="#<%= choice[:val] %>_choices" aria-controls="<%= choice[:val] %>_choices" data-toggle="tab" class="icon-selection-row-item <%= choice[:val] %>"
-       onclick="applyChoice(<%= choice_map %>, '<%= choicerow[:store_key] %>', '<%= choicerow[:uri_key] %>', '<%= choice[:val] %>', '<%= forward_button_id %>', 'dest', '<%= dest_from_locals %>');">
+       onclick="applyChoice(<%= choice_map %>, '<%= choicerow[:store_key] %>', '<%= choicerow[:uri_key] %>', '<%= choice[:val] %>', '<%= forward_button_id %>', getDestWithAnchor('<%= dest_from_locals %>'));">
 <% end %>
          
       <img src="<%= choice[:img] %>" width="<%= choice[:w] %>" height="<%= choice[:h] %>" alt="<%= choice[:alt] %>">
@@ -111,7 +119,7 @@ if (typeof knownChoices !== 'undefined') {
 
 <% if !force_choice && dest_from_locals.length > 0 %>
 <script type="text/javascript">
-// The statically linking flow (1)) needs to hide options that are already known.
+// Hide options that are already known.
 if (destFromLocals.indexOf(':<%= choicerow[:uri_key] %>:') < 0) {
   document.getElementById('<%= choicerow_div_base_id + choicerow[:uri_key] %>').style.display = "none";
 }
@@ -123,7 +131,7 @@ if (destFromLocals.indexOf(':<%= choicerow[:uri_key] %>:') < 0) {
 <div style="width: 100%; text-align: center; margin-left: auto; margin-right:auto">
   <p><a id="<%= forward_button_id %>" href="" class="btn btn-primary btn-lg disabled">Continue &raquo;</a></p>
 </div>
-<% if !dest_from_locals.empty? # statically linking flow can multiply out all choices for crawler discovery
+<% if !dest_from_locals.empty? # multiply out all choices for crawler discovery
   def recurseChoices(links, data, rowIdx, curLink, curId, limit_choices)
     if (rowIdx == data.length)
       links << { id: curId, href: curLink }
