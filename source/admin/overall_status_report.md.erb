@@ -265,7 +265,7 @@ Here is the breakdown of the most important fields:
 
 Pay special attention to the `started_at` field. If a request has been running for a long time (e.g. longer than 30 seconds) then it may be an indication that the application process is stuck on this request. There are several things you can do in response to this:
 
- * (Ruby) Send the SIGQUIT signal to the application process's PID. Everything will keep running as-is, and the application process will log its backtrace to the [Passenger log file](log_file/log_file.html) for you to diagnose the underlying problem.
+ * (Ruby) Send the SIGQUIT signal to the application process's PID. Everything will keep running as-is, and the application process will log its backtrace to the [Passenger log file](log_file/) for you to diagnose the underlying problem.
  * Terminate the process with the command `kill <PID>`. Passenger will notice the terminated process, abort the request (HTTP 502), and spawn a new application process if needed.
  * Setup the feature [<%= passenger_max_request_time %>](<%= passenger_max_request_time_doc %>). This way, Passenger will automatically terminate the process when it gets stuck on a request.
 
