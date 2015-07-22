@@ -17,7 +17,7 @@ If you have used [Passenger Standalone](<%= url_for "/indepth/integration_modes.
 
 Configuring Passenger for Nginx works as follows:
 
- 1. During the Passenger [installation process](<%= url_for "/install/nginx/install/" %>), an Nginx binary with the Passenger module compiled in, is installed.
+ 1. During the Passenger [installation process](<%= url_for "/install/nginx/install/index.html" %>), an Nginx binary with the Passenger module compiled in, is installed.
  2. The Passenger Nginx module registers Passenger-specific configuration options inside Nginx.
  3. You, the administrator, configure Passenger by adding Passenger-specific configuration options to the Nginx configuration file.
  4. Restart or reload Nginx to apply any configuration changes.
@@ -35,7 +35,7 @@ server {
 
 ## Essential configuration
 
-For Passenger to work, only one configuration option needs to be setup in Nginx, namely [passenger_root](reference/#passenger_root). If you have already gone through the [installation process](<%= url_for "/install/nginx/install/" %>), then it has already been set.
+For Passenger to work, only one configuration option needs to be setup in Nginx, namely [passenger_root](reference/#passenger_root). If you have already gone through the [installation process](<%= url_for "/install/nginx/install/index.html" %>), then it has already been set.
 
 ## Start configuring Passenger
 
@@ -50,7 +50,7 @@ If you have used [Passenger Standalone](<%= url_for "/indepth/integration_modes.
 
 Configuring Passenger for Apache works as follows:
 
- 1. During the Passenger [installation process](<%= url_for "/install/apache/install/" %>), Apache is setup to load the Passenger Apache module.
+ 1. During the Passenger [installation process](<%= url_for "/install/apache/install/index.html" %>), Apache is setup to load the Passenger Apache module.
  2. The Passenger Apache module registers Passenger-specific configuration options inside Apache.
  3. You, the administrator, configure Passenger by adding Passenger-specific configuration options to the Apache configuration file.
  4. Restart or reload Apache to apply any configuration changes.
@@ -75,7 +75,7 @@ PassengerRuby /usr/bin/ruby2.0
 
 ## Essential configuration
 
-For Passenger to work, only a few configuration options need to be setup in Apache. If you have already gone through the [installation process](<%= url_for "/install/apache/install/" %>), then these configuration options are already set.
+For Passenger to work, only a few configuration options need to be setup in Apache. If you have already gone through the [installation process](<%= url_for "/install/apache/install/index.html" %>), then these configuration options are already set.
 
  1. The `LoadModule passenger_module ...` option must exist in the Apache configuration. This option tells Apache to load the Passenger module from the given filename. If this option does not exist, then Passenger is not loaded into Apache at all, and Apache will complain about syntax errors whenever it encounters Passenger configuration options.
  2. The [PassengerRoot](reference/#passengerroot) option must exist in the Apache configuration. This option tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate.

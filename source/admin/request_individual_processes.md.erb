@@ -18,7 +18,7 @@ When a request is sent to <%= integration_mode_name %>,
 <% else -%>
 When a request is sent to Passenger,
 <% end -%>
-Passenger will automatically forward the request to the most suitable application process as part of its [load balancing mechanism](<%= url_for "/indepth/request_load_balancing/" %>). But sometimes it is desirable to be able to directly access the individual application processes. Use cases include, but are not limited to:
+Passenger will automatically forward the request to the most suitable application process as part of its [load balancing mechanism](<%= url_for "/indepth/request_load_balancing/index.html" %>). But sometimes it is desirable to be able to directly access the individual application processes. Use cases include, but are not limited to:
 
  * You want to debug a memory leak or memory bloat problem that only seems to appear on certain URIs. One can send a request to a specific process to see whether that request causes the process's memory usage to rise.
  * You want to perform a health check on all application processes.
