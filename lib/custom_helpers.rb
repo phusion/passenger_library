@@ -133,6 +133,10 @@ module CustomHelpers
     globals[:layout_body_trailer] << capture_html(&block)
   end
 
+  def absolute_url_for(path, options = {})
+    config[:url_root] + url_for(path, options.merge(relative: false))
+  end
+
   def comments_section_classes
     if has_sidebar?
       "col-md-8 col-md-offset-3"
@@ -226,7 +230,7 @@ module CustomHelpers
     regex = /(#{regex_str})/
     path = current_page_path.gsub(regex, "/" + generalized_param + "/")
   end
-  
+
   def current_url_with_other_integration_mode(other_integration_mode, available_integration_modes, section_path)
     available = false
     available_integration_modes.each do |spec|
@@ -278,22 +282,22 @@ module CustomHelpers
     current_page_path =~ /(.*)(#{language_types.join("|")})(.*)/
     $3
   end
-  
+
   def is_choice_filtered?(choice, limit_choices)
-    return false if limit_choices.nil? 
-    
+    return false if limit_choices.nil?
+
     limit_choices.each do |limit_choice|
-      return false if choice[:val].eql? limit_choice[:choice_val] 
+      return false if choice[:val].eql? limit_choice[:choice_val]
     end
     return true
   end
-  
+
   def get_choices_as_jsarray(limit_choices)
-    return "[]" if limit_choices.nil? 
+    return "[]" if limit_choices.nil?
     jsarray = "['"
     limit_choices.each_with_index do |limit_choice, idx|
       jsarray << "', '" if idx > 0
-      jsarray << limit_choice[:choice_val] 
+      jsarray << limit_choice[:choice_val]
     end
     jsarray << "']"
     return jsarray
