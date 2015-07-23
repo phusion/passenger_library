@@ -1,7 +1,6 @@
 <%
 @page_title = "Automating deployments of #{language_name} application updates with shell scripts - #{integration_mode_name}"
 if integration_mode_type != :nginx
-  @skip_search = true
   content_for(:head) do
     canonical_url = "#{config[:url_root]}/deploy/nginx/automating_app_updates/#{language_type}/"
     %Q{<link rel="canonical" href="#{canonical_url}">}
