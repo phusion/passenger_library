@@ -16,8 +16,8 @@ var removeClass = function (elm, className) {
 }
 
 function getUrlVar(key) {
-  var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search); 
-  return result && unescape(result[1]) || ""; 
+  var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
+  return result && unescape(result[1]) || "";
 }
 
 function getDestWithAnchor(dest) {
@@ -30,7 +30,16 @@ function getDestWithAnchor(dest) {
 
 function applyChoice(choiceMap, storageKey, uriKey, value, linkId, uri) {
   if (window.localStorage) {
-    window.localStorage.setItem(storageKey, value); 
+    try {
+      window.localStorage.setItem(storageKey, value);
+    } catch (err) {
+      // Safari in Private Browsing mode throws exceptions
+      // on localStorage.setItem(). Ignore and log these
+      // exceptions.
+      if (window.console) {
+        console.error(err);
+      }
+    }
   }
   choiceMap[uriKey] = value;
 
@@ -40,7 +49,7 @@ function applyChoice(choiceMap, storageKey, uriKey, value, linkId, uri) {
       uri = uri.replace((":" + key + ":"), choiceMap[key]);
     }
   }
-  
+
   if (uri.indexOf('/:') < 0) {
     removeClass(document.getElementById(linkId), "disabled");
     document.getElementById(linkId).href = uri;
