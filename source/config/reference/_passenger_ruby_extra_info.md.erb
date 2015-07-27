@@ -5,7 +5,7 @@ when :nginx
 when :apache
   passenger_ruby = "PassengerRuby"
 else
-  raise "TODO"
+  passenger_ruby = "--ruby / \"ruby\""
 end
 %>
 #### Notes about multiple Ruby interpreters
@@ -17,7 +17,7 @@ If your system has multiple Ruby interpreters, then it is important that you set
 
 Note that a different RVM gemset also counts as "a different Ruby interpreter".
 
-#### How to set the correct value
+<h4 id="setting_correct_passenger_ruby_value">How to set the correct value</h4>
 
 If you are not sure what value to set `<%= passenger_ruby %>` to, then you can find out the correct value as follows.
 
