@@ -37,6 +37,8 @@ content_for(:sidebar) { render_partial("sidebar.html", locals: locals.merge(cont
       <% if integration_mode_type == :nginx %>
         <li><a href="install_as_nginx_module.html">Installing Passenger as a normal Nginx module</a></li>
         <li><a href="nginx_init_script.html">Creating an Nginx init script</a></li>
+      <% elsif integration_mode_type == :apache %>
+        <li><a href="multiple_apache_installs.html">Working with multiple Apache installations</a></li>
       <% end %>
     </ul>
   </div>
