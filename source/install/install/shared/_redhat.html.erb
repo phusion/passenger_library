@@ -98,7 +98,13 @@ sudo yum install -y <%= packages %></code></pre>
   <p>
     Now that the Passenger Apache module is installed, restart Apache to ensure that Passenger is activated:
   </p>
-  <pre class="highlight"><span class="prompt">$</span> sudo service httpd restart</pre>
+  <div>
+    <% if os_config_type == :el6 %>
+      <pre class="highlight"><span class="prompt">$</span> sudo service httpd restart</pre>
+    <% else %>
+      <pre class="highlight"><span class="prompt">$</span> sudo systemctl restart httpd</pre>
+    <% end %>
+  </div>
 <% elsif type == "nginx" %>
   <% step += 1 %>
   <h2>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h2>

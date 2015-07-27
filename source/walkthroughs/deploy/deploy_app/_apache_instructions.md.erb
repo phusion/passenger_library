@@ -50,11 +50,22 @@ myappuser$ ...</span>
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Edit Apache configuration file") %>
 
-<% if os_config_class == :debian || os_config_class == :redhat %>
+<% if os_config_class == :debian %>
   <p>
     We need to create an Apache configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Apache (and Passenger) where your app is located.
   </p>
   <pre class="highlight"><span style="prompt">$ </span>sudo nano /etc/apache2/sites-enabled/<span class="o">myapp</span>.conf</pre>
+  <p>
+    Replace <code>myapp</code> with your app's name.
+  </p>
+  <p>
+    Put this inside the file:
+  </p>
+<% elsif os_config_class == :redhat %>
+  <p>
+    We need to create an Apache configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Apache (and Passenger) where your app is located.
+  </p>
+  <pre class="highlight"><span style="prompt">$ </span>sudo nano /etc/httpd/conf.d/<span class="o">myapp</span>.conf</pre>
   <p>
     Replace <code>myapp</code> with your app's name.
   </p>
@@ -215,9 +226,17 @@ myappuser$ ...</span>
 
 When you are done, restart Apache:
 
-<pre class="highlight"><span class="prompt">$ </span>sudo apachectl restart</pre>
+<div>
+  <% if os_config_class == :debian %>
+    <pre class="highlight"><span class="prompt">$ </span>sudo apache2ctl restart</pre>
+  <% elsif os_config_class == :redhat %>
+    <pre class="highlight"><span class="prompt">$ </span>sudo apachectl restart</pre>
+  <% else %>
+    <pre class="highlight"><span class="prompt">$ </span>sudo apachectl restart</pre>
 
-(Depending on your operating system, the right command may be `apache2ctl` instead of `apachectl`.)
+    <p>(Depending on your operating system, the right command may be <code>apache2ctl</code> instead of <code>apachectl</code>.)</p>
+  <% end %>
+</div>
 
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Test drive") %>
