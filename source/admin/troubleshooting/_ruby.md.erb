@@ -24,10 +24,13 @@ To solve this problem, you must explicitly tell Passenger what Ruby interpreter 
 <% elsif integration_mode_type == :apache -%>
   You can do this with the [PassengerRuby](<%= url_for "/config/apache/reference/index.html" %>#passengerruby) configuration option.
 <% else -%>
-  You can do this with the `--ruby` command line option, or the `ruby` Passengerfile.json option.
+  You can do this with the [`--ruby` / "ruby"](<%= url_for "/config/standalone/reference/index.html" %>#--ruby-ruby).
 <% end -%>
 
-The second most common cause of this problem, is that your application is being run under the wrong user. The `bundle install` command often installs gems into a user-specific directory. So if Passenger for some reason runs your app as a different user than the one that invoked `bundle install`, Bundler may not be able to find its gems. Read [Sandboxing apps with Unix user accounts](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) to learn why Passenger may run your application as a different user.
+The second most common cause of this problem, is that your application is being run under the wrong user. The `bundle install` command often installs gems into a user-specific directory. So if Passenger for some reason runs your app as a different user than the one that invoked `bundle install`, Bundler may not be able to find its gems.
+<% if integration_mode_type == :nginx || integration_mode_type == :apache -%>
+Read [Sandboxing apps with Unix user accounts](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) to learn why Passenger may run your application as a different user.
+<% end -%>
 
 To solve this problem, you must explicit tell Passenger what user to run as
 <% if integration_mode_type == :nginx -%>
@@ -35,7 +38,7 @@ To solve this problem, you must explicit tell Passenger what user to run as
 <% elsif integration_mode_type == :apache -%>
   by using the [PassengerUser](<%= url_for "/config/apache/reference/index.html" %>#passengeruser) configuration option.
 <% else -%>
-  by using the `--user` command line option, or the `user` Passengerfile.json option.
+  by using the [`--user` / "user"](<%= url_for "/config/standalone/reference/index.html" %>#--user-user) option.
 <% end %>
 
 If this didn't solve your problem, try following the tips in the error message. Also be sure to double check the settings printed on the error page. Be sure to double check all environment variables, user IDs, etc and check whether they are what you expect.

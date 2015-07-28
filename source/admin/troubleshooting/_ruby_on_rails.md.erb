@@ -6,13 +6,13 @@ The "About your application's environment" link only works if the application is
 
 Use the
 <% if integration_mode_type == :nginx %>
-[rails_env](<%= url_for "/config/nginx/reference/index.html" %>#rails_env) configuration option
+[rails_env](<%= url_for "/config/nginx/reference/index.html" %>#passenger_app_env) configuration option
 <% end %>
 <% if integration_mode_type == :apache %>
-[RailsEnv](<%= url_for "/config/apache/reference/index.html" %>#railsenv) configuration option
+[RailsEnv](<%= url_for "/config/apache/reference/index.html" %>#passenger_app_env) configuration option
 <% end %>
 <% if integration_mode_type == :standalone %>
-`--environment` command line parameter
+[`--environment` / "environment"](<%= url_for "/config/standalone/reference/index.html" %>#--environment-environment) option
 <% end %>
 to change this.
 
@@ -30,7 +30,7 @@ Please read [User account sandboxing](<%= url_for "/deploy/nginx/user_sandboxing
 Please read [User account sandboxing](<%= url_for "/deploy/apache/user_sandboxing.html" %>) for details.
 <% end -%>
 <% if integration_mode_type == :standalone -%>
-(or as the user specified by the `--user` command line parameter)).
+(or as the user specified by the [`--user` / "user"](<%= url_for "/config/standalone/reference/index.html" %>#--user-user) option).
 <% end -%>
 
 ### The Rails application cannot find my database
