@@ -14,7 +14,9 @@ force_choice = locals.has_key?(:force_choice) ? locals[:force_choice] : false
 limit_choices = locals.has_key?(:limit_choices) ? locals[:limit_choices] : {}
 
 # Because this partial can be included multiple times (with different choices) in the same page.
-uuid_partial = UUIDTools::UUID.random_create.to_s.gsub("-","")
+globals[:ask_matrix_next_id] ||= 0
+uuid_partial = globals[:ask_matrix_next_id].to_s
+globals[:ask_matrix_next_id] += 1
 forward_button_id = "continue_" + uuid_partial
 choicerow_div_base_id = "choicerow_" + uuid_partial + "_"
 choice_map = "choiceMap_" + uuid_partial
@@ -30,13 +32,13 @@ if (typeof knownChoices !== 'undefined') {
 <% content_for :head do # this doesn't work for the sidebar, but that shouldn't redirect anyway %>
 <script type="text/javascript">
 
-  // This script part executes a quick redirect if all choices are known. If choices are partially known, then the known 
+  // This script part executes a quick redirect if all choices are known. If choices are partially known, then the known
   // ones will be hidden through additional scripting further on.
   function getUrlVar(key) {
-    var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search); 
-    return result && unescape(result[1]) || ""; 
+    var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
+    return result && unescape(result[1]) || "";
   }
-  
+
   function getDestWithAnchor(dest) {
     anchorParm = getUrlVar("a"); // destination anchors can be passed through the "a" URL param
     if (anchorParm) {
@@ -46,7 +48,7 @@ if (typeof knownChoices !== 'undefined') {
   }
 
   destFromLocals = getDestWithAnchor("<%= dest_from_locals %>");
-  
+
   var knownChoices = {};
   if (<%= dest_from_locals.length > 0 %> && window.localStorage && !<%= force_choice %>) {
     intModeSel = destFromLocals.indexOf(":intmode:") >= 0;
@@ -108,7 +110,7 @@ if (typeof knownChoices !== 'undefined') {
     <a href="#<%= choice[:val] %>_choices" aria-controls="<%= choice[:val] %>_choices" data-toggle="tab" class="icon-selection-row-item <%= choice[:val] %>"
        onclick="applyChoice(<%= choice_map %>, '<%= choicerow[:store_key] %>', '<%= choicerow[:uri_key] %>', '<%= choice[:val] %>', '<%= forward_button_id %>', getDestWithAnchor('<%= dest_from_locals %>'));">
 <% end %>
-         
+
       <img src="<%= choice[:img] %>" width="<%= choice[:w] %>" height="<%= choice[:h] %>" alt="<%= choice[:alt] %>">
       <span class="icon-selection-row-item-label"><%= choice[:alt] %></span>
     </a>
