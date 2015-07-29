@@ -149,11 +149,11 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/config/#{integration_mode_type}/intro.html",
     "/config/intro.html",
     locals: integration_mode_spec
-  proxy "/config/#{integration_mode_type}/tuning_sse_and_websockets.html",
-    "/config/tuning_sse_and_websockets.html",
-    locals: integration_mode_spec
   proxy "/config/#{integration_mode_type}/optimization/index.html",
     "/config/optimization/optimization.html",
+    locals: integration_mode_spec
+  proxy "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html",
+    "/config/tuning_sse_and_websockets/tuning_sse_and_websockets.html",
     locals: integration_mode_spec
   proxy "/config/#{integration_mode_type}/cloud_licensing_configuration/index.html",
     "/config/cloud_licensing_configuration/cloud_licensing_configuration.html",
@@ -165,6 +165,8 @@ end
 
 proxy "/config/optimization/index.html",
   "/config/optimization/integration_mode_selection.html"
+proxy "/config/tuning_sse_and_websockets/index.html",
+  "/config/tuning_sse_and_websockets/integration_mode_selection.html"
 proxy "/config/cloud_licensing_configuration/index.html",
   "/config/cloud_licensing_configuration/integration_mode_selection.html"
 
