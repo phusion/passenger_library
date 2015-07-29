@@ -24,6 +24,21 @@ end
   <div class="note">Are you using Ruby, and do you have "passenger" or "passenger-enterprise-server" in your Gemfile? Then take a look at the <a href="#gemfile">Gemfile upgrade instructions</a>.</div>
 <% end %>
 
+<% if edition_type == :oss %>
+  <h2 id="osx">Mac OS X (Homebrew)</h2>
+  <div>
+    <p>If <%= edition_title %> was installed on OS X through Homebrew, then you can upgrade <%= edition_title %> as follows:</p>
+
+    <pre class="highlight">brew upgrade passenger nginx --with-passenger</pre>
+
+    <% if integration_mode_type == :nginx %>
+      <p>Passenger has been updated, but no new Nginx version has been released, then you must also reinstall Nginx against the latest version of Passenger:</p>
+
+      <pre class="highlight">brew reinstall nginx --with-passenger</pre>
+    <% end %>
+  </div>
+<% end %>
+
 <h2 id="debian_ubuntu">Debian packages (Debian, Ubuntu)</h2>
 
 If <%= edition_title %> was installed through the Phusion Passenger [APT repository](<%= url_for "/install/#{integration_mode_type}/apt_repo/index.html" %>), then you can upgrade <%= edition_title %>
