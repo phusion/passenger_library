@@ -118,6 +118,8 @@ proxy "/install/nginx/disable.html",
 proxy "/install/apache/disable.html",
   "/install/disable.html",
   locals: INTEGRATION_MODE_APACHE
+proxy "/install/upgrade/index.html",
+  "/install/upgrade/integration_mode_and_edition_selection.html"
 
 ignore "/install/index2.html"
 ignore "/install/disable.html"
