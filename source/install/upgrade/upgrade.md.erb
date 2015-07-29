@@ -24,7 +24,7 @@ end
   <div class="note">Are you using Ruby, and do you have "passenger" or "passenger-enterprise-server" in your Gemfile? Then take a look at the <a href="#gemfile">Gemfile upgrade instructions</a>.</div>
 <% end %>
 
-## Debian packages (Debian, Ubuntu)
+<h2 id="debian_ubuntu">Debian packages (Debian, Ubuntu)</h2>
 
 If <%= edition_title %> was installed through the Phusion Passenger [APT repository](<%= url_for "/install/#{integration_mode_type}/apt_repo/index.html" %>), then you can upgrade <%= edition_title %>
 <% if integration_mode_type != :standalone -%>
@@ -42,7 +42,7 @@ If you don't see any updates, then there are two possible reasons:
  1. Our Debian packages haven't been released yet. When we release a new version of <%= edition_title %>, it typically takes 1-2 hours for our server to build Debian packages.
  2. If you are using a non-Long Term Support version of Ubuntu, then it is possible that we have [dropped support for that Ubuntu version](<%= url_for "/install/#{integration_mode_type}/apt_repo/index.html" %>#limited-package-support-for-non-lts-ubuntu-versions).
 
-## RPM packages (Red Hat, CentOS)
+<h2 id="redhat_centos">RPM packages (Red Hat, CentOS)</h2>
 
 If <%= edition_title %> was installed through the Phusion Passenger [YUM repository](<%= url_for "/install/#{integration_mode_type}/yum_repo/index.html" %>), then you can upgrade <%= edition_title %>
 <% if integration_mode_type != :standalone -%>
@@ -56,7 +56,7 @@ through YUM using the following command:
 
 If you don't see any updates, then maybe our RPM packages haven't been released yet. When we release a new version of <%= edition_title %>, it typically takes 2-3 hours for our server to build RPM packages.
 
-## Heroku
+<h2 id="heroku">Heroku</h2>
 
 If you are using <%= edition_title %> on Heroku, then update the `<%= gem_name %>` by running:
 
@@ -67,11 +67,11 @@ Then commit and push to Heroku:
     git commit -a -m "Upgrade <%= edition_title %> to latest version"
     git push heroku master
 
-## Docker
+<h2 id="docker">Docker</h2>
 
 Please refer to [the passenger-docker website](https://github.com/phusion/passenger-docker#upgrading_passenger) for upgrade instructions.
 
-## Source tarball
+<h2 id="source_tarball">Source tarball</h2>
 
 If <%= edition_title %> was installed through a source tarball, then please follow the [source tarball upgrade guide](tarball_upgrade.html).
 
@@ -86,7 +86,7 @@ If <%= edition_title %> was installed through a source tarball, then please foll
   <pre class="highlight">bundle update <%= gem_name %></pre>
 <% end %>
 
-## RubyGems<%= " (but not through Gemfile)" if integration_mode_type == :standalone %>
+<h2 id="rubygems">RubyGems<%= " (but not through Gemfile)" if integration_mode_type == :standalone %></h2>
 
 <% if integration_mode_type == :standalone -%>
 If Passenger was installed through RubyGems (but not through [Gemfile](#gemfile)),
