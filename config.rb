@@ -172,10 +172,10 @@ proxy "/config/cloud_licensing_configuration/index.html",
 
 ignore "/config/index2.html"
 ignore "/config/intro.html"
-ignore "/config/optimization.html"
-ignore "/config/tuning_sse_and_websockets.html"
 ignore "/config/optimization/optimization.html"
 ignore "/config/optimization/integration_mode_selection.html"
+ignore "/config/tuning_sse_and_websockets/tuning_sse_and_websockets.html"
+ignore "/config/tuning_sse_and_websockets/integration_mode_selection.html"
 ignore "/config/cloud_licensing_configuration/cloud_licensing_configuration.html"
 ignore "/config/cloud_licensing_configuration/integration_mode_selection.html"
 ignore "/config/reference/reference.html"
