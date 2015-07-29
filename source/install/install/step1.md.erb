@@ -9,4 +9,8 @@ content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
 
 # Installing Passenger <%= integration_mode_name_as_passenger_suffix %>
 
+<div class="info">
+  Are you looking to install Passenger on Heroku? Please follow <a href="https://github.com/phusion/passenger-ruby-heroku-demo">the Heroku guide</a>.
+</div>
+
 <%= render_partial("/shared/ask_edition.html", locals: { dest: ":edition:/" }) %>
