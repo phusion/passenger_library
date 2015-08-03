@@ -540,11 +540,11 @@ server {
 
 This option specifies the startup file that Passenger should use when loading the application. This path is relative to the [application root](#passenger_app_root).
 
-Every application has a *startup file* or *entry point file*: a file where the application begins execution. Some languages have widely accepted conventions about how such a file should be called (e.g. Ruby, with its `config.ru`). Other languages have somewhat-accepted conventions (e.g. Node.js, with its `app.js`). In these cases, Passenger reuses these conventions, and executes applications through those files.
+Every application has a *startup file* or *entry point file*: a file where the application begins execution. Some languages have widely accepted conventions about how such a file should be called (e.g. Ruby, with its `config.ru`). Other languages have somewhat-accepted conventions (e.g. Node.js, with its `app.js`). In these cases, Passenger folows these conventions, and executes applications through those files.
 
 Other languages have no conventions at all, and so Passenger invents one (e.g. Python WSGI with `passenger_wsgi.py`).
 
-Here's a list of the language-specific conventions that Passenger accepts:
+Passenger tries to autodetect according to the following language-specific conventions:
 
 <table class="table table-striped table-bordered">
   <thead>
@@ -563,7 +563,7 @@ Here's a list of the language-specific conventions that Passenger accepts:
   </tbody>
 </table>
 
-Sometimes you might not want to adhere to the convention that Passenger accepts. For example, on Node.js, you might want to use `server.js` as the startup file instead of the default `app.js`. With this option, you can customize the startup file to any file you like.
+For other cases you will need to specify the `startup-file` manually. For example, on Node.js, you might need to use `bin/www` as the startup file instead if you are using the Express app generator.
 
 #### Notes
 

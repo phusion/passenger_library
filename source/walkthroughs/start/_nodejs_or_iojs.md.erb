@@ -24,7 +24,7 @@ In this tutorial we will use [an example "hello world" application](https://gith
 
 ## Running the server
 
-You normally run your app like this, right?
+The simplest way to run your app is with the `<%= command %>` command:
 
 <% if type == :nodejs -%>
 <pre class="highlight"><span class="prompt">$ </span>node myapp.js</pre>
@@ -32,7 +32,7 @@ You normally run your app like this, right?
 <pre class="highlight"><span class="prompt">$ </span>iojs myapp.js</pre>
 <% end %>
 
-It's similar with Passenger. Instead of `<%= command %>`, you run your app with `passenger start`, but with a few extra command line options:
+Passenger can be used the same way as the `<%= command %>` command: you run your app with `passenger start` and two extra command line options:
 
 <pre class="highlight">
 <% if type == :nodejs -%>
@@ -48,6 +48,8 @@ Accessible via: http://0.0.0.0:3000/
 
 You can stop Phusion Passenger Standalone by pressing Ctrl-C.
 ===============================================================</span></pre>
+
+<div class="note">If you run your app with a higher level command like <code>npm start</code>, you can find out what <code>--startup-file</code> to specify by looking at <code>package.json</code>. It should be whatever is behind the <code><%= command %></code> command.</div>
 
 As you can see in the output, Passenger is now serving your app on [http://0.0.0.0:3000/](http://0.0.0.0:3000/). So if you go to that URL, you will should see your application:
 

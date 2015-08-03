@@ -34,7 +34,7 @@ This mechanism means that most Node.js/io.js applications will work out of the b
 
 When Passenger spawns your application, Passenger waits until the app calls `listen()` on an `http.Server` object. If your app never calls `listen()`, then Passenger will eventually time out with an error.
 
-To fix this problem, you must ensure that `listen()` is called.
+To fix this problem, you must ensure that `listen()` is called. Note that this may also mean that you have specified the wrong `startup-file` and the listen() code isn't being reached. For example, when using the Express application generator, listen() is called from `bin/www` and not from `app.js`, so the `startup-file` should be `bin/www`.
 
 ## Caveat: multiple http.Server objects ("Error: http.Server.listen() was called more than once")
 
