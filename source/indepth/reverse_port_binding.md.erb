@@ -30,6 +30,12 @@ When run in Passenger, the port number that you pass to `listen()` is irrelevant
 
 This mechanism means that most Node.js/io.js applications will work out of the box on Passenger, even if they are already configured to run on a specific port.
 
+## Spawn timeout: what happens if the app doesn't call `listen()`
+
+When Passenger spawns your application, Passenger waits until the app calls `listen()` on an `http.Server` object. If your app never calls `listen()`, then Passenger will eventually time out with an error.
+
+To fix this problem, you must ensure that `listen()` is called.
+
 ## Caveat: multiple http.Server objects ("Error: http.Server.listen() was called more than once")
 
 This mechanism only works if your app only creates a single HTTP server. If the app tries to create multiple HTTP servers, then Passenger doesn't know which http.Server object to apply the port binding on. This will cause Passenger to throw the following error:
