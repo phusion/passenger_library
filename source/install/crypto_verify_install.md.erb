@@ -23,11 +23,11 @@ Fingerprint: D5F0 8514 2693 9232 F437  AB72 2AC7 45A5 0A21 2A8C
 
 This key is stored at [the Phusion website](http://www.phusion.nl/about/gpg) and at the key servers [sks-keyservers.net](http://pool.sks-keyservers.net/pks/lookup?op=get&search=0x2AC745A50A212A8C) and [keyserver.ubuntu.com](http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2AC745A50A212A8C). You can import it to your keyring with one of these command:
 
-    gpg --keyserver pool.sks-keyservers.net --search-keys 0x2AC745A50A212A8C
+    gpg --keyserver hkp://pool.sks-keyservers.net:80 --search-keys 0x2AC745A50A212A8C
 
 -OR-
 
-    gpg --keyserver keyserver.ubuntu.com --search-keys 0x2AC745A50A212A8C
+    gpg --keyserver hkp://keyserver.ubuntu.com:80 --search-keys 0x2AC745A50A212A8C
 
 The Phusion Software Signing key is only used for signing software. It's never used for signing emails or for encrypting files, so please be suspicious if you encounter usage of this key outside the context of signing software, and alert us at support@phusion.nl. Include "notspam" in the message to bypass our spam filter.
 
@@ -47,15 +47,15 @@ Short key ID: 69481265<br>
 Long key ID: AE405F7869481265<br>
 Fingerprint: A77C 9CEF 766D 0E7D A95B 8778 AE40 5F78 6948 1265
 
-Both keys are stored at both sks-servers.net and keyserver.ubuntu.com. Import them with:
+Both keys are stored at both sks-keyservers.net and keyserver.ubuntu.com. Import them with:
 
-    gpg --keyserver pool.sks-servers.net --search-keys 0xCD70085E8C59158F
-    gpg --keyserver pool.sks-servers.net --search-keys 0xAE405F7869481265
+    gpg --keyserver hkp://pool.sks-keyservers.net:80 --search-keys 0xCD70085E8C59158F
+    gpg --keyserver hkp://pool.sks-keyservers.net:80 --search-keys 0xAE405F7869481265
 
 -OR-
 
-    gpg --keyserver keyserver.ubuntu.com --search-keys 0xCD70085E8C59158F
-    gpg --keyserver keyserver.ubuntu.com --search-keys 0xAE405F7869481265
+    gpg --keyserver hkp://keyserver.ubuntu.com:80 --search-keys 0xCD70085E8C59158F
+    gpg --keyserver hkp://keyserver.ubuntu.com:80 --search-keys 0xAE405F7869481265
 
 ## Verifying the gem and tarball
 
@@ -89,13 +89,13 @@ Our [YUM repository](yum_repo/) is signed by [PackageCloud](https://packagecloud
 
 ## Revocation
 
-In the event our key is compromised, we will revoke the key and upload the revocation information to sks-servers.net and keyserver.ubuntu.com. However your system will not know about the revocation until you update the keys from the keyservers. You should update your keys regularly (e.g. once a week) by invoking:
+In the event our key is compromised, we will revoke the key and upload the revocation information to sks-keyservers.net and keyserver.ubuntu.com. However your system will not know about the revocation until you update the keys from the keyservers. You should update your keys regularly (e.g. once a week) by invoking:
 
-    gpg --refresh-keys --keyserver pool.sks-servers.net
+    gpg --refresh-keys --keyserver hkp://pool.sks-keyservers.net:80
 
 -OR-
 
-    gpg --refresh-keys --keyserver keyserver.ubuntu.com
+    gpg --refresh-keys --keyserver hkp://keyserver.ubuntu.com:80
 
 If you installed Passenger through our APT repository, then you should update APT's keyring from time to time as well:
 
