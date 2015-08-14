@@ -118,6 +118,8 @@ proxy "/install/nginx/disable.html",
 proxy "/install/apache/disable.html",
   "/install/disable.html",
   locals: INTEGRATION_MODE_APACHE
+proxy "/install/install/index.html",
+  "/install/install/integration_mode_and_edition_selection.html"
 proxy "/install/upgrade/index.html",
   "/install/upgrade/integration_mode_and_edition_selection.html"
 
@@ -131,9 +133,11 @@ ignore "/install/apt_repo/integration_mode_selection.html"
 ignore "/install/apt_repo/apt_repo.html"
 ignore "/install/yum_repo/integration_mode_selection.html"
 ignore "/install/yum_repo/yum_repo.html"
+ignore "/install/install/integration_mode_and_edition_selection.html"
 ignore "/install/install/step1.html"
 ignore "/install/install/step2.html"
 ignore "/install/install/step3.html"
+ignore "/install/upgrade/integration_mode_and_edition_selection.html"
 ignore "/install/upgrade/edition_selection.html"
 ignore "/install/upgrade/upgrade.html"
 ignore "/install/upgrade/tarball_upgrade.html"
