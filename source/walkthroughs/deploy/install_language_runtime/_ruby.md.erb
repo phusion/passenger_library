@@ -94,11 +94,33 @@ To install Node.js:
 <table class="table table-bordered table-striped">
   <tr>
     <td>
-      Debian, Ubuntu
+      Ubuntu
     </td>
     <td>
       <pre class="highlight">sudo apt-get install -y nodejs &amp;&amp;
 sudo ln -sf /usr/bin/nodejs /usr/local/bin/node</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Debian &gt;= 8 (Jessie or later)
+    </td>
+    <td>
+      <pre class="highlight">sudo apt-get install -y nodejs &amp;&amp;
+sudo ln -sf /usr/bin/nodejs /usr/local/bin/node</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Debian 7 (Squeeze)
+    </td>
+    <td>
+      <p>Run the following commands to install Node.js from the <a href="https://nodesource.com/">NodeSource</a> APT repository.</p>
+      <pre class="highlight">sudo apt-get update &amp;&amp;
+sudo apt-get install -y apt-transport-https ca-certificates &amp;&amp;
+curl --fail -ssL -o setup-nodejs https://deb.nodesource.com/setup_0.12 &amp;&amp;
+sudo bash setup-nodejs &amp;&amp;
+sudo apt-get install -y nodejs</pre>
     </td>
   </tr>
   <tr>
