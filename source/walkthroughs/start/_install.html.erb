@@ -89,7 +89,7 @@ sudo yum install -y epel-release pygpgme curl
 sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 
 <span class="c unselectable"># Install Passenger</span>
-sudo yum install -y passenger</code></pre>
+sudo yum install -y --enablerepo=epel passenger</code></pre>
 
     <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
   </div>
