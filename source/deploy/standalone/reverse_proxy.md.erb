@@ -205,7 +205,7 @@ sudo a2enmod proxy_http</pre></td>
     <td><pre class="highlight">sudo yum install httpd</pre></td>
   </tr>
   <tr>
-    <td>Mac OS X (Homebrew)</td>
+    <td>Mac OS X</td>
     <td>You don't have to do anything. Apache is installed by default.</td>
   </tr>
   <tr>
@@ -241,8 +241,8 @@ sudo a2enmod proxy_http</pre></td>
 
     <span class="c"># bar is listening on port 4010 instead of 4000, we
     # change the URL here.</span>
-    ProxyPass / http://127.0.0.1:4000/
-    ProxyPassReverse / http://127.0.0.1:4000/
+    ProxyPass / http://127.0.0.1:4010/
+    ProxyPassReverse / http://127.0.0.1:4010/
     ProxyPreserveHost on
 
     &lt;Proxy *&gt;
@@ -259,7 +259,7 @@ Note that on some systems, the command may be `apachectl` instead of `apache2ctl
 
 ## Step 3: making all apps start at system boot
 
-Once you restart the machine, the reverse proxy will no longer be able to serve 'www.foo.com' or 'www.bar.com' because the Passenger Standalone instances that host them are no longer running. You must therefore configure the system to start Passenger Standalone at system boot. Please refer to <<starting_at_system_boot,Starting Passenger Standalone at system boot>> for more information.
+Once you restart the machine, the reverse proxy will no longer be able to serve 'www.foo.com' or 'www.bar.com' because the Passenger Standalone instances that host them are no longer running. You must therefore configure the system to start Passenger Standalone at system boot.
 
 For example, you can put this in `/etc/rc.local` to make the system start foo and bar at system boot:
 
