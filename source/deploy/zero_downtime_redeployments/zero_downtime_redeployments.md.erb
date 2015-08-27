@@ -13,7 +13,7 @@ Passenger has excellent support for zero-downtime application updates and restar
 
 Normally, when you instruct Passenger to [restart an application](<%= url_for "/admin/nginx/restart_app.html" %>) after you have deployed an application update, Passenger performs a _blocking restart_. Passenger would shut down all processes for that application and spawn a new one. The spawning of a new application process could take a while, and any requests that come in during this time will be blocked until this first application process has spawned, which users may experience as "downtime".
 
-If your organization follows an agile development methology then you will want to deploy application updates very often. Github is reported deploy updates six times per day. Deploying updates quickly means that you receive feedback about them more quickly, which aids with the development process. The more often you deploy, the less desirable blocking restarts are.
+If your organization follows an agile development methology then you will want to deploy application updates very often. For example, Github was reported to deploy updates six times per day at one point. Deploying updates quickly means that you receive feedback about them more quickly, which aids with the development process. The more often you deploy, the less desirable blocking restarts are.
 
 To solve this problem, Passenger Enterprise provides zero-downtime restarts, also known as "rolling restarts". This mechanism prevents visitors from experiencing any delays when you are restarting your application.
 
