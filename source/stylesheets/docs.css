@@ -179,6 +179,11 @@ body {
   }
 }
 
+.bs-docs-footer .legal-notice-small {
+  margin-top: 1em;
+  font-size: 80%;
+}
+
 
 /*
  * Social buttons
