@@ -218,13 +218,13 @@ Here is an example:
         PassengerAppRoot <span class="o">/websites/secondapp</span>
 
         <% if language_type == :python %>
-        PassengerAppType wsgi;
+        PassengerAppType wsgi
         PassengerStartupFile <span class="o">passenger_wsgi.py</span>
         <% elsif language_type == :nodejs || language_type == :iojs %>
-        PassengerAppType node;
+        PassengerAppType node
         PassengerStartupFile <span class="o">app.js</span>
         <% elsif language_type == :meteor %>
-        PassengerAppType node;
+        PassengerAppType node
         PassengerStartupFile <span class="o">main.js</span>
         <% end %>
     &lt;/Location&gt;
