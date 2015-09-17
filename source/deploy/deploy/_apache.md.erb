@@ -212,23 +212,23 @@ Here is an example:
     &lt;/Directory&gt;
 
     <span class="c"># These have been added:</span>
-    Alias /subapp /websites/python/public
-    &lt;Location /subapp&gt;
-        PassengerBaseURI /subapp
-        PassengerAppRoot /websites/python
+    Alias <span class="o">/subapp</span> <span class="o">/websites/secondapp</span>/public
+    &lt;Location <span class="o">/subapp</span>&gt;
+        PassengerBaseURI <span class="o">/subapp</span>
+        PassengerAppRoot <span class="o">/websites/secondapp</span>
 
         <% if language_type == :python %>
         PassengerAppType wsgi;
-        PassengerStartupFile passenger_wsgi.py
+        PassengerStartupFile <span class="o">passenger_wsgi.py</span>
         <% elsif language_type == :nodejs || language_type == :iojs %>
         PassengerAppType node;
-        PassengerStartupFile app.js
+        PassengerStartupFile <span class="o">app.js</span>
         <% elsif language_type == :meteor %>
         PassengerAppType node;
-        PassengerStartupFile main.js
+        PassengerStartupFile <span class="o">main.js</span>
         <% end %>
     &lt;/Location&gt;
-    &lt;Directory /websites/python/public&gt;
+    &lt;Directory <span class="o">/websites/secondapp</span>/public&gt;
         Allow from all
         Options -MultiViews
         <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:
