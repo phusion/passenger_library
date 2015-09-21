@@ -26,7 +26,7 @@ Flying Passenger allows one to decouple Passenger's life time from the web serve
 
 Normally, Passenger starts together with the web server, and shuts down together with the web server. The advantages of this default behavior is that it makes Passenger easy to administer: one only has to deal with the web server process and can expect all relevant processes to be cleaned up after a web server shut down. However this also brings about a disadvantage: every time one restarts the web server (e.g. to make a minor configuration change), Passenger and all its application processes also get restarted.
 
-This problem is solved by 'Flying Passenger', which is an advanced mode of operation in Passenger that allows the web server to be indepedently restarted from Passenger. When this mode is enabled:
+This problem is solved by 'Flying Passenger', which is an advanced mode of operation in Passenger that allows the web server to be independently restarted from Passenger. When this mode is enabled:
 
  * One must start Passenger separately from the web server, namely by starting the Flying Passenger daemon. This daemon must - to an extent - be separately configured and managed from the web server.
  * The web server must be configured to forward requests to the Flying Passenger daemon.
