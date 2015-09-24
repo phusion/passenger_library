@@ -62,9 +62,9 @@ myappuser$ ...</span>
   </p>
   <div>
     <% if os_config_class == :debian %>
-      <pre class="highlight"><span style="prompt">$ </span>sudo nano /etc/nginx/sites-enabled/<span class="o">myapp</span>.conf</pre>
+      <pre class="highlight"><span class="prompt">$ </span>sudo nano /etc/nginx/sites-enabled/<span class="o">myapp</span>.conf</pre>
     <% else %>
-      <pre class="highlight"><span style="prompt">$ </span>sudo nano /etc/nginx/conf.d/<span class="o">myapp</span>.conf</pre>
+      <pre class="highlight"><span class="prompt">$ </span>sudo nano /etc/nginx/conf.d/<span class="o">myapp</span>.conf</pre>
     <% end %>
   </div>
   <p>
@@ -80,7 +80,7 @@ myappuser$ ...</span>
   <p>
     The location of the Nginx configuration file depends on <a href="install_passenger.html#using_nginx">the Nginx installation prefix you chose while installing Passenger</a>. Assuming you installed Nginx to the default prefix <code>/opt/nginx</code>, you need to open /opt/nginx/conf/nginx.conf:
   </p>
-  <pre class="highlight"><span style="prompt">$ </span>sudo nano /opt/nginx/conf/nginx.conf</pre>
+  <pre class="highlight"><span class="prompt">$ </span>sudo nano /opt/nginx/conf/nginx.conf</pre>
   <p>
     Let us add a virtual host entry at the end of that file. At the end of the file, insert:
   </p>
@@ -176,10 +176,10 @@ myappuser$ ...</span>
 When you are done, restart Nginx:
 
 <% if os_config_class == :debian || os_config_class == :redhat %>
-  <pre class="highlight"><span style="prompt">$ </span>sudo service nginx restart</pre>
+  <pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart</pre>
 <% else %>
-  <pre class="highlight"><span style="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
-<span style="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
+  <pre class="highlight"><span class="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
+<span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
   <p>(<a href="install_passenger.html#restarting_nginx">Learn more about restarting Nginx</a>)</p>
 <% end %>
 
