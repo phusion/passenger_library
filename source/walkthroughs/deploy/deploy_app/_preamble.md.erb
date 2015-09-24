@@ -368,7 +368,7 @@ All subsequent instructions must be run under the application's user account. Wh
 
 Your application has various dependencies.
 <% if language_type == :ruby -%>
-They must be installed. Most of these dependencies are gems in your Gemfile, managed by Bundler. You can install them by running `bundle install --deployment --without development test` in your app's directory:
+They must be installed. Most of these dependencies are gems in your Gemfile, managed by Bundler. You can install them by running `bundle install --deployment --without development test -j 2` in your app's directory:
 
 <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
 <span class="prompt">$ </span>bundle install --deployment --without development test</pre>
@@ -410,7 +410,7 @@ Open the file:
 
 <pre class="highlight"><span class="prompt">$ </span>nano config/database.yml</pre>
 
-Insert:
+Ensure that the `production` section looks like this:
 
 ~~~yaml
 production:
