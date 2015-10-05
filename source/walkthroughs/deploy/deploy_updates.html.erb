@@ -164,7 +164,7 @@ substep = 0
     <p>
       If your app is a Rails app, then you need to compile the latest Rails assets and run any database migrations. If your app is not a Rails app, please skip to the next step.
     </p>
-    <pre class="highlight"><span class="prompt">$ </span>bundle exec rake assets:precompile db:migrate</pre>
+    <pre class="highlight"><span class="prompt">$ </span>bundle exec rake assets:precompile db:migrate RAILS_ENV=production</pre>
   <% end %>
 
 
