@@ -129,6 +129,12 @@ You are now done. If you run into any problems, please refer to the [troubleshoo
 
 ## Deploying an app to a sub-URI
 
+<% if language_type == :nodejs %>
+<div class="note">
+Sub-URI deployments in Node.js require framework-specific adjustments in the application. For example, in Express 4.0+, you should <a href="http://expressjs.com/api#app.mountpath">use a router</a>. 
+An alternative is to use url rewriting to avoid the need for sub-URIs altogether.
+</div>
+<% end %>
 You can also deploy an app to a sub-URI instead of the root URI. For example, suppose that you already have a virtual host for the application `/websites/phusion`:
 
 ~~~nginx
