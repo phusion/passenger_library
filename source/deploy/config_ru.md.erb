@@ -93,6 +93,20 @@ require File.expand_path("../config/boot.rb", __FILE__)
 run Padrino.application
 ~~~
 
+## Rails 2.3
+
+If your application is based on Rails >= 3.0, then you do not need to create a config.ru. Rails >= 3.0 applications already contain a config.ru.
+
+If your application is based on Rails 2.3, then you need to create a config.ru that contains:
+
+~~~ruby
+require File.expand_path(File.dirname(__FILE__) + '/config/environment')
+
+use Rails::Rack::LogTailer
+use Rails::Rack::Static
+run ActionController::Dispatcher.new
+~~~
+
 ## Ramaze
 
 ~~~ruby
