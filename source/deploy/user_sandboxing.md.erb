@@ -46,7 +46,7 @@ When running web applications with Passenger, we recommend that you make use of 
 
 To better understand the problem, let us consider the situation with PHP. There is a problem that plagues most PHP web hosts, namely the fact that all PHP applications are run in the same user context as the web server. So for example, Joe's PHP application will be able to read Jane's PHP application's passwords. This is obviously undesirable on many servers.
 
-Passenger's user account sandboxing feature solves this problem. This feature makes it very ease to run each application as its own operating system user. Assuming that you have correctly secured your files with the right filesystem permissions, user account sandboxing stops or limits the impact of certain classes of vulnerabilities. Going back to our example, if Joe's application has been hijacked through a vulnerability (or is intentionally malicious), then it won't be able to access Jane's passwords, assuming that Jane has secured her password files with the right permissions.
+Passenger's user account sandboxing feature solves this problem. This feature makes it very easy to run each application as its own operating system user. Assuming that you have correctly secured your files with the right filesystem permissions, user account sandboxing stops or limits the impact of certain classes of vulnerabilities. Going back to our example, if Joe's application has been hijacked through a vulnerability (or is intentionally malicious), then it won't be able to access Jane's passwords, assuming that Jane has secured her password files with the right permissions.
 
 <% if integration_mode_type == :nginx || integration_mode_type == :apache  %>
 <!-- ****** Nginx, Apache ****** -->
