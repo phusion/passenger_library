@@ -26,7 +26,7 @@ If you are using Passenger in its [Apache integration mode](../integration_modes
 Per-request environment variables are set by various Apache features and Apache modules. Here are some examples:
 
  * Values set by [Shibboleth](https://shibboleth.net/), the identity federation Apache module.
- * Values set by the [RewirteRule](https://httpd.apache.org/docs/2.4/mod/mod_rewrite.html) `E` flag (provided by `mod_rewrite`).
+ * Values set by the [RewriteRule](https://httpd.apache.org/docs/2.4/mod/mod_rewrite.html) `E` flag (provided by `mod_rewrite`).
  * Values set by the [SSLOptions StdEnvVars](https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#envvars) configuration option (provided by `mod_ssl`).
  * Values set by the Apache [SetEnv](https://httpd.apache.org/docs/2.4/mod/mod_env.html#setenv) directive (provided by `mod_env`). These values are static (hardcoded into the configuration file) and do not change on a per-request basis.
 
