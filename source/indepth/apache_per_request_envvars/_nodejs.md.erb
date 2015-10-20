@@ -27,7 +27,7 @@ var envvarB64 = req.headers['!~passenger-envvars'];
 var envvarDump = new Buffer(envvarB64, 'base64').toString('binary');
 var env = parseEnvvarDump(envvarDump);
 
-console.log(env.SSL_SESSION_ID);   // => ...session ID value...
+console.log(env.SSL_SESSION_ID);   // Prints some session ID value
 ~~~
 
 ### The `process.env` object
@@ -43,7 +43,7 @@ SetEnv APP_NAME mydemoapp
 You can then access `APP_NAME` using `process.env`, which is a mechanism in <%= language_runtime_name %> for accessing OS-level environment variables:
 
 ~~~javascript
-process.env.APP_NAME   // => "mydemoapp"
+console.log(process.env.APP_NAME);   // Prints: mydemoapp
 ~~~
 
 There are two important caveats to be aware of:
