@@ -337,6 +337,9 @@ DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
   proxy "/indepth/#{language_type}/request_load_balancing.html",
     "/indepth/request_load_balancing.html",
     locals: language_spec
+  proxy "/indepth/#{language_type}/apache_per_request_envvars.html",
+    "/indepth/apache_per_request_envvars/apache_per_request_envvars.html",
+    locals: language_spec
 end
 
 proxy "/indepth/ruby/out_of_band_work.html",
@@ -351,13 +354,24 @@ proxy "/indepth/nodejs/reverse_port_binding.html",
 proxy "/indepth/iojs/reverse_port_binding.html",
   "/indepth/reverse_port_binding.html",
   locals: LANG_IOJS
+proxy "/indepth/nodejs/secure_http_headers.html",
+    "/indepth/secure_http_headers.html",
+    locals: LANG_NODEJS
+proxy "/indepth/iojs/secure_http_headers.html",
+    "/indepth/secure_http_headers.html",
+    locals: LANG_IOJS
+proxy "/indepth/meteor/secure_http_headers.html",
+    "/indepth/secure_http_headers.html",
+    locals: LANG_METEOR
 
 ignore "/indepth/index2.html"
 ignore "/indepth/app_autodetection/app_autodetection.html"
 ignore "/indepth/request_load_balancing.html"
+ignore "/indepth/apache_per_request_envvars/apache_per_request_envvars.html"
 ignore "/indepth/out_of_band_work.html"
 ignore "/indepth/spawn_methods/spawn_methods.html"
 ignore "/indepth/reverse_port_binding.html"
+ignore "/indepth/secure_http_headers.html"
 
 #################################################
 

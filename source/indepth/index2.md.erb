@@ -15,6 +15,7 @@ section: indepth
       <li><a href="../integration_modes.html">Integration modes (Nginx, Apache, Standalone)</a></li>
       <li><a href="../standalone_engines.html">Passenger Standalone engines</a> <span class="label label-warning">todo</span></li>
       <li><a href="../open_source_vs_enterprise.html">Passenger open source vs Passenger Enterprise</a></li>
+      <li><a href="../hooks.html">Hooking in to Passenger</a></li>
     </ul>
   </div>
 
@@ -45,8 +46,8 @@ section: indepth
   <div class="col-md-6">
     <h3>Passenger's exposed application environment</h3>
     <ul class="list-unstyled list-links">
-      <li><a href="../std_channels.html">Passenger and the application's stdin, stdout and stderr channels</a></li>
-      <li><a href="../hooks.html">Hooking in to Passenger</a></li>
+      <li><a href="../std_channels.html">Stdin, stdout and stderr channels</a></li>
+      <li><a href="apache_per_request_envvars/">Apache per-request environment variables</a></li>
     </ul>
   </div>
 </div>
@@ -66,6 +67,10 @@ section: indepth
           <li><a href="reverse_port_binding.html">Reverse port binding</a></li>
         <% elsif language_type == :meteor %>
           <li><a href="meteor.html">About Meteor support</a></li>
+        <% end %>
+
+        <% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+          <li><a href="secure_http_headers.html">Secure HTTP headers</a></li>
         <% end %>
       </ul>
     </div>
