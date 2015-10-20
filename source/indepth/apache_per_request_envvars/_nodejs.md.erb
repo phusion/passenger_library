@@ -27,7 +27,7 @@ var envvarB64 = req.headers['!~passenger-envvars'];
 var envvarDump = new Buffer(envvarB64, 'base64').toString('binary');
 var env = parseEnvvarDump(envvarDump);
 
-env.SSL_SESSION_ID   // => ...session ID value...
+console.log(env.SSL_SESSION_ID);   // => ...session ID value...
 ~~~
 
 ### The `process.env` object
