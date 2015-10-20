@@ -13,16 +13,8 @@ section: indepth
     <ul class="list-unstyled list-links">
       <li><a href="../lightweight_ruby_dependency.html">Lightweight Ruby dependency</a></li>
       <li><a href="../integration_modes.html">Integration modes (Nginx, Apache, Standalone)</a></li>
-      <li><a href="../app_autodetection/">How Passenger autodetects applications</a></li>
-      <li><a href="../std_channels.html">Passenger and the application's stdin, stdout and stderr channels</a></li>
-      <li><a href="request_load_balancing.html">Request load balancing</a></li>
-      <li><a href="../request_queueing.html">Request queueing</a> <span class="label label-warning">todo</span></li>
-      <li><a href="../turbocaching.html">Turbocaching</a> <span class="label label-warning">todo</span></li>
       <li><a href="../standalone_engines.html">Passenger Standalone engines</a> <span class="label label-warning">todo</span></li>
-      <li><a href="../accurately_measuring_memory_usage.html">Accurately measuring memory usage</a></li>
-      <li><a href="../hooks.html">Hooking in to Passenger</a></li>
-      <li><a href="../slow_clients.html">Protection against slow clients through buffering</a> <span class="label label-warning">todo</span></li>
-      <li><a href="../open_source_vs_enterprise.html">Passenger open source vs Passenger Enterprise</a> <span class="label label-warning">todo</span></li>
+      <li><a href="../open_source_vs_enterprise.html">Passenger open source vs Passenger Enterprise</a></li>
     </ul>
   </div>
 
@@ -32,12 +24,35 @@ section: indepth
     <ul class="list-unstyled list-links">
       <li><a href="../processes.html">About processes</a></li>
       <li><a href="../environment_variables.html">About environment variables</a></li>
+      <li><a href="../accurately_measuring_memory_usage.html">Accurately measuring memory usage</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h3>Passenger behavior</h3>
+    <ul class="list-unstyled list-links">
+      <li><a href="../app_autodetection/">How Passenger autodetects applications</a></li>
+      <li><a href="request_load_balancing.html">Request load balancing</a></li>
+      <li><a href="../request_queueing.html">Request queueing</a> <span class="label label-warning">todo</span></li>
+      <li><a href="request_load_balancing.html">Process autoscaling</a></li>
+      <li><a href="../turbocaching.html">Turbocaching</a> <span class="label label-warning">todo</span></li>
+      <li><a href="../slow_clients.html">Protection against slow clients through buffering</a> <span class="label label-warning">todo</span></li>
+    </ul>
+  </div>
+
+  <div class="col-md-6">
+    <h3>Passenger's exposed application environment</h3>
+    <ul class="list-unstyled list-links">
+      <li><a href="../std_channels.html">Passenger and the application's stdin, stdout and stderr channels</a></li>
+      <li><a href="../hooks.html">Hooking in to Passenger</a></li>
     </ul>
   </div>
 </div>
 
 <% if [:ruby, :nodejs, :iojs, :meteor].include?(language_type) %>
-  <h3>Language-specific</h3>
+  <h3><%= language_name %>-specific</h3>
 
   <div class="row">
     <div class="col-md-6">
