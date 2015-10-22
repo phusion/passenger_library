@@ -1,8 +1,10 @@
 <%
-section_has_integration_mode_selector = locals.fetch(:section_has_integration_mode_selector, true)
+section_separated_by = locals.fetch(:section_separated_by, :integration_mode)
 
-if locals[:integration_mode_type] && section_has_integration_mode_selector
+if locals[:integration_mode_type] && section_separated_by == :integration_mode
   section_path = "#{config[:url_root]}#{locals[:section_path]}/#{locals[:integration_mode_type]}/"
+elsif locals[:language_type] && section_separated_by == :language
+  section_path = "#{config[:url_root]}#{locals[:section_path]}/#{locals[:language_type]}/"
 else
   section_path = "#{config[:url_root]}#{locals[:section_path]}/"
 end
