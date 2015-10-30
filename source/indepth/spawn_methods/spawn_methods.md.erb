@@ -102,7 +102,7 @@ end
 
 Note that Passenger [automatically reestablishes the ActiveRecord primary database connection](#i-am-responsible-for-reestablishing-database-connections-after-the-preloader-has-forked-a-child-process) upon creating a new application process, which is why you normally do not encounter any database issues when using smart spawning mode.
 
-#### Example 1: memcached connection sharing (harmful)
+#### Example 1: Memcached connection sharing (harmful)
 
 Suppose we have a Rails application that, in its `config/application.rb`, calls some code which connects to a Memcached server. Since `config/application.rb` is loaded from `config.ru`, this causes the preloader to have a socket connection (file descriptor) to the Memcached server, as shown in the following figure:
 
@@ -146,7 +146,7 @@ As you can see, App process 1 and App process 2 have the same Memcached connecti
 
 Suppose that users Joe and Jane visit your website at the same time. Joe's request is handled by App process 1, and Jane's request is handled by App process 2. Both application processes want to fetch something from Memcached. Suppose that in order to do that, both handlers need to send a `FETCH` command to Memcached.
 
-But suppose that, after App process 1 having only sent `FE`, a context switch occurs, and App process 2 starts sending a `FETCH` command to Memcached as well. If App process 2 succeeds in sending only one bye, `F`, then Memcached will receive a command which begins with `FEF`, a command that it does not recognize. In other words: the data from both handlers get interleaved. And thus Memcached is forced to handle this as an error.
+But suppose that, after App process 1 having only sent `FE`, a context switch occurs, and App process 2 starts sending a `FETCH` command to Memcached as well. If App process 2 succeeds in sending only one byte, `F`, then Memcached will receive a command which begins with `FEF`, a command that it does not recognize. In other words: the data from both handlers get interleaved. And thus Memcached is forced to handle this as an error.
 
 This problem can be solved by reestablishing the connection to Memcached after forking:
 
