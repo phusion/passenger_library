@@ -678,3 +678,19 @@ figcaption {
   padding: 0.5em 2em;
   visibility: hidden;
 }
+
+.union-station-advert {
+  border: dashed 2px #EDE4EF;
+  font-family: Lato, sans-serif;
+  font-size: 12pt;
+  color: #898091;
+  background-color: #fcf8fd;
+  text-align: center;
+  margin: 2em 0;
+  padding: 2em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.union-station-advert-followed-by-comments-section-alert {
+  margin-bottom: -3em;
+}
