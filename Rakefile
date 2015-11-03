@@ -5,6 +5,11 @@ task :build do
   sh "bundle exec middleman build"
 end
 
+desc "Run development server"
+task :server do
+  sh "bundle exec middleman server"
+end
+
 desc "Upload documentation to server"
 task :rsync => [:build] do
   sh "cd build && rsync -rv --progress --partial-dir=.rsync-partial --human-readable . " +
