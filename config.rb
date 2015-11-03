@@ -67,8 +67,11 @@ INTEGRATION_MODES.each do |integration_mode_spec|
     "/install/noninteractive_install.html",
     locals: integration_mode_spec
   proxy "/install/#{integration_mode_type}/customizing_compilation_process.html",
-      "/install/customizing_compilation_process.html",
-      locals: integration_mode_spec
+    "/install/customizing_compilation_process.html",
+    locals: integration_mode_spec
+  proxy "/install/#{integration_mode_type}/migrating_from_p4_to_p5.html",
+    "/install/migrating_from_p4_to_p5.html",
+    locals: integration_mode_spec
   proxy "/install/#{integration_mode_type}/upgrading_from_oss_to_enterprise.html",
     "/install/upgrading_from_oss_to_enterprise.html",
     locals: integration_mode_spec
