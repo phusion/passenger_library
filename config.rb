@@ -146,7 +146,6 @@ ignore "/install/upgrade/upgrade.html"
 ignore "/install/upgrade/tarball_upgrade.html"
 ignore "/install/uninstall/step1.html"
 ignore "/install/uninstall/step2.html"
-ignore "/install/migrating/index.html"
 ignore "/install/migrating/migrating_from_p4_to_p5.html"
 
 ###### Configuration and optimization ######

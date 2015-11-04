@@ -2,11 +2,11 @@
 section: install
 ---
 <%
-@page_title = "Migrating from Passenger #{integration_mode_name_as_passenger_suffix} 4 to 5"
+@page_title = "Migrating from Passenger 4 to 5 (#{integration_mode_name} version)"
 content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
 %>
 
-# Migrating from Passenger <%= integration_mode_name_as_passenger_suffix %> 4 to 5
+# Migrating from Passenger 4 to 5 (<%= integration_mode_name %> version)
 
 Passenger 5 comes with [many major improvements](https://blog.phusion.nl/2015/03/04/phusion-passenger-5-0-1-released) and is mostly compatible with Passenger 4. This section highlights important and incompatible changes.
 
