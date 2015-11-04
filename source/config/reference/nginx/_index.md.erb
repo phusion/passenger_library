@@ -33,9 +33,7 @@ If you set `passenger_root` to the wrong value, then Passenger will attempt to l
 
 #### How to fix passenger_root
 
-If you lost the `passenger_root` configuration value (e.g. because you accidentally removed the Nginx configuration file, and you are trying to reconstruct it), if you didn't follow the installation instructions correctly, or if you [moved Passenger to a different directory](<%= url_for "/install/nginx/moving.html" %>), then you can fix `passenger_root` as follows.
-
-The correct value for `passenger_root` can be obtained as follows:
+If you lost the `passenger_root` configuration value (e.g. because you accidentally removed the Nginx configuration file, and you are trying to reconstruct it), if you didn't follow the installation instructions correctly, or if you [moved Passenger to a different directory](<%= url_for "/install/nginx/moving.html" %>), then you can fix `passenger_root` as follows:
 
  * If you installed Passenger through source tarball or by cloning it from the Passenger Github repository, then the value should be the path to the Passenger directory.
  * In all other cases, obtain the correct value by running the following command:
