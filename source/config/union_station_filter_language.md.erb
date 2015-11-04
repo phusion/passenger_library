@@ -8,204 +8,225 @@ content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
 
 # Union Station filter language
 
-  <p>By default Phusion Passenger logs every dynamic request and sends it to Union Station.
-  Everything; not just slow requests. However sometimes there may be some requests you
-  don't want to log, e.g. because you are only interested in slow requests or only
-  interested in requests to a certain controller.</p>
+By default Phusion Passenger logs every dynamic request and sends it to Union Station.
+Everything; not just slow requests. However sometimes there may be some requests you
+don't want to log, e.g. because you are only interested in slow requests or only
+interested in requests to a certain controller.
 
-  <p>Phusion Passenger &gt;= 3.0.5 allows <b>client-side filtering</b> of data. One writes filters
-    in the Union Station filter language and specifies them in the web server
-    config file. The result of a filter is either true (allow the given data
-    to be sent to Union Station) or false (don't allow the given data to be sent).
-    After logging a request, Phusion Passenger runs all defined filters to
-    determine whether to send the request's data to Union Station.</p>
+Phusion Passenger >= 3.0.5 allows **client-side filtering** of data. One writes filters in the Union Station filter language and specifies them in the web server config file. The result of a filter is either true (allow the given data to be sent to Union Station) or false (don't allow the given data to be sent). After logging a request, Phusion Passenger runs all defined filters to determine whether to send the request's data to Union Station.
 
-  <p>Filters are defined with the <code>UnionStationFilter</code> directive (Apache)
-    or the <code>union_station_filter</code> directive (Nginx).</p>
+Filters are defined with the `UnionStationFilter` directive (Apache) or the `union_station_filter` directive (Nginx).
 
-  <p>The Union Station filter language somewhat resembles expressions in many popular
-  languages such as C, Javascript and Ruby. Every filter is a combination of expressions, each
-  of which evaluate to a boolean. An expression is either a matching expression
-  or a function call.</p>
+The Union Station filter language somewhat resembles expressions in many popular languages such as C, Javascript and Ruby. Every filter is a combination of expressions, each of which evaluate to a boolean. An expression is either a matching expression or a function call.
 
-  <h2>Quick examples</h2>
-  Example 1: URI must be exactly equal to <tt>/foo/bar</tt>:
-  <pre>uri == "/foo/bar"</pre>
-  Example 2: Response time must be larger than 150 miliseconds (150000 microseconds):
-  <pre>response_time &gt; 150000</pre>
-  Example 3: URI must match the regular expression <code>/animals/(dog|cat)</code>
-  and the response time must be larger than 60 miliseconds (60000 microseconds):
-  <pre>uri =~ /\/animals\/(dog|cat)/ &amp;&amp; response_time &gt; 60000</pre>
-  Example 4: The response time - not taking garbage collection into consideration -
-    must be larger than 50 miliseconds, and the response status must be
-    unsuccesful (in the 4xx or 5xx range).
-  <pre>response_time_without_gc &gt; 50000 &amp;&amp; status_code &gt;= 400</pre>
+## Quick examples
 
-  <h2>Values</h2>
-  <p>The filter language supports literal values and identifier values.
-  Values always have a type. The following types are supported:</p>
-  <dl>
-  <dt>Integers</dt>
-  <dd>Integer literals must be written in decimal format. Hexadecimal and
-    octal forms are not supported. Examples of integer literals:
-    <code>1</code>, <code>1234</code>.</dd>
-  <dt>Booleans</dt>
-  <dd>Two boolean literals exist: <code>true</code> and <code>false</code>.</dd>
-  <dt>Strings</dt>
-  <dd>String literals begin and with either a single quote or a double quote character.
-    <code>\</code> can be used as escape character. The following special escaped
-    characters are supported:
-    <ul>
-    <li><b>\n</b> - newline (byte 10)</li>
-    <li><b>\r</b> - carriage return (byte 13)</li>
-    <li><b>\t</b> - tab (byte 9)</li>
-    <li><b>\\</b> - backslash</li>
-    </ul>
-    Examples:
-    <pre>"foo"</pre>
-    <pre>"hello world"</pre>
-    <pre>"Joe \"Trigger-Happy\" Dalton"</pre>
-    <pre>"string\nliteral"</pre>
-    <pre>'single-quote string'</pre>
-    Please note that, unlike most programming languages, escape characters work
-    the same way in single-quote strings and double-quote strings. In the Union
-    Station filter language the following string literals are equivalent:
-    <div class="code block">
-      "string\nliteral"<br>
-      'string\nliteral'
-    </div>
-    </dd>
-  <dt>Regular expressions</dt>
-  <dd>There are two regular expression literal syntaxes. The first one begins
-    and ends with a slash:
-    <pre>/regexp definition here/optional modifiers here</pre>
-    The second one begins with <code>%r{</code> and ends with <code>}</code>:
-    <pre>%r{regexp definition here}optional modifiers here</pre>
+Example 1: URI must be exactly equal to <tt>/foo/bar</tt>:
 
-    <p>Regular expressions are case-sensitive by default. You can use the
-      <code>i</code> modifier to make it case-insensitive. At this time this
-      is the only supported modifier.</p>
+<pre class="highlight">uri == "/foo/bar"</pre>
 
-    <p>Just like with strings, <code>\</code> can be used as escape character,
-    and all special escaped characters supported by strings are also supported
-    by regular expressions.
-    Examples:</p>
-    <div class="code block">
-      /foo/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matches "foo", "foobar", etc. but NOT "Foo", "FooBar", etc.<br>
-      %r{foo}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;same as above<br>
-      <br>
-      /foo/i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matches "foo", "foobar", etc. and also "Foo", "FooBar", etc.<br>
-      %r{foo}i&nbsp;&nbsp;&nbsp;&nbsp;same as above
-    </div>
-    <div class="code block">
-      /foo( bar)+/<br>
-      %r{foo( bar)+}
-    </div>
-    <div class="code block">
-      /newline\n/<br>
-      %r{newline\n}
-    </div>
-    <div class="code block">
-      /\/users\/1/<br>
-      %r{/users/1}
-    </div>
-    </dd>
-  </dl>
-  <h3>Identifier values</h3>
-  <p>Identifier values are identifiers that evaluate to a value. The following
-    identifiers are available:</p>
-  <ul>
-  <li><b>uri</b> - the URL, not including the scheme, host name and port,
-    but including the query string.
-    Examples: <code>/foo/bar</code>, <code>/users/1/edit?return_to=overview</code>.</li>
-  <li><b>response_time</b> - the response time in microseconds.</li>
-  <li><b>response_time_without_gc</b> - the response time in microseconds, without
-    taking into account the time spent on garbage collection.
-    Logically equivalent to <code>response_time - gc_time</code>.
+Example 2: Response time must be larger than 150 miliseconds (150000 microseconds):
 
-    <p>Your Ruby interpreter must support GC statistics APIs, otherwise
-    this identifier is always equal to <code>response_time</code>.
-    Please read <code>gc_time</code> for details and notes.</p>
+<pre class="highlight">response_time > 150000</pre>
 
-    <p><em>Supported since Phusion Passenger 3.0.8.</em></p>
-  </li>
-  <li><b>gc_time</b> - the amount of time spent on garbage collection, in microseconds.
-    In order for Phusion Passenger to be able to collect garbage collection
-    statistics, it must be using Ruby Enterprise Edition or some other
-    Ruby interpreter which supports the GC statistics API. On Ruby interpreters
-    where such an API is not available, <code>gc_time</code> is always 0.
+Example 3: URI must match the regular expression `/animals/(dog|cat)` and the response time must be larger than 60 miliseconds (60000 microseconds):
 
-    <p><em>Supported since Phusion Passenger 3.0.8.</em></p>
-  </li>
-  <li><b>controller</b> - the controller name, including the suffix "Controller".
-          Only available when the app is a Rails app; for all other apps, this
-          identifier evaluates to the empty string.
-    Examples: <code>CustomersController</code>, <code>UsersController</code>.
-  </li>
-  <li><b>status_code</b> - the HTTP
-    <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">response status code</a>
-    as an integer.
-    <p><em>Supported since Phusion Passenger 3.0.8.</em></p>
-  </li>
-  </ul>
+<pre class="highlight">uri =~ /\/animals\/(dog|cat)/ && response_time > 60000</pre>
 
-  <h2>Matching expressions</h2>
-  Matching expressions have the form of:
-  <pre>subject operator object</pre>
-  and always evaluate to boolean values.
-  <code>subject</code> and <code>object</code> are values, while <code>operator</code>
-  is one of these:
-  <dl>
-  <dt>==</dt>
-  <dd>Equality. Subject and object must be both strings or both integers.</dd>
-  <dt>!=</dt>
-  <dd>Inequality. Subject and object must be both strings or both integers.</dd>
-  <dt>=~</dt>
-  <dd>Test whether regular expression matches. Subject must be a string,
-    object must be a regular expression.</dd>
-  <dt>!~</dt>
-  <dd>Test whether regular expression doesn't match. Subject must be a string,
-    object must be a regular expression.</dd>
-  <dt>&lt;</dt>
-  <dd>Less than. Subject and object must be both integers.</dd>
-  <dt>&lt;=</dt>
-  <dd>Less than or equal to. Subject and object must be both integers.</dd>
-  <dt>&gt;</dt>
-  <dd>Greater than. Subject and object must be both integers.</dd>
-  <dt>&gt;=</dt>
-  <dd>Greather than or equal to. Subject and object must be both integers.</dd>
-  </dl>
+Example 4: The response time - not taking garbage collection into consideration - must be larger than 50 miliseconds, and the response status must be unsuccesful (in the 4xx or 5xx range).
 
-  <h2>Function calls</h2>
-  Only one function call is available at the moment:
-  <dl>
-  <dt>starts_with(haystack, needle)</dt>
-  <dd>Returns whether the string <em>haystack</em> starts with the string <em>needle</em>.
-    The following example returns whether the URI starts with <code>/foo/bar</code>:
-    <pre>starts_with(uri, "/foo/bar")</pre></dd>
-  </dl>
+<pre class="highlight">response_time_without_gc > 50000 && status_code >= 400</pre>
 
-  <h2>Combining expressions with logical operators</h2>
-  One can combine expressions with boolean operators:
-  <dl>
-  <dt>&amp;&amp;</dt>
-  <dd>Logical AND.</dd>
-  <dt>||</dt>
-  <dd>Logical OR.</dd>
-  <dt>!</dt>
-  <dd>Negation.</dd>
-  </dl>
+## Values
 
-  Examples:
-  <pre>uri == "/foo" || !starts_with(uri, "/bar")</pre>
-  <pre>response_time &lt; 10000 &amp;&amp; uri == "/should_be_slow"</pre>
+The filter language supports literal values and identifier values. Values always have a type. The following types are supported:
 
-  To avoid ambiguity, one can group expressions together with brackets:
-  <pre>(uri == "/foo") || (uri == "bar" &amp;&amp; response_time &gt; 10000)</pre>
+<dl>
 
-  Please note that the language does <b>not currently support operator precedence!</b>
-  That is, <code>&amp;&amp;</code> and <code>||</code> have the same operator priority.
-  So something like
-  <pre>response_time &gt; 100000 || uri == "/foo" &amp;&amp; response_time &gt; 1000</pre>
-  is currently being interpreted as
-  <pre>(response_time &gt; 100000 || uri == "foo") &amp;&amp; response_time &gt; 1000</pre>
+<dt>Integers</dt>
+
+<dd>Integer literals must be written in decimal format. Hexadecimal and octal forms are not supported. Examples of integer literals: `1`, `1234`.</dd>
+
+<dt>Booleans</dt>
+
+<dd>Two boolean literals exist: `true` and `false`.</dd>
+
+<dt>Strings</dt>
+
+<dd>String literals begin and with either a single quote or a double quote character. `\` can be used as escape character. The following special escaped characters are supported:
+
+*   **\n** - newline (byte 10)
+*   **\r** - carriage return (byte 13)
+*   **\t** - tab (byte 9)
+*   **\\** - backslash
+
+Examples:
+
+<pre class="highlight">"foo"</pre>
+
+<pre class="highlight">"hello world"</pre>
+
+<pre class="highlight">"Joe \"Trigger-Happy\" Dalton"</pre>
+
+<pre class="highlight">"string\nliteral"</pre>
+
+<pre class="highlight">'single-quote string'</pre>
+
+Please note that, unlike most programming languages, escape characters work the same way in single-quote strings and double-quote strings. In the Union Station filter language the following string literals are equivalent:
+
+<pre class="highlight">"string\nliteral"  
+'string\nliteral'</pre>
+
+</dd>
+
+<dt>Regular expressions</dt>
+
+<dd>There are two regular expression literal syntaxes. The first one begins and ends with a slash:
+
+<pre class="highlight">/regexp definition here/optional modifiers here</pre>
+
+The second one begins with `%r{` and ends with `}`:
+
+<pre class="highlight">%r{regexp definition here}optional modifiers here</pre>
+
+Regular expressions are case-sensitive by default. You can use the `i` modifier to make it case-insensitive. At this time this is the only supported modifier.
+
+Just like with strings, `\` can be used as escape character, and all special escaped characters supported by strings are also supported by regular expressions. Examples:
+
+<pre class="highlight">/foo/       matches "foo", "foobar", etc. but NOT "Foo", "FooBar", etc.  
+%r{foo}     same as above  
+
+/foo/i      matches "foo", "foobar", etc. and also "Foo", "FooBar", etc.  
+%r{foo}i    same as above</pre>
+
+<pre class="highlight">/foo( bar)+/  
+%r{foo( bar)+}</pre>
+
+<pre class="highlight">/newline\n/  
+%r{newline\n}</pre>
+
+<pre class="highlight">/\/users\/1/  
+%r{/users/1}</pre>
+
+</dd>
+
+</dl>
+
+### Identifier values
+
+Identifier values are identifiers that evaluate to a value. The following identifiers are available:
+
+*   **uri** - the URL, not including the scheme, host name and port, but including the query string. Examples: `/foo/bar`, `/users/1/edit?return_to=overview`.
+*   **response_time** - the response time in microseconds.
+*   **response_time_without_gc** - the response time in microseconds, without taking into account the time spent on garbage collection. Logically equivalent to `response_time - gc_time`.
+
+    Your Ruby interpreter must support GC statistics APIs, otherwise this identifier is always equal to `response_time`. Please read `gc_time` for details and notes.
+
+    _Supported since Phusion Passenger 3.0.8._
+
+*   **gc_time** - the amount of time spent on garbage collection, in microseconds. In order for Phusion Passenger to be able to collect garbage collection statistics, it must be using Ruby Enterprise Edition or some other Ruby interpreter which supports the GC statistics API. On Ruby interpreters where such an API is not available, `gc_time` is always 0.
+
+    _Supported since Phusion Passenger 3.0.8._
+
+*   **controller** - the controller name, including the suffix "Controller". Only available when the app is a Rails app; for all other apps, this identifier evaluates to the empty string. Examples: `CustomersController`, `UsersController`.
+*   **status_code** - the HTTP [response status code](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes) as an integer.
+
+    _Supported since Phusion Passenger 3.0.8._
+
+## Matching expressions
+
+Matching expressions have the form of:
+
+<pre class="highlight">subject operator object</pre>
+
+and always evaluate to boolean values. `subject` and `object` are values, while `operator` is one of these:
+
+<dl>
+
+<dt>==</dt>
+
+<dd>Equality. Subject and object must be both strings or both integers.</dd>
+
+<dt>!=</dt>
+
+<dd>Inequality. Subject and object must be both strings or both integers.</dd>
+
+<dt>=~</dt>
+
+<dd>Test whether regular expression matches. Subject must be a string, object must be a regular expression.</dd>
+
+<dt>!~</dt>
+
+<dd>Test whether regular expression doesn't match. Subject must be a string, object must be a regular expression.</dd>
+
+<dt><</dt>
+
+<dd>Less than. Subject and object must be both integers.</dd>
+
+<dt><=</dt>
+
+<dd>Less than or equal to. Subject and object must be both integers.</dd>
+
+<dt>></dt>
+
+<dd>Greater than. Subject and object must be both integers.</dd>
+
+<dt>>=</dt>
+
+<dd>Greather than or equal to. Subject and object must be both integers.</dd>
+
+</dl>
+
+## Function calls
+
+Only one function call is available at the moment:
+
+<dl>
+
+<dt>starts_with(haystack, needle)</dt>
+
+<dd>Returns whether the string _haystack_ starts with the string _needle_. The following example returns whether the URI starts with `/foo/bar`:
+
+<pre class="highlight">starts_with(uri, "/foo/bar")</pre>
+
+</dd>
+
+</dl>
+
+## Combining expressions with logical operators
+
+One can combine expressions with boolean operators:
+
+<dl>
+
+<dt>&&</dt>
+
+<dd>Logical AND.</dd>
+
+<dt>||</dt>
+
+<dd>Logical OR.</dd>
+
+<dt>!</dt>
+
+<dd>Negation.</dd>
+
+</dl>
+
+Examples:
+
+<pre class="highlight">uri == "/foo" || !starts_with(uri, "/bar")</pre>
+
+<pre class="highlight">response_time < 10000 && uri == "/should_be_slow"</pre>
+
+To avoid ambiguity, one can group expressions together with brackets:
+
+<pre class="highlight">(uri == "/foo") || (uri == "bar" && response_time > 10000)</pre>
+
+Please note that the language does **not currently support operator precedence!** That is, `&&` and `||` have the same operator priority. So something like
+
+<pre class="highlight">response_time > 100000 || uri == "/foo" && response_time > 1000</pre>
+
+is currently being interpreted as
+
+<pre class="highlight">(response_time > 100000 || uri == "foo") && response_time > 1000</pre>
