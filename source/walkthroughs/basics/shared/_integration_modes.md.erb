@@ -7,7 +7,7 @@ end
 %>
 
 <% if context == :basics %>
-As you've read earlier, Passenger collaborates with other components. This is why Passenger supports multiple *integration modes*. Each integration mode is designed for easy collaboration with a different component.
+As you've read earlier, Passenger collaborates with other components. This is why Passenger supports multiple [integration modes](<%= url_for "/indepth/integration_modes.html" %>). Each integration mode is designed for easy collaboration with a different component.
 
 Throughout the rest of this basics walkthrough, we will cover the Standalone mode only. The Nginx and Apache integration modes are covered in the [deployment walkthrough](<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>). <!-- TODO: , as well as in the various [guides](<%= url_for '/guides/index.html' %>). -->
 <% end %>
@@ -49,3 +49,7 @@ All modes provide roughly the same feature sets. The main differences lie in...
  * ...usability. Standalone is easier during development, but Nginx and Apache are easier during production.
  * ...multitenancy. The Nginx and Apache integration modes can host multiple apps at the same time.
  * ...flexibility and control. If your production cluster has an advanced architecture, or if you need deep control over every aspect of the system, then Standalone is the best choice during production.
+
+<% if context == :basics %>
+  Please refer to [the in-depth section](<%= url_for "/indepth/integration_modes.html" %>) if you wish to learn more about integration modes.
+<% end %>
