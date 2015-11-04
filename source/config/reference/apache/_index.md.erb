@@ -2329,6 +2329,81 @@ This option may be specified once, in the global server configuration.
 
 Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) mode, and configures Apache to connect to the Flying Passenger daemon that's listening on the given socket filename.
 
+## Union Station options
+
+### UnionStationFilter
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>UnionStationFilter "<em>string</em>";</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Union Station filter disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.5</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+In each place, it may be specified multiple times, allowing one to define multiple
+filters. All defined filters are combined together with logical AND.
+
+Please note that when specifying a configuration value in the Apache config file,
+if the value contains spaces then it needs to be surrounded by double quote
+characters.
+Otherwise Apache will think you're trying to pass multiple values to
+a config option that only supports a single value. Because of this,
+one must escape any special characters in the filter source.
+
+The filter language is [described here](../../union_station_filter_language.html).
+
+Example:
+
+<div>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.example.com
+    DocumentRoot /webapps/example/public
+    UnionStationSupport on
+    UnionStationKey ...
+
+    # The filter must be surrounded by double quote characters,
+    # and any double quote characters that appear in the filter
+    # source must be escaped.
+    <b>UnionStationFilter "starts_with(uri, \"/users\")"</b>
+
+    # Alternatively you can use the single quote string syntax
+    # so you don't have to escape double quote characters in
+    # the filter source:
+    <b>UnionStationFilter "starts_with(uri, '/users')"</b>
+    <br>
+    # !!!! Don't do this! !!! Apache will report a syntax error!
+    <b style="color: red">UnionStationFilter starts_with(uri, "/users")</b>
+&lt;/VirtualHost&gt;</pre>
+</div>
+
+Another example:
+<div>
+<pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.example.com
+    DocumentRoot /webapps/example/public
+    UnionStationSupport on
+    UnionStationKey ...
+
+    <b>UnionStationFilter "starts_with(uri, '/users')"</b>
+    <b>UnionStationFilter "response_time &gt; 100000"</b>
+
+    # The above two directives together have the same effect
+    # as specifying this single directive:
+    <b>UnionStationFilter "starts_with(uri, '/users') &amp;&amp; response_time &gt; 100000"</b>
+&lt;/VirtualHost&gt;</pre>
+</div>
 
 ## Deprecated or removed options
 
