@@ -1,0 +1,79 @@
+---
+section: install
+---
+<%
+@page_title = "Migrating from Passenger #{integration_mode_name_as_passenger_suffix} 4 to 5"
+content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
+%>
+
+# Migrating from Passenger <%= integration_mode_name_as_passenger_suffix %> 4 to 5
+
+Passenger 5 comes with [many major improvements](https://blog.phusion.nl/2015/03/04/phusion-passenger-5-0-1-released) and is mostly compatible with Passenger 4. This section highlights important and incompatible changes.
+
+## APT repository changed to 5.0
+
+Our main APT repository switched to Passenger 5. If there is a pressing need to remain on Passenger 4, use the legacy [Passenger 4 APT repository](https://blog.phusion.nl/2015/03/08/passenger-4-apt-repository-now-available/).
+
+<% if integration_mode_type == :apache || integration_mode_type == :nginx %>
+## Full web server restart required
+
+To avoid a broken state where half of Passenger 4 is running and half of Passenger 5, you must **fully restart** the web server after upgrading to Passenger 5.
+
+<% if integration_mode_type == :apache %>
+This means executing `apachectl stop` and `apachectl start`. An `apachectl reload` or even `apachectl restart` is *not enough*.
+<% end %>
+
+If you upgraded using APT, you must invoke the web server restart manually. APT does not do this for you!
+<% end %>
+
+## Minimum Rails version: 2.3
+
+We've dropped support for Rails version older than 2.3.
+
+To make Rails 2.3 apps work with Passenger 5, the app must have a `config.ru` file. For example:
+
+~~~ruby
+# Require your environment file to bootstrap Rails
+require ::File.dirname(__FILE__) + '/config/environment'
+
+# Serve static assets from RAILS_ROOT/public directory
+# use Rails::Rack::Static
+# Dispatch the request
+run ActionController::Dispatcher.new
+~~~
+
+## Restart mechanism changed
+
+Using `restart.txt` to restart the app is still supported, but with the new default settings, Passenger won't notice any changes until after max 10 seconds. We [recommend](https://blog.phusion.nl/2015/03/04/whats-new-in-passenger-5-part-2-better-logging-better-restarting-better-websockets-and-more/#improvedapplicationrestartingmechanism) using the `passenger-config restart-app` command.
+
+If you want to revert to the old restart.txt behavior (where any change is noticed immediately on the next request), set
+<% if integration_mode_type == :apache -%>
+  [PassengerStatThrottleRate](<%= url_for '/config/apache/reference/index.html' %>#passengerstatthrottlerate)
+<% elsif integration_mode_type == :nginx || integration_mode_type == :standalone -%>
+  [passenger_stat_throttle_rate](<%= url_for '/config/nginx/reference/index.html' %>#passenger_stat_throttle_rate) (using [the Nginx configuration template](<%= url_for '/config/standalone/intro.html' %>#nginx-configuration-template))
+<% else -%>
+  <% raise 'Unknown integration mode' %>
+<% end -%>
+to 0.
+
+## Feature and configuration changes
+
+ * If you use out-of-band garbage collection, beware that the `X-Passenger-Request-OOB-Work` header has now been renamed to `!~Request-OOB-Work`.
+ * When using Rack's full socket hijacking, you must now output an HTTP status line.
+<% if integration_mode_type == :nginx %>
+ * The minimum required Nginx version is now 1.6.0.
+ * The `passenger_set_cgi_param` option has been removed and replaced by [passenger_set_header](<%= url_for '/config/nginx/reference/index.html' %>#passenger_set_header) and [passenger_env_var](<%= url_for '/config/nginx/reference/index.html' %>#passenger_env_var).
+ * [passenger_show_version_in_header](<%= url_for '/config/nginx/reference/index.html' %>#passenger_show_version_in_header) is now only valid in the `http` context.
+ * The [passenger_enabled on](<%= url_for '/config/nginx/reference/index.html' %>#passenger_enabled) directive is now inherited across location blocks. This wasn't the case previously, so you had to re-specify it inside location blocks. Now the opposite holds: if you specified `passenger_enabled on` in the server block, then you have to explicitly specify `passenger_enabled off` in all location blocks where you disabled Passenger.
+ * The `passenger_temp_dir` option has been replaced by two config options: [passenger_instance_registry_dir](<%= url_for '/config/nginx/reference/index.html' %>#passenger_instance_registry_dir) and [passenger_data_buffer_dir](<%= url_for '/config/nginx/reference/index.html' %>#passenger_data_buffer_dir).
+<% end %>
+<% if integration_mode_type == :apache %>
+ * The [PassengerStatThrottleRate](<%= url_for '/config/apache/reference/index.html' %>#passengerstatthrottlerate) option is now global.
+ * The `PassengerTempDir` option has been replaced by two config options: [PassengerInstanceRegistryDir](<%= url_for '/config/apache/reference/index.html' %>#passengerinstanceregistrydir) and [PassengerDataBufferDir](<%= url_for '/config/apache/reference/index.html' %>#passengerdatabufferdir).
+ * The `PassengerUploadBufferDir` option has been replaced by [PassengerDataBufferDir](<%= url_for '/config/apache/reference/index.html' %>#passengerdatabufferdir).
+<% end %>
+<% if integration_mode_type == :standalone %>
+ * The [Nginx configuration template](<%= url_for '/config/standalone/intro.html' %>#nginx-configuration-template) has changed. Users are encouraged to update it.
+ * `passenger-standalone.json` has been renamed to `Passengerfile.json`.
+ * `passenger-standalone.json`/`Passengerfile.json` no longer overrides command line options. Instead, command line options now have the highest priority.
+<% end %>

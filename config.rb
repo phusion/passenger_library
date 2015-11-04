@@ -69,8 +69,8 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/install/#{integration_mode_type}/customizing_compilation_process.html",
     "/install/customizing_compilation_process.html",
     locals: integration_mode_spec
-  proxy "/install/#{integration_mode_type}/migrating_from_p4_to_p5.html",
-    "/install/migrating_from_p4_to_p5.html",
+  proxy "/install/#{integration_mode_type}/migrating/migrating_from_p4_to_p5.html",
+    "/install/migrating/migrating_from_p4_to_p5.html",
     locals: integration_mode_spec
   proxy "/install/#{integration_mode_type}/upgrading_from_oss_to_enterprise.html",
     "/install/upgrading_from_oss_to_enterprise.html",
@@ -146,6 +146,8 @@ ignore "/install/upgrade/upgrade.html"
 ignore "/install/upgrade/tarball_upgrade.html"
 ignore "/install/uninstall/step1.html"
 ignore "/install/uninstall/step2.html"
+ignore "/install/migrating/index.html"
+ignore "/install/migrating/migrating_from_p4_to_p5.html"
 
 ###### Configuration and optimization ######
 
