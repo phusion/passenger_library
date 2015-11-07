@@ -91,22 +91,27 @@ Passenger provides a wide range of features and customization options. Some of t
 
 Passenger in its Standalone mode can be configured through several mechanisms.
 
-You usually only deal with these two mechanisms:
+You usually only deal with these three mechanisms:
 
  1. The first is through *command line arguments* passed to the `passenger start` command.
- 2. The second is through the configuration file `Passengerfile.json`.
+ 2. The second is through environment variable (since 5.0.22).
+ 3. The third is through the configuration file `Passengerfile.json`.
 
-There is also a third, more powerful but also more complicated mechanism. Namely configuration through an Nginx configuration template. This is reserved for more advanced uses.
+There is also a fourth, more powerful but also more complicated mechanism. Namely configuration through an Nginx configuration template. This is reserved for more advanced uses.
 
 **Table of contents**
 
 <ol class="toc-container"><li>Loading...</li></ol>
 
-## Configuring through command line options and Passengerfile.json
+## Configuring through command line options, environment variables and Passengerfile.json
 
 Here is an example which shows you how to configure Passenger Standalone to start on port 4000 instead of the default port 3000, through a command line option:
 
 <pre class="highlight"><span class="prompt">$ </span>passenger start --port 4000</pre>
+
+Here is an example which achieves the same, through the `PASSENGER_PORT` environment variable:
+
+<pre class="highlight"><span class="prompt">$ </span>env PASSENGER_PORT=4000 passenger start</pre>
 
 And here is an example which achieves the same, through `Passengerfile.json`.
 
@@ -121,17 +126,33 @@ And here is an example which achieves the same, through `Passengerfile.json`.
 
    <pre class="highlight"><span class="prompt">$ </span> passenger start</pre>
 
+### Empty environment variables are ignored
+
+When configuring Passenger through environment variables, empty variables are ignored. So if you run this command...
+
+<pre class="highlight"><span class="prompt">$ </span>env PASSENGER_PORT= passenger start</pre>
+
+...then it as the same effect as:
+
+<pre class="highlight"><span class="prompt">$ </span>passenger start</pre>
+
 ### Location of Passengerfile.json
 
 `Passengerfile.json` must be located in the application directory. This allows you to configure Passenger differently on a per-application basis.
 
 However, if you are using the [Mass deployment](<%= url_for "/deploy/standalone/mass_deployment.html" %>) feature, then Passengerfile.json is handled [differently](#mass-deployment-configuration).
 
-### Command line options have precedence
+### Precedence
 
-Since version 5.0, command line options take precedence over `Passengerfile.json`. In earlier versions, the opposite was true.
+_This information only applies to Passenger 5.0.0 and later._
 
-There is just one exception to this rule. In [Mass deployment mode](<%= url_for "/deploy/standalone/mass_deployment.html" %>), per-app configuration [overrides](#mass-deployment-configuration) command line options.
+Configuration sources are respected in the following precedence (ordered from most to least precedence):
+
+ * Command line options.
+ * Environment variables (only since 5.0.22).
+ * Passengerfile.json.
+
+There is just one exception to this rule. In [Mass deployment mode](<%= url_for "/deploy/standalone/mass_deployment.html" %>), per-app configuration [overrides](#mass-deployment-configuration) both command line options and environment variables.
 
 ### Mass deployment configuration
 
@@ -162,7 +183,7 @@ The per-app configuration file is looked up in the application directory.
 
 Since version 5.0.14, Passenger Standalone accepts relative paths for all its options. Relative paths are handled as follows:
 
- * If the path is specified via a command line argument, then it is considered relative to the current working directory.
+ * If the path is specified via a command line argument or environment variable, then it is considered relative to the current working directory.
  * If the path is specified via Passengerfile.json, then the path is considered relative to that Passengerfile.json.
 
 Relative path handling in earlier Passenger versions was inconsistent, so we recommend that you upgrade to 5.0.14 or later.

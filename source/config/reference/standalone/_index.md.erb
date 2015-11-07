@@ -20,6 +20,10 @@
     <td>"address": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_ADDRESS=<em>string</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>0.0.0.0</td>
   </tr>
@@ -56,6 +60,10 @@ The default is to bind to 0.0.0.0, which means that Passenger can accept request
     <td>"port": <em>integer</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_PORT=<em>integer</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>3000</td>
   </tr>
@@ -81,11 +89,15 @@ Instructs Passenger to listen for requests on the given TCP port number. Only ha
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --socket <em>FILE</em></td>
+    <td>passenger start --socket <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
     <td>"socket_file": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_SOCKET_FILE=<em>path</em></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -118,6 +130,10 @@ There are almost no web browsers and HTTP clients that support Unix domain socke
   <tr>
     <th>Config file syntax</th>
     <td>"ssl": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_SSL=true</td>
   </tr>
   <tr>
     <th>Default</th>
@@ -156,6 +172,10 @@ If this option is set, you must also set [`--ssl-certificate` / "ssl_certificate
     <td>"ssl_certificate": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_SSL_CERTIFICATE=<em>string</em></td>
+  </tr>
+  <tr>
     <th>Since</th>
     <td>5.0.0</td>
   </tr>
@@ -186,6 +206,10 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
     <td>"ssl_certificate_key": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_SSL_CERTIFICATE_KEY=<em>path</em></td>
+  </tr>
+  <tr>
     <th>Since</th>
     <td>5.0.0</td>
   </tr>
@@ -214,6 +238,10 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
   <tr>
     <th>Config file syntax</th>
     <td>"ssl_port": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_SSL_PORT=<em>integer</em></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -254,6 +282,10 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
     <td>"daemonize": true</td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_DAEMONIZE=true</td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>Passenger runs in the foreground</td>
   </tr>
@@ -286,6 +318,10 @@ Instructs Passenger to daemonize into the background.
     <td>"user": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_USER=<em>string</em></td>
+  </tr>
+  <tr>
     <th>Since</th>
     <td>3.0.0</td>
   </tr>
@@ -314,6 +350,10 @@ If this option is not given, then Passenger runs as the user that invoked it.
   <tr>
     <th>Config file syntax</th>
     <td>"log_file": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_LOG_FILE=<em>path</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -357,6 +397,10 @@ If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default 
     <td>"pid_file": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_PID_FILE=<em>path</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>See description</td>
   </tr>
@@ -396,6 +440,10 @@ If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default 
   <tr>
     <th>Config file syntax</th>
     <td>"instance_registry_dir": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_INSTANCE_REGISTRY_DIR=<em>path</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -461,6 +509,10 @@ Notes regarding the above example:
     <td>"data_buffer_dir": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_DATA_BUFFER_DIR=<em>path</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>See description</td>
   </tr>
@@ -499,6 +551,10 @@ If you've specified such a directory (as opposed to using Passenger's default) t
   <tr>
     <th>Config file syntax</th>
     <td>"environment": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_ENVIRONMENT=<em>string</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -541,6 +597,10 @@ Some web frameworks, for example Rails and Connect.js, adjust their behavior acc
     <td>"ruby": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_RUBY=<em>string</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>The Ruby interpreter that was used for starting Passenger Standalone</td>
   </tr>
@@ -575,6 +635,10 @@ Specifies the Ruby interpreter to use for serving Ruby web applications.
     <td>"python": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_PYTHON=<em>string</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>The first "python" command in <a href="<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable">the $PATH environment variable</a></td>
   </tr>
@@ -605,6 +669,10 @@ Specifies the Python interpreter to use for serving Python web applications.
   <tr>
     <th>Config file syntax</th>
     <td>"nodejs": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_NODEJS=<em>string</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -639,6 +707,10 @@ Passenger's support for Node.js and io.js are the same. If you want to use io.js
   <tr>
     <th>Config file syntax</th>
     <td>"meteor_app_settings": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_METEOR_APP_SETTINGS=<em>string</em></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -704,6 +776,10 @@ The corresponding Passengerfile.json looks as follows:
     <td>"app_type": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_APP_TYPE=<em>string</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td><a href="<%= url_for "/indepth/app_autodetection/index.html" %>">Autodetected</a></td>
   </tr>
@@ -762,6 +838,10 @@ Use server.js as the startup file (entry point file) for your Node.js applicatio
   <tr>
     <th>Config file syntax</th>
     <td>"startup_file": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_STARTUP_FILE=<em>path</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -834,6 +914,10 @@ For other cases you will need to specify the `startup-file` manually. For exampl
     <td>"spawn_method": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_SPAWN_METHOD=<em>string</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>
       For Ruby apps: <code>smart</code><br>
@@ -869,6 +953,10 @@ This option controls whether Passenger spawns applications directly, or using a 
     <td>"static_files_dir": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_STATIC_FILES_DIR=<em>path</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td><em>app_dir</em>/public</td>
   </tr>
@@ -899,6 +987,10 @@ By default, Passenger automatically serves static files in the application's `pu
   <tr>
     <th>Config file syntax</th>
     <td>"restart_dir": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_RESTART_DIR=<em>path</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -957,6 +1049,10 @@ A relative filename is given. Passenger will check for /apps/baz/restart_files/r
     <td>"friendly_error_pages": <em>boolean</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_FRIENDLY_ERROR_PAGES=<em>boolean</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>
       <p>
@@ -1002,6 +1098,10 @@ You can use this option to explicitly enable or disable this feature. `--friendl
     <td>"load_shell_envvars": true</td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_LOAD_SHELL_ENVVARS=true</td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>Disabled</td>
   </tr>
@@ -1034,6 +1134,10 @@ If this option is turned on, and the user's shell is `bash`, then applications a
   <tr>
     <th>Config file syntax</th>
     <td>"debugger": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_DEBUGGER=true</td>
   </tr>
   <tr>
     <th>Default</th>
@@ -1098,6 +1202,10 @@ Sets arbitrary environment variables for the application.
     <td>"max_pool_size": <em>integer</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MAX_POOL_SIZE=<em>integer</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>6</td>
   </tr>
@@ -1133,6 +1241,10 @@ If you find that your server is running out of memory then you should lower this
   <tr>
     <th>Config file syntax</th>
     <td>"min_instances": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MIN_INSTANCES=<em>integer</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -1181,6 +1293,10 @@ When you start Passenger, it spawns 3 application processes. Suppose that there'
     <td>"pool_idle_time": <em>integer</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_POOL_IDLE_TIME=<em>integer</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>300 <em>(5 minutes)</em></td>
   </tr>
@@ -1221,6 +1337,10 @@ Setting the value to 0 is recommended if you favor resource savings more than pr
     <td>"max_preloader_idle_time": <em>integer</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MAX_PRELOADER_IDLE_TIME=<em>integer</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>300 <em>(5 minutes)</em></td>
   </tr>
@@ -1255,6 +1375,10 @@ Setting a higher value will mean that the preloader is kept around longer, which
   <tr>
     <th>Config file syntax</th>
     <td>"concurrency_model": <em>"process"|"thread"</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_CONCURRENCY_MODEL=<em>process|thread</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -1301,6 +1425,10 @@ Specifies the I/O concurrency model that should be used for Ruby application pro
     <td>"thread_count": <em>integer</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_THREAD_COUNT=<em>integer</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>1</td>
   </tr>
@@ -1341,6 +1469,10 @@ Specifies the number of threads that Passenger should spawn per Ruby application
     <td>"rolling_restarts": true</td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_ROLLING_RESTARTS=true</td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>Disabled</td>
   </tr>
@@ -1374,6 +1506,10 @@ Please note that this option is completely unrelated to the `passenger-config re
   <tr>
     <th>Config file syntax</th>
     <td>"resist_deployment_errors": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_RESIST_DEPLOYMENT_ERRORS=true</td>
   </tr>
   <tr>
     <th>Default</th>
@@ -1419,6 +1555,10 @@ Note that enabling deployment error resistance only works if you perform a [roll
     <td>"max_request_time": <em>integer</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MAX_REQUEST_TIME=<em>integer</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>0</td>
   </tr>
@@ -1456,6 +1596,10 @@ This option is useful for preventing your application from getting stuck for an 
   <tr>
     <th>Config file syntax</th>
     <td>"sticky_sessions": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_STICKY_SESSIONS=true</td>
   </tr>
   <tr>
     <th>Default</th>
@@ -1505,6 +1649,10 @@ If you have a load balancer in front end of Passenger + Nginx, then you must con
     <td>"sticky_sessions_cookie_name": <em>string</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_STICKY_SESSIONS_COOKIE_NAME=<em>string</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>_passenger_route</td>
   </tr>
@@ -1535,6 +1683,10 @@ Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cooki
   <tr>
     <th>Config file syntax</th>
     <td>"turbocaching": false</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_TURBOCACHING=false</td>
   </tr>
   <tr>
     <th>Default</th>
@@ -1569,6 +1721,10 @@ Disables [turbocaching](<%= url_for "/indepth/turbocaching.html" %>).
   <tr>
     <th>Config file syntax</th>
     <td>"nginx_config_template": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_NGINX_CONFIG_TEMPLATE=<em>string</em></td>
   </tr>
   <tr>
     <th>Default</th>
@@ -1617,6 +1773,10 @@ Please note that this option only works if Passenger Standalone is [configured](
     <td>"engine": <em>"nginx"|"builtin"</em></td>
   </tr>
   <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_ENGINE=<em>nginx|builtin</em></td>
+  </tr>
+  <tr>
     <th>Default</th>
     <td>nginx</td>
   </tr>
@@ -1643,6 +1803,10 @@ Sets the Passenger Standalone engine to use. [Learn more about Passenger Standal
   <tr>
     <th>Config file syntax</th>
     <td>"log_level": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_LOG_LEVEL=<em>integer</em></td>
   </tr>
   <tr>
     <th>Default</th>
