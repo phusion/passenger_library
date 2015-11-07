@@ -1,0 +1,69 @@
+<% if edition_type == :enterprise %>
+
+### Install license key
+
+  Before you can use Passenger Enterprise, you need to download your license key.. Please <a href="https://www.phusionPassenger.com/orders" target="_blank">login to the Passenger Enterprise Customer Area</a>.
+
+  <figure>
+    <img src="<%= url_for '/install/install/shared/enterprise_customer_area.png' %>" width="300" class="img-thumbnail">
+    <figcaption>Customer Area login screen</figcaption>
+  </figure>
+
+  Click on the button to download the license key.
+
+  <figure>
+    <img src="<%= url_for '/install/install/shared/license_key.png' %>" width="300" class="img-thumbnail">
+    <figcaption>License key download button in the Customer Area</figcaption>
+  </figure>
+
+  The license key will be downloaded to your local computer. Transfer the file to the hidden .cloud66 folder in the root of your repository:
+
+~~~bash
+mv /project-directory/
+mkdir .cloud66 # If it doesn't already exist
+mv /path-to/passenger-enterprise-license .cloud66
+git add -A
+git commit -m "Added passenger-enterprise-license"
+git push origin master
+~~~
+
+### Obtain download token
+
+  You also need to obtain your download token, which you need for installing the Passenger Enterprise gem. In the Customer Area, find your download token and copy it to your clipboard.
+
+  <figure>
+    <img src="<%= url_for '/install/install/shared/download_token.png' %>" width="300" class="img-thumbnail">
+    <figcaption>Exhibit of the download token in the Customer Area</figcaption>
+  </figure>
+
+  Create a PASSENGER_ENTERPRISE_DOWNLOAD_TOKEN environment variable which contains the value of your Passenger Enterprise download token. 
+
+  If both these conditions are met, Cloud 66 will use the enterprise version of Passenger when you follow the instructions below.
+
+  Make sure that Passenger Enterprise is displayed in the *About your app* section of your analysis before deploying.
+<% end %>
+
+### Deploying your app with Passenger
+
+Unless specified otherwise, Cloud 66 automatically installs Passenger with NGINX for any classic stack!
+
+<figure>
+  <img src="<%= url_for '/walkthroughs/deploy/deploy_app/cloud66_front_page.png' %>" width="400" class="img-thumbnail">
+  <figcaption>Cloud 66 front page</figcaption>
+</figure>
+
+Simply provide your git repository URL and let Cloud 66 take care of the rest.
+
+<figure>
+  <img src="<%= url_for '/walkthroughs/deploy/deploy_app/cloud66_git_repo.png' %>" width="400" class="img-thumbnail">
+  <figcaption>Enter your git repo</figcaption>
+</figure>
+
+<figure>
+  <img src="<%= url_for '/walkthroughs/deploy/deploy_app/cloud66_result.png' %>" width="400" class="img-thumbnail">
+  <figcaption>Results!</figcaption>
+</figure>
+
+### Next step
+
+Congratulations, you have now deployed your app with Passenger to Cloud 66!
