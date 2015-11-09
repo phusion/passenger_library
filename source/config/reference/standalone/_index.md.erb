@@ -1168,12 +1168,19 @@ Turns support for Ruby application debugging on or off. Please read the [Ruby de
 
 <table class="table table-bordered table-striped table-condensed">
   <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --envvar name1=value1 --envvar name2=value2 ...</td>
+  </tr>
+  <tr>
     <th>Config file syntax</th>
     <td>"envvars": { "name1": "value1", "name2": "value2", ... }</td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>5.0.1</td>
+    <td>
+      Command line syntax: since 5.0.22<br>
+      Config file syntax: since 5.0.1
+    </td>
   </tr>
   <tr>
     <th>Engines</th>
