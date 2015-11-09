@@ -32,7 +32,7 @@ console.log(env.SSL_SESSION_ID);   // Prints some session ID value
 
 ### The `process.env` object
 
-When Passenger handles a request and decides to spawn a new application process, Passenger will store the values of any per-request environment vairables into OS-level environment variables. This is only done once per application process, and only when the application process is spawned.
+When Passenger handles a request and decides to spawn a new application process, Passenger will store the values of any per-request environment variables into OS-level environment variables. This is only done once per application process, and only when the application process is spawned.
 
 This is primarily useful for ensuring that the `SetEnv` directive works as expected. For example, suppose that you have this in your Apache configuration file:
 
