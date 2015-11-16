@@ -55,6 +55,13 @@ substep = 0
   <% substep += 1 %>
   <h3><%= step %>.<%= substep %> Login to the server as the application's user</h3>
 
+  <% if locals[:infrastructure_type] == :cloud66 %>
+      <p>On Cloud 66, the firewall is closed by default for your security. To ssh into your server, you must first open a temporary connection:</p>
+      <figure>
+        <img src="<%= url_for '/walkthroughs/deploy/cloud66_temp_ssh.png' %>" width="400" class="img-thumbnail">
+        <figcaption>Temporary SSH connection</figcaption>
+      </figure>
+  <% end %>
   <p>Login to your server with SSH:</p>
 
   <% if infrastructure_type == :aws %>

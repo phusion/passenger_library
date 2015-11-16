@@ -13,6 +13,9 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
 <% if language_type == :ruby && infrastructure_type == :heroku %>
   <%= render_partial("/walkthroughs/deploy/deploy_app/ruby_heroku.md", locals: locals) %>
   <a href="deploy_updates.html" class="btn btn-primary btn-lg">Continue: Deploying updates &raquo;</a>
+<% elsif language_type == :ruby && infrastructure_type == :cloud66 %>
+  <%= render_partial("/walkthroughs/deploy/deploy_app/ruby_cloud66.md", locals: locals) %>
+  <a href="deploy_updates.html" class="btn btn-primary btn-lg">Continue: Deploying updates &raquo;</a>
 <% elsif language_type == :ruby && integration_mode_type == :standalone %>
   <%= render_partial("/walkthroughs/deploy/deploy_app/intro.md", locals: locals) %>
   <%= render_partial("/walkthroughs/deploy/deploy_app/standalone.md", locals: locals) %>

@@ -68,6 +68,12 @@ module DeploymentWalkthroughHelpers
       infrastructure_long_name: "Amazon Web Services",
       infrastructure_has_launch_instructions: true,
       infrastructure_needs_install_language_runtime: true },
+    { infrastructure_type: :cloud66,
+      infrastructure_name: "Cloud 66",
+      infrastructure_name_with_determiner: "a Cloud 66",
+      infrastructure_long_name: "Cloud 66",
+      infrastructure_has_launch_instructions: false,
+      infrastructure_needs_install_language_runtime: false },
     { infrastructure_type: :digital_ocean,
       infrastructure_name: "Digital Ocean",
       infrastructure_name_with_determiner: "a Digital Ocean",
@@ -237,7 +243,7 @@ module DeploymentWalkthroughHelpers
 
 
   def infrastructure_supported?(locals)
-    locals[:language_type] == :ruby || locals[:infrastructure_type] != :heroku
+    locals[:language_type] == :ruby || (locals[:infrastructure_type] != :heroku && locals[:infrastructure_type] != :cloud66)
   end
 
   def available_infrastructures(locals)
@@ -254,7 +260,7 @@ module DeploymentWalkthroughHelpers
   def available_integration_modes(locals)
     if !locals.has_key?(:infrastructure_type)
       nil
-    elsif locals[:infrastructure_type] == :heroku
+    elsif locals[:infrastructure_type] == :heroku || locals[:infrastructure_type] == :cloud66
       [{ integration_mode_type: :standalone,
          integration_mode_name: "Standalone" }]
     else
