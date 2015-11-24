@@ -78,6 +78,7 @@ end
                     <% navbar_section :deploy do %><%= maybe_absolute_link_to "Deployment and scaling", "/deploy/#{locals[:integration_mode_type]}/index.html" %><% end %>
                     <% navbar_section :admin do %><%= maybe_absolute_link_to "Administration, debugging and troubleshooting", "/admin/#{locals[:integration_mode_type]}/index.html" %><% end %>
                     <% navbar_section :indepth do %><%= maybe_absolute_link_to "In-depth", "/indepth/index.html" %><% end %>
+                    <% navbar_section :unionstation do %><%= maybe_absolute_link_to "Union Station logging", "/unionstation/index.html" %><% end %>
                   </ul>
                 <% else %>
                   <ul class="dropdown-menu" role="menu">
@@ -86,6 +87,7 @@ end
                     <% navbar_section :deploy do %><%= maybe_absolute_link_to "Deployment and scaling", "/deploy/index.html" %><% end %>
                     <% navbar_section :admin do %><%= maybe_absolute_link_to "Administration, debugging and troubleshooting", "/admin/index.html" %><% end %>
                     <% navbar_section :indepth do %><%= maybe_absolute_link_to "In-depth", "/indepth/index.html" %><% end %>
+                    <% navbar_section :unionstation do %><%= maybe_absolute_link_to "Union Station logging", "/unionstation/index.html" %><% end %>
                   </ul>
                 <% end %>
                 <% navbar_dropdown_section :reference do %>

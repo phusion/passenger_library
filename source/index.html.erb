@@ -49,7 +49,7 @@ skip_search: true
     </div>
 
 
-    <!-- Installation / Configuration and optimization -->
+    <!-- Installation  ||  Configuration and optimization -->
 
     <div class="row hidden-xs">
       <div class="col-sm-6">
@@ -99,7 +99,7 @@ skip_search: true
     </div>
 
 
-    <!-- Deployment and scaling / Administration and troubleshooting -->
+    <!-- Deployment and scaling  ||  Administration and troubleshooting -->
 
     <div class="row hidden-xs">
       <div class="col-sm-6">
@@ -145,13 +145,19 @@ skip_search: true
     </div>
 
 
-    <!-- In-depth -->
-
+    <!-- In-depth  ||  Union Station logging -->
     <div class="row hidden-xs">
       <div class="col-sm-6">
         <h3 class="front-page-link-header">
           <a href="<%= url_for "/indepth/index.html" %>">
             <span class="glyphicon glyphicon-book" aria-hidden="true"></span>In-depth
+          </a>
+        </h3>
+      </div>
+      <div class="col-sm-6">
+        <h3 class="front-page-link-header">
+          <a href="<%= url_for "/unionstation/index.html" %>">
+            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>Union Station logging
           </a>
         </h3>
       </div>
@@ -170,6 +176,18 @@ skip_search: true
           integration modes, turbocaching and load balancing.
         </p>
       </div>
+      <div class="col-sm-6">
+        <h3 class="front-page-link-header visible-xs">
+          <a href="<%= url_for "/unionstation/index.html" %>">
+            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>Union Station logging
+          </a>
+        </h3>
+
+        <p class="guide-description">
+          Configuring and customizing logging to Union Station for detailed application monitoring and analysis.
+        </p>
+      </div>
     </div>
+    
   </section>
 <% end %>

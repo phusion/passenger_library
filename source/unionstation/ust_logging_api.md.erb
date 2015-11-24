@@ -1,0 +1,165 @@
+---
+title: Using the logging API
+section: unionstation
+---
+<% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
+
+# Using the logging API
+
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+## Default logging
+
+When Union Station logging is enabled, there are a number of things that will be logged automatically. Each request that goes through the Passenger can
+be inspected visually like in the example below. 
+<% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+Passenger also has builtin instrumentation support for important modules such as Express and MongoDB.
+<% elsif language_type == :ruby %>
+Passenger also has builtin instrumentation support for important modules such as ActiveRecord.
+<% else %>
+<% end %>
+
+<img src="../ust_log_basic.png">
+
+<% if language_type == :python %>
+There is no custom logging support for Python applications at this time.
+<% else %>
+## Union Station Reporter
+
+### Writing custom log entries
+<% end %>
+<% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+
+The reporter object can be used from an application to log additional, customized data to Union Station. Whenever Union Station logging is enabled,
+the reporter can be accessed through `global.phusion_passenger_ustReporter`.
+
+The following methods can be used to write log entries:
+
+~~~javascript
+/**
+ * Log a timed block, described by activityName, with an optional message or query 
+ * to display (e.g. in a mouseover).
+ */
+logTimedActivityGeneric(activityName, tBegin, tEnd, message)
+logTimedActivityMongo(activityName, tBegin, tEnd, query)
+logTimedActivitySQL(activityName, tBegin, tEnd, query)
+
+/**
+ * @return timestamp in microseconds to be used as the start or end timestamp for 
+ *         timed logging (monotonic clock, not wall clock).
+ */
+nowTimestamp()
+
+/**
+ * For logging intercepted exceptions, for example a "NameError" with
+ * the message "undefined local variable" and a trace.
+ */
+logException(name, message, trace)
+~~~
+
+Log entries are automatically grouped with other entries in the same request context.
+For example, the highlighted entry in the image below was logged as follows:
+
+~~~javascript
+reporter = global.phusion_passenger_ustReporter;
+
+tBegin = reporter.nowTimestamp();
+generatePng(function() {
+  tEnd = reporter.nowTimestamp();
+  reporter.logTimedActivityGeneric(
+    "Generate png", tBegin, tEnd, "Generate png with a child process callback");
+});
+~~~
+
+<img src="../ust_log_custom.png">
+
+### Troubleshooting and advanced use
+
+Log entries from the `logTimedActivity` methods will be dropped if the current request context cannot be found. Passenger uses the 
+`continuation-local-storage` module to track the current request across asynchronous calls, which fails with certain constructs.
+
+The reporter has special methods to deal with these situations:
+
+~~~javascript
+/**
+ * Wrap a callback to ensure that it is called from the current CLS context.
+ */
+getCLSWrappedCallback(origCallback)
+
+/**
+ * Get the request transaction id from the current CLS context. If this fails, 
+ * it usually means the context was lost.  
+ */
+getCurrentTxnId()
+
+/**
+ * @return logger set to Passenger's loglevel. For example, log.error("") maps to 
+ * Passenger loglevel 1. All mappings:
+ * 1: error
+ * 2: warn
+ * 3: notice
+ * 4: info
+ * 5: verbose
+ * 6: debug
+ * 7: silly
+ * (other levels are mapped to critical)
+ */
+getPassengerLogger()
+
+~~~
+
+For example, if the generatePng method from the earlier example actually uses a callback from a child process, the context will be lost. This 
+can be fixed by wrapping the callback with `getCLSWrappedCallback()` like so:
+
+~~~javascript
+reporter = global.phusion_passenger_ustReporter;
+
+tBegin = reporter.nowTimestamp();
+generatePng(getCLSWrappedCallback(function() { // <-- now wrapped
+  tEnd = reporter.nowTimestamp();
+  reporter.logTimedActivityGeneric(
+    "Generate png", tBegin, tEnd, "Generate png with a child process callback");
+}));
+~~~
+
+The `getCurrentTxnId()` and `getPassengerLogger()` can be used to more easily find spots that need context repair.
+
+Finally, logging can also fail when an unsupported framework is used, because all application logging (besides exception logging) requires 
+a request context to be present. This can be solved with the `attachToRequest` method from the reporter. The Express framework hook in 
+Passenger also works this way.
+
+~~~javascript
+/**
+ * All Activity logs will be dropped unless they are done after this method, from within 
+ * an execution chain starting with the callback. So it is essential to call this function whenever
+ * you intercept a request, before code that might want to log can be reached. The function adds
+ * context to the execution chain such that future logs can be correctly appended to the currently
+ * open request log, also for modules that don't have access to the request object (such as
+ * database drivers).
+ *
+ * @param callback
+ *     The "next" handler in line for processing the request.
+ */
+attachToRequest(request, response, callback)
+
+/**
+ * @return the application root path, needed for instrumenting an application's node modules.
+ */
+getApplicationRoot()
+~~~
+
+### Instrumentation tips
+
+Supported modules can be found in the Passenger `src/nodejs_supportlib/phusion_passenger/` subdir. 
+They are loaded from `src/helper-scripts/node-loader.js` (using the `instrumentModulePaths` array).
+
+<% end %>
+
+<% if language_type == :ruby  %>
+
+See the <a href="http://www.rubydoc.info/github/phusion/union_station_hooks_core/UnionStationHooks">UnionStationHooks documentation</a>.
+
+Relevant modules are: <a href="https://github.com/phusion/union_station_hooks_rails">union_station_hooks_rails</a> and <a href="https://github.com/phusion/union_station_hooks_core">station_hooks_core</a>.
+<% end %>

@@ -377,6 +377,22 @@ ignore "/indepth/spawn_methods/spawn_methods.html"
 ignore "/indepth/reverse_port_binding.html"
 ignore "/indepth/secure_http_headers.html"
 
+###### Union Station logging ######
+
+DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
+  language_type = language_spec[:language_type]
+  proxy "/unionstation/#{language_type}/index.html",
+    "/unionstation/index2.html",
+    locals: language_spec
+
+  proxy "/unionstation/#{language_type}/ust_logging_api.html",
+    "/unionstation/ust_logging_api.html",
+    locals: language_spec
+end
+
+ignore "/unionstation/index2.html"
+ignore "/unionstation/ust_logging_api.html"
+
 #################################################
 
 set :css_dir, 'stylesheets'
