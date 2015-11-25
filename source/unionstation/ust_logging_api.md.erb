@@ -12,10 +12,10 @@ section: unionstation
 
 ## Default logging
 
-When Union Station logging is enabled, there are a number of things that will be logged automatically. Each request that goes through the Passenger can
-be inspected visually like in the example below. 
+When Union Station logging is enabled, there are a number of things that will be logged automatically. Each request that passes through Passenger 
+is represented visually as shown in the example below. 
 <% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
-Passenger also has builtin instrumentation support for important modules such as Express and MongoDB.
+Starting from version 5.0.22, Passenger also has builtin instrumentation support for important modules such as Express and MongoDB.
 <% elsif language_type == :ruby %>
 Passenger also has builtin instrumentation support for important modules such as ActiveRecord.
 <% else %>
@@ -32,8 +32,8 @@ There is no custom logging support for Python applications at this time.
 <% end %>
 <% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
 
-The reporter object can be used from an application to log additional, customized data to Union Station. Whenever Union Station logging is enabled,
-the reporter can be accessed through `global.phusion_passenger_ustReporter`.
+The reporter object can be used from an application to log additional, customized data to Union Station. Whenever Union Station logging is enabled 
+(Passenger version 5.0.22 and up), the reporter can be accessed through `global.phusion_passenger_ustReporter`.
 
 The following methods can be used to write log entries:
 
@@ -117,7 +117,7 @@ can be fixed by wrapping the callback with `getCLSWrappedCallback()` like so:
 reporter = global.phusion_passenger_ustReporter;
 
 tBegin = reporter.nowTimestamp();
-generatePng(getCLSWrappedCallback(function() { // <-- now wrapped
+generatePng(reporter.getCLSWrappedCallback(function() { // <-- now wrapped
   tEnd = reporter.nowTimestamp();
   reporter.logTimedActivityGeneric(
     "Generate png", tBegin, tEnd, "Generate png with a child process callback");
