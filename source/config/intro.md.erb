@@ -217,10 +217,21 @@ Alternatively, if you don't want to pass this parameter every time, you can also
   <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone <strong>must</strong> be based on the one provided by Passenger Standalone.</p>
 </div>
 
+<div class="warning">
+  <h3 class="notoc">Do not duplicate options set by Passenger Standalone</h3>
+  <p>Nginx only allows setting most configuration options once. This means that if you insert any configuration options already set by Passenger Standalone, then Nginx will abort with an error. Therefore, you should prefer using the configuration options provided by Passenger Standalone over setting them yourself in the Nginx configuration template. For example, do not set <a href="../nginx/reference/#passenger_log_level">passenger_log_level</a> yourself; use the <a href="reference/#--log-level-log_level"><code>--log-level</code> / <code>"log_level"</code></a> configuration option instead.</p>
+</div>
+
 <div class="note">
   <h3 class="notoc">Keep your configuration template up to date</h3>
   <p>The original configuration template file may change from time to time, e.g. because new features are introduced into Passenger. If your configuration template file does not contain the required changes, then these new features may not work properly. In the worst case, Passenger Standalone might even malfunction. Therefore, every time you upgrade Passenger, you should check whether the original configuration template file has changed, and merge back any changes into your own file.</p>
 </div>
+
+<a name="debugging"></a>
+
+### Debugging configuration file problems
+
+If you run into any problems with your customized Nginx configuration template, then (starting from Passenger 5.0.22) you can debug this by passing the [`--debug-nginx-config`](reference/#--debug-nginx-config-debug_nginx_config) option to `passenger start`. This will cause it to print the generated Nginx configuration file, then exit.
 
 
 <% else %>

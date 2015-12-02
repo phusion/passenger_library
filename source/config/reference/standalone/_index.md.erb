@@ -1155,6 +1155,7 @@ If this option is turned on, and the user's shell is `bash`, then applications a
     <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
 
 <div class="note">
@@ -1757,13 +1758,54 @@ Please note that this option only works if Passenger Standalone is [configured](
 
 <div class="warning">
   <h3 class="notoc">The Nginx config file must follow a specific format</h3>
-  <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone *must* be based on the one provided by Passenger Standalone. Learn more about this in the <a href="<%= url_for "/config/standalone/intro.html" %>#nginx-configuration-template">configuration introduction</a>.</p>
+  <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone <strong>must</strong> be based on the one provided by Passenger Standalone. Learn more about this in the <a href="<%= url_for "/config/standalone/intro.html" %>#nginx-configuration-template">configuration introduction</a>.</p>
+</div>
+
+<div class="warning">
+  <h3 class="notoc">Do not duplicate options set by Passenger Standalone</h3>
+  <p>Nginx only allows setting most configuration options once. This means that if you insert any configuration options already set by Passenger Standalone, then Nginx will abort with an error. Therefore, you should prefer using the configuration options provided by Passenger Standalone over setting them yourself in the Nginx configuration template. For example, do not set <a href="../../nginx/reference/#passenger_log_level">passenger_log_level</a> yourself; use the <a href="#--log-level-log_level"><code>--log-level</code> / <code>"log_level"</code></a> configuration option instead.</p>
 </div>
 
 <div class="note">
   <h3 class="notoc">Keep your configuration template up to date</h3>
   <p>The original configuration template file may change from time to time, e.g. because new features are introduced into Passenger. If your configuration template file does not contain the required changes, then these new features may not work properly. In the worst case, Passenger Standalone might even malfunction. Therefore, every time you upgrade Passenger, you should check whether the original configuration template file has changed, and merge back any changes into your own file.</p>
 </div>
+
+
+### `--debug-nginx-config` / "debug_nginx_config"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --debug-nginx-config</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"debug_nginx_config": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_DEBUG_NGINX_CONFIG=true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Enabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+If Passenger Standalone is using the [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>), then this configuration option will cause Passenger Standalone to print the contents of the generated Nginx configuration file, after which it exits. This allows you to inspect the generated configuration file, e.g. to debug problems.
 
 
 ## Advanced options
