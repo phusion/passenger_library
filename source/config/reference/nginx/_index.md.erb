@@ -1906,7 +1906,7 @@ Decides if Nginx will intercept responses with HTTP status codes of 400 and high
 By default, all responses are sent as-is from the application or from the Passenger core. If you turn this option on then Nginx will be able to handle such responses using the Nginx [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) option. Responses with status codes that do not match an `error_page` option are sent as-is.
 
 
-### passenger_pass_header <header name>
+### passenger_pass_header
 
 <table class="table table-bordered table-condensed">
   <tr>
@@ -2412,7 +2412,7 @@ Otherwise Nginx will think you're trying to pass multiple values to
 a config option that only supports a single value. Because of this,
 one must escape any special characters in the filter source.
 
-The filter language is [described here](../../union_station_filter_language.html).
+The filter language is [described here](<%= url_for "/unionstation/filter_language.html" %>).
 
 Example:
 
