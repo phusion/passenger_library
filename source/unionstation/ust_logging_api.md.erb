@@ -1,5 +1,5 @@
 ---
-title: Using the logging API
+title: Using the Union Station logging API
 section: unionstation
 ---
 <% content_for(:sidebar) { render_partial("sidebar.html", locals: locals) } %>
@@ -12,8 +12,8 @@ section: unionstation
 
 ## Default logging
 
-When Union Station logging is enabled, there are a number of things that will be logged automatically. Each request that passes through Passenger 
-is represented visually as shown in the example below. 
+When Union Station logging is enabled, there are a number of things that will be logged automatically. Each request that passes through Passenger
+is represented visually as shown in the example below.
 <% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
 Starting from version 5.0.22, Passenger also has builtin instrumentation support for important modules such as Express and MongoDB.
 <% elsif language_type == :ruby %>
@@ -32,14 +32,14 @@ There is no custom logging support for Python applications at this time.
 <% end %>
 <% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
 
-The reporter object can be used from an application to log additional, customized data to Union Station. Whenever Union Station logging is enabled 
+The reporter object can be used from an application to log additional, customized data to Union Station. Whenever Union Station logging is enabled
 (Passenger version 5.0.22 and up), the reporter can be accessed through `global.phusion_passenger_ustReporter`.
 
 The following methods can be used to write log entries:
 
 ~~~javascript
 /**
- * Log a timed block, described by activityName, with an optional message or query 
+ * Log a timed block, described by activityName, with an optional message or query
  * to display (e.g. in a mouseover).
  */
 logTimedActivityGeneric(activityName, tBegin, tEnd, message)
@@ -47,7 +47,7 @@ logTimedActivityMongo(activityName, tBegin, tEnd, query)
 logTimedActivitySQL(activityName, tBegin, tEnd, query)
 
 /**
- * @return timestamp in microseconds to be used as the start or end timestamp for 
+ * @return timestamp in microseconds to be used as the start or end timestamp for
  *         timed logging (monotonic clock, not wall clock).
  */
 nowTimestamp()
@@ -77,7 +77,7 @@ generatePng(function() {
 
 ### Troubleshooting and advanced use
 
-Log entries from the `logTimedActivity` methods will be dropped if the current request context cannot be found. Passenger uses the 
+Log entries from the `logTimedActivity` methods will be dropped if the current request context cannot be found. Passenger uses the
 `continuation-local-storage` module to track the current request across asynchronous calls, which fails with certain constructs.
 
 The reporter has special methods to deal with these situations:
@@ -89,13 +89,13 @@ The reporter has special methods to deal with these situations:
 getCLSWrappedCallback(origCallback)
 
 /**
- * Get the request transaction id from the current CLS context. If this fails, 
- * it usually means the context was lost.  
+ * Get the request transaction id from the current CLS context. If this fails,
+ * it usually means the context was lost.
  */
 getCurrentTxnId()
 
 /**
- * @return logger set to Passenger's loglevel. For example, log.error("") maps to 
+ * @return logger set to Passenger's loglevel. For example, log.error("") maps to
  * Passenger loglevel 1. All mappings:
  * 1: error
  * 2: warn
@@ -110,7 +110,7 @@ getPassengerLogger()
 
 ~~~
 
-For example, if the generatePng method from the earlier example actually uses a callback from a child process, the context will be lost. This 
+For example, if the generatePng method from the earlier example actually uses a callback from a child process, the context will be lost. This
 can be fixed by wrapping the callback with `getCLSWrappedCallback()` like so:
 
 ~~~javascript
@@ -126,13 +126,13 @@ generatePng(reporter.getCLSWrappedCallback(function() { // <-- now wrapped
 
 The `getCurrentTxnId()` and `getPassengerLogger()` can be used to more easily find spots that need context repair.
 
-Finally, logging can also fail when an unsupported framework is used, because all application logging (besides exception logging) requires 
-a request context to be present. This can be solved with the `attachToRequest` method from the reporter. The Express framework hook in 
+Finally, logging can also fail when an unsupported framework is used, because all application logging (besides exception logging) requires
+a request context to be present. This can be solved with the `attachToRequest` method from the reporter. The Express framework hook in
 Passenger also works this way.
 
 ~~~javascript
 /**
- * All Activity logs will be dropped unless they are done after this method, from within 
+ * All Activity logs will be dropped unless they are done after this method, from within
  * an execution chain starting with the callback. So it is essential to call this function whenever
  * you intercept a request, before code that might want to log can be reached. The function adds
  * context to the execution chain such that future logs can be correctly appended to the currently
@@ -152,7 +152,7 @@ getApplicationRoot()
 
 ### Instrumentation tips
 
-Supported modules can be found in the Passenger `src/nodejs_supportlib/phusion_passenger/` subdir. 
+Supported modules can be found in the Passenger `src/nodejs_supportlib/phusion_passenger/` subdir.
 They are loaded from `src/helper-scripts/node-loader.js` (using the `instrumentModulePaths` array).
 
 <% end %>
