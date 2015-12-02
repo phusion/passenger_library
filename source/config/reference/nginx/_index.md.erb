@@ -1825,6 +1825,35 @@ If you have a load balancer in front end of Passenger, then you must configure s
 Sets the name of the [sticky sessions](#passenger_sticky_sessions) cookie.
 
 
+### passenger_abort_websockets_on_process_shutdown
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_abort_websockets_on_process_shutdown <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_abort_websockets_on_process_shutdown on;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Before shutting down or restarting an application process, Passenger performs two operations:
+
+ 1. It waits until existing requests routed to that process are finished. This way, existing requests will be finished gracefully.
+ 2. It aborts WebSocket connections. This is because WebSocket connections can stay open for an arbitrary amount of time and will block the shutdown/restart.
+
+If you want Passenger to _not_ abort WebSocket connections, then turn this option off. That way, Passenger will wait for WebSocket connections to terminate by themselves, before proceeding with a process shutdown or restart. For this reason, you *must* modify your application code to ensure that WebSocket connections do not stay open for an arbitrary amount of time.
+
+
 ### passenger_ignore_client_abort
 
 <table class="table table-bordered table-condensed">
