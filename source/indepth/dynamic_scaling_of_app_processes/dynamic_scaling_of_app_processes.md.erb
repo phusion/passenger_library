@@ -20,34 +20,33 @@ content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
 
 _Main article: [Request load balancing](<%= url_for "/indepth/#{language_type}/request_load_balancing.html" %>)_
 
-A core concept is that of the **maximum process concurrency**. This is the maximum number of concurrent requests that a particular process can handle.
+A core concept in dynamic process scaling is that of the **maximum process concurrency**. This is the maximum number of concurrent requests that a particular process can handle.
 
 <%= render_partial("../request_load_balancing/process_concurrency_concept.md", locals: locals) %>
 
 <% if language_concurrency_model == :evented %>
-  For dynamic process scaling to work, Passenger needs to [know at approximately how many requests the performance of a single process begins to degrade](#assume_application_concurrency). You will learn later how this is done.
+  For dynamic process scaling to work, Passenger needs to [know at approximately how many requests the performance of a single process begins to degrade](#assume_application_concurrency). You will learn later why this is so and how this is done.
 <% end %>
 
 ## A new process is spawned when the concurrency limit is reached
 
-Passenger keeps track of the number of requests a process is handling. When all processes have reached their maximum concurrency -- that is, they're handling exactly as many requests as their maximum concurrency indicate they can -- then Passenger will decide to spawn a new process.
+Passenger keeps track of the number of requests a process is handling. When all processes have reached their maximum concurrency -- that is, when they're handling exactly as many requests as their maximum concurrency indicate they can -- then Passenger will decide to spawn a new process.
 
 This behavior is deeply coupled to the [request load balancing logic](<%= url_for "/indepth/#{language_type}/request_load_balancing.html" %>), so you should read up on that too.
 
-<% if language_min_concurrency == 1 %>
-  <%= render_partial('example_max_concurrency_1.md', locals: locals) %>
-<% end %>
-<% if language_max_concurrency != 1 %>
-  <% if language_default_concurrency == 0 %>
-  But for <%= language_name %> applications, Passenger by default assumes that the concurrency is "unlimited". When that is the case, applications won't ever reach their concurrency limit, so Passenger _won't perform any dynamic process scaling_.
-  <% end %>
+<% if language_default_concurrency == 0 %>
+  <h3>Making dynamic scaling work through the "assume application concurrency" setting</h3>
 
-  <% if language_default_concurrency == 0 && language_concurrency_model == :evented %>
-  <a name="assume_application_concurrency"></a>
-  To make dynamic process scaling work, you need to tell Passenger what the limit is using <%= link_to_config_option(:assume_application_concurrency, locals) %>. Next follows an example of what happens if we set that option to 4.
-  <% end %>
+  Since <%= language_name %> applications are assumed to have unlimited concurrency by default, _dynamic process scaling does not work out-of-the-box_. Passenger will never think that your application process has reached its maximum concurrency. This is why you need to give Passenger a hint: you need to tell Passenger how many concurrent requests your application can handle without degrading performance. This way, Passenger will know when it should spawn more processes.
+
+  This is achieved with the configuration option <%= link_to_config_option(:assume_application_concurrency, locals) %>. For example, to tell Passenger that your application can handle at most 150 concurrent requests without degrading performance, set that option to 150. That way, Passenger will spawn more processes when all existing processes have reached 150 concurrent requests.
 
   <%= render_partial('example_max_concurrency_4.md', locals: locals) %>
+<% elsif language_max_concurrency != 1 %>
+  <%= render_partial('example_max_concurrency_1.md', locals: locals) %>
+  <%= render_partial('example_max_concurrency_4.md', locals: locals) %>
+<% else %>
+  <%= render_partial('example_max_concurrency_1.md', locals: locals) %>
 <% end %>
 
 ## A process is shut down when it becomes idle
