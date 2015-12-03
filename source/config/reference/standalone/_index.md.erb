@@ -1465,6 +1465,56 @@ Specifies the number of threads that Passenger should spawn per Ruby application
 </div>
 
 
+### `--memory-limit` / "memory-limit"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start [...] --memory-limit <em>MB</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"memory_limit": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MEMORY_LIMIT=<em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will let finish processing all its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
+
+This option is useful if your application is leaking memory. By shutting it down, all of its memory is guaranteed to be freed by the operating system.
+
+<div class="info">
+  <h3 class="notoc">A word about permissions</h3>
+  <p>
+    This option uses the <code>ps</code> command to query memory usage information. On Linux, it further queries <code>/proc</code> to obtain additional memory usage information that's not obtainable through <code>ps</code>. You should ensure that the <code>ps</code> works correctly and that the <code>/proc</code> filesystem is accessible by the <code>Passenger core</code> process.
+  </p>
+</div>
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
+</div>
+
+
 ### `--rolling-restarts` / "rolling_restarts"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -1592,6 +1642,58 @@ This option is useful for preventing your application from getting stuck for an 
 <div class="note">
   This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid stuck applications.
 </div>
+
+
+### `--max-request-queue-size` / "max_request_queue_size"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --max-request-queue-size <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"max_request_queue_size": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MAX_REQUEST_QUEUE_SIZE=<em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>100</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum size for that queue. If the queue is already at this specified limit, then Passenger will immediately send a "503 Service Unavailable" error to any incoming requests.
+
+A value of 0 means that the queue is unbounded.
+
+[This article on StackOverflow](http://stackoverflow.com/questions/20402801/what-is-optimal-value-for-phusion-passenger-passengermaxrequestqueuesize) explains how the request queue works, what it means for the queue to grow or become full, why that is bad, and what you can do about it.
+
+#### Advanced configuration through Nginx config template
+
+If you customize the [Passenger Standalone Nginx config template](<%= url_for '/config/standalone/intro.html' %>#nginx-configuration-template) then you can further customize the behavior of request queue overflows.
+
+ * You may use [passenger_request_queue_overflow_status_code](<%= url_for '/config/nginx/reference/index.html' %>#passenger_request_queue_overflow_status_code) to customize the response status, if you do not want the status to be 503.
+ * You may use [passenger_intercept_errors](<%= url_for '/config/nginx/reference/index.html' %>#passenger_intercept_errors) and [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) to set a custom error page whenever the queue is overflown. In the following example, Nginx will serve /error503.html whenever the queue is full:
+
+   ~~~nginx
+   passenger_intercept_errors on;
+   error_page 503 /error503.html;
+   ~~~
 
 
 ### `--sticky-sessions` / "sticky_sessions"
