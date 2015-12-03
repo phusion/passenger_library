@@ -93,7 +93,7 @@ Instead, the Passenger implementation can be compared to using a single (shared)
 
 By default, all requests for an application are balanced in a fair way. You may want to adjust this behavior; for example if your app consists of pages for visitors as well as some kind of web service, you probably want to make sure the visitor requests don't get stuck behind web service requests when under heavy load.
 
-This can be solved by configuring two application groups for your app: one for the webs ervice URL and one for the visitor pages, each with their own request queue. The requests for the visitor pages will keep being handled even if there is an overload of requests for the web service. See the <%= link_to_config_option(:app_group_name, locals) %> option.
+This can be solved by configuring two application groups for your app: one for the web service URL and one for the visitor pages, each with their own request queue. The requests for the visitor pages will keep being handled even if there is an overload of requests for the web service. See the <%= link_to_config_option(:app_group_name, locals) %> option (Apache and Nginx only, not available on Standalone).
 
 The two application groups will still compete with each other for server resources. You can control how many instances are allowed per application group, for example allowing more instances to serve the visitor pages than the web service URL. See the <%= link_to_config_option(:max_instances, locals) %> option.
 

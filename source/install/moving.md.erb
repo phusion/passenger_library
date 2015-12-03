@@ -4,15 +4,6 @@ section: install
 <%
 @page_title = "Moving Passenger to a different directory - #{integration_mode_name}"
 content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
-
-case integration_mode_type
-when :nginx
-  passenger_root = "passenger_root"
-  passenger_root_doc_url = url_for("/config/nginx/reference/index.html") + "#passenger_root"
-when :apache
-  passenger_root = "PassengerRoot"
-  passenger_root_doc_url = url_for("/config/apache/reference/index.html") + "#passengerroot"
-end
 %>
 
 # Moving Passenger to a different directory
@@ -25,7 +16,7 @@ First, move the directory to whereever you like:
 
 <% if integration_mode_type == :nginx || integration_mode_type == :apache %>
   <p>
-    Next, tell <%= integration_mode_name %> that Passenger has moved. Open your <%= integration_mode_type %> configuration file and set the <a href="<%=h passenger_root_doc_url %>"><%= passenger_root %></a> directive to the new location.
+    Next, tell <%= integration_mode_name %> that Passenger has moved. Open your <%= integration_mode_type %> configuration file and set the <%= link_to_config_option(:root, locals) %> directive to the new location.
   </p>
 
   <div>

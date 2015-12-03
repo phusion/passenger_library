@@ -209,7 +209,7 @@ You can pass environment variables to Passenger-served apps through various meth
 
  * When using Passenger + Apache, use the `PassEnv` and `SetEnv` options of [mod_env](http://httpd.apache.org/docs/2.4/mod/mod_env.html). This is supported starting from Passenger 4.0.
  * When using Passenger + Nginx, use the [passenger_env_var](<%= url_for("/config/nginx/reference/index.html") %>#passenger_env_var) option.
- * When using Passenger Standalone, use the ["envvars"](<%= url_for("/config/standalone/reference/index.html") %>#envvars) option.
+ * When using Passenger Standalone, use the [`--envvar` / "envvars"](<%= url_for("/config/standalone/reference/index.html") %>#--envvar-envvars) option.
  * Through your `bashrc`. Starting from version 4.0, Passenger 4.0 spawns applications through bash and inherit all bash environment variables. Passenger Standalone tends to be started from the shell and thus inherits all environment variables set by the shell.
  * Through Apache and Nginx, as described earlier in this chapter. Any environment variables that you set on Apache and Nginx itself are inherited by Passenger, and thus by Passenger-served apps as well.
  * Through the application itself. Most programming languages provide APIs for setting environment variables. For example in Ruby you can write:

@@ -407,6 +407,8 @@ See also [How Passenger + Apache autodetects applications](<%= url_for "/indepth
 </div>
 
 
+<a name="passenger_app_group_name"></a>
+
 ### PassengerAppGroupName
 
 <table class="table table-bordered table-condensed">
@@ -1092,6 +1094,8 @@ When you start Apache, there are 0 application processes for 'foobar.com'. Thing
 
 Now suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.com' simultaneously. Passenger will start 12 more application processes (`15 - 3 = 12`). After the idle timeout of 10 seconds has passed, Passenger will clean up 12 application processes, keeping 3 processes around.
 
+
+<a name="passenger_max_instances"></a>
 
 ### PassengerMaxInstances
 
@@ -1899,6 +1903,8 @@ This option does not affect the processing of informational (1xx), normal succes
 
 By default, all responses are sent as-is from the application or from the Passenger core. If you turn this option on then Apache will be able to handle such responses using the Apache [ErrorDocument](http://httpd.apache.org/docs/2.4/mod/core.html#errordocument) option.
 
+
+<a name="passenger_max_rqeuest_queue_size"></a>
 
 ### PassengerMaxRequestQueueSize
 

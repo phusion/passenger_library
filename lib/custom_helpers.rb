@@ -280,8 +280,7 @@ module CustomHelpers
     when :nginx
       url_for("/config/nginx/reference/index.html") + "#passenger_#{name}"
     when :apache
-      anchor = name.to_s.gsub(/_([a-z])/) { |match| match.sub('_', '').upcase }
-      anchor[0] = anchor[0].upcase
+      anchor = name.to_s.gsub(/_/, '').downcase
       url_for("/config/apache/reference/index.html") + "##{anchor}"
     when :standalone
       cli_option = "--" + name.to_s.gsub('_', '-')

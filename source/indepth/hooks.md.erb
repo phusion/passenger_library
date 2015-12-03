@@ -251,7 +251,7 @@ Called when an application process could not be spawned. This could happen when:
   </tr>
 </table>
 
-Passenger [rejects new requests (default: HTTP 503) while the request queue is full](<%= url_for("/config/nginx/reference/index.html") %>#passenger_max_request_queue_size). This hook gets called for each rejection.
+Passenger [rejects new requests (default: HTTP 503) while the request queue is full](<%= url_for_config_option(:max_request_queue_size, locals) %>). This hook gets called for each rejection.
 
 This hook does not block anything, because it's always run in an extra background thread.
 

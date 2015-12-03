@@ -8,30 +8,12 @@ content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
 doc_url = url_for("/config/#{integration_mode_type}/reference/index.html")
 case integration_mode_type
 when :nginx
-  passenger_max_pool_size = "passenger_max_pool_size"
-  passenger_max_pool_size_doc = "#{doc_url}#passenger_max_pool_size"
   passenger_app_group_name_doc = "#{doc_url}#passenger_app_group_name"
-  passenger_max_request_time = "passenger_max_request_time"
-  passenger_max_request_time_doc = "#{doc_url}#passenger_max_request_time"
-  passenger_memory_limit = "passenger_memory_limit"
-  passenger_memory_limit_doc = "#{doc_url}#passenger_memory_limit"
 when :apache
-  passenger_max_pool_size = "PassengerMaxPoolSize"
-  passenger_max_pool_size_doc = "#{doc_url}#passengermaxpoolsize"
   passenger_app_group_name_doc = "#{doc_url}#passengerappgroupname"
-  passenger_max_request_time = "PassengerMaxRequestTime"
-  passenger_max_request_time_doc = "#{doc_url}#passengermaxrequesttime"
-  passenger_memory_limit = "PassengerMemoryLimit"
-  passenger_memory_limit_doc = "#{doc_url}#passengermemorylimit"
 when :standalone
   nginx_doc_url = url_for("/config/nginx/reference/index.html")
-  passenger_max_pool_size = '`--max-pool-size` / "max_pool_size"'
-  passenger_max_pool_size_doc = "#{doc_url}#--max-pool-size-max_pool_size"
   passenger_app_group_name_doc = "#{nginx_doc_url}#passenger_app_group_name"
-  passenger_memory_limit = 'passenger_memory_limit'
-  passenger_memory_limit_doc = "#{nginx_doc_url}#passenger_memory_limit"
-  passenger_max_request_time = '`--max-request-time` / "max_request_time"'
-  passenger_max_request_time_doc = "#{doc_url}#--max-request-time-max_request_time"
 else
   raise "TODO"
 end
@@ -92,7 +74,7 @@ Breakdown:
 
  1. The version number of the `passenger-status` tool. This is usually the same as, but not necessarily, the version number of the Passenger instance that is running.
  2. The current date and time when `passenger-status` was run.
- 3. The value of the [<%= passenger_max_pool_size %>](<%= passenger_max_pool_size_doc %>) configuration option.
+ 3. The value of the <%= link_to_config_option(:max_pool_size, locals) %> configuration option.
 <% if integration_mode_type == :standalone %>
  4. The number of [application groups](<%= passenger_app_group_name_doc %>) that Passenger is serving. For Passenger Standalone, this is always 1, except when using [Mass Deployment](<%= url_for "/deploy/standalone/mass_deployment.html" %>).
 <% else %>
@@ -128,7 +110,7 @@ Is `Sessions` non-zero for a long time? Then may mean that the process is stuck 
 Does `Memory` look much higher than the average memory usage of your other processes in the same application group? Or does it keep increasing over time, with no sign of stopping? Then you may have a memory leak. Here's what you can do about that:
 
  * Terminate the process with the command `kill <PID>`. This will allow the operating system to completely release that process's memory. The memory leak will come back eventually, but it will buy you some time.
- * Enable the configuration option [<%= passenger_memory_limit %>](<%= passenger_memory_limit_doc %>). This will allow Passenger to automatically terminate a process when its memory usage grows too high. It won't solve your memory leak, but will keep the server stable until you have solved the underlying cause.
+ * Enable the configuration option <%= link_to_config_option(:memory_limit, locals) %>. This will allow Passenger to automatically terminate a process when its memory usage grows too high. It won't solve your memory leak, but will keep the server stable until you have solved the underlying cause.
  * Read [Debugging memory leaks in Ruby](http://samsaffron.com/archive/2015/03/31/debugging-memory-leaks-in-ruby) by Sam Saffron.
  * Read [What I Learned About Hunting Memory Leaks in Ruby 2.1](http://blog.skylight.io/hunting-for-leaks-in-ruby/) by Peter Wagenet.
  * Use [the Rbkit memory profiler](http://rbkit.codemancers.com/).
@@ -267,7 +249,7 @@ Pay special attention to the `started_at` field. If a request has been running f
 
  * (Ruby) Send the SIGQUIT signal to the application process's PID. Everything will keep running as-is, and the application process will log its backtrace to the [Passenger log file](log_file/) for you to diagnose the underlying problem.
  * Terminate the process with the command `kill <PID>`. Passenger will notice the terminated process, abort the request (HTTP 502), and spawn a new application process if needed.
- * Setup the feature [<%= passenger_max_request_time %>](<%= passenger_max_request_time_doc %>). This way, Passenger will automatically terminate the process when it gets stuck on a request.
+ * Setup the feature <%= link_to_config_option(:max_request_time, locals) %>. This way, Passenger will automatically terminate the process when it gets stuck on a request.
 
 ## Viewing the internal state; machine-readable output
 
