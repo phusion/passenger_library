@@ -1,0 +1,31 @@
+### Example with maximum concurrency 1
+
+Suppose that you have 3 application processes, and each process's maximum concurrency is 1. When the application is idle, none of the processes are handling any requests:
+
+    Process A [ ]
+    Process B [ ]
+    Process C [ ]
+
+When a new request comes in (let's call this α), Passenger will decide to route the request to process A. A will then reach its maximum concurrency:
+
+    Process A [α]
+    Process B [ ]
+    Process C [ ]
+
+Suppose that, while α is still in progress, a new requests comes in (which we call β). That request will be load balanced to process B because it is the least busy one:
+
+    Process A [α]
+    Process B [β]
+    Process C [ ]
+
+Suppose α finishes. The situation will look like this:
+
+    Process A [ ]
+    Process B [β]
+    Process C [ ]
+
+If another request comes in (which we call ɣ), that request will be routed to A, not C:
+
+    Process A [ɣ]
+    Process B [β]
+    Process C [ ]

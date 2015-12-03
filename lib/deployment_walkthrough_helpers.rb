@@ -1,3 +1,5 @@
+require_relative 'constants'
+
 # Chapters:
 #
 # Introduction, select infrastructure
@@ -11,56 +13,6 @@
 # Conclusion
 
 module DeploymentWalkthroughHelpers
-  LANG_RUBY = {
-    choice_val: "ruby",
-    language_type: :ruby,
-    language_name: "Ruby",
-    language_name_with_determiner: "a Ruby",
-    language_runtime_name: "Ruby",
-    language_has_install_instructions: true
-  }
-  LANG_PYTHON = {
-    choice_val: "python",
-    language_type: :python,
-    language_name: "Python",
-    language_name_with_determiner: "a Python",
-    language_runtime_name: "Python",
-    language_has_install_instructions: true
-  }
-  LANG_NODEJS = {
-    choice_val: "nodejs",
-    language_type: :nodejs,
-    language_name: "Node.js",
-    language_name_with_determiner: "a Node.js",
-    language_runtime_name: "Node.js",
-    language_has_install_instructions: true 
-  }
-  LANG_IOJS = {
-    choice_val: "iojs",
-    language_type: :iojs,
-    language_name: "io.js",
-    language_name_with_determiner: "an io.js",
-    language_runtime_name: "io.js",
-    language_has_install_instructions: true
-  }
-  LANG_METEOR = {
-    choice_val: "meteor",
-    language_type: :meteor,
-    language_name: "Meteor",
-    language_name_with_determiner: "a Meteor",
-    language_runtime_name: "Node.js",
-    language_has_install_instructions: true 
-  }
-  
-  
-  # If you add an entry, be sure to also update SUPPORTED_APP_TYPES and SUPPORTED_APP_TYPE_CONVENTIONS.
-  DEPLOYMENT_WALKTHROUGH_LANGUAGES = [
-    LANG_RUBY,
-    LANG_PYTHON,
-    LANG_NODEJS,
-    LANG_IOJS,
-    LANG_METEOR
-  ]
   DEPLOYMENT_WALKTHROUGH_INFRASTRUCTURES = [
     { infrastructure_type: :aws,
       infrastructure_name: "AWS",
@@ -93,7 +45,7 @@ module DeploymentWalkthroughHelpers
       infrastructure_has_launch_instructions: false,
       infrastructure_needs_install_language_runtime: true }
   ]
-  
+
   PASSENGER_OSS_EDITION = {
     choice_val: "oss",
     edition_type: :oss,
@@ -144,7 +96,7 @@ module DeploymentWalkthroughHelpers
 
 
   def define_deployment_walkthrough_pages
-    DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |lang_spec|
+    SUPPORTED_LANGUAGES.each do |lang_spec|
       language_type = lang_spec[:language_type]
       locals = lang_spec
 
@@ -290,7 +242,7 @@ module DeploymentWalkthroughHelpers
       false
     else
       language_type = locals[:language_type]
-      spec = DEPLOYMENT_WALKTHROUGH_LANGUAGES.find { |spec| spec[:language_type] == language_type }
+      spec = SUPPORTED_LANGUAGES.find { |spec| spec[:language_type] == language_type }
       spec[:language_has_install_instructions]
     end
   end
@@ -466,7 +418,7 @@ module DeploymentWalkthroughHelpers
         subsection: :install_passenger }
     end
   end
-  
+
   def deployment_walkthrough_next_html_after_edition(locals)
     if needs_launch_server?(locals)
       return "launch_server.html"

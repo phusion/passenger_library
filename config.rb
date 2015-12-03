@@ -1,3 +1,5 @@
+require "./lib/constants"
+require "./lib/languages"
 require "./lib/custom_helpers"
 require "./lib/deployment_walkthrough_helpers"
 require "./lib/kramdown_patch"
@@ -222,7 +224,7 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/deploy/#{integration_mode_type}/zero_downtime_redeployments/index.html",
     "/deploy/zero_downtime_redeployments/language_selection.html",
     locals: integration_mode_spec
-  DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
+  SUPPORTED_LANGUAGES.each do |language_spec|
     locals = integration_mode_spec.merge(language_spec)
 
     proxy "/deploy/#{integration_mode_type}/deploy/#{language_spec[:language_type]}/index.html",
@@ -260,7 +262,7 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/admin/#{integration_mode_type}/troubleshooting/index.html",
     "/admin/troubleshooting/language_selection.html",
     locals: integration_mode_spec
-  DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
+  SUPPORTED_LANGUAGES.each do |language_spec|
     next if language_spec[:language_type] == :iojs
     proxy "/admin/#{integration_mode_type}/troubleshooting/#{language_spec[:language_type]}/index.html",
       "/admin/troubleshooting/troubleshooting.html",
@@ -322,7 +324,7 @@ ignore "/admin/debugging_console/nodejs.html"
 
 ###### In-depth ######
 
-DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
+SUPPORTED_LANGUAGES.each do |language_spec|
   language_type = language_spec[:language_type]
   proxy "/indepth/#{language_type}/index.html",
     "/indepth/index2.html",
@@ -336,10 +338,16 @@ DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
     proxy "/indepth/#{language_type}/app_autodetection/#{integration_mode_type}/index.html",
       "/indepth/app_autodetection/app_autodetection.html",
       locals: integration_mode_spec.merge(language_spec)
+    proxy "/indepth/#{language_type}/dynamic_scaling_of_app_processes/#{integration_mode_type}/index.html",
+      "/indepth/dynamic_scaling_of_app_processes/dynamic_scaling_of_app_processes.html",
+      locals: integration_mode_spec.merge(language_spec)
   end
 
   proxy "/indepth/#{language_type}/request_load_balancing.html",
-    "/indepth/request_load_balancing.html",
+    "/indepth/request_load_balancing/request_load_balancing.html",
+    locals: language_spec
+  proxy "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html",
+    "/indepth/dynamic_scaling_of_app_processes/integration_mode_selection.html",
     locals: language_spec
   proxy "/indepth/#{language_type}/apache_per_request_envvars.html",
     "/indepth/apache_per_request_envvars/apache_per_request_envvars.html",
@@ -370,7 +378,9 @@ proxy "/indepth/meteor/secure_http_headers.html",
 
 ignore "/indepth/index2.html"
 ignore "/indepth/app_autodetection/app_autodetection.html"
-ignore "/indepth/request_load_balancing.html"
+ignore "/indepth/dynamic_scaling_of_app_processes/dynamic_scaling_of_app_processes.html"
+ignore "/indepth/request_load_balancing/request_load_balancing.html"
+ignore "/indepth/dynamic_scaling_of_app_processes/integration_mode_selection.html"
 ignore "/indepth/apache_per_request_envvars/apache_per_request_envvars.html"
 ignore "/indepth/out_of_band_work.html"
 ignore "/indepth/spawn_methods/spawn_methods.html"
@@ -379,7 +389,7 @@ ignore "/indepth/secure_http_headers.html"
 
 ###### Union Station logging ######
 
-DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |language_spec|
+SUPPORTED_LANGUAGES.each do |language_spec|
   language_type = language_spec[:language_type]
   proxy "/unionstation/#{language_type}/index.html",
     "/unionstation/index2.html",

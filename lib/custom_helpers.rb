@@ -1,8 +1,5 @@
 require_relative 'constants'
 
-CURRENT_VERSION = "5.0.0"
-LATEST_RUBY_VERSION = "2.2.1"
-
 SUPPORTED_DEBIAN_VERSIONS = {
   "jessie"  => "Debian 8",
   "wheezy"  => "Debian 7",
@@ -17,40 +14,6 @@ SUPPORTED_REDHAT_VERSIONS = {
   "el7" => "Red Hat 7 / CentOS 7",
   "el6" => "Red Hat 6 / CentOS 6"
 }
-
-SUPPORTED_APP_TYPES = [
-  { lang_key: "ruby",
-    name: "Ruby, Ruby on Rails",
-    type: "rack",
-    startup_file: "config.ru" },
-  { lang_key: "python",
-    name: "Python",
-    type: "wsgi",
-    startup_file: "passenger_wsgi.py" },
-  { lang_key: "meteor nodejs iojs",
-    name: "Node.js, io.js or Meteor JS in bundled/packaged mode",
-    type: "node",
-    startup_file: "app.js" },
-  { lang_key: "meteor",
-    name: "Meteor JS in non-bundled/packaged mode",
-    type: "meteor",
-    startup_file: ".meteor" }
-]
-
-SUPPORTED_APP_TYPE_CONVENTIONS = [
-  { name: "Ruby, Ruby on Rails",
-    type: "rack",
-    startup_file: "config.ru" },
-  { name: "Python",
-    type: "wsgi",
-    startup_file: "passenger_wsgi.py" },
-  { name: "Node.js",
-    type: "node",
-    startup_file: "app.js" },
-  { name: "Meteor JS in non-bundled/packaged mode",
-    type: "meteor",
-    startup_file: ".meteor" }
-]
 
 module CustomHelpers
   def globals
@@ -268,7 +231,7 @@ module CustomHelpers
 
   def current_url_prefix_without_programming_language
     language_types = []
-    DeploymentWalkthroughHelpers::DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |spec|
+    SUPPORTED_LANGUAGES.each do |spec|
       language_types << spec[:language_type]
     end
     current_page_path =~ /(.*)(#{language_types.join("|")})(.*)/
@@ -277,11 +240,66 @@ module CustomHelpers
 
   def current_url_suffix_without_programming_language
     language_types = []
-    DeploymentWalkthroughHelpers::DEPLOYMENT_WALKTHROUGH_LANGUAGES.each do |spec|
+    SUPPORTED_LANGUAGES.each do |spec|
       language_types << spec[:language_type]
     end
     current_page_path =~ /(.*)(#{language_types.join("|")})(.*)/
     $3
+  end
+
+  def link_to_config_option(name, locals)
+    %Q{<a href="#{url_for_config_option(name, locals)}">#{h resolve_config_option_name(name, locals)}</a>}
+  end
+
+  # Given a config option name such as `max_pool_size`, transforms it into a form
+  # that that is suitable for the current integration mode.
+  def resolve_config_option_name(name, locals)
+    name = resolve_config_option_alias(name, locals)
+    case locals[:integration_mode_type]
+    when :nginx
+      "passenger_#{name}"
+    when :apache
+      new_name = name.to_s.gsub(/_([a-z])/) { |match| match.sub('_', '').upcase }
+      new_name[0] = new_name[0].upcase
+      new_name
+    when :standalone
+      cli_option = "--" + name.to_s.gsub('_', '-')
+      "`#{cli_option}` / \"#{name}\""
+    when nil
+      name.to_s.gsub('_', ' ')
+    else
+      raise "Unknown itegration mode #{locals[:integration_mode_type]}"
+    end
+  end
+
+  # Given a config option name such as `max_pool_size`, returns the corresponding
+  # integration mode-specific URL for its reference.
+  def url_for_config_option(name, locals)
+    name = resolve_config_option_alias(name, locals)
+    case locals[:integration_mode_type]
+    when :nginx
+      url_for("/config/nginx/reference/index.html") + "#passenger_#{name}"
+    when :apache
+      anchor = name.to_s.gsub(/_([a-z])/) { |match| match.sub('_', '').upcase }
+      anchor[0] = anchor[0].upcase
+      url_for("/config/apache/reference/index.html") + "##{anchor}"
+    when :standalone
+      cli_option = "--" + name.to_s.gsub('_', '-')
+      anchor = "#{cli_option}-#{name}"
+      url_for("/config/standalone/reference/index.html") + "##{anchor}"
+    when nil
+      url_for("/config/reference/index.html") + "?a=passenger_#{name}"
+    else
+      raise "Unknown itegration mode #{locals[:integration_mode_type]}"
+    end
+  end
+
+  def resolve_config_option_alias(name, locals)
+    if locals[:integration_mode_type] == :standalone && name == :max_instances
+      :max_pool_size
+    else
+      name
+    end
   end
 
   def is_choice_filtered?(choice, limit_choices)

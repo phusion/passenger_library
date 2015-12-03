@@ -1198,6 +1198,8 @@ Sets arbitrary environment variables for the application.
 
 ## Process management options
 
+<a name="passenger_max_instances"></a>
+
 ### `--max-pool-size` / "max_pool_size"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -1373,6 +1375,8 @@ This option allows you to set the preloader's idle timeout, in seconds. A value 
 Setting a higher value will mean that the preloader is kept around longer, which may slightly increase memory usage. But as long as the preloader server is running, the time to spawn a Ruby application process only takes about 10% of the time that is normally needed, assuming that you're using the `smart` [spawn method](#--spawn-method-spawn_method). So if your system has enough memory, then is it recommended that you set this option to a high value or to `0`.
 
 
+<a name="passenger_concurrency_model"></a>
+
 ### `--concurrency-model` / "concurrency_model"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -1420,6 +1424,8 @@ Specifies the I/O concurrency model that should be used for Ruby application pro
   </ul>
 </div>
 
+
+<a name="passenger_thread_count"></a>
 
 ### `--thread-count` / "thread_count"
 

@@ -1,0 +1,14 @@
+<% if language_type == :ruby %>
+  Ruby applications can normally handle only 1 request at the same time.
+<% else %>
+  <%= language_name %> applications can only handle 1 request at the same time.
+<% end %>
+With Passenger this is improved by running multiple processes of the application using pooled application groups. For each request from the incoming request queue, a non-busy (free) application process is selected to handle the request.
+
+<div><img src="../request_load_balancing/request_load_balancing.png"></div>
+
+<% if language_type == :ruby %>
+  For thread-safe Ruby apps it is also possible to enable [multithreading](<%= url_for_config_option(:concurrency_model, locals) %>), which allows the application processes to concurrently handle multiple requests at the same time -- up to the amount of threads configured. In this case, Passenger forwards the request to the instance that is currently handling the least number of requests.
+<% end %>
+
+If all application processes and threads are busy, Passenger spawns a new instance, up to the [process limit](<%= url_for_config_option(:max_instances, locals) %>) for the group. The amount of processes of the groups combined may also not exceed the limit for the application pool. If either limit is reached, the request remains in the queue (which has its own [limit](#request-queue-overflow)).

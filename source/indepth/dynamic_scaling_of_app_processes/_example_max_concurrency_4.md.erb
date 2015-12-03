@@ -1,0 +1,40 @@
+### Example: maximum concurrency of 4
+
+Suppose that you have 2 application processes,
+<% if language_concurrency_model == :thread -%>
+  and you configured the number of threads to 4, causing each process's maximum concurrency to be 4.
+<% else -%>
+  and the processes' maximum concurrency is configured to 4.
+<% end -%>
+When the application is idle, none of the processes are handling any requests:
+
+    Process A [    ]
+    Process B [    ]
+
+When a new request comes in, Passenger may decide to route the request to process A.
+
+    Process A [*   ]
+    Process B [    ]
+
+Suppose that, while that request is still in progress, 7 more requests come in. All processes will reach their maximum concurrency:
+
+    Process A [****]
+    Process B [****]
+
+If *another* request comes in, none of the existing processes have enough concurrency to handle that. So Passenger will queue the request and spawn a new process:
+
+    Request queue [*       ]
+
+    Process A [****]
+    Process B [****]
+    Process C (spawning...)
+
+When process C is done spawning, or when one of the existing processes is done with their request (and are no longer at their maximum concurrency), then Passenger will route the queued request to either of those processes.
+
+Suppose C finishes spawning immediately after, then the situation looks like this:
+
+    Request queue [        ]
+                       |
+    Process A [****]   | queued request
+    Process B [****]   | is routed to C
+    Process C [*   ] <-+
