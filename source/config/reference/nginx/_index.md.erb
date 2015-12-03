@@ -1233,6 +1233,49 @@ This option allows you to set the preloader's idle timeout, in seconds. A value 
 Setting a higher value will mean that the preloader is kept around longer, which may slightly increase memory usage. But as long as the preloader server is running, the time to spawn a Ruby application process only takes about 10% of the time that is normally needed, assuming that you're using the `smart` [spawn method](#passenger_spawn_method). So if your system has enough memory, then is it recommended that you set this option to a high value or to `0`.
 
 
+### passenger_force_max_concurrent_requests_per_process
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_force_max_concurrent_requests_per_process <em>number</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_force_max_concurrent_requests_per_process -1;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+<%
+languages_requiring_hint_for_dynamic_process_scaling_to_work = []
+
+SUPPORTED_LANGUAGES.each do |language|
+  if language[:language_default_concurrency] == 0
+    languages_requiring_hint_for_dynamic_process_scaling_to_work << language[:language_name]
+  end
+end
+%>
+
+Use this option to tell Passenger how many concurrent requests the application can handle per process. A value of 0 means that each process can handle an unlimited number of connections, while a value of -1 (the default) means that Passenger will infer the value based on internal heuristics.
+
+There are two main use cases for this option:
+
+ 1. To make [dynamic process scaling](<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_of_app_processes/index.html" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
+ 2. [To make SSE and WebSockets work well in Ruby applications.](<%= url_for "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html" %>) Set this option to 0.
+
+This option is a hint to Passenger and does not make the application *actually* able to handle that many concurrent requests per process. For example in Ruby applications, the amount of concurrency that your application process can handle usually depends on the number of [configured threads](#passenger_thread_count). If you set the number of threads, then Passenger will automatically infer that Ruby applications' max concurrency per process equals the number of threads. But in non-standard cases where this heuristic fails (e.g. in situations where a WebSocket library such as Faye spawns threads to handle WebSockets) then you can use this option to override Passenger's heuristic.
+
+It is recommended that you do not touch this configuration option unless you want to tweak Passenger for one of the two main use cases documented above.
+
+
 ### passenger_start_timeout
 
 <table class="table table-bordered table-condensed">
