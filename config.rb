@@ -161,8 +161,8 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/config/#{integration_mode_type}/intro.html",
     "/config/intro.html",
     locals: integration_mode_spec
-  proxy "/config/#{integration_mode_type}/dynamic_scaling_of_app_processes/index.html",
-    "/config/dynamic_scaling_of_app_processes/language_selection.html",
+  proxy "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html",
+    "/config/dynamic_scaling_vs_fixed_app_processes/language_selection.html",
     locals: integration_mode_spec
   proxy "/config/#{integration_mode_type}/optimization/index.html",
     "/config/optimization/optimization.html",
@@ -180,8 +180,8 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   SUPPORTED_LANGUAGES.each do |language_spec|
     language_type = language_spec[:language_type]
 
-    proxy "/config/#{integration_mode_type}/dynamic_scaling_of_app_processes/#{language_type}/index.html",
-      "/config/dynamic_scaling_of_app_processes/dynamic_scaling_of_app_processes.html",
+    proxy "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/#{language_type}/index.html",
+      "/config/dynamic_scaling_vs_fixed_app_processes/dynamic_scaling_vs_fixed_app_processes.html",
       locals: integration_mode_spec.merge(language_spec)
   end
 end
@@ -195,8 +195,8 @@ proxy "/config/cloud_licensing_configuration/index.html",
 
 ignore "/config/index2.html"
 ignore "/config/intro.html"
-ignore "/config/dynamic_scaling_of_app_processes/language_selection.html"
-ignore "/config/dynamic_scaling_of_app_processes/dynamic_scaling_of_app_processes.html"
+ignore "/config/dynamic_scaling_vs_fixed_app_processes/language_selection.html"
+ignore "/config/dynamic_scaling_vs_fixed_app_processes/dynamic_scaling_vs_fixed_app_processes.html"
 ignore "/config/optimization/optimization.html"
 ignore "/config/optimization/integration_mode_selection.html"
 ignore "/config/tuning_sse_and_websockets/tuning_sse_and_websockets.html"

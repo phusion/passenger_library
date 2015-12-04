@@ -1,0 +1,134 @@
+---
+section: config
+---
+<%
+@page_title = "Dynamic scaling of #{language_name} application processes vs fixed process pool on Passenger #{integration_mode_name_as_passenger_suffix}"
+content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
+%>
+
+<h1>Dynamic scaling of <%= language_name %> application processes vs fixed process pool<br>
+<small>on Passenger <%= integration_mode_name_as_passenger_suffix %></small></h1>
+
+Generally speaking, the more application processes you run, the more concurrent traffic you can handle and the better your CPU core utilization becomes, until your hardware is saturated. But running more processes also means higher memory consumption. So when using Passenger, you can choose between two modes of application process handling, each optimized for different use cases:
+
+ 1. Letting Passenger automatically adjust the number of application processes based on traffic.
+ 2. Maintaining a fixed number of application processes.
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Dynamic application process scaling
+
+In this mode, Passenger will automatically spin up application processes when traffic is high. It will also automatically shut down application processes when traffic is low, allowing you to conserve resources. This mode is a great fit for the following use cases:
+
+<% if integration_mode_type == :standalone -%>
+ * You have deployed multiple web applications on Passenger Standalone using [the Mass Deployment feature](<%= url_for "/deploy/standalone/mass_deployment.html" %>), and you want resources for each application to be automatically adjusted based on traffic.
+<% else -%>
+ * You have deployed multiple web applications on Passenger, and you want resources for each application to be automatically adjusted based on traffic.
+<% end -%>
+ * You are running multiple services on a machine with limited resources, so you want conserve web application memory usage as much as possible.
+
+This is the default process handling mode in Passenger.
+
+However, dynamic process scaling has a performance penalty. Spinning processes up and down is expensive. If performance is important to you, then we recommend that you [maintain a fixed number of application processes](#fixed).
+
+### How it works
+
+To learn how exactly Passenger decides when to spin up and spin down processes, read [How dynamic scaling of application processes works](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html" %>).
+
+### Configuration
+
+<% if language_default_concurrency == 0 %>
+First of all, you need to set <%= link_to_config_option(:passenger_force_max_concurrent_requests_per_process, locals) %> to approximately the number of concurrent requests at which the performance of a single process begins to degrade. **Dynamic process scaling does not work unless you configure this!** The reason behind this is explained in [How dynamic scaling of application processes works](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html" %>).
+
+Dynamic process scaling can be further tweaked through the following configuration options:
+<% else %>
+Dynamic process scaling can be tweaked through the following configuration options:
+<% end %>
+
+ * <%= link_to_config_option(:passenger_min_instances, locals) %> -- Configures the minimum number of processes for a given application. Defaults to 1.
+<% if integration_mode_type != :standalone -%>
+ * <%= link_to_config_option(:passenger_max_instances, locals) %> -- Configures the maximum number of processes for a given application. If you do not configure this, then Passenger may spin up as many processes as it wants, up to the max pool size.
+<% end -%>
+ * <%= link_to_config_option(:pool_idle_time, locals) %> -- How many seconds a process should be idle before Passenger considers shutting it down.
+ * <%= link_to_config_option(:passenger_max_pool_size, locals) %> -- Configures the maximum total number of application processes that may simultaneously exists, regardless of how many different applications you have deployed on Passenger. This is a "safety switch" that prevents Passenger from overloading your system with too many processes. Defaults to 6.
+
+### Example 1
+
+Suppose that you have a VPS with 2 GB RAM. You deploy 8 different web applications on that single server (instead of giving each application its own server) in order to minimize cost. Performance isn't terribly important to you: saving cost is more important. You want to allocate at most 1.5 GB of RAM for your web applications, leaving 512 MB for other serivces. Assuming that each application process consumes about 300 MB RAM, you can set:
+
+ * min instances to 1
+ * max pool size to 5 (`1500 / 300 = 5`)
+
+### Example 2
+
+Suppose that you have the same VPS with 2 GB RAM. The VPS is running an ecommerce site and a blog. The ecommerce site is more important than the blog, so whenever the blog isn't very active, you want to spin down blog processes to make more room for the ecommerce site.
+
+You want to allocate at most 1.5 GB of RAM for your web applications, leaving 512 MB for other serivces. Assuming that each application process consumes about 300 MB RAM, you can configure the following:
+
+ * Set max pool size to 5 (`1500 / 300 = 5`)
+ * For the ecommerce site:
+   - Set min instances to 3
+ * For the blog:
+   - Set min instances to 1
+   - Set max instances to 2
+
+This way, the ecommerce site will use 3-5 processes. The blog will 1-2 processes.
+
+<a name="fixed"></a>
+
+## Maintaining a fixed number of application processes
+
+Passenger can also maintain a fixed number of application processes instead of adjusting the number dynamically. This mode of process handling is ideal in the following use cases:
+
+ 1. You run only a single web application on your server. Your server is dedicated to running that web application only.
+ 2. Performance is important to you. Adjusting processes dynamically is expensive, so by maintaining a fixed number of application processes you will avoid this overhead.
+
+<% if language_type == :ruby %>
+  This mode of process handling is also used by Unicorn and Puma.
+<% end %>
+
+### Configuration
+
+<% if integration_mode_type == :nginx %>
+  <p>
+    Let <code>N</code> be the number of processes you want. Set the following configuration in your <code>http</code> block:
+  </p>
+
+  <pre class="highlight">passenger_max_pool_size N;</pre>
+
+  <p>
+    Set the following configuration in your <code>server</code> block:
+  </p>
+
+  <pre class="highlight">passenger_min_instances N;</pre>
+
+  <p>
+    You should also configure <a href="<%= url_for "/config/nginx/reference/index.html" %>#passenger_pre_start">passenger_pre_start</a> in the <code>http</code> block so that your app is started during web server launch:
+  </p>
+
+  <pre class="highlight">passenger_pre_start http://your-website-url.com;</pre>
+<% elsif integration_mode_type == :apache %>
+  <p>
+    Let <code>N</code> be the number of processes you want. Set the following configuration in the global context:
+  </p>
+
+  <pre class="highlight">PassengerMaxPoolSize N</pre>
+
+  <p>
+    Set the following configuration in your virtual host block:
+  </p>
+
+  <pre class="highlight">PassengerMinInstances N</pre>
+
+  <p>
+    You should also configure <a href="<%= url_for "/config/apache/reference/index.html" %>#passengerprestart">PassengerPreStart</a> in the global context so that your app is started during web server launch:
+  </p>
+
+  <pre class="highlight">PassengerPreStart http://your-website-url.com</pre>
+<% else %>
+  <p>
+    Run <code>passenger start</code> with <code>--max-pool-size=N --min-instances=N</code>, where <code>N</code> is the number of processes you want.
+  </p>
+<% end %>

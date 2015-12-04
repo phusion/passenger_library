@@ -24,11 +24,11 @@ If you are optimizing Passenger for the purpose of **benchmarking** then you sho
 
 ## Minimizing process spawning
 
-By default, Passenger spawns and shuts down application processes according to traffic. This allows it to use more resources during busy times, while conserving resources during idle times. This is especially useful if you host more than 1 app on a single server: if not all apps are used at the same time, then you don't have to keep all apps running at the same time.
+By default, Passenger [spawns and shuts down application processes according to traffic](<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html" %>). This allows it to use more resources during busy times, while conserving resources during idle times. This is especially useful if you host more than 1 app on a single server: if not all apps are used at the same time, then you don't have to keep all apps running at the same time.
 
 However, spawning a process takes a lot of time (in the order of 10-20 seconds for a Rails app), and CPU usage will be near 100% during spawning. Therefore, while spawning, your server will be slower at performing other activities, such as handling requests.
 
-For consistent performance, it is thus recommended that you configure a static process pool: telling Passenger to use a fixed number of processes, instead of spawning and shutting them down dynamically.
+For consistent performance, it is thus recommended that you configure a [fixed process pool](<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html" %>?a=fixed): telling Passenger to use a fixed number of processes, instead of spawning and shutting them down dynamically.
 
 <% if integration_mode_type == :nginx %>
   <p>
