@@ -35,12 +35,12 @@ However, dynamic process scaling has a performance penalty. Spinning processes u
 
 ### How it works
 
-To learn how exactly Passenger decides when to spin up and spin down processes, read [How dynamic scaling of application processes works](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html" %>).
+To learn how exactly Passenger decides when to spin up and spin down processes, read [How dynamic scaling of application processes works](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/#{integration_mode_type}/index.html" %>).
 
 ### Configuration
 
 <% if language_default_concurrency == 0 %>
-First of all, you need to set <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> to approximately the number of concurrent requests at which the performance of a single process begins to degrade. **Dynamic process scaling does not work unless you configure this!** The reason behind this is explained in [How dynamic scaling of application processes works](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html" %>).
+First of all, you need to set <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> to approximately the number of concurrent requests at which the performance of a single process begins to degrade. **Dynamic process scaling does not work unless you configure this!** The reason behind this is explained in [How dynamic scaling of application processes works](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/#{integration_mode_type}/index.html" %>).
 
 Dynamic process scaling can be further tweaked through the following configuration options:
 <% else %>
