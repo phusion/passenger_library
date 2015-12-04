@@ -261,7 +261,7 @@ module CustomHelpers
     when :apache
       new_name = name.to_s.gsub(/_([a-z])/) { |match| match.sub('_', '').upcase }
       new_name[0] = new_name[0].upcase
-      new_name
+      "Passenger#{new_name}"
     when :standalone
       cli_option = "--" + name.to_s.gsub('_', '-')
       "`#{cli_option}` / \"#{name}\""
@@ -281,7 +281,7 @@ module CustomHelpers
       url_for("/config/nginx/reference/index.html") + "#passenger_#{name}"
     when :apache
       anchor = name.to_s.gsub(/_/, '').downcase
-      url_for("/config/apache/reference/index.html") + "##{anchor}"
+      url_for("/config/apache/reference/index.html") + "#passenger#{anchor}"
     when :standalone
       cli_option = "--" + name.to_s.gsub('_', '-')
       anchor = "#{cli_option}-#{name}"

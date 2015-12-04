@@ -40,19 +40,19 @@ To learn how exactly Passenger decides when to spin up and spin down processes, 
 ### Configuration
 
 <% if language_default_concurrency == 0 %>
-First of all, you need to set <%= link_to_config_option(:passenger_force_max_concurrent_requests_per_process, locals) %> to approximately the number of concurrent requests at which the performance of a single process begins to degrade. **Dynamic process scaling does not work unless you configure this!** The reason behind this is explained in [How dynamic scaling of application processes works](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html" %>).
+First of all, you need to set <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> to approximately the number of concurrent requests at which the performance of a single process begins to degrade. **Dynamic process scaling does not work unless you configure this!** The reason behind this is explained in [How dynamic scaling of application processes works](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html" %>).
 
 Dynamic process scaling can be further tweaked through the following configuration options:
 <% else %>
 Dynamic process scaling can be tweaked through the following configuration options:
 <% end %>
 
- * <%= link_to_config_option(:passenger_min_instances, locals) %> -- Configures the minimum number of processes for a given application. Defaults to 1.
+ * <%= link_to_config_option(:min_instances, locals) %> -- Configures the minimum number of processes for a given application. Defaults to 1.
 <% if integration_mode_type != :standalone -%>
- * <%= link_to_config_option(:passenger_max_instances, locals) %> -- Configures the maximum number of processes for a given application. If you do not configure this, then Passenger may spin up as many processes as it wants, up to the max pool size.
+ * <%= link_to_config_option(:max_instances, locals) %> -- Configures the maximum number of processes for a given application. If you do not configure this, then Passenger may spin up as many processes as it wants, up to the max pool size.
 <% end -%>
  * <%= link_to_config_option(:pool_idle_time, locals) %> -- How many seconds a process should be idle before Passenger considers shutting it down.
- * <%= link_to_config_option(:passenger_max_pool_size, locals) %> -- Configures the maximum total number of application processes that may simultaneously exists, regardless of how many different applications you have deployed on Passenger. This is a "safety switch" that prevents Passenger from overloading your system with too many processes. Defaults to 6.
+ * <%= link_to_config_option(:max_pool_size, locals) %> -- Configures the maximum total number of application processes that may simultaneously exists, regardless of how many different applications you have deployed on Passenger. This is a "safety switch" that prevents Passenger from overloading your system with too many processes. Defaults to 6.
 
 ### Example 1
 
