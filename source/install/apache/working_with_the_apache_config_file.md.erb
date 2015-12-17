@@ -25,7 +25,21 @@ On most systems the Apache configuration file is located in one of these locatio
  * `/etc/httpd/httpd.conf`
  * `/etc/httpd/conf/httpd.conf`
 
-Furthermore On OS X Server >= 10.8 Mountain Lion the location of the Apache configuration file depends on whether you use Web Services or not. If you do, then the configuration file is in `/Library/Server/Web/Config/apache2/httpd_server_app.conf`. If you do not, then the configuration file is in `/etc/apache2/httpd.conf`.
+Furthermore On OS X Server >= 10.8 Mountain Lion, the location of the Apache configuration file varies. Some paths are listed below, please refer to the OS X Server documentation for the complete information.
+<table class="table table-bordered table-striped">
+  <tr>
+    <td>Not using websites/webservices</td>
+    <td>default (/etc/apache2/httpd.conf)</td>
+  </tr>
+  <tr>
+    <td>OS X Server 4 webservices</td>
+    <td>/Library/Server/Web/Config/apache2/httpd_server_app.conf</td>
+  </tr>
+  <tr>
+    <td>OS X Server 5 websites</td>
+    <td>/Library/Server/Web/Config/Proxy/apache_serviceproxy.conf</td>
+  </tr>
+</table>
 
 ## mods-enabled and sites-enabled
 
