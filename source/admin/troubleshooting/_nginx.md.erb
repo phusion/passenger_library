@@ -26,6 +26,14 @@ If you did enable Passenger with `passenger_enabled on`, and `passenger_root` is
 
 To solve this problem, please open the [Passenger log file](<%= url_for "/admin/nginx/log_file/log_file.html" %>) and look for any error messages there. The error messages will tell you why Passenger failed to initialize. Please take action accordingly.
 
+#### Cause and solution #4
+
+Make sure Passenger recognizes your application. If [autodetection](<%= url_for "/indepth/app_autodetection/" %>) fails, for example because you are using non-standard filenames, you might have to specify additional options.
+
+<% if language_type == :ruby %>
+Note that if you are upgrading from a Passenger version below 5, autodetection requires a `config.ru` to be present, as specified in the [upgrade notes](<%= url_for "/install/migrating/" %>).
+<% end %>
+
 ### Upon accessing the web app, Nginx reports a "Permission denied" error
 
 #### Symptoms
