@@ -10,9 +10,11 @@ If you look in the Nginx error log, you see an error message like this:
 2015/07/02 20:14:17 [error] 31746#0: *80 "/app/public/index.html" is not found (2: No such file or directory), client: 127.0.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", host: "foo.com"
 ~~~
 
+There are several common causes for this problem.
+
 #### Cause and solution #1
 
-There are two common causes for this problem. The first is that you did not enable Passenger in the corresponding `server` block with [passenger_enabled on](<%= url_for "/config/nginx/reference/index.html" %>#passenger_enabled).
+You did not enable Passenger in the corresponding `server` block with [passenger_enabled on](<%= url_for "/config/nginx/reference/index.html" %>#passenger_enabled).
 
 To solve this problem, please specify `passenger_enabled on` in your Nginx configuration file, inside your app's `server` block.
 
