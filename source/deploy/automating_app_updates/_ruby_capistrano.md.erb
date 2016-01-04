@@ -403,7 +403,7 @@ role :web, %w{myappuser@myserver.com myappuser@myserver2.com}
 role :db,  %w{myappuser@myserver.com}
 ~~~
 
-If your server is on Amazon EC2, be sure to uncomment the `set :ssh_options` call and point the `keys` option to your Amazon EC2 key file.
+If your server is on Amazon EC2, be sure to uncomment the `set :ssh_options` call and point the `keys` option to your Amazon EC2 key file. Also set the `auth_methods` option to `%w(publickey password)`.
 
 ~~~ruby
 # Global options
@@ -411,7 +411,7 @@ If your server is on Amazon EC2, be sure to uncomment the `set :ssh_options` cal
 set :ssh_options, {
   keys: %w(/path-to-your-ec2-key.pem),
   forward_agent: false,
-  auth_methods: %w(password)
+  auth_methods: %w(publickey password)
 }
 ~~~
 
