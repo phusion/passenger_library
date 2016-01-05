@@ -29,12 +29,20 @@ end
   <div>
     <p>If <%= edition_title %> was installed on OS X through Homebrew, then you can upgrade <%= edition_title %> as follows:</p>
 
-    <pre class="highlight">brew upgrade passenger nginx --with-passenger</pre>
+    <% if integration_mode_type == :apache %>
+      <pre class="highlight">brew upgrade passenger</pre>
 
-    <% if integration_mode_type == :nginx %>
-      <p>Passenger has been updated, but no new Nginx version has been released, then you must also reinstall Nginx against the latest version of Passenger:</p>
+      <p>When done, read the Homebrew formula caveats and follow any Apache-specific instructions you see:</p>
+
+      <pre class="highlight">brew info passenger</pre>
+    <% elsif integration_mode_type == :nginx %>
+      <pre class="highlight">brew upgrade passenger nginx --with-passenger</pre>
+
+      <p>If Passenger has been updated, but no new Nginx version has been released, then you must also reinstall Nginx against the latest version of Passenger:</p>
 
       <pre class="highlight">brew reinstall nginx --with-passenger</pre>
+    <% else %>
+      <pre class="highlight">brew upgrade passenger</pre>
     <% end %>
   </div>
 <% end %>
