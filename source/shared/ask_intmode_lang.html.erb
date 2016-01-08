@@ -16,18 +16,25 @@ ask_data = [
     ]
   },
   {
-    header: "Passenger edition",
-    header_links: [
-      { href: url_for('/indepth/open_source_vs_enterprise.html'), desc: "Open Source vs. Enterprise differences" }
-    ],
-    store_key: "product_edition",
-    uri_key: "edition",
-    choices: [
-       { img: url_for("/images/passenger144.png"), w: 122, h: 144, alt: "Passenger open source", val: "oss" },
-       { img: url_for("/images/passenger-enterprise144.png"), w: 122, h:144, alt: "Passenger Enterprise", val: "enterprise" }
-    ]
+    header: "programming language",
+    header_links: [],
+    store_key: "programming_language",
+    uri_key: "lang",
+    choices: []
   }
 ]
+
+choices = ask_data[1][:choices]
+choices << { img: url_for("/images/ruby.png"), w: 96, h:96, alt: "Ruby", val: "ruby" }
+choices << { img: url_for("/images/python.png"), w: 96, h:96, alt: "Python", val: "python" }
+
+if locals[:combine_nodejs_and_iojs]
+  choices << { img: url_for("/images/nodejs.png"), w: 133, h:96, alt: "Node.js/io.js", val: "nodejs" }
+else
+  choices << { img: url_for("/images/nodejs.png"), w: 133, h:96, alt: "Node.js", val: "nodejs" }
+  choices << { img: url_for("/images/iojs.png"), w: 96, h:96, alt: "io.js", val: "iojs" }
+end
+choices << { img: url_for("/images/meteor.png"), w: 133, h:96, alt: "Meteor", val: "meteor" }
 %>
 
 <%= render_partial("/shared/matrix_ask.html", locals: locals.merge(ask_data: ask_data)) %>
