@@ -10,30 +10,59 @@ content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
 <small>on Passenger <%= integration_mode_name_as_passenger_suffix %></small></h1>
 
 <% if integration_mode_type == :apache %>
-Passenger supports Server Sent Events (SSE) out of the box with no configuration. However, WebSockets are [not yet supported when using the Apache integration mode](https://github.com/phusion/passenger/issues/1202).
-
-If you want to use WebSockets, then we recommend that you use Passenger for Nginx, or Passenger Standalone with a reverse proxy from Apache. Passenger for Nginx and Passenger Standalone both support WebSockets out of the box with no configuration.
-
-<h2>SSE performance tuning</h2>
-
-There are some things you need to know for optimal SSE performance.
-<% else %>
-Passenger <%= integration_mode_name_as_passenger_suffix %> supports Server Sent Events (SSE) and WebSockets out of the box with no configuration, but there are some things you need to know.
-
-<h2>Performance tuning</h2>
+<div class="note">Although Passenger supports Server Sent Events (SSE) out of the box, the Apache integration mode has <a href="https://github.com/phusion/passenger/issues/1202">issues with Apache</a>. 
+We recommend using either Passenger Standalone with Apache as a reverse proxy, or Passenger with the Nginx integration mode.</div>
 <% end %>
 
-**For Ruby apps only**, you need to insert a configuration snippet inside your `config.ru`:
+Using SSE with WebSockets generally means that an application must handle multiple concurrent connections. Ruby applications usually can't do this and need a special 
+configuration tweak.
 
-~~~ruby
-if defined?(PhusionPassenger)
-  PhusionPassenger.advertised_concurrency_level = 0
-end
-~~~
+<h2>Ruby concurrency tweak</h2>
 
-This snippet tells Passenger that your Ruby app will handle SSE and WebSockets. In response, Passenger will adjust the connection concurrency settings for your app. Without this configuration snippet, SSE and WebSockets still work, but with degraded performance.
+Passenger's highly optimized load balancer assumes that Ruby apps can handle 1 (or thread-limited amount of) concurrent connection(s). This is usually the case and results 
+in optimal load-balancing. But endpoints that deal with SSE/Websockets can handle many more concurrent connections, so the assumption leads to degraded performance.
 
-This configuration snippet is currently necessary because of the way Passenger is implemented. We are <a href="https://github.com/phusion/passenger/issues/1195">working on improving this mechanism</a>. One day, the above configuration snippet will no longer be necessary. For now, you should include the above configuration snippet for optimal SSE and WebSocket performance.
+You can use the [force max concurrent requests per process](<%= url_for "/config/reference/index.html?a=passenger_force_max_concurrent_requests_per_process" %>) 
+configuration option to override this. The example below shows how to set the concurrency to unlimited for the /special_websocket_endpoint:
+<% if integration_mode_type == :nginx %>
+<pre class="highlight">server {
+   listen 80;
+   server_name www.example.com;
+   root /webapps/my_app/public;
+   passenger_enabled on;
+
+   <span class="c"># Use default concurrency for the app. But for the endpoint 
+   # /special_websocket_endpoint, force a different concurrency.</span>
+   location <span class="o">/special_websocket_endpoint</span> {
+       passenger_app_group_name <span class="o">foo_websocket</span>;
+       passenger_force_max_concurrent_requests_per_process <span class="o">0</span>;
+   }
+}</pre>
+<% elsif integration_mode_type == :apache %>
+<pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.example.com
+    DocumentRoot /webapps/my_app/public
+
+    <span class="c"># Use default concurrency for the app. But for the endpoint 
+    # /special_websocket_endpoint, force a different concurrency.</span>
+    &lt;Location <span class="o">/special_websocket_endpoint</span>&gt;
+       PassengerAppGroupName <span class="o">foo_websocket</span>
+       PassengerForceMaxConcurrentRequestsPerProcess <span class="o">0</span>
+    &lt;/Location&gt;
+&lt;/VirtualHost&gt;</pre>
+<% elsif integration_mode_type == :standalone %>
+<pre class="highlight"><span class="c"># (using Nginx template)</span>
+server {
+   root /webapps/my_app/public;
+
+   <span class="c"># Use default concurrency for the app. But for the endpoint 
+   # /special_websocket_endpoint, force a different concurrency.</span>
+   location <span class="o">/special_websocket_endpoint</span> {
+       passenger_app_group_name <span class="o">foo_websocket</span>;
+       passenger_force_max_concurrent_requests_per_process <span class="o">0</span>;
+   }
+}</pre>
+<% end %>
 
 ## Demo apps
 
