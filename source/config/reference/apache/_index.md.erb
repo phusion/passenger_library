@@ -84,7 +84,7 @@ The default value is `ruby`, meaning that the Ruby interpreter will be looked up
 
 If you want to specify the Ruby interpreter to use for serving a specific Ruby web application, then we recommend that you use the [PassengerRuby](#passengerruby) configuration option instead of `PassengerDefaultRuby`. While `PassengerDefaultRuby` specifies a default value for `PassengerRuby`, the main reason why `PassengerDefaultRuby` exists is to specify which Ruby interpreter to use for internal Ruby helper tools.
 
-If you installed Passenger through source tarball or RubyGems, then you should know that it is okay if `PassengerDefaultRuby` refers to a different Ruby interpreter than the one you used originally installed Passenger with. Please learn more at [How having multiple Ruby interpreters affects Passenger](<%= url_for "/indepth/multiple_rubies.html" %>).
+If you installed Passenger through source tarball or RubyGems, then you should know that it is okay if `PassengerDefaultRuby` refers to a different Ruby interpreter than the one you used originally installed Passenger with. Please learn more at [How having multiple Ruby interpreters affects Passenger](<%= url_for "/indepth/ruby/multiple_rubies.html" %>).
 
 
 ## Deployment options
@@ -818,7 +818,7 @@ Enables or disables [resistance against deployment errors](<%= url_for "/deploy/
 
 Suppose that you have upgraded your application and you have issued a command to restart it, but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
 
-By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file/log_file.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
+By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file/index.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
 
 [Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/deploy/apache/deployment_error_resistance.html" %>).
 
