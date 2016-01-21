@@ -64,6 +64,15 @@ server {
 }</pre>
 <% end %>
 
+<div class="note">
+In Passenger 5.0.21 and below the option above was not available yet. In those versions there is a workaround for Ruby apps. Enter code below into <code>config.ru</code> to set the concurrency (on the entire app).
+</div>
+~~~ruby
+if defined?(PhusionPassenger)
+  PhusionPassenger.advertised_concurrency_level = 0
+end
+~~~
+
 ## Demo apps
 
 You can find Passenger SSE and WebSocket demo apps on [the Passenger documentation overview page](https://www.phusionpassenger.com/documentation_and_support), under section "Demos".
