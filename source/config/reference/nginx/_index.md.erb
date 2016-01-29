@@ -2184,6 +2184,36 @@ These options have the same effect as [ngx_http_proxy_module](http://nginx.org/e
  * [proxy_busy_buffers_size](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_busy_buffers_size)
 
 
+### passenger_socket_backlog
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>
+      passenger_socket_backlog <em>size</em>;<br>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>
+      passenger_socket_backlog 1024;
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.24</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+The socket backlog is a queue of incoming connections (from Nginx) not yet acknowledged by Passenger. The default value is chosen to match the default for Nginx' `worker_connections`. If you increase the latter, it is likely that you'll also need to increase the `passenger_socket_backlog`. If connections are coming in too fast and overflow the backlog, you'll see the error:
+ 
+<i>connect() to unix:/tmp/passenger... failed (11: Resource temporarily unavailable) while connecting to upstream</i>
+
+
 ## Logging and debugging options
 
 ### passenger_log_level

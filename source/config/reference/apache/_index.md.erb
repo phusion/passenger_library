@@ -2048,6 +2048,30 @@ If you have a load balancer in front end of Passenger + Apache, then you must co
 Sets the name of the [sticky sessions](#passengerstickysessions) cookie.
 
 
+### PassengerSocketBacklog
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerSocketBacklog <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerSocketBacklog 1024</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.24</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The socket backlog is a queue of incoming connections (from Apache) not yet acknowledged by Passenger. This option can be raised if Apache manages to overflow the backlog queue, for example because Passenger is receiving insufficient server resources to accept connections into its internal queue.
+
+
 ## Compatibility options
 
 ### PassengerResolveSymlinksInDocumentRoot
