@@ -3,9 +3,9 @@ locals[:app_name] ||= "testapp"
 %>
 Passenger automatically scales the number of processes based on traffic. The more traffic, the more processes Passenger spawns, up to the `--max-pool-size` limit. This limit defaults to 6. Passenger also shuts down processes that haven't handled traffic for a while, in order to conserve resources. This is especially useful when you're hosting multiple apps on a server with limited resources.
 
-You can see some of this in action by sending a large number of requests to Passenger, for example using the `ab` tool, which is part of Apache. Run this to send 500 requests to Passenger, with a concurrency of 16:
+You can see some of this in action by sending a large number of requests to Passenger, for example using the [wrk](https://github.com/wg/wrk) tool. Run this to open 200 connections to Passenger in 16 threads:
 
-<pre class="highlight"><span class="prompt">$ </span>ab -n 500 -c 16 http://0.0.0.0:3000/</pre>
+<pre class="highlight"><span class="prompt">$ </span>wrk -t 16 -c 200 http://0.0.0.0:3000/</pre>
 
 If you run `passenger-status` again, you should see many processes:
 
