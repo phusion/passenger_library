@@ -246,7 +246,7 @@ module CustomHelpers
   end
 
   def link_to_config_option(name, locals)
-    %Q{<a href="#{url_for_config_option(name, locals)}">#{h resolve_config_option_name(name, locals)}</a>}
+    %Q{<a href="#{url_for_config_option(name, locals)}">#{resolve_config_option_name(name, locals)}</a>}
   end
 
   # Given a config option name such as `max_pool_size`, transforms it into a form
@@ -262,7 +262,7 @@ module CustomHelpers
       "Passenger#{new_name}"
     when :standalone
       cli_option = "--" + name.to_s.gsub('_', '-')
-      "`#{cli_option}` / \"#{name}\""
+      "<code>#{h cli_option}</code> / \"#{h name}\""
     when nil
       name.to_s.gsub('_', ' ')
     else

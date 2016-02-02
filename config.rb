@@ -176,6 +176,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/config/#{integration_mode_type}/reference/index.html",
     "/config/reference/reference.html",
     locals: integration_mode_spec
+  proxy "/config/#{integration_mode_type}/action_cable_integration/index.html",
+    "/config/action_cable_integration/index.html",
+    locals: integration_mode_spec
 
   SUPPORTED_LANGUAGES.each do |language_spec|
     language_type = language_spec[:language_type]
@@ -204,6 +207,35 @@ ignore "/config/tuning_sse_and_websockets/integration_mode_selection.html"
 ignore "/config/cloud_licensing_configuration/cloud_licensing_configuration.html"
 ignore "/config/cloud_licensing_configuration/integration_mode_selection.html"
 ignore "/config/reference/reference.html"
+ignore "/config/action_cable_integration/index.html"
+
+###### Development ######
+
+SUPPORTED_LANGUAGES.each do |language_spec|
+  language_type = language_spec[:language_type]
+
+  proxy "/dev/#{language_type}/index.html",
+    "/dev/index2.html",
+    locals: language_spec
+  proxy "/dev/#{language_type}/standalone_dev.html",
+    "/dev/standalone_dev.html",
+    locals: language_spec
+  proxy "/dev/#{language_type}/code_reloading.html",
+    "/dev/code_reloading.html",
+    locals: language_spec
+  proxy "/dev/#{language_type}/multitenancy_and_microservices.html",
+    "/dev/multitenancy_and_microservices.html",
+    locals: language_spec
+  proxy "/dev/#{language_type}/turbocaching.html",
+    "/dev/turbocaching.html",
+    locals: language_spec
+end
+
+ignore "/dev/index2.html"
+ignore "/dev/standalone_dev.html"
+ignore "/dev/code_reloading.html"
+ignore "/dev/multitenancy_and_microservices.html"
+ignore "/dev/turbocaching.html"
 
 ###### Deployment, scaling and high availability ######
 
@@ -317,6 +349,8 @@ end
 
 proxy "/admin/log_file/index.html",
   "/admin/log_file/integration_mode_selection.html"
+proxy "/admin/debugging_console/index.html",
+  "/admin/debugging_console/integration_mode_and_language_selection.html"
 
 ignore "/admin/index2.html"
 ignore "/admin/admin_tools.html"
@@ -326,6 +360,7 @@ ignore "/admin/restart_app.html"
 ignore "/admin/log_file/log_file.html"
 ignore "/admin/log_file/integration_mode_selection.html"
 ignore "/admin/log_rotation.html"
+ignore "/admin/debugging_console/integration_mode_and_language_selection.html"
 ignore "/admin/stuck_apps.html"
 ignore "/admin/memory_leaks.html"
 ignore "/admin/troubleshooting/language_selection.html"

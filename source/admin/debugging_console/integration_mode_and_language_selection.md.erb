@@ -1,0 +1,16 @@
+---
+section: admin
+comments: false
+skip_search: true
+---
+<%
+@page_title = "Debugging console"
+content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
+%>
+
+<h1>Debugging console</h1>
+
+<%= render_partial("/shared/ask_intmode_lang.html", locals: locals.merge(
+  dest: "../:intmode:/debugging_console/:lang:/",
+  limit_choices: { "lang" => [LANG_RUBY, LANG_NODEJS] }
+)) %>

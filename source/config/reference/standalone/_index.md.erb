@@ -1412,6 +1412,8 @@ This option allows you to set the preloader's idle timeout, in seconds. A value 
 Setting a higher value will mean that the preloader is kept around longer, which may slightly increase memory usage. But as long as the preloader server is running, the time to spawn a Ruby application process only takes about 10% of the time that is normally needed, assuming that you're using the `smart` [spawn method](#--spawn-method-spawn_method). So if your system has enough memory, then is it recommended that you set this option to a high value or to `0`.
 
 
+<a name="passenger_force_max_concurrent_requests_per_process"></a>
+
 ### `--force-max-concurrent-requests-per-process` / "force_max_concurrent_requests_per_process"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -1915,6 +1917,39 @@ Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cooki
 </table>
 
 Disables [turbocaching](<%= url_for "/indepth/turbocaching.html" %>).
+
+
+### `--unlimited-concurrency-path` / "unlimited_concurrency_paths"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --unlimited-concurrency-path <em>URI-PATH1</em> [--unlimited-concurrency-path <em>URI-PATH2</em> ...]</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"unlimited_concurrency_paths": ["uri-path1", "uri-path2", ...]</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.25</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Use this option to tell Passenger that the application supports unlimited concurrency at the specified URI paths. The main use cases for this option are:
+
+ 1. To [SSE and WebSockets work well in Ruby applications.](<%= url_for "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html" %>)
+ 2. To [integrate Ruby on Rails Action Cable with Passenger Standalone](<%= url_for "/config/#{integration_mode_type}/action_cable_integration/index.html" %>).
+
+This option is functionally equivalent to setting <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> to 0, but only for the specify sub-URIs.
 
 
 ### `--no-abort-websockets-on-process-shutdown` / "abort_websockets_on_process_shutdown"

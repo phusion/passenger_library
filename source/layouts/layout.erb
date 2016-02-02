@@ -90,6 +90,7 @@ end
                 <% if locals[:integration_mode_type] %>
                   <ul class="dropdown-menu" role="menu">
                     <% navbar_section :install do %><%= maybe_absolute_link_to "Installation, upgrade and uninstallation", "/install/#{locals[:integration_mode_type]}/index.html" %><% end %>
+                    <% navbar_section :dev do %><%= maybe_absolute_link_to "Developing with Passenger", "/dev/#{locals[:integration_mode_type]}/index.html" %><% end %>
                     <% navbar_section :config do %><%= maybe_absolute_link_to "Configuration and optimization", "/config/#{locals[:integration_mode_type]}/index.html" %><% end %>
                     <% navbar_section :deploy do %><%= maybe_absolute_link_to "Deployment and scaling", "/deploy/#{locals[:integration_mode_type]}/index.html" %><% end %>
                     <% navbar_section :admin do %><%= maybe_absolute_link_to "Administration, debugging and troubleshooting", "/admin/#{locals[:integration_mode_type]}/index.html" %><% end %>
@@ -99,6 +100,7 @@ end
                 <% else %>
                   <ul class="dropdown-menu" role="menu">
                     <% navbar_section :install do %><%= maybe_absolute_link_to "Installation, upgrade and uninstallation", "/install/index.html" %><% end %>
+                    <% navbar_section :install do %><%= maybe_absolute_link_to "Developing with Passenger", "/dev/index.html" %><% end %>
                     <% navbar_section :config do %><%= maybe_absolute_link_to "Configuration and optimization", "/config/index.html" %><% end %>
                     <% navbar_section :deploy do %><%= maybe_absolute_link_to "Deployment and scaling", "/deploy/index.html" %><% end %>
                     <% navbar_section :admin do %><%= maybe_absolute_link_to "Administration, debugging and troubleshooting", "/admin/index.html" %><% end %>

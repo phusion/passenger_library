@@ -11,7 +11,7 @@ Installing Passenger is easy. During development, you use Bundler to install Pas
 Open your application's Gemfile and add "passenger":
 
 ~~~ruby
-gem "passenger"
+gem "passenger", ">= <%= MIN_RECOMMENDED_PASSENGER_VERSION %>", require: "phusion_passenger/rack_handler"
 ~~~
 
 Now open a terminal, go to your application's directory and run bundle install to install your gem bundle:
