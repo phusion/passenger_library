@@ -52,12 +52,6 @@ Insert:
   <span class="c1">// Replace "app.js" with your app's entry point file.</span>
   <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
   <span class="s2">"startup_file"</span><span class="p">:</span> <span class="o">"app.js"</span><span class="p">,</span>
-<% elsif language_type == :iojs -%>
-  <span class="c1">// Tell Passenger that this is an io.js app.</span>
-  <span class="c1">// Replace "app.js" with your app's entry point file.</span>
-  <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
-  <span class="s2">"startup_file"</span><span class="p">:</span> <span class="o">"app.js"</span><span class="p">,</span>
-  <span class="s2">"nodejs"</span><span class="p">:</span> <span class="s2">"/usr/bin/iojs"</span><span class="p">,</span>
 <% elsif language_type == :meteor -%>
   <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
   <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
@@ -87,10 +81,6 @@ Replace `myappuser` with your app's user account name.
 <% if language_type == :meteor -%>
 Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
 <% end -%>
-
-<% if language_type == :iojs %>
-This configuration also assumes that the io.js binary is located in `/usr/bin/iojs`. If this is not the case, please specify the full path to the io.js binary.
-<% end %>
 
 <% if !needs_login_as_app_user_to_prepare_environment?(locals) %>
   Finally, fix the permissions on the file:

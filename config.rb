@@ -276,7 +276,6 @@ INTEGRATION_MODES.each do |integration_mode_spec|
     "/admin/troubleshooting/language_selection.html",
     locals: integration_mode_spec
   SUPPORTED_LANGUAGES.each do |language_spec|
-    next if language_spec[:language_type] == :iojs
     proxy "/admin/#{integration_mode_type}/troubleshooting/#{language_spec[:language_type]}/index.html",
       "/admin/troubleshooting/troubleshooting.html",
       locals: integration_mode_spec.merge(language_spec)
@@ -376,18 +375,12 @@ proxy "/indepth/ruby/spawn_methods/index.html",
 proxy "/indepth/nodejs/reverse_port_binding.html",
   "/indepth/reverse_port_binding.html",
   locals: LANG_NODEJS
-proxy "/indepth/iojs/reverse_port_binding.html",
-  "/indepth/reverse_port_binding.html",
-  locals: LANG_IOJS
 proxy "/indepth/nodejs/secure_http_headers.html",
-    "/indepth/secure_http_headers.html",
-    locals: LANG_NODEJS
-proxy "/indepth/iojs/secure_http_headers.html",
-    "/indepth/secure_http_headers.html",
-    locals: LANG_IOJS
+  "/indepth/secure_http_headers.html",
+  locals: LANG_NODEJS
 proxy "/indepth/meteor/secure_http_headers.html",
-    "/indepth/secure_http_headers.html",
-    locals: LANG_METEOR
+  "/indepth/secure_http_headers.html",
+  locals: LANG_METEOR
 
 ignore "/indepth/index2.html"
 ignore "/indepth/app_autodetection/app_autodetection.html"

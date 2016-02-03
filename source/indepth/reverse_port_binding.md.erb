@@ -1,16 +1,16 @@
 ---
-title: Reverse port binding in Node.js and io.js
+title: Reverse port binding in Node.js
 section: indepth
 ---
 <% content_for(:sidebar) { render_partial("sidebar.html", locals: locals.merge(
-  limit_choices: { "lang" => [LANG_NODEJS, LANG_IOJS] }
+  limit_choices: { "lang" => [LANG_NODEJS] }
 )) } %>
 
-# Reverse port binding in Node.js and io.js
+# Reverse port binding in Node.js
 
 <!-- TODO: edit http://stackoverflow.com/questions/20645231/phusion-passenger-error-http-server-listen-was-called-more-than-once/20645549 -->
 
-As explained in the Node.js and io.js [quickstart](<%= url_for '/walkthroughs/start/nodejs.html' %>) and [fundamental concepts](<%= url_for '/walkthroughs/basics/nodejs/fundamental_concepts.html#the-application-server-concept' %>) pages, Passenger reverses control on the port binding. This means that your app does not control which port it listens on for HTTP requests. Instead, Passenger controls that.
+As explained in the Node.js [quickstart](<%= url_for '/walkthroughs/start/nodejs.html' %>) and [fundamental concepts](<%= url_for '/walkthroughs/basics/nodejs/fundamental_concepts.html#the-application-server-concept' %>) pages, Passenger reverses control on the port binding. This means that your app does not control which port it listens on for HTTP requests. Instead, Passenger controls that.
 
 **Table of contents**
 
@@ -18,17 +18,17 @@ As explained in the Node.js and io.js [quickstart](<%= url_for '/walkthroughs/st
 
 ## How it works
 
-Normally, a Node.js/io.js app binds a server socket on a certain port by calling `listen()` on an `http.Server` object. But when run in Passenger, this control is inversed:
+Normally, a Node.js app binds a server socket on a certain port by calling `listen()` on an `http.Server` object. But when run in Passenger, this control is inversed:
 
  * The user tells Passenger which port to listen on (e.g. through the `--port` command line option in Passenger Standalone).
- * Passenger makes the Node.js/io.js app listen a random Unix domain socket, even when the app requested to listen on a specific TCP port. A Unix domain socket is a special kind of socket that is optimized for communication on local host, and does not conflict with TCP ports.
- * Passenger forwards requests to the Node.js/io.js app. This is what allows Passenger to load balance between multiple Node.js/io.js processes.
+ * Passenger makes the Node.js app listen a random Unix domain socket, even when the app requested to listen on a specific TCP port. A Unix domain socket is a special kind of socket that is optimized for communication on local host, and does not conflict with TCP ports.
+ * Passenger forwards requests to the Node.js app. This is what allows Passenger to load balance between multiple Node.js processes.
 
-Passenger implements this on the Node.js/io.js side by hooking into the first `http.Server` object in your app that calls `listen()`. That `http.Server` object will be selected as the server object to receive requests.
+Passenger implements this on the Node.js side by hooking into the first `http.Server` object in your app that calls `listen()`. That `http.Server` object will be selected as the server object to receive requests.
 
 When run in Passenger, the port number that you pass to `listen()` is irrelevant and has no effect. Passenger always makes the app listen on a random Unix domain socket.
 
-This mechanism means that most Node.js/io.js applications will work out of the box on Passenger, even if they are already configured to run on a specific port.
+This mechanism means that most Node.js applications will work out of the box on Passenger, even if they are already configured to run on a specific port.
 
 ## Spawn timeout: what happens if the app doesn't call `listen()`
 

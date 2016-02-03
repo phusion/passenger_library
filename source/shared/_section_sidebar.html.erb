@@ -88,12 +88,9 @@ end
               url_prefix: current_url_prefix_without_programming_language,
               url_suffix: current_url_suffix_without_programming_language
             }
-            if locals.has_key?(:combine_nodejs_and_iojs)
-              options[:combine_nodejs_and_iojs] = locals[:combine_nodejs_and_iojs]
-            end
 
             render_partial("/shared/ask_lang.html", locals: locals.merge(
-              dest: current_url_generalized(":lang:", ["ruby", "python", "nodejs", "iojs", "meteor"]),
+              dest: current_url_generalized(":lang:", ["ruby", "python", "nodejs", "meteor"]),
               force_choice: true
               ))
             %>

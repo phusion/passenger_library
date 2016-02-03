@@ -10,6 +10,5 @@ skip_search: true
 
 <%= render_partial("/shared/ask_intmode_lang.html", locals: {
   dest: "../:intmode:/troubleshooting/:lang:/",
-  limit_choices: { "lang" => [LANG_RUBY, LANG_PYTHON, LANG_NODEJS, LANG_METEOR] },
-  combine_nodejs_and_iojs: true
+  limit_choices: { "lang" => [LANG_RUBY, LANG_PYTHON, LANG_NODEJS, LANG_METEOR] }
 }) %>

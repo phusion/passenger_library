@@ -315,7 +315,7 @@ module DeploymentWalkthroughHelpers
   end
 
   def deployment_walkthrough_page_title(locals)
-    # Example: deployment walkthrough with io.js, Passenger, Nginx, Debian 8, Digital Ocean
+    # Example: deployment walkthrough with Node.js, Passenger, Nginx, Debian 8, Digital Ocean
     components = [locals[:language_name]]
     edition_title = locals[:edition_title] || "Passenger"
     if locals[:integration_mode_type] == :standalone
@@ -340,7 +340,7 @@ module DeploymentWalkthroughHelpers
       ["https://github.com/phusion/passenger-ruby-rails-demo.git", "end_result"]
     elsif locals[:language_type] == :python
       ["https://github.com/phusion/passenger-python-flask-demo.git", "end_result"]
-    elsif locals[:language_type] == :nodejs || locals[:language_type] == :iojs
+    elsif locals[:language_type] == :nodejs
       ["https://github.com/phusion/passenger-nodejs-connect-demo.git", "master"]
     elsif locals[:language_type] == :meteor
       ["https://github.com/phusion/passenger-meteor-leaderboard-demo.git", "master"]

@@ -212,9 +212,7 @@ Closely related to this option is [passenger_ruby](#passenger_ruby), [passenger_
   </tr>
 </table>
 
-This option specifies the Node.js/io.js command to use for serving Node.js/io.js web applications. If it is not specified, then it uses the first `node` command found in [PATH](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable).
-
-Passenger's support for Node.js and io.js are the same. If you want to use io.js instead of Node.js, simply set this option to your iojs binary.
+This option specifies the Node.js command to use for serving Node.js web applications. If it is not specified, then it uses the first `node` command found in [PATH](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable).
 
 Closely related to this option is [passenger_ruby](#passenger_ruby), [passenger_python](#passenger_python), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
@@ -1333,7 +1331,7 @@ Specifies the I/O concurrency model that should be used for Ruby application pro
   <ul>
     <li>This option only has effect on Ruby applications.</li>
     <li>Multithreading is not supported for Python.</li>
-    <li>Multithreading is not applicable to Node.js, io.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+    <li>Multithreading is not applicable to Node.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
   </ul>
 </div>
 
@@ -1366,7 +1364,7 @@ Specifies the number of threads that Passenger should spawn per Ruby application
   <ul>
     <li>This option only has effect on Ruby applications.</li>
     <li>Multithreading is not supported for Python.</li>
-    <li>Multithreading is not applicable to Node.js, io.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+    <li>Multithreading is not applicable to Node.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
   </ul>
 </div>
 
@@ -2210,7 +2208,7 @@ These options have the same effect as [ngx_http_proxy_module](http://nginx.org/e
 </table>
 
 The socket backlog is a queue of incoming connections (from Nginx) not yet acknowledged by Passenger. The default value is chosen to match the default for Nginx' `worker_connections`. If you increase the latter, it is likely that you'll also need to increase the `passenger_socket_backlog`. If connections are coming in too fast and overflow the backlog, you'll see the error:
- 
+
 <i>connect() to unix:/tmp/passenger... failed (11: Resource temporarily unavailable) while connecting to upstream</i>
 
 

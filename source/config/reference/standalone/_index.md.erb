@@ -730,9 +730,7 @@ Specifies the Python interpreter to use for serving Python web applications.
   </tr>
 </table>
 
-Specifies the Node.js/io.js comand to use for serving Node.js/io.js web applications.
-
-Passenger's support for Node.js and io.js are the same. If you want to use io.js instead of Node.js, simply set this option to your iojs binary.
+Specifies the Node.js command to use for serving Node.js web applications.
 
 
 ### `--meteor-app-settings` / "meteor_app_settings"
@@ -1514,7 +1512,7 @@ Specifies the I/O concurrency model that should be used for Ruby application pro
   <ul>
     <li>This option only has effect on Ruby applications.</li>
     <li>Multithreading is not supported for Python.</li>
-    <li>Multithreading is not applicable to Node.js, io.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+    <li>Multithreading is not applicable to Node.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
   </ul>
 </div>
 
@@ -1560,7 +1558,7 @@ Specifies the number of threads that Passenger should spawn per Ruby application
   <ul>
     <li>This option only has effect on Ruby applications.</li>
     <li>Multithreading is not supported for Python.</li>
-    <li>Multithreading is not applicable to Node.js, io.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+    <li>Multithreading is not applicable to Node.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
   </ul>
 </div>
 

@@ -38,7 +38,7 @@ Please refer to [Apache's documentation](https://httpd.apache.org/docs/2.4/env.h
   <%= render_partial("/indepth/apache_per_request_envvars/ruby.md", locals: locals) %>
 <% elsif language_type == :python %>
   <%= render_partial("/indepth/apache_per_request_envvars/python.md", locals: locals) %>
-<% elsif language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+<% elsif language_type == :nodejs || language_type == :meteor %>
   <%= render_partial("/indepth/apache_per_request_envvars/nodejs.md", locals: locals) %>
 <% else %>
   <% raise "Unrecognized language #{language_type}" %>

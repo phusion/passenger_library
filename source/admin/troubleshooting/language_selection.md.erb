@@ -10,9 +10,8 @@ content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
 
 <h1>Troubleshooting Passenger <%= integration_mode_name_as_passenger_suffix %></h1>
 
-<%= render_partial("/shared/ask_lang.html", locals: { 
+<%= render_partial("/shared/ask_lang.html", locals: {
   dest: ":lang:/",
-  limit_choices: { "lang" => [LANG_RUBY, LANG_PYTHON, LANG_NODEJS, LANG_METEOR] },
-  combine_nodejs_and_iojs: true,
-}) 
+  limit_choices: { "lang" => [LANG_RUBY, LANG_PYTHON, LANG_NODEJS, LANG_METEOR] }
+})
 %>

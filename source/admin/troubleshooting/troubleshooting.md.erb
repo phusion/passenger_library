@@ -6,8 +6,7 @@ section: admin
 content_for(:sidebar) do
   render_partial("../sidebar.html", locals: locals.merge(
     context: :index,
-    limit_choices: { "lang" => [LANG_RUBY, LANG_PYTHON, LANG_NODEJS, LANG_METEOR] },
-    combine_nodejs_and_iojs: true
+    limit_choices: { "lang" => [LANG_RUBY, LANG_PYTHON, LANG_NODEJS, LANG_METEOR] }
   ))
 end
 %>
@@ -42,6 +41,6 @@ end
   <h2>Common problems specific to Ruby on Rails</h2>
   <%= render_partial("ruby_on_rails.md", locals: locals) %>
 <% elsif language_type == :nodejs %>
-  <h2>Common problems specific to Node.js and io.js</h2>
+  <h2>Common problems specific to Node.js</h2>
   <%= render_partial("nodejs.md", locals: locals) %>
 <% end %>

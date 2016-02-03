@@ -32,7 +32,7 @@ The goal of this automation guide is to create a set of scripts, so that when yo
 We will create two scripts:
 
  * The `deploy/work.sh` script is run on the remote server. It performs all the steps that you would do manually on the server, such as running `git pull`,
-   <% if language_type == :nodejs || language_type == :iojs -%>
+   <% if language_type == :nodejs -%>
      running `npm install`,
    <% elsif language_type == :meteor -%>
      extracting the Meteor package, running `npm install`,
@@ -66,7 +66,7 @@ RESTART_ARGS=
 
 set -x
 
-<% if language_type == :nodejs || language_type == :iojs -%>
+<% if language_type == :nodejs -%>
 # Pull latest code
 if [[ -e $APP_DIR/code ]]; then
   cd $APP_DIR/code

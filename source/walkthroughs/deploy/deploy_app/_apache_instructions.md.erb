@@ -153,31 +153,6 @@ myappuser$ ...</span>
 &lt;/VirtualHost&gt;</pre>
 
   Replace `yourserver.com` with your server's host name, replace `/var/www/myapp/code` with your application's code directory path and replace `app.js` with your app's entry point file.
-<% elsif language_type == :iojs %>
-  <pre class="highlight">&lt;VirtualHost *:80&gt;
-    ServerName <span class="o">yourserver.com</span>
-
-    <span class="c"># Tell Apache and Passenger where your app's code directory is</span>
-    DocumentRoot <span class="o">/var/www/myapp/code</span>/public
-    PassengerAppRoot <span class="o">/var/www/myapp/code</span>
-
-    <span class="c"># Tell Passenger that your app is an io.js app</span>
-    PassengerAppType node
-    PassengerStartupFile <span class="o">app.js</span>
-    PassengerNode /usr/bin/iojs
-
-    <span class="c"># Relax Apache security settings</span>
-    &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
-      Allow from all
-      Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
-      <span class="c">#Require all granted</span>
-    &lt;/Directory&gt;
-&lt;/VirtualHost&gt;</pre>
-
-  Replace `yourserver.com` with your server's host name, replace `/var/www/myapp/code` with your application's code directory path and replace `app.js` with your app's entry point file.
-
-  This configuration also assumes that the io.js binary is located in `/usr/bin/iojs`. If this is not the case, please specify the full path to the io.js binary.
 <% elsif language_type == :meteor %>
   <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName <span class="o">yourserver.com</span>

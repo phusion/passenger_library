@@ -53,19 +53,6 @@ LANG_NODEJS = {
   language_concurrency_model: :evented,
   language_concurrency_model_name_plural: "evented I/O"
 }
-LANG_IOJS = {
-  choice_val: "iojs",
-  language_type: :iojs,
-  language_name: "io.js",
-  language_name_with_determiner: "an io.js",
-  language_runtime_name: "io.js",
-  language_has_install_instructions: true,
-  language_default_concurrency: 0,
-  language_min_concurrency: 1,
-  language_max_concurrency: 0,
-  language_concurrency_model: :evented,
-  language_concurrency_model_name_plural: "evented I/O"
-}
 LANG_METEOR = {
   choice_val: "meteor",
   language_type: :meteor,
@@ -86,7 +73,6 @@ SUPPORTED_LANGUAGES = [
   LANG_RUBY,
   LANG_PYTHON,
   LANG_NODEJS,
-  LANG_IOJS,
   LANG_METEOR
 ]
 
@@ -100,8 +86,8 @@ SUPPORTED_APP_TYPES = [
     name: "Python",
     type: "wsgi",
     startup_file: "passenger_wsgi.py" },
-  { lang_key: "meteor nodejs iojs",
-    name: "Node.js, io.js or Meteor JS in bundled/packaged mode",
+  { lang_key: "meteor nodejs",
+    name: "Node.js or Meteor JS in bundled/packaged mode",
     type: "node",
     startup_file: "app.js" },
   { lang_key: "meteor",

@@ -145,7 +145,7 @@ substep = 0
       Your application's gem dependencies may have changed, so we should install any updated gem dependencies. Run:
     </p>
     <pre class="highlight"><span class="prompt">$ </span>bundle install --deployment --without development test</pre>
-  <% elsif language_type == :nodejs || language_type == :iojs %>
+  <% elsif language_type == :nodejs %>
     <p>
       Your application's npm dependencies may have changed, so we should install any updated npm dependencies while removing any now-extraneous dependencies. Run:
     </p>

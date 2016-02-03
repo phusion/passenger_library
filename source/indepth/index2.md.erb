@@ -52,7 +52,7 @@ section: indepth
   </div>
 </div>
 
-<% if [:ruby, :nodejs, :iojs, :meteor].include?(language_type) %>
+<% if [:ruby, :nodejs, :meteor].include?(language_type) %>
   <h3><%= language_name %>-specific</h3>
 
   <div class="row">
@@ -63,13 +63,13 @@ section: indepth
           <li><a href="out_of_band_work.html">Out-of-band work and garbage collection</a></li>
           <li><a href="spawn_methods/">Smart spawning</a></li>
           <li><a href="bundler.html">Bundler support</a></li>
-        <% elsif language_type == :nodejs || language_type == :iojs %>
+        <% elsif language_type == :nodejs %>
           <li><a href="reverse_port_binding.html">Reverse port binding</a></li>
         <% elsif language_type == :meteor %>
           <li><a href="meteor.html">About Meteor support</a></li>
         <% end %>
 
-        <% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+        <% if language_type == :nodejs || language_type == :meteor %>
           <li><a href="secure_http_headers.html">Secure HTTP headers</a></li>
         <% end %>
       </ul>

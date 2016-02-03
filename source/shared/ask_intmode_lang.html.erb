@@ -27,13 +27,7 @@ ask_data = [
 choices = ask_data[1][:choices]
 choices << { img: url_for("/images/ruby.png"), w: 96, h:96, alt: "Ruby", val: "ruby" }
 choices << { img: url_for("/images/python.png"), w: 96, h:96, alt: "Python", val: "python" }
-
-if locals[:combine_nodejs_and_iojs]
-  choices << { img: url_for("/images/nodejs.png"), w: 133, h:96, alt: "Node.js/io.js", val: "nodejs" }
-else
-  choices << { img: url_for("/images/nodejs.png"), w: 133, h:96, alt: "Node.js", val: "nodejs" }
-  choices << { img: url_for("/images/iojs.png"), w: 96, h:96, alt: "io.js", val: "iojs" }
-end
+choices << { img: url_for("/images/nodejs.png"), w: 133, h:96, alt: "Node.js", val: "nodejs" }
 choices << { img: url_for("/images/meteor.png"), w: 133, h:96, alt: "Meteor", val: "meteor" }
 %>
 

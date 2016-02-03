@@ -4,15 +4,14 @@ section: admin
 <%
 @page_title = "Node.js debugging - #{integration_mode_name}"
 content_for(:sidebar) { render_partial("../sidebar.html",  locals: locals.merge(
-  limit_choices: { "lang" => [LANG_RUBY, LANG_NODEJS] },
-  combine_nodejs_and_iojs: true
+  limit_choices: { "lang" => [LANG_RUBY, LANG_NODEJS] }
 )) }
 %>
 
 <h1>Node.js debugging<br>
 <small>on Passenger <%= integration_mode_name_as_passenger_suffix %></small></h1>
 
-Passenger is compatible with Node.js and io.js debugging tools such as [the builtin Node.js debugger](https://nodejs.org/api/debugger.html) and [node-inspector](https://github.com/node-inspector/node-inspector).
+Passenger is compatible with Node.js debugging tools such as [the builtin Node.js debugger](https://nodejs.org/api/debugger.html) and [node-inspector](https://github.com/node-inspector/node-inspector).
 
 The builtin Node.js debugger is a simple terminal-based debugger that accepts terminal commands, while node-inspector is a GUI based on the Blink Developer Tools. This tutorial teaches you how to use those tools with Passenger.
 
@@ -26,13 +25,13 @@ The idea is that you start a Node.js app with a debugging port enabled. You then
 
 ## Step 1: write a Node.js debugging wrapper script
 
-The goal of this step is to ensure that Passenger starts Node.js/io.js application processes with the correct debugging parameters. This is achieved by making a wrapper script.
+The goal of this step is to ensure that Passenger starts Node.js application processes with the correct debugging parameters. This is achieved by making a wrapper script.
 
 Create a file `/usr/local/bin/node-passenger-debug-wrapper` containing:
 
     #!/bin/sh
 
-    # Tells Node.js/io.js to open a debugging port on 7500.
+    # Tells Node.js to open a debugging port on 7500.
     # Feel free to change the number to anything you like.
     exec /path-to-nodejs-or-iojs-binary --debug=7500 "$@"
 
@@ -44,7 +43,7 @@ Make sure this wrapper script is executable:
 
 You must configure Passenger to do two things:
 
- 1. Ensure that Passenger uses the wrapper script to start Node.js/io.js apps.
+ 1. Ensure that Passenger uses the wrapper script to start Node.js apps.
  2. Ensure that Passenger only starts 1 process for your application. It is currently not possible to debug apps that have multiple processes.
 
 <% if integration_mode_type == :nginx %>

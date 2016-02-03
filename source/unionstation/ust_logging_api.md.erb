@@ -14,7 +14,7 @@ section: unionstation
 
 When Union Station logging is enabled, there are a number of things that will be logged automatically. Each request that passes through Passenger
 is represented visually as shown in the example below.
-<% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+<% if language_type == :nodejs || language_type == :meteor %>
 Starting from version 5.0.22, Passenger also has builtin instrumentation support for important modules such as Express and MongoDB.
 <% elsif language_type == :ruby %>
 Passenger also has builtin instrumentation support for important modules such as ActiveRecord.
@@ -30,7 +30,7 @@ There is no custom logging support for Python applications at this time.
 
 ### Writing custom log entries
 <% end %>
-<% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+<% if language_type == :nodejs || language_type == :meteor %>
 
 The reporter object can be used from an application to log additional, customized data to Union Station. Whenever Union Station logging is enabled
 (Passenger version 5.0.22 and up), the reporter can be accessed through `global.phusion_passenger_ustReporter`.

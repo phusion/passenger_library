@@ -26,20 +26,12 @@ In this tutorial we will use [an example "hello world" application](https://gith
 
 The simplest way to run your app is with the `<%= command %>` command:
 
-<% if type == :nodejs -%>
 <pre class="highlight"><span class="prompt">$ </span>node myapp.js</pre>
-<% else %>
-<pre class="highlight"><span class="prompt">$ </span>iojs myapp.js</pre>
-<% end %>
 
 Passenger can be used the same way as the `<%= command %>` command: you run your app with `passenger start` and two extra command line options:
 
 <pre class="highlight">
-<% if type == :nodejs -%>
 <span class="prompt">$ </span>passenger start --app-type node --startup-file myapp.js
-<% else -%>
-<span class="prompt">$ </span>passenger start --app-type node --nodejs iojs --startup-file myapp.js
-<% end -%>
 <span class="output">======= Phusion Passenger Standalone web server started =======
 PID file: /Users/phusion/myapp/passenger.3000.pid
 Log file: /Users/phusion/myapp/passenger.3000.log
@@ -59,21 +51,11 @@ As you can see in the output, Passenger is now serving your app on [http://0.0.0
 ## Passenger is polyglot
 
 Passenger supports apps in multiple programming languages. That's why you need to specify what language you're using.
-<% if type == :nodejs -%>
 The `--app-type node` option does just that.
-<% else %>
-The `--app-type node --nodejs iojs` options do just that.
-<% end -%>
 
 ## Reversed port binding
 
-Normally,
-<% if type == :nodejs -%>
-a Node.js
-<% else -%>
-an io.js
-<% end -%>
-app binds a server socket on a certain port by calling `listen()` on an `http.Server` object. But when run in Passenger, this control is inversed. The user that invokes the `passenger` command specifies what address and port to listen on, and Passenger makes sure your app does so.
+Normally, a Node.js app binds a server socket on a certain port by calling `listen()` on an `http.Server` object. But when run in Passenger, this control is inversed. The user that invokes the `passenger` command specifies what address and port to listen on, and Passenger makes sure your app does so.
 
 Most of the time, reverse port binding just works. But if your app creates multiple http.Server objects, then you will confuse the reserve port binding system, and you'll have to give it some hints.
 
@@ -92,11 +74,7 @@ If you stop Passenger, Passenger will stop your app.
 There are two ways to stop the server. The first is by pressing Ctrl-C in the terminal.
 
 <pre class="highlight">
-<% if type == :nodejs -%>
 <span class="prompt">$ </span>passenger start --app-type node --startup-file myapp.js
-<% else -%>
-<span class="prompt">$ </span>passenger start --app-type node --nodejs iojs --startup-file myapp.js
-<% end -%>
 <span class="output">...
 (press Ctrl-C here)
 Stopping web server... done!</span>

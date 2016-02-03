@@ -60,25 +60,6 @@ Here is an example:
 }</pre>
 
   Replace `yourserver.com` with your server's host name, replace `/path-to-app` with your application's code directory path and replace `app.js` with your app's entry point file.
-<% elsif language_type == :iojs %>
-  <pre class="highlight">server {
-    listen 80;
-    server_name <span class="o">yourserver.com</span>;
-
-    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
-    root <span class="o">/path-to-app</span>/public;
-
-    <span class="c"># Turn on Passenger</span>
-    passenger_enabled on;
-    <span class="c"># Tell Passenger that your app is an io.js app</span>
-    passenger_app_type node;
-    passenger_startup_file <span class="o">app.js</span>;
-    passenger_node /usr/bin/iojs;
-}</pre>
-
-  Replace `yourserver.com` with your server's host name, replace `/path-to-app` with your application's code directory path and replace `app.js` with your app's entry point file.
-
-  This configuration also assumes that the io.js binary is located in `/usr/bin/iojs`. If this is not the case, please specify the full path to the io.js binary.
 <% elsif language_type == :meteor %>
   <pre class="highlight">server {
     listen 80;
@@ -131,7 +112,7 @@ You are now done. If you run into any problems, please refer to the [troubleshoo
 
 <% if language_type == :nodejs %>
 <div class="note">
-Sub-URI deployments in Node.js require framework-specific adjustments in the application. For example, in Express 4.0+, you should <a href="http://expressjs.com/api#app.mountpath">use a router</a>. 
+Sub-URI deployments in Node.js require framework-specific adjustments in the application. For example, in Express 4.0+, you should <a href="http://expressjs.com/api#app.mountpath">use a router</a>.
 An alternative is to use url rewriting to avoid the need for sub-URIs altogether.
 </div>
 <% end %>
@@ -182,7 +163,7 @@ http {
             <% if language_type == :python %>
             passenger_app_type wsgi;
             passenger_startup_file passenger_wsgi.py;
-            <% elsif language_type == :nodejs || language_type == :iojs %>
+            <% elsif language_type == :nodejs %>
             passenger_app_type node;
             passenger_startup_file app.js;
             <% elsif language_type == :meteor %>

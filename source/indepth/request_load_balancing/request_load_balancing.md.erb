@@ -16,7 +16,7 @@ At its core, Passenger is a process manager and HTTP request router. In order to
 
 <% if language_type == :ruby || language_type == :python %>
   <%= render_partial('intro_ruby_python.md', locals: locals) %>
-<% elsif language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+<% elsif language_type == :nodejs || language_type == :meteor %>
   <%= render_partial('intro_nodejs.md', locals: locals) %>
 <% else %>
   <% raise "Unrecognized language #{language_type}" %>

@@ -94,31 +94,6 @@ Here is an example:
 &lt;/VirtualHost&gt;</pre>
 
   Replace `yourserver.com` with your server's host name, replace `/path-to-your-app` with your application's code directory path and replace `app.js` with your app's entry point file.
-<% elsif language_type == :iojs %>
-  <pre class="highlight">&lt;VirtualHost *:80&gt;
-    ServerName <span class="o">yourserver.com</span>
-
-    <span class="c"># Tell Apache and Passenger where your app's code directory is</span>
-    DocumentRoot <span class="o">/path-to-your-app</span>/public
-    PassengerAppRoot <span class="o">/path-to-your-app</span>
-
-    <span class="c"># Tell Passenger that your app is an io.js app</span>
-    PassengerAppType node
-    PassengerStartupFile <span class="o">app.js</span>
-    PassengerNode /usr/bin/iojs
-
-    <span class="c"># Relax Apache security settings</span>
-    &lt;Directory <span class="o">/path-to-your-app</span>/public&gt;
-      Allow from all
-      Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
-      <span class="c">#Require all granted</span>
-    &lt;/Directory&gt;
-&lt;/VirtualHost&gt;</pre>
-
-  Replace `yourserver.com` with your server's host name, replace `/path-to-your-app` with your application's code directory path and replace `app.js` with your app's entry point file.
-
-  This configuration also assumes that the io.js binary is located in `/usr/bin/iojs`. If this is not the case, please specify the full path to the io.js binary.
 <% elsif language_type == :meteor %>
   <pre class="highlight">&lt;VirtualHost *:80&gt;
     ServerName <span class="o">yourserver.com</span>
@@ -178,7 +153,7 @@ You are now done. If you run into any problems, please refer to the [troubleshoo
 
 <% if language_type == :nodejs %>
 <div class="note">
-Sub-URI deployments in Node.js require framework-specific adjustments in the application. For example, in Express 4.0+, you should <a href="http://expressjs.com/api#app.mountpath">use a router</a>. 
+Sub-URI deployments in Node.js require framework-specific adjustments in the application. For example, in Express 4.0+, you should <a href="http://expressjs.com/api#app.mountpath">use a router</a>.
 An alternative is to use url rewriting to avoid the need for sub-URIs altogether.
 </div>
 <% end %>
@@ -226,7 +201,7 @@ Here is an example:
         <% if language_type == :python %>
         PassengerAppType wsgi
         PassengerStartupFile <span class="o">passenger_wsgi.py</span>
-        <% elsif language_type == :nodejs || language_type == :iojs %>
+        <% elsif language_type == :nodejs %>
         PassengerAppType node
         PassengerStartupFile <span class="o">app.js</span>
         <% elsif language_type == :meteor %>

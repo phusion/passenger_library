@@ -77,7 +77,7 @@ If Passenger's autodetection has failed you, or if your application uses directo
  * [PassengerStartupFile](<%= url_for("/config/apache/reference/index.html") %>#passengerstartupfile) -- Tells Passenger where your application's entry point file is.
 <% end %>
 
-<% if language_type == :nodejs || language_type == :iojs || language_type == :meteor %>
+<% if language_type == :nodejs || language_type == :meteor %>
 Suppose that you have a Node.js application whose entry point file is `server.js` instead of `app.js`. Here is an example that shows you how to configure Passenger:
 
 <% if integration_mode_type == :nginx %>
