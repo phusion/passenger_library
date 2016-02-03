@@ -3,9 +3,7 @@ require_relative 'constants'
 SUPPORTED_DEBIAN_VERSIONS = {
   "jessie"  => "Debian 8",
   "wheezy"  => "Debian 7",
-  "squeeze" => "Debian 6",
   "wily"    => "Ubuntu 15.10",
-  "vivid"   => "Ubuntu 15.04",
   "trusty"  => "Ubuntu 14.04 LTS",
   "precise" => "Ubuntu 12.04 LTS"
 }
