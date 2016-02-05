@@ -38,9 +38,18 @@ end
     <% end %>
     <% if locals[:integration_mode_type] %>
       <meta class="swiftype" name="integration_mode" data-type="enum" content="<%= locals[:integration_mode_type] %>">
+    <% else %>
+      <meta class="swiftype" name="integration_mode" data-type="enum" content="none">
     <% end %>
     <% if locals[:language_type] %>
       <meta class="swiftype" name="language" data-type="enum" content="<%= locals[:language_type] %>">
+    <% else %>
+      <meta class="swiftype" name="language" data-type="enum" content="none">
+    <% end %>
+    <% if locals[:edition_type] %>
+      <meta class="swiftype" name="edition" data-type="enum" content="<%= locals[:edition_type] %>">
+    <% else %>
+      <meta class="swiftype" name="edition" data-type="enum" content="none">
     <% end %>
     <script type="text/javascript" id="cookiebanner" src="https://cookiebanner.unionstationapp.com/js/cookiebanner.min.js"></script>
     <%= yield_content :head %>
