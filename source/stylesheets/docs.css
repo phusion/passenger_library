@@ -57,6 +57,10 @@ body {
   border-color: #fff;
 }
 
+.btn-outline-inverse-prominent {
+  background-color: rgba(179, 120, 153, 0.64);
+}
+
 /* Bootstrap "B" icon */
 .bs-docs-booticon {
   display: block;
