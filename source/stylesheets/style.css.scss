@@ -586,6 +586,24 @@ figcaption {
   }
 }
 
+.st-ui-result .st-ui-type-heading em,
+.st-ui-result .st-ui-type-detail em {
+  background-color: #fff2cc !important;
+}
+
+.st-ui-injected-overlay-container .st-ui-content {
+  padding-top: 88px;
+}
+
+.st-filters {
+  text-align: center;
+}
+
+.st-filters-label {
+  font-size: 12px;
+  padding-right: 12px !important;
+}
+
 
 .breadcrumb-container,
 .bs-docs-container .breadcrumb-container {

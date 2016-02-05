@@ -130,15 +130,9 @@ end
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="swiftype-container">
-              <script type="text/javascript">
-                (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
-                (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
-                e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
-                })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
-
-                _st('install','hAw7oyzHaFA3x2KtoDpk','2.0.0');
-              </script>
-              <input type="text" class="st-default-search-input form-control">
+              <form action="javascript:void(0)">
+                <input type="text" id="st-search-input" class="st-default-search-input form-control" autocomplete="off" autocorrect="off" autocapitalize="off">
+              </form>
             </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
@@ -152,7 +146,6 @@ end
         </nav>
       </div>
     </header>
-
 
     <%= yield_content :masthead %>
 
@@ -302,5 +295,7 @@ end
         }());
       </script>
     <% end %>
+
+    <%= render_partial('/layouts/swiftype_container.html') %>
   </body>
 </html>
