@@ -264,6 +264,7 @@ Once you restart the machine, the reverse proxy will no longer be able to serve 
 For example, you can put this in `/etc/rc.local` to make the system start foo and bar at system boot:
 
 ~~~bash
+#!/bin/sh
 # If you installed Passenger from tarball, add its `bin` directory to PATH.
 #export PATH=/path-to-passenger/bin:$PATH
 

@@ -495,7 +495,8 @@ As configured in `config/deploy.rb`, Capistrano will deploy app releases to `/va
   Modify `/etc/rc.local` and change the Passenger invocation to:
 
   <div>
-    <pre class="highlight"><span class="c"># Change working directory to your webapp.</span>
+    <pre class="highlight"><span class="c">#!/bin/sh</span>
+<span class="c"># Change working directory to your webapp.</span>
 <span class="nb">cd</span> /var/www/myapp/current
 &nbsp;
 <span class="c"># Start Passenger Standalone in daemonized mode. Passenger will be started as
