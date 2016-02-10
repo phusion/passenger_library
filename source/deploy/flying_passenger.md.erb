@@ -68,7 +68,7 @@ Now configure the web server to make use of the Flying Passenger daemon by setti
 }</pre>
 <% end %>
 <% if integration_mode_type == :apache %>
-  <pre class="highlight">PassengerFlyWith /var/run/flying-passenger.sock</pre>
+  <pre class="highlight">PassengerFlyWith unix:/var/run/flying-passenger.sock</pre>
 <% end %>
 
 After (re)starting the web server, Flying Passenger is fully operational.
@@ -234,7 +234,7 @@ server {
 <% end %>
 <% if integration_mode_type == :apache %>
 <pre class="highlight"># Connect to the Flying Passenger daemon on the following socket
-PassengerFlyWith /var/run/flying-passenger.sock
+PassengerFlyWith unix:/var/run/flying-passenger.sock
 ...
 
 &lt;VirtualHost *:80&gt;
