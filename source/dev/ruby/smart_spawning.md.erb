@@ -5,12 +5,12 @@ section: dev
 <%
 locals.merge!(LANG_RUBY)
 globals.merge!(LANG_RUBY)
-content_for(:sidebar) { render_partial("sidebar.html",  locals: locals.merge(
+content_for(:sidebar) { render_partial("../sidebar.html",  locals: locals.merge(
   limit_choices: { "lang" => [LANG_RUBY] }
 )) }
 %>
 
 <h1>Smart spawning<br>
-<small>for <%= language_name %> developers</small></h1>
+<small>for Ruby developers</small></h1>
 
 <%= render_partial("/to_be_written.md") %>
