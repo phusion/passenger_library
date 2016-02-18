@@ -1,0 +1,23 @@
+You can use the [force max concurrent requests per process](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#passenger_force_max_concurrent_requests_per_process)
+configuration option to override this. The example below shows how to set the concurrency to unlimited for /special_websocket_endpoint:
+
+<pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.example.com
+    DocumentRoot /webapps/my_app/public
+
+    <span class="c"># Use default concurrency for the app. But for the endpoint
+    # /special_websocket_endpoint, force a different concurrency.</span>
+    &lt;Location <span class="o">/special_websocket_endpoint</span>&gt;
+       PassengerAppGroupName <span class="o">foo_websocket</span>
+       PassengerForceMaxConcurrentRequestsPerProcess <span class="o">0</span>
+    &lt;/Location&gt;
+&lt;/VirtualHost&gt;</pre>
+
+<div class="note">
+In Passenger 5.0.21 and below the option above was not available yet. In those versions there is a workaround for Ruby apps. Enter code below into <code>config.ru</code> to set the concurrency (on the entire app).
+</div>
+~~~ruby
+if defined?(PhusionPassenger)
+  PhusionPassenger.advertised_concurrency_level = 0
+end
+~~~

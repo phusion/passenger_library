@@ -40,7 +40,7 @@ In this tutorial we will use an example "hello world" application. Clone the one
 Open your app's Gemfile and add "passenger":
 
 ~~~ruby
-gem "passenger"
+gem "passenger", ">= <%= MIN_RECOMMENDED_PASSENGER_VERSION %>", require: "phusion_passenger/rack_handler"
 ~~~
 
 Now open a terminal, go to your application's directory and run bundle install to install your gem bundle:
@@ -72,8 +72,8 @@ As you can see in the output, Passenger is now serving your app on [http://0.0.0
 <span class="output">...your app's front page HTML...</span></pre>
 
 <div class="note">
-  <h3 id="no-bundle-exec-rails-server-yet">No "bundle exec rails server" yet</h3>
-  <p>If you use Rails, then you may be used to using <code>bundle exec rails server</code> to start a server. Passenger currently does not integrate into the <code>rails server</code> mechanism, so instead of <code>bundle exec rails server</code>, run <code>bundle exec passenger start</code> instead.</p>
+  <h3 id="bundle-exec-rails-server">You can also use "bundle exec rails server"</h3>
+  <p>If you use Rails, then you can also run <code>bundle exec rails server</code>. As long as you have the above Gemfile entry, that command will start a Passenger-based server.</p>
 </div>
 
 ## Logs

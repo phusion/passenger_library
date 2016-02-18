@@ -1,0 +1,32 @@
+Starting from version 5.0.25, you can use the [unlimited_concurrency_paths](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#--unlimited-concurrency-path-unlimited_concurrency_paths) option to override this. The example below shows how to set the concurrency to unlimited for the /special_websocket_endpoint:
+
+~~~json
+{
+  "unlimited_concurrency_paths": [
+    "/special_websocket_endpoint"
+  ]
+}
+~~~
+
+In version 5.0.22-5.0.24, you can use the [passenger_force_max_concurrent_requests_per_process](<%= url_for "/config/nginx/reference/index.html" %>#passenger_force_max_concurrent_requests_per_process)
+configuration option to override this. It needs to be set through the Nginx configuration template:
+
+<pre class="highlight"><span class="c"># (using Nginx template)</span>
+server {
+   root /webapps/my_app/public;
+
+   <span class="c"># Use default concurrency for the app. But for the endpoint
+   # /special_websocket_endpoint, force a different concurrency.</span>
+   location <span class="o">/special_websocket_endpoint</span> {
+       passenger_app_group_name <span class="o">foo_websocket</span>;
+       passenger_force_max_concurrent_requests_per_process <span class="o">0</span>;
+   }
+}</pre>
+
+In Passenger 5.0.21 and below, none of the above options were available yet. In those versions you had to work around it by entering code below into <code>config.ru</code> to set the concurrency (on the entire app):
+
+~~~ruby
+if defined?(PhusionPassenger)
+  PhusionPassenger.advertised_concurrency_level = 0
+end
+~~~

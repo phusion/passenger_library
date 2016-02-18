@@ -1,0 +1,130 @@
+<a href="https://github.com/rails/rails/tree/master/actioncable#readme"><%= image_tag '/config/action_cable_integration/action_cable.png', class: 'img-thumbnail img-responsive' %></a>
+
+Passenger + Nginx is fully compatible with [Action Cable](https://github.com/rails/rails/tree/master/actioncable#readme). You need at least Passenger version 5.0.24.
+
+There are two ways to setup Action Cable with Passenger + Nginx:
+
+ 1. Running the Action Cable server on the same host and port, under a sub-URI
+ 2. Running the Action Cable server on a different host or port
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Requirements
+
+ * You need at least Passenger 5.0.24.
+ * You need Redis, PostgreSQL, or any other inter-process adapter supported by Action Cable.
+
+## Preparation: edit 'config/cable.yml'
+
+Passenger runs the Action Cable internally as a separate process. Action Cable defaults to the 'async' adapter, which does not work when multiple processes are involved. So you need to configure Action Cable to use a different adapter, such as Redis or PostgreSQL.
+
+Here is an example that configures config/cable.yml to use Redis:
+
+For example:
+
+~~~yaml
+production:
+  adapter: redis
+  url: redis://redis.example.com:6379
+
+local: &local
+  adapter: redis
+  url: redis://localhost:6379
+
+development: *local
+test: *local
+~~~
+
+Don't forget to start Redis.
+
+## Running the Action Cable server on the same host and port, under a sub-URI
+
+This is the default setup as recommended by Rails and is also the easiest. It works by mounting `ActionCable.server` to a certain path in your `config/routes.rb`. That way, your Action Cable server will be running on the same host and port as your application, but under a sub-URI.
+
+For example, your routes.rb may contain:
+
+~~~ruby
+# Serve websocket cable requests in-process
+mount ActionCable.server => '/cable'
+~~~
+
+(Although the routes.rb comment says that mounting ActionCable.server is meant for serving it in-process, Passenger actually insists on running it as a separate process.)
+
+To make this work in Passenger + Nginx, you need to add a snippet to your Nginx virtual host. Suppose that you already had a virtual host for your application, which looks like this:
+
+~~~
+server {
+    listen 80;
+    server_name www.foo.com;
+    root /path-to-your-app/public;
+    passenger_enabled on;
+}
+~~~
+
+You need to insert a `location` block which configures the Action Cable end point, like thisL
+
+<pre class="highlight">server {
+    listen 80;
+    server_name www.foo.com;
+    root /path-to-your-app/public;
+    passenger_enabled on;
+
+    <span class="c">### INSERT THIS!!! ###</span>
+    location <span class="si">/cable</span> {
+        passenger_app_group_name <span class="si">YOUR_APP_NAME_HERE</span>_action_cable;
+        passenger_force_max_concurrent_requests_per_process 0;
+    }
+}</pre>
+
+ * Replace `/cable` with the actual Action Cable path as is specified in your routes.rb.
+ * Replace `YOUR_APP_NAME_HERE` with a unique identifier that doesn't appear anywhere else in the Nginx configuration file.
+ * The <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> option tunes Passenger for [optimal WebSocket performance](<%= url_for '/config/nginx/tuning_sse_and_websockets/index.html' %>).
+
+## Running the Action Cable server on a different host or port
+
+You can also run the Action Cable server on a different host and port. This approach allows you to scale out the Action Cable server separately from the normal Rails application processes.
+
+### Preparation: configure an Action Cable host and port
+
+Before configuring Passenger, you need to decide on a hostname and port for your Action Cable server. Open `config/environments/development.rb` or `config/environments/production.rb` and specify your choice in the `config.action_cable.url` option.
+
+### Step 1: create a Rackup file
+
+This setup requires a Rackup configuration file specifically for Action Cable. It is recommended that you call it `cable/config.ru`. A basic Rackup configuration for Action Cable looks as follows:
+
+~~~ruby
+require ::File.expand_path('../../config/environment', __FILE__)
+Rails.application.eager_load!
+
+run ActionCable.server
+~~~
+
+### Step 2: create a virtual host for your Action Cable server
+
+Create a virtual host entry as follows:
+
+<pre class="highlight">server {
+    listen <span class="si">YOUR_ACTION_CABLE_PORT_NUMBER_HERE</span>;
+    server_name <span class="si">YOUR_ACTION_CABLE_HOST_NAME_HERE</span>;
+    root <span class="si">/path-to-your-app</span>/public;
+    passenger_enabled on;
+    passenger_app_group <span class="si">YOUR_APP_NAME_HERE</span>_action_cable;
+    passenger_app_type rack;
+    passenger_startup_file config/cable.ru;
+    passenger_force_max_concurrent_requests_per_process 0;
+}</pre>
+
+ * Replace `YOUR_APP_NAME_HERE` with a unique identifier that doesn't appear anywhere else in the Nginx configuration file.
+ * The <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> option tunes Passenger for [optimal WebSocket performance](<%= url_for '/config/nginx/tuning_sse_and_websockets/index.html' %>).
+
+## Restarting the Action Cable server
+
+_Main article: [Restarting applications](<%= url_for '/admin/nginx/restart_app.html' %>)_
+
+If you want to restart the Action Cable server, then you must use the `passenger-config restart-app` command. Touching `restart.txt` does not work well, because restart.txt is checked at the beginning of every new request. But WebSockets are persistent, so restart.txt won't be checked often.
+
+## See also
+
+ * [Passenger + Ruby on Rails integration](<%= url_for '/dev/ruby/rails_integration.html' %>)

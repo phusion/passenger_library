@@ -70,8 +70,8 @@ All of these parameters can be customized. We will talk about customization late
 
 <% if language_type == :ruby %>
   <div class="note">
-    <h3 class="notoc" id="no-bundle-exec-rails-server-yet">No "bundle exec rails server" yet</h3>
-    <p>If you use Rails, then you may be used to using <code>bundle exec rails server</code> to start a server. Passenger currently does not integrate into the <code>rails server</code> mechanism, so instead of <code>bundle exec rails server</code>, run <code>bundle exec passenger start</code> instead.</p>
+    <h3 id="bundle-exec-rails-server">You can also use "bundle exec rails server"</h3>
+    <p>If you use Rails, then you can also run <code>bundle exec rails server</code>. As long as you have the above Gemfile entry, that command will start a Passenger-based server.</p>
   </div>
 <% end %>
 

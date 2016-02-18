@@ -1,0 +1,66 @@
+---
+section: dev
+---
+<%
+@page_title = "Development - #{language_name}"
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals.merge(context: :index)) }
+%>
+
+<h1>Developing with Passenger<br>
+<small>for <%= language_name %> developers</small></h1>
+
+<div class="row">
+  <div class="col-md-6">
+    <h3>Basics</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="standalone_dev.html">Using Passenger Standalone for application development</a> <span class="label label-warning">todo</span></li>
+
+      <% if language_type == :ruby %>
+        <li><a href="rails_integration.html">Passenger + Ruby on Rails integration</a></li>
+      <% end %>
+
+      <% if language_type == :ruby %>
+        <li><a href="code_reloading.html">Automatic code reloading (for Sinatra and other non-Rails frameworks)</a> <span class="label label-warning">todo</span></li>
+      <% else %>
+        <li><a href="code_reloading.html">Automatic code reloading</a> <span class="label label-warning">todo</span></li>
+      <% end %>
+
+      <% if language_type == :ruby %>
+        <li><a href="smart_spawning.html">Integrating with smart spawning (copy-on-write preloading)</a> <span class="label label-warning">todo</span></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="col-md-6">
+    <h3>Advanced</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="multitenancy_and_microservices.html">Developing multiple applications and microservices with Passenger + Nginx</a> <span class="label label-warning">todo</span></li>
+      <li><a href="turbocaching.html">Boosting application performance with turbocaching</a> <span class="label label-warning">todo</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h2>Related guides</h2>
+    <ul class="list-unstyled list-links">
+      <% if language_type == :ruby %>
+        <li>Deployment, scaling and high availability: Sample config.ru for various Ruby web frameworks</li>
+      <% end %>
+      <li><a href="<%= url_for "/config/tuning_sse_and_websockets/index.html" %>">Configuration: Tuning for Server Sent Events and WebSockets</a></li>
+      <li><a href="<%= url_for "/admin/debugging_console/index.html" %>">Administration, debugging and troubleshooting: Debugging console</a></li>
+      <% if language_type == :ruby %>
+        <li><a href="<%= url_for "/config/ruby/bundler.html" %>">In-depth: Bundler support</a></li>
+      <% end %>
+      <% if language_type == :nodejs %>
+        <li><a href="<%= url_for "/indepth/#{language_type}/reverse_port_binding.html" %>">In-depth: Reverse port binding</a></li>
+      <% end %>
+      <% if language_type == :nodejs || language_type == :meteor %>
+        <li><a href="<%= url_for "/indepth/#{language_type}/secure_http_headers.html" %>">In-depth: Secure HTTP headers</a></li>
+      <% end %>
+      <li><a href="<%= url_for "/indepth/index.html" %>">In-depth: Passenger behavior and exposed application environment</a></li>
+    </ul>
+  </div>
+</div>

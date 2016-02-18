@@ -52,7 +52,7 @@ skip_search: true
     </div>
 
 
-    <!-- Installation  ||  Configuration and optimization -->
+    <!-- Installation  ||  Development -->
 
     <div class="row hidden-xs">
       <div class="col-sm-6">
@@ -65,9 +65,9 @@ skip_search: true
       </div>
       <div class="col-sm-6">
         <h3 class="front-page-link-header">
-          <a href="<%= url_for "/config/index.html" %>">
-            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-            Configuration and optimization
+          <a href="<%= url_for "/dev/index.html" %>">
+            <span class="glyphicon glyphicon-console" aria-hidden="true"></span>
+            Developing with Passenger
           </a>
         </h3>
       </div>
@@ -89,6 +89,43 @@ skip_search: true
 
       <div class="col-sm-6">
         <h3 class="front-page-link-header visible-xs">
+          <a href="<%= url_for "/dev/index.html" %>">
+            <span class="glyphicon glyphicon-console" aria-hidden="true"></span>
+            Developing with Passenger
+          </a>
+        </h3>
+
+        <p class="guide-description">
+          Using Passenger during application development. Learn how Passenger makes development easier. Integrate your application with Passenger features.
+        </p>
+      </div>
+    </div>
+
+
+    <!-- Configuration and optimization  ||  Deployment and scaling -->
+
+    <div class="row hidden-xs">
+      <div class="col-sm-6">
+        <h3 class="front-page-link-header">
+          <a href="<%= url_for "/config/index.html" %>">
+            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            Configuration and optimization
+          </a>
+        </h3>
+      </div>
+      <div class="col-sm-6">
+        <h3 class="front-page-link-header">
+          <a href="<%= url_for "/deploy/index.html" %>">
+            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            Deployment and scaling
+          </a>
+        </h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <h3 class="front-page-link-header visible-xs">
           <a href="<%= url_for "/config/index.html" %>">
             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
             Configuration and optimization
@@ -99,29 +136,7 @@ skip_search: true
           Passenger configuration options and features explained, as well as tweaking guides for optimal performance for your specific situation and wishes.
         </p>
       </div>
-    </div>
 
-
-    <!-- Deployment and scaling  ||  Administration and troubleshooting -->
-
-    <div class="row hidden-xs">
-      <div class="col-sm-6">
-        <h3 class="front-page-link-header">
-          <a href="<%= url_for "/deploy/index.html" %>">
-            <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>Deployment, scaling and high availability
-          </a>
-        </h3>
-      </div>
-      <div class="col-sm-6">
-        <h3 class="front-page-link-header">
-          <a href="<%= url_for "/admin/index.html" %>">
-            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Administration, debugging and troubleshooting
-          </a>
-        </h3>
-      </div>
-    </div>
-
-    <div class="row">
       <div class="col-sm-6">
         <h3 class="front-page-link-header visible-xs">
           <a href="<%= url_for "/deploy/index.html" %>">
@@ -130,10 +145,26 @@ skip_search: true
         </h3>
 
         <p class="guide-description">
-          Deploying web apps to a server that has Passenger installed; scaling to multiple servers in order to handle more traffic and always be up & running.
+          Deploying web apps to a server that has Passenger installed; scaling to multiple servers in order to handle more traffic and always be up &amp; running.
         </p>
       </div>
+    </div>
 
+
+    <!-- Administration and troubleshooting  ||   -->
+
+    <div class="row hidden-xs">
+      <div class="col-sm-6">
+        <h3 class="front-page-link-header">
+          <a href="<%= url_for "/admin/index.html" %>">
+            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+            Administration, debugging and troubleshooting
+          </a>
+        </h3>
+      </div>
+    </div>
+
+    <div class="row">
       <div class="col-sm-6">
         <h3 class="front-page-link-header visible-xs">
           <a href="<%= url_for "/admin/index.html" %>">
