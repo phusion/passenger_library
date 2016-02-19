@@ -204,6 +204,10 @@ module DeploymentWalkthroughHelpers
     end
   end
 
+  def ownserver_infrastructure
+    DEPLOYMENT_WALKTHROUGH_INFRASTRUCTURES.last
+  end
+
   def needs_launch_server?(locals)
     locals[:infrastructure_has_launch_instructions]
   end
@@ -291,18 +295,18 @@ module DeploymentWalkthroughHelpers
       result << {
         os_config_type: codename.to_sym,
         os_config_class: :debian,
-        os_config_name: name,
-        os_config_description: name,
-        os_config_description_with_preposition: "on #{name}"
+        os_config_name: "#{name} (with APT)",
+        os_config_description: "#{name} (with APT)",
+        os_config_description_with_preposition: "on #{name} (with APT)"
       }
     end
     SUPPORTED_REDHAT_VERSIONS.each_pair do |distro_class, name|
       result << {
         os_config_type: distro_class.to_sym,
         os_config_class: :redhat,
-        os_config_name: name,
-        os_config_description: name,
-        os_config_description_with_preposition: "on #{name}"
+        os_config_name: "#{name} (with RPM)",
+        os_config_description: "#{name} (with RPM)",
+        os_config_description_with_preposition: "on #{name} (with RPM)"
       }
     end
     result

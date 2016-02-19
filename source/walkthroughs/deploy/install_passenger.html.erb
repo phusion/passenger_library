@@ -20,14 +20,14 @@ end
 <small>for <%= language_name %> apps + <%= os_config_description %></small></h1>
 
 <div class="info">
-  This page describes the installation of Passenger through the following operating system configuration: <strong style="font-size: 120%"><%= os_config_description %></strong>. Not the configuration you are looking for? <a href="../install_passenger_main.html">Go back to the operating system selection menu.</a>
+  This page describes the installation of Passenger through the following operating system or installation method: <strong style="font-size: 120%"><%= os_config_description %></strong>. Not the configuration you are looking for? <a href="../install_passenger_main.html">Go back to the operating system / installation method selection menu.</a>
 </div>
 
 <% if os_config_class == :redhat %>
   <div class="warning">
     <h3 class="notoc">No Amazon Linux RPMs</h3>
     <p>
-      Our YUM repository may not be used with Amazon Linux. Amazon Linux is too different from RHEL and CentOS. If you are on Amazon Linux, please  <a href="../install_passenger_main.html">go back to the operating system selection menu</a> and select "Other" as operating system.
+      Our YUM repository may not be used with Amazon Linux. Amazon Linux is too different from RHEL and CentOS. If you are on Amazon Linux, please  <a href="../install_passenger_main.html">go back to the operating system menu</a> and select "Other" as operating system.
     </p>
   </div>
 <% end %>

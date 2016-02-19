@@ -10,13 +10,13 @@ end
   <!-- Many parts of the Library don't work without Javascript. This noscript section here only serves to allow search engines to discover links. -->
   <ul>
     <li>
-      <strong>Debian, Ubuntu</strong>
+      <strong>Debian, Ubuntu (with APT)</strong>
       <ul>
         <%= debian_version_list_options(next_page) %>
       </ul>
     </li>
     <li>
-      <strong>Red Hat, CentOS</strong>
+      <strong>Red Hat, CentOS (with RPM)</strong>
       <ul>
         <%= redhat_version_list_options(next_page) %>
       </ul>
@@ -31,7 +31,7 @@ end
       </li>
     <% end %>
     <li>
-      <strong>Other</strong>
+      <strong>Other / OS independent (generic installation method)</strong>
       <% if context == :install_passenger %>
         <ul>
           <li>Please select an installation method:</li>
@@ -58,14 +58,14 @@ end
 <p class="os_install_loading_indicator">Loading...</p>
 
 <p><select id="os_install_select" style="display: none">
-  <option value="none" selected>Please select an operating system</option>
-  <option value="debian">Debian, Ubuntu</option>
-  <option value="redhat">Red Hat, CentOS</option>
+  <option value="none" selected>Please select an operating system / installation method</option>
+  <option value="debian">Debian, Ubuntu (with APT)</option>
+  <option value="redhat">Red Hat, CentOS (with RPM)</option>
   <% if edition_type == :oss %>
     <%# Passenger Enterprise cannot be installed via Homebrew %>
     <option value="osx">Mac OS X</option>
   <% end %>
-  <option value="other">Other</option>
+  <option value="other">Other / OS independent (generic installation method)</option>
 </select></p>
 
 <div class="install_os install_os_debian" style="display: none">
@@ -77,7 +77,7 @@ end
   </select></p>
 
   <div class="unsupported_debian_instructions">
-    Is your Debian or Ubuntu version not listed? Then sorry, we do not provide packages for this version at the moment. Please <a href="javascript:void(showGenericInstallationInstructions())">select "Other" in the operating system dropdown</a>, then select an installation method.
+    Is your Debian or Ubuntu version not listed? Then sorry, we do not provide packages for this version at the moment. Please <a href="javascript:void(showGenericInstallationInstructions())">select "Other / OS independent (generic installation method)"</a> in the installation method dropdown, then select an appropriate choice.
   </div>
 </div>
 
@@ -90,7 +90,7 @@ end
   </select></p>
 
   <div class="unsupported_redhat_instructions">
-    Is your Red Hat or CentOS version not listed? Then sorry, we do not provide packages for this version at the moment. Please <a href="javascript:void(showGenericInstallationInstructions())">select "Other" in the operating system dropdown</a>, then select an installation method.
+    Is your Red Hat or CentOS version not listed? Then sorry, we do not provide packages for this version at the moment. Please <a href="javascript:void(showGenericInstallationInstructions())">select "Other / OS independent (generic installation method)"</a> in the installation method dropdown, then select an appropriate choice.
   </div>
 </div>
 
