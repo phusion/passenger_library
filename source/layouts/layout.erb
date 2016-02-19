@@ -80,7 +80,7 @@ end
               </ul>
             <% end %>
             <% navbar_dropdown_section :install, :config, :deploy, :admin, :indepth do %>
-              <a href="<%= maybe_absolute_url_for '/guides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
+              <a href="<%= maybe_absolute_url_for '/guides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Topics <span class="caret"></span></a>
               <% if locals[:integration_mode_type] %>
                 <ul class="dropdown-menu" role="menu">
                   <% navbar_section :install do %><%= maybe_absolute_link_to "Installation, upgrade and uninstallation", "/install/#{locals[:integration_mode_type]}/index.html" %><% end %>
