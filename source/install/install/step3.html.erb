@@ -15,13 +15,17 @@ locals[:web_server_name] = integration_mode_name
 %>
 
 <h1>Installing <%= edition_title %> <%= integration_mode_name_as_passenger_suffix %><br>
-<small><%= os_config_description_with_preposition %> <a href="../#select_os">(change)</a></small> </h1>
+<small><%= os_config_description_with_preposition %></small> </h1>
+
+<div class="info">
+  This page describes the installation of Passenger through the following operating system or installation method: <strong style="font-size: 120%"><%= os_config_description %></strong>. Not the configuration you are looking for? <a href="../#select_os">Go back to the operating system / installation method selection menu.</a>
+</div>
 
 <% if os_config_class == :redhat %>
   <div class="warning">
     <h3 class="notoc">No Amazon Linux RPMs</h3>
     <p>
-      Our YUM repository may not be used with Amazon Linux. Amazon Linux is too different from RHEL and CentOS. If you are on Amazon Linux, please  <a href="../#select_os">go back to the operating system selection menu</a> and select "Other" as operating system.
+      Our YUM repository may not be used with Amazon Linux. Amazon Linux is too different from RHEL and CentOS. If you are on Amazon Linux, please  <a href="../#select_os">go back to the operating system selection menu</a> and select "Other / OS independent (generic installation method)".
     </p>
   </div>
 <% end %>
