@@ -31,11 +31,7 @@ module CustomHelpers
   end
 
   def site_title
-    if config[:display_guides]
-      "Passenger Library"
-    else
-      "Passenger Walkthroughs"
-    end
+    "Passenger Library"
   end
 
   def page_title

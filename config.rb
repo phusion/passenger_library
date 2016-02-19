@@ -451,7 +451,6 @@ set :js_dir, 'javascripts'
 set :images_dir, 'images'
 set :markdown_engine, :kramdown
 set :relative_links, true
-set :display_guides, true
 
 activate :syntax
 activate :relative_assets

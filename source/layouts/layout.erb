@@ -65,69 +65,58 @@ end
             <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> Navigation
           </button>
           <a class="navbar-brand" href="<%= maybe_absolute_url_for '/index.html' %>">
-            <% if config[:display_guides] %>
-              <span class="navbar-brand-part1">Passenger</span>
-              <span class="navbar-brand-part2">Library</span>
-            <% else %>
-              <span class="navbar-brand-part1">Passenger</span>
-              <span class="navbar-brand-part2">Walkthroughs</span>
-            <% end %>
+            <span class="navbar-brand-part1">Passenger</span>
+            <span class="navbar-brand-part2">Library</span>
           </a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
-            <% if config[:display_guides] %>
-              <% navbar_dropdown_section :start, :basics, :deploy_walkthrough do %>
-                <a href="<%= maybe_absolute_url_for '/walkthroughs/index.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
+            <% navbar_dropdown_section :start, :basics, :deploy_walkthrough do %>
+              <a href="<%= maybe_absolute_url_for '/walkthroughs/index.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <% navbar_section :start do %><%= maybe_absolute_link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
+                <% navbar_section :basics do %><%= maybe_absolute_link_to "Basics", "/walkthroughs/basics/index.html" %><% end %>
+                <% navbar_section :deploy_walkthrough do %><%= maybe_absolute_link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
+              </ul>
+            <% end %>
+            <% navbar_dropdown_section :install, :config, :deploy, :admin, :indepth do %>
+              <a href="<%= maybe_absolute_url_for '/guides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
+              <% if locals[:integration_mode_type] %>
                 <ul class="dropdown-menu" role="menu">
-                  <% navbar_section :start do %><%= maybe_absolute_link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
-                  <% navbar_section :basics do %><%= maybe_absolute_link_to "Basics", "/walkthroughs/basics/index.html" %><% end %>
-                  <% navbar_section :deploy_walkthrough do %><%= maybe_absolute_link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
+                  <% navbar_section :install do %><%= maybe_absolute_link_to "Installation, upgrade and uninstallation", "/install/#{locals[:integration_mode_type]}/index.html" %><% end %>
+                  <% navbar_section :dev do %><%= maybe_absolute_link_to "Developing with Passenger", "/dev/#{locals[:integration_mode_type]}/index.html" %><% end %>
+                  <% navbar_section :config do %><%= maybe_absolute_link_to "Configuration and optimization", "/config/#{locals[:integration_mode_type]}/index.html" %><% end %>
+                  <% navbar_section :deploy do %><%= maybe_absolute_link_to "Deployment and scaling", "/deploy/#{locals[:integration_mode_type]}/index.html" %><% end %>
+                  <% navbar_section :admin do %><%= maybe_absolute_link_to "Administration, debugging and troubleshooting", "/admin/#{locals[:integration_mode_type]}/index.html" %><% end %>
+                  <% navbar_section :indepth do %><%= maybe_absolute_link_to "In-depth", "/indepth/index.html" %><% end %>
+                  <% navbar_section :unionstation do %><%= maybe_absolute_link_to "Union Station logging", "/unionstation/index.html" %><% end %>
+                </ul>
+              <% else %>
+                <ul class="dropdown-menu" role="menu">
+                  <% navbar_section :install do %><%= maybe_absolute_link_to "Installation, upgrade and uninstallation", "/install/index.html" %><% end %>
+                  <% navbar_section :install do %><%= maybe_absolute_link_to "Developing with Passenger", "/dev/index.html" %><% end %>
+                  <% navbar_section :config do %><%= maybe_absolute_link_to "Configuration and optimization", "/config/index.html" %><% end %>
+                  <% navbar_section :deploy do %><%= maybe_absolute_link_to "Deployment and scaling", "/deploy/index.html" %><% end %>
+                  <% navbar_section :admin do %><%= maybe_absolute_link_to "Administration, debugging and troubleshooting", "/admin/index.html" %><% end %>
+                  <% navbar_section :indepth do %><%= maybe_absolute_link_to "In-depth", "/indepth/index.html" %><% end %>
+                  <% navbar_section :unionstation do %><%= maybe_absolute_link_to "Union Station logging", "/unionstation/index.html" %><% end %>
                 </ul>
               <% end %>
-              <% navbar_dropdown_section :install, :config, :deploy, :admin, :indepth do %>
-                <a href="<%= maybe_absolute_url_for '/guides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guides <span class="caret"></span></a>
+              <% navbar_dropdown_section :reference do %>
                 <% if locals[:integration_mode_type] %>
+                  <a href="<%= maybe_absolute_url_for "/config/#{locals[:integration_mode_type]}/index.html" %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <% navbar_section :install do %><%= maybe_absolute_link_to "Installation, upgrade and uninstallation", "/install/#{locals[:integration_mode_type]}/index.html" %><% end %>
-                    <% navbar_section :dev do %><%= maybe_absolute_link_to "Developing with Passenger", "/dev/#{locals[:integration_mode_type]}/index.html" %><% end %>
-                    <% navbar_section :config do %><%= maybe_absolute_link_to "Configuration and optimization", "/config/#{locals[:integration_mode_type]}/index.html" %><% end %>
-                    <% navbar_section :deploy do %><%= maybe_absolute_link_to "Deployment and scaling", "/deploy/#{locals[:integration_mode_type]}/index.html" %><% end %>
-                    <% navbar_section :admin do %><%= maybe_absolute_link_to "Administration, debugging and troubleshooting", "/admin/#{locals[:integration_mode_type]}/index.html" %><% end %>
-                    <% navbar_section :indepth do %><%= maybe_absolute_link_to "In-depth", "/indepth/index.html" %><% end %>
-                    <% navbar_section :unionstation do %><%= maybe_absolute_link_to "Union Station logging", "/unionstation/index.html" %><% end %>
+                    <% navbar_section :reference do %><%= maybe_absolute_link_to "Configuration reference", "/config/#{locals[:integration_mode_type]}/reference/index.html" %><% end %>
+                    <% navbar_section :reference do %><%= maybe_absolute_link_to "Hooks", "/indepth/hooks.html" %><% end %>
                   </ul>
                 <% else %>
+                  <a href="<%= maybe_absolute_url_for "/config/index.html" %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <% navbar_section :install do %><%= maybe_absolute_link_to "Installation, upgrade and uninstallation", "/install/index.html" %><% end %>
-                    <% navbar_section :install do %><%= maybe_absolute_link_to "Developing with Passenger", "/dev/index.html" %><% end %>
-                    <% navbar_section :config do %><%= maybe_absolute_link_to "Configuration and optimization", "/config/index.html" %><% end %>
-                    <% navbar_section :deploy do %><%= maybe_absolute_link_to "Deployment and scaling", "/deploy/index.html" %><% end %>
-                    <% navbar_section :admin do %><%= maybe_absolute_link_to "Administration, debugging and troubleshooting", "/admin/index.html" %><% end %>
-                    <% navbar_section :indepth do %><%= maybe_absolute_link_to "In-depth", "/indepth/index.html" %><% end %>
-                    <% navbar_section :unionstation do %><%= maybe_absolute_link_to "Union Station logging", "/unionstation/index.html" %><% end %>
+                    <% navbar_section :reference do %><%= maybe_absolute_link_to "Configuration reference", "/config/reference/index.html" %><% end %>
+                    <% navbar_section :reference do %><%= maybe_absolute_link_to "Hooks", "/indepth/hooks.html" %><% end %>
                   </ul>
                 <% end %>
-                <% navbar_dropdown_section :reference do %>
-                  <% if locals[:integration_mode_type] %>
-                    <a href="<%= maybe_absolute_url_for "/config/#{locals[:integration_mode_type]}/index.html" %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                      <% navbar_section :reference do %><%= maybe_absolute_link_to "Configuration reference", "/config/#{locals[:integration_mode_type]}/reference/index.html" %><% end %>
-                      <% navbar_section :reference do %><%= maybe_absolute_link_to "Hooks", "/indepth/hooks.html" %><% end %>
-                    </ul>
-                  <% else %>
-                    <a href="<%= maybe_absolute_url_for "/config/index.html" %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                      <% navbar_section :reference do %><%= maybe_absolute_link_to "Configuration reference", "/config/reference/index.html" %><% end %>
-                      <% navbar_section :reference do %><%= maybe_absolute_link_to "Hooks", "/indepth/hooks.html" %><% end %>
-                    </ul>
-                  <% end %>
-                <% end %>
               <% end %>
-            <% else %>
-              <% navbar_section :start do %><%= maybe_absolute_link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
-              <% navbar_section :basics do %><%= maybe_absolute_link_to "Basics", "/walkthroughs/basics/index.html" %><% end %>
-              <% navbar_section :deploy_walkthrough do %><%= maybe_absolute_link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
             <% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
