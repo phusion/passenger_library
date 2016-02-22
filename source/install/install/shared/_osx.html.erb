@@ -73,4 +73,7 @@ To activate Passenger, ...
 <% step += 1 %>
 <h2>Step <%= step %>: check installation</h2>
 <%= render_partial("/install/install/shared/postinstall_check.html",
-      locals: locals.merge(apache_process_name: "apache2")) %>
+      locals: locals.merge(
+        apache_process_name: "apache2",
+        passenger_bindir: "/usr/local/bin",
+        passenger_sbindir: "/usr/local/bin")) %>

@@ -126,7 +126,10 @@ http {
 <% step += 1 %>
 <h2>Step <%= step %>: check installation</h2>
 <%= render_partial("/install/install/shared/postinstall_check.html",
-      locals: locals.merge(apache_process_name: "apache2")) %>
+      locals: locals.merge(
+        apache_process_name: "apache2",
+        passenger_bindir: "/usr/bin",
+        passenger_sbindir: "/usr/sbin")) %>
 
 <% step += 1 %>
 <h2>Step <%= step %>: update regularly</h2>

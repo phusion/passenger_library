@@ -139,7 +139,10 @@ passenger_instance_registry_dir /var/run/passenger-instreg;</pre>
 <% step += 1 %>
 <h2>Step <%= step %>: check installation</h2>
 <%= render_partial("/install/install/shared/postinstall_check.html",
-      locals: locals.merge(apache_process_name: "httpd")) %>
+      locals: locals.merge(
+        apache_process_name: "httpd",
+        passenger_bindir: "/usr/bin",
+        passenger_sbindir: "/usr/sbin")) %>
 
 <% step += 1 %>
 <h2>Step <%= step %>: update regularly</h2>
