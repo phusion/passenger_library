@@ -12,7 +12,7 @@ You can contribute documentation by adding or editing files in the `source` dire
 
 By contributing, you agree to license your contribution under [CC BY SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/).
 
-## Previewing or generating the doucmentation website
+## Previewing or generating the documentation website
 
 You will need Ruby installed in order to preview or generate the documentation website.
 

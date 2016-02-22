@@ -147,6 +147,7 @@ The easiest way to do that is to add it to the file `/etc/rc.local`. This script
 Here is an example of what you may want to add to `/etc/rc.local`. If there is an `exit` command in rc.local, make sure you add these before the exit command.
 
 <pre class="highlight">
+<span class="c">#!/bin/sh</span>
 <% if locals[:os_config_type] == :tarball %>
 <span class="c"># Since you installed Passenger from tarball, add its `bin` directory to PATH.</span>
 <span class="nb">export</span> <span class="nv">PATH</span>=<span class="o">/path-to-passenger</span>/bin:<span class="nv">$PATH</span>
