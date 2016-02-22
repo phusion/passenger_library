@@ -1,9 +1,9 @@
 <% @page_title = "Installing Ruby with RVM - #{deployment_walkthrough_page_title(locals)}" %>
 <h1>Installing Ruby <small>with RVM</small></h1>
 
-Before you can deploy your app on the production server, you need to install Ruby. In this walkthrough we recommend that you use [Ruby Version Manager (RVM)](https://rvm.io/) for this purpose. RVM is a tool for installing and managing multiple Ruby versions.
+Before you can deploy your app on the production server, you need to install Ruby. In this tutorial we recommend that you use [Ruby Version Manager (RVM)](https://rvm.io/) for this purpose. RVM is a tool for installing and managing multiple Ruby versions.
 
-There are other ways to install Ruby, e.g. through yum, apt-get, source tarball, rbenv and chruby. You *can* use one of those other installation methods if you so wish, and this walkthrough will work fine even if you installed Ruby using one of those other installation methods. But the one that we recommend in this walkthrough is RVM, because in our opinion it is the easiest option.
+There are other ways to install Ruby, e.g. through yum, apt-get, source tarball, rbenv and chruby. You *can* use one of those other installation methods if you so wish, and this tutorial will work fine even if you installed Ruby using one of those other installation methods. But the one that we recommend in this tutorial is RVM, because in our opinion it is the easiest option.
 
 <% spec = deployment_walkthrough_next_step_after_install_language_runtime(locals) %>
 If you have already installed Ruby, then you [can skip to the next page](<%= spec[:url] %>).
@@ -79,7 +79,7 @@ Replace X.X.X with the Ruby version you want.
 
 ## Install Bundler
 
-Bundler is a popular tool for managing application gem dependencies. We will use Bundler in this walkthrough, so let us install it:
+Bundler is a popular tool for managing application gem dependencies. We will use Bundler in this tutorial, so let us install it:
 
 <pre class="highlight"><span class="prompt">$ </span>gem install bundler --no-rdoc --no-ri</pre>
 

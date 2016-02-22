@@ -25,18 +25,6 @@
   font-size: 18px;
 }
 
-@media (min-width: 768px) {
-  .bs-docs-masthead .lead {
-    font-size: 20px;
-  }
-}
-
-@media (min-width: 992px) {
-  .bs-docs-masthead .lead {
-    font-size: 25px;
-  }
-}
-
 
 /***** Masthead *****/
 
@@ -59,8 +47,38 @@
   color: #d5cae9;
 }
 
+.bs-docs-masthead a {
+  color: #fff;
+}
+
 .bs-docs-header h1, .bs-docs-header p {
   margin-right:0px;
+}
+
+.bs-docs-masthead .swiftype-container {
+  margin-bottom: 2em;
+}
+
+.bs-docs-masthead .new-link-group {
+  margin-left: 2em;
+}
+
+@media (min-width: 768px) {
+  .bs-docs-masthead .lead {
+    font-size: 20px;
+  }
+
+  .st-masthead-search-input {
+    max-width: 35em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 992px) {
+  .bs-docs-masthead .lead {
+    font-size: 25px;
+  }
 }
 
 

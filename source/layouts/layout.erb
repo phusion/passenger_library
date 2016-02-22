@@ -72,7 +72,7 @@ end
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
             <% navbar_dropdown_section :start, :basics, :deploy_walkthrough do %>
-              <a href="<%= maybe_absolute_url_for '/walkthroughs/index.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Walkthroughs <span class="caret"></span></a>
+              <a href="<%= maybe_absolute_url_for '/walkthroughs/index.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <% navbar_section :start do %><%= maybe_absolute_link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
                 <% navbar_section :basics do %><%= maybe_absolute_link_to "Basics", "/walkthroughs/basics/index.html" %><% end %>
@@ -122,7 +122,7 @@ end
           <ul class="nav navbar-nav navbar-right">
             <li class="swiftype-container">
               <form action="javascript:void(0)">
-                <input type="text" id="st-search-input" class="st-default-search-input form-control" autocomplete="off" autocorrect="off" autocapitalize="off">
+                <input type="text" id="st-search-input" class="st-default-search-input form-control" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Enter a search term...">
               </form>
             </li>
             <li class="dropdown">

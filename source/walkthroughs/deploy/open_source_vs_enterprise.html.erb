@@ -10,10 +10,10 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
 <h1>Open source vs Enterprise</h1>
 
 <p>
-  Are you using Passenger open source, or are you using Passenger Enterprise? We need to know this because the rest of this walkthrough depends on it.
+  Are you using Passenger open source, or are you using Passenger Enterprise? We need to know this because the rest of this tutorial depends on it.
 </p>
 
-<%= render_partial("/shared/ask_edition.html", locals: { 
+<%= render_partial("/shared/ask_edition.html", locals: {
   dest: ":edition:/" + deployment_walkthrough_next_html_after_edition(locals),
   force_choice: true })
 %>
@@ -21,7 +21,7 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
 <h3>More information</h3>
 
 <p>
-  Passenger is available in an open source edition, which you can get at no cost. In the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics walkthrough</a>, you have worked with the open source edition.
+  Passenger is available in an open source edition, which you can get at no cost. In the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics tutorial</a>, you have worked with the open source edition.
 </p>
 
 <p>

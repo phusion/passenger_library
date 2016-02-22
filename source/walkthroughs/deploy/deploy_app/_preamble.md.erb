@@ -25,7 +25,7 @@ end
 
   We need to ensure that "<%= gem_name %>" is in your Gemfile.
 
-  Your Rails app needs a database in production. For demonstration purposes, this walkthrough uses sqlite as database because it's the easiest to setup. So we need to ensure that "sqlite3" is in the Gemfile.
+  Your Rails app needs a database in production. For demonstration purposes, this tutorial uses sqlite as database because it's the easiest to setup. So we need to ensure that "sqlite3" is in the Gemfile.
 <% else %>
   <%= h2(id_prefix, "#{header_step} Add \"#{gem_name}\" to your gem bundle") %>
 
@@ -76,7 +76,7 @@ end
 gem "sqlite3", groups: [:development]
 ~~~
 
-Since we are going to use sqlite3 in production in this walkthrough, we need to ensure that this gem is moved outside the `development` group, like this:
+Since we are going to use sqlite3 in production in this tutorial, we need to ensure that this gem is moved outside the `development` group, like this:
 
 ~~~ruby
 gem "sqlite3"
@@ -374,31 +374,31 @@ They must be installed. Most of these dependencies are gems in your Gemfile, man
 <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
 <span class="prompt">$ </span>bundle install --deployment --without development test</pre>
 
-Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
+Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this tutorial's scope.
 <% elsif language_type == :python -%>
 They must be installed. Most of these dependencies are Python libraries. A common way to install Python libraries is through `pip`. For example, if your application depends on Flask:
 
 <pre class="highlight"><span class="prompt">$ </span>sudo pip install flask</pre>
 
-Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
+Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this tutorial's scope.
 <% elsif language_type == :nodejs %>
 They must be installed. Most of these dependencies are Javascript libraries, managed by npm. You can install them by running `npm install` in your app's directory:
 
 <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
 <span class="prompt">$ </span>npm install --production</pre>
 
-Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this walkthrough's scope.
+Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this tutorial's scope.
 <% elsif language_type == :meteor %>
 They must be installed. Most of these dependencies are Javascript libraries, managed by npm. You can install them by running `npm install` in your app's package directory, under the `programs/server` subdirectory:
 
 <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/bundle/programs/server
 <span class="prompt">$ </span>npm install --production</pre>
 
-Your app may also depend on services, such as Redis etc. With the exception of MongoDB, installing services that your app depends on is outside of this walkthrough's scope.
+Your app may also depend on services, such as Redis etc. With the exception of MongoDB, installing services that your app depends on is outside of this tutorial's scope.
 <% else -%>
 Please install them now, before Passenger is started.
 
-How to install your app's dependencies is an application-specific procedure, so it is outside this walkthrough's scope.
+How to install your app's dependencies is an application-specific procedure, so it is outside this tutorial's scope.
 <% end %>
 
 <% if web_framework == "rails" %>

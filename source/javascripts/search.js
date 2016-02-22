@@ -46,6 +46,8 @@ Search.initialize = function() {
     renderFunction: Search.renderResult,
     renderResultsFunction: Search.renderResults
   });
+
+  $('.st-masthead-search-input').keyup(Search.processSecondarySearchInputKeyup);
 }
 
 Search.close = function() {
@@ -127,6 +129,15 @@ Search.getFilters = function() {
   }
 
   return { page: result };
+}
+
+Search.processSecondarySearchInputKeyup = function(event) {
+  if (event.keyCode == 13) {
+    var searchTerm = $(this).val();
+    var input = $('#st-search-input');
+    input.val(searchTerm);
+    input.closest('form').submit();
+  }
 }
 
 $(document).ready(function() {

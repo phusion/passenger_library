@@ -12,9 +12,9 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
   <a href="https://www.phusionpassenger.com/">Passenger</a> is an open source <strong>web application server</strong> for <%= language_name %>. It handles HTTP requests, manages processes and resources, and enables administration, monitoring and problem diagnosis. Passenger is very easy to use, makes deploying in production much easier and is scalable.
 </p>
 
-<h4>What is this walkthrough?</h4>
+<h4>What is this tutorial?</h4>
 <p>
-  This is an <em>end-to-end walkthrough</em> that teaches you how to install <%= language_name %> and Passenger on a production server. This walkthrough will ask you some questions, so the exact walkthrough steps depend on the choices you make. In general, it covers these topics:
+  This is an <em>end-to-end tutorial</em> that teaches you how to install <%= language_name %> and Passenger on a production server. This tutorial will ask you some questions, so the exact tutorial steps depend on the choices you make. In general, it covers these topics:
 </p>
 <ol>
   <li>Launching a server</li>
@@ -30,14 +30,14 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
   <div class="col-md-4">
     <h4>Not familar with Passenger?</h4>
     <p>
-      Please take a look at the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics walkthrough</a>.
+      Please take a look at the <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>">quickstart</a> and the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics tutorial</a>.
     </p>
   </div>
 
   <div class="col-md-4">
     <h4>Developing?</h4>
     <p>
-      Looking to run Passenger in development? Then please read the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics walkthrough</a> or the <a href="<%= url_for "/dev/#{language_type}/index.html" %>">development guide</a>.
+      Looking to run Passenger in development? Then please read the <a href="<%= url_for "/walkthroughs/basics/#{language_type}/index.html" %>">basics tutorial</a> or the <a href="<%= url_for "/dev/#{language_type}/index.html" %>">development guide</a>.
     </p>
   </div>
 
@@ -74,7 +74,7 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
         infra_spec = ownserver_infrastructure
         spec = deployment_walkthrough_next_step_after_selecting_infrastructure(locals.merge(infra_spec))
         %>
-        <li><a href="<%= spec[:url] %>">Generic Linux/Unix deployment walkthrough</a></li>
+        <li><a href="<%= spec[:url] %>">Generic Linux/Unix deployment tutorial</a></li>
       </ul>
     </div>
 
@@ -85,7 +85,7 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
       infra_spec = ownserver_infrastructure
       spec = deployment_walkthrough_next_step_after_selecting_infrastructure(locals.merge(infra_spec))
       %>
-      <a href="<%= spec[:url] %>">Generic Linux/Unix deployment walkthrough</a>
+      <a href="<%= spec[:url] %>">Generic Linux/Unix deployment tutorial</a>
     </div>
   </div>
 <% end %>
