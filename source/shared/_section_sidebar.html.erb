@@ -11,7 +11,7 @@ end
 %>
 
 <div class="breadcrumb-container breadcrumb-container-main">
-  <p class="breadcrumb-announcer">Current section:</p>
+  <p class="breadcrumb-announcer">Current topic:</p>
 
   <h2>
     <a href="<%= section_path %>">
@@ -24,7 +24,7 @@ end
     <% if locals[:context] == :index %>
       <a href="<%= url_for "/index.html" %>">&laquo; Back to Library front page</a>
     <% else %>
-      <a href="<%= section_path %>">&laquo; Back to section</a>
+      <a href="<%= section_path %>">&laquo; Back to topic index</a>
     <% end %>
   </p>
 </div>
