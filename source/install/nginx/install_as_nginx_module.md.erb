@@ -1,5 +1,5 @@
 ---
-title: Installing Passenger as a normal Nginx module
+title: Installing Passenger as a normal or dynamic Nginx module
 section: install
 ---
 <%
@@ -12,9 +12,11 @@ content_for(:sidebar) do
 end
 %>
 
-# Installing Passenger as a normal Nginx module
+# Installing Passenger as a normal or dynamic Nginx module
 
-If you have ever installed an add-on module for Nginx, then you know that it involves the following steps:
+## Static module
+
+If you have ever installed a static add-on module for Nginx, then you know that it involves the following steps:
 
  1. Download the Nginx source code.
  2. Run the Nginx `configure` script with `--add-module` parameters, like this: `./configure --prefix=/somewhere --add-module=/path-to-your-module`
@@ -31,6 +33,23 @@ Here is a full example that shows, given an Nginx source directory, how you can 
 <pre class="highlight"><span class="prompt">$ </span>cd /path-to-nginx-source-dir
 <span class="prompt">$ </span>./configure --prefix=/opt/nginx \
   --add-module=$(passenger-config --nginx-addon-dir) \
-  --add-module=/path-to-some-nginx-module
+  --add-module=/path-to-some-other-nginx-module
 <span class="prompt">$ </span>make
 <span class="prompt">$ </span>sudo make install</pre>
+
+## Dynamic module
+
+Nginx 1.9.11 and later support [dynamic modules](https://www.nginx.com/blog/dynamic-modules-nginx-1-9-11/). Passenger 5.0.26 and later supports this. Like compiling Passenger as a static module, compiling Passenger as a dynamic module requires the Nginx source code.
+
+You can install Passenger as a dynamic module as follows:
+
+<pre class="highlight"><span class="prompt">$ </span>cd /path-to-nginx-source-dir
+<span class="prompt">$ </span>./configure --prefix=/opt/nginx \
+  --add-dynamic-module=$(passenger-config --nginx-addon-dir) \
+  --add-module=/path-to-some-other-nginx-module
+<span class="prompt">$ </span>make
+<span class="prompt">$ </span>sudo make install</pre>
+
+After running the above command, make sure that Nginx loads the Passenger module by specifying this in your Nginx configuration file:
+
+    load_module modules/ngx_http_passenger_module.so;
