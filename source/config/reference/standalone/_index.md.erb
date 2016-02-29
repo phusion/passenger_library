@@ -447,7 +447,10 @@ If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default 
   </tr>
   <tr>
     <th>Default</th>
-    <td>1024</td>
+    <td>
+      1024 (&lt; 5.0.25) <br>
+      2048 (&gt;= 5.0.26)
+    </td>
   </tr>
   <tr>
     <th>Since</th>

@@ -2194,7 +2194,8 @@ These options have the same effect as [ngx_http_proxy_module](http://nginx.org/e
   <tr>
     <th>Default</th>
     <td>
-      passenger_socket_backlog 1024;
+      passenger_socket_backlog 1024; (&lt; 5.0.25)<br>
+      passenger_socket_backlog 2048; (&gt;= 5.0.26)
     </td>
   </tr>
   <tr>

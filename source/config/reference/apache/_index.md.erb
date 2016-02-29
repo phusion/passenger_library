@@ -2057,7 +2057,10 @@ Sets the name of the [sticky sessions](#passengerstickysessions) cookie.
   </tr>
   <tr>
     <th>Default</th>
-    <td>PassengerSocketBacklog 1024</td>
+    <td>
+      PassengerSocketBacklog 1024 (&lt; 5.0.25)<br>
+      PassengerSocketBacklog 2048 (&gt;= 5.0.26)
+    </td>
   </tr>
   <tr>
     <th>Since</th>
