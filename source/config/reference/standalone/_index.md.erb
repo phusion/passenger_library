@@ -580,6 +580,48 @@ Changing this option is especially useful if the partition that the default dire
 If you've specified such a directory (as opposed to using Passenger's default) then you *must* ensure that this directory exists.
 
 
+### `--core-file-descriptor-ulimit` / "core_file_descriptor_ulimit"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --core-file-descriptor-ulimit <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"core_file_descriptor_ulimit": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_CORE_FILE_DESCRIPTOR_ULIMIT=<em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.26</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+Sets the file descriptor operating system ulimit for the Passenger core process. If you see "too many file descriptor" errors on a regular basis, then increasing this limit will help.
+
+The default value is inherited from the process that started Passenger Standalone. If you started Passenger Standalone from the shell, then the file descriptor ulimit is inherited from the shell process (which you can inspect with `ulimit -a`). If you started Passenger Standalone from an OS startup script such as /etc/rc.local, then the file descriptor ulimit is inherited from the process that invoked the script. On most operating systems, the default ulimit can be configured with a config file such as /etc/security/limits.conf, but since ulimits are *inherited* on a process basis instead of set globally, using that file to change ulimits is usually an error-prone process. This Passenger configuration option provides an easier way (and a way that always works) to set the file descriptor ulimit in Passenger.
+
+Because ulimits are inherited on a process basis, setting this this option also sets the ulimit of the application processes managed by Passenger. However, if you are using [`--load-shell-envvars` / "load_shell_envvars"](#--load-shell-envvars-load_shell_envvars) then the application processes are started through the shell, and the shell startup files may override the ulimits set by Passenger.
+
+You can also set the file descriptor ulimit for application processes, without setting it for the Passenger core process, using [`--app-file-descriptor-ulimit` / "app_file_descriptor_ulimit"](#--app-file-descriptor-ulimit-app_file_descriptor_ulimit).
+
+
 ## Application loading options
 
 ### `--environment` / "environment"
@@ -1161,6 +1203,46 @@ You can use this option to explicitly enable or disable this feature. `--friendl
 Enables or disables the loading of shell environment variables before spawning the application.
 
 If this option is turned on, and the user's shell is `bash`, then applications are loaded by running them with `bash -l -c`. If this option is turned off, applications are loaded by running them directly from the `Passenger core` process.
+
+
+### `--app-file-descriptor-ulimit` / "app_file_descriptor_ulimit"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --app-file-descriptor-ulimit <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"app_file_descriptor_ulimit": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_APP_FILE_DESCRIPTOR_ULIMIT=<em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.26</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Sets the file descriptor operating system ulimit for application processes managed by Passenger. If you see "too many file descriptor" errors on a regular basis, and these errors originate from the Passenger core process (as opposed to the application processes), then increasing this limit will help.
+
+If the "too many file descriptor" errors originate from the Passenger core process, then setting this option will *not* help. Use [`--core-file-descriptor-ulimit` / "core_file_descriptor_ulimit"](#--core-file-descriptor-ulimit-core_file_descriptor_ulimit) for that.
+
+The default file descriptor ulimit is inherited from the Passenger core process. See [`--core-file-descriptor-ulimit` / "core_file_descriptor_ulimit"](#--core-file-descriptor-ulimit-core_file_descriptor_ulimit) to learn how the default file descriptor ulimit for Passenger core process is set.
 
 
 ### `--debugger` / "debugger"

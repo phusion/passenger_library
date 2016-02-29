@@ -1519,6 +1519,64 @@ On some systems where disk I/O is expensive, e.g. systems where the harddisk is 
 You can decrease or almost entirely eliminate this overhead by setting `passenger_stat_throttle_rate`. Setting this option to a value of `x` means that the above list of filesystem checks will be performed at most once every `x` seconds. Setting it to a value of '0' means that no throttling will take place, or in other words, that the above list of filesystem checks will be performed on every request.
 
 
+### passenger_core_file_descriptor_ulimit
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_core_file_descriptor_ulimit <em>integer</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See descriptor</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.26</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+Sets the file descriptor operating system ulimit for the Passenger core process. If you see "too many file descriptor" errors on a regular basis, then increasing this limit will help.
+
+The default value is inherited from the process that started Passenger Standalone. If you started Passenger Standalone from the shell, then the file descriptor ulimit is inherited from the shell process (which you can inspect with `ulimit -a`). If you started Passenger Standalone from an OS startup script such as /etc/rc.local, then the file descriptor ulimit is inherited from the process that invoked the script. On most operating systems, the default ulimit can be configured with a config file such as /etc/security/limits.conf, but since ulimits are *inherited* on a process basis instead of set globally, using that file to change ulimits is usually an error-prone process. This Passenger configuration option provides an easier way (and a way that always works) to set the file descriptor ulimit in Passenger.
+
+Because ulimits are inherited on a process basis, setting this this option also sets the ulimit of the application processes managed by Passenger. However, if you are using [passenger_load_shell_envvars](#passenger_load_shell_envvars) then the application processes are started through the shell, and the shell startup files may override the ulimits set by Passenger.
+
+You can also set the file descriptor ulimit on a per-application basis (instead of setting it globally for the Passenger core process) using [passenger_app_file_descriptor_ulimit](#passenger_app_file_descriptor_ulimit).
+
+
+### passenger_app_file_descriptor_ulimit
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_app_file_descriptor_ulimit <em>integer</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.26</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Sets the file descriptor operating system ulimit for application processes managed by Passenger. If you see "too many file descriptor" errors on a regular basis, and these errors originate from the Passenger core process (as opposed to the application processes), then increasing this limit will help.
+
+If the "too many file descriptor" errors originate from the Passenger core process, then setting this option will *not* help. Use [passenger_core_file_descriptor_ulimit](#passenger_core_file_descriptor_ulimit) for that.
+
+The default file descriptor ulimit is inherited from the Passenger core process. See [passenger_core_file_descriptor_ulimit](#passenger_core_file_descriptor_ulimit) to learn how the default file descriptor ulimit for Passenger core process is set.
+
+
 ### passenger_pre_start
 
 <table class="table table-bordered table-condensed">
