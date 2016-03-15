@@ -40,7 +40,7 @@ Before you can deploy your app on the production server, you need to install Nod
       Gentoo
     </td>
     <td>
-      <% if language_type == :meteor %>This will probably install the latest version instead of 0.10.x, unfortunately we don't have any instructions at this time on resolving that:<% end %>
+      <% if language_type == :meteor %>Please install from source from <a href="http://www.nodejs.org/">www.nodejs.org</a> because the regular way (listed below) will probably install a newer version.<% end %>
       <pre class="highlight"><span class="prompt">$ </span>sudo emerge nodejs</pre>
     </td>
   </tr>
@@ -49,7 +49,7 @@ Before you can deploy your app on the production server, you need to install Nod
       Arch Linux
     </td>
     <td>
-      <% if language_type == :meteor %>This will probably install the latest version instead of 0.10.x, unfortunately we don't have any instructions at this time on resolving that:<% end %> 
+      <% if language_type == :meteor %>Please install from source from <a href="http://www.nodejs.org/">www.nodejs.org</a> because the regular way (listed below) will probably install a newer version.<% end %> 
       <pre class="highlight"><span class="prompt">$ </span>sudo pacman -S nodejs npm</pre>
     </td>
   </tr>

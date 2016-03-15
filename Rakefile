@@ -22,7 +22,7 @@ task :checklinks do
   non_main_domain_regex = '^(?!http:\/\/127\.0\.0\.1:4567(\/|$))'
   # Ignore LiveReload stuff
   livereload_regex = '^http:\/\/127\.0\.0\.1:4567\/__rack'
-  sh "linkchecker http://127.0.0.1:4567/" +
+  sh "linkchecker http://127.0.0.1:4567/sub/index.html" +
     " --ignore-url #{Shellwords.escape non_main_domain_regex}" +
     " --ignore-url #{Shellwords.escape livereload_regex}"
 end
