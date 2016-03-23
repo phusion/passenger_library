@@ -51,6 +51,11 @@ end
     <% else %>
       <meta class="swiftype" name="edition" data-type="enum" content="none">
     <% end %>
+    <% if config[:google_analytics] %>
+      <script>
+        window.googleAnalyticsEnabled = true;
+      </script>
+    <% end %>
     <%= yield_content :head %>
   </head>
 
