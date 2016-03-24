@@ -1,19 +1,20 @@
-// http://help.crazyegg.com/articles/61-user-variables
-function CE_READY() {
+// http://help.luckyorange.com/article/126-tagging-with-javascript
+(function () {
   if (window.localStorage) {
     var integrationMode = window.localStorage.getItem('library_integration_mode');
     var language = window.localStorage.getItem('programming_language');
     var edition = window.localStorage.getItem('product_edition');
 
+    window._loq = window._loq || [];
+
     if (integrationMode) {
-      CE2.set(1, integrationMode);
+      window._loq.push(['tag', integrationMode]);
     }
     if (language) {
-      CE2.set(2, language);
+      window._loq.push(['tag', language]);
     }
     if (edition) {
-      CE2.set(3, edition);
+      window._loq.push(['tag', edition]);
     }
-    console.log(integrationMode, language, edition);
   }
-}
+})();
