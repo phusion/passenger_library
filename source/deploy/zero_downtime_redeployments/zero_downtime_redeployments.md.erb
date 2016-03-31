@@ -25,18 +25,24 @@ To solve this problem, Passenger Enterprise provides zero-downtime restarts, als
 
 A zero-downtime restart works as follows:
 
- 1. Passenger Enterprise spawns a new process in the background.
- 2. When it's done spawning, Passenger Enterprise will replace one of the old processes with this newly spawned one.
- 3. Step 1 and 2 are repeated until all processes have been replaced.
-
-There are other methods to perform a zero-downtime restart. Some application servers spawn as many processes as currently exist, then reroute all traffic to that set of newly spawned processes, then shutdown the old processes. The disadvantage of this approach is that it temporarily requires twice as much memory. For this reason, we have chosen not to use that approach with Passenger Enterprise. Passenger Enterprise's approach is more resource friendly.
+ 1. Spawn new process Y
+  - Passenger Enterprise spawns a new process Y in the background and waits for it to be ready
+ 2. Gracefully shutdown old process X
+  - Passenger Enterprise stops sending new requests to X and waits until X has handled all of its current requests
+  - The shutdown signal is sent to X and Passenger Enterprise waits for X to exit
+ 3. Replace & repeat
+  - X is now gone, Y is added to the pool as its replacement
+  - Repeat steps 1-3 until all processes have been replaced  
+ 
+This is a very resource-friendly way of performing a zero-downtime restart, because the memory and spawn load profile remain pretty much the same as during normal server operation. It would be faster to respawn all processes in parallel, but that might result in the deployment suddenly requiring twice as much memory, and the disk & cpu being hit with parallel spawns. This is why we have chosen not to use the parallel approach with Passenger Enterprise, especially since restarts are a vulnerable moment anyway.
 
 ### Caveats
 
-Zero-downtime restarts have a few caveat however that you should be aware of:
+Zero-downtime restarts have a few caveats that you should be aware of:
 
  * Upgrading an application sometimes involves upgrading the database schema. With zero-downtime restarts, there may be a point in time during which processes belonging to the previous version and processes belonging to the new version both exist at the same time. Any database schema upgrades you perform must therefore be backwards-compatible with the old application version.
  * Because there's no telling which process will serve a request, users may not see changes brought about by the new version until all processes have been restarted. It is for this reason that you should not use rolling restarts in development, only in production.
+ * If your application takes a long time to shutdown, the entire restart procedure will also take much longer because Passenger needs to wait for each application process in your pool (one-by-one) to stop. Optimizing your application shutdown procedure will make restarts much faster too.
 
 ## Enabling zero-downtime restarts
 
