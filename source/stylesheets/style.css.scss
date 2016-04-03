@@ -1,3 +1,26 @@
+/***** Container ******/
+
+// Make the container look better on extra large screens
+
+@media (min-width: 1500px) {
+  .container {
+    width: 1420px;
+  }
+}
+
+@media (min-width: 2000px) {
+  .container {
+    width: 1900px;
+  }
+}
+
+@media (min-width: 2500px) {
+  .container {
+    width: 2400px;
+  }
+}
+
+
 /***** Navbar ******/
 
 .navbar-brand-part1 {
