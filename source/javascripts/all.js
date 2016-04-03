@@ -3,3 +3,5 @@
 //= require "jquery.ba-hashchange.min.js"
 //= require "jquery.swiftype.search.js"
 //= require_tree .
+
+smoothScroll.init();

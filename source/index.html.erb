@@ -17,11 +17,13 @@ skip_search: true
         </form>
       </div>
       <p class="lead">
-        <a href="walkthroughs/start/" class="btn btn-outline-inverse btn-outline-inverse-prominent btn-lg">Begin Tutorial</a>
-      </p>
-      <p>
-        <a href="#guides">Discover Topics</a>
-        <a href="config/reference/" class="new-link-group">Config Reference</a>
+        <a href="#site_intro" data-scroll class="btn btn-outline-inverse btn-outline-inverse-prominent btn-lg">
+          <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+          Read more
+        </a>
+        <a href="config/reference/" class="btn btn-outline-inverse btn-lg">
+          Config Reference
+        </a>
       </p>
     </div>
   </div>
@@ -33,6 +35,75 @@ skip_search: true
   </p>
 </section>
 
+<br><br>
+
+<section class="bs-docs-section">
+  <div class="row">
+    <div class="col-sm-4 site-section-showoff">
+      <a href="#walkthroughs" data-scroll class="eyecatcher">
+        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+        <span class="title">Tutorials</span>
+      </a>
+
+      <p>
+        End-to-end. For <strong>beginners</strong>, helping you from zero to fully online. Great if you are not familiar with Passenger.
+      </p>
+
+      <a href="#walkthroughs" data-scroll class="btn btn-default btn-lg visible-xs">
+        Read this
+      </a>
+    </div>
+
+    <div class="col-sm-4 site-section-showoff">
+      <a href="#guides" data-scroll class="eyecatcher">
+        <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+        <span class="title">Topics</span>
+      </a>
+
+      <p>
+        Short, to-the-point guides on specific topics. Great if you already have experience with Passenger.
+      </p>
+
+      <a href="#guides" data-scroll class="btn btn-default btn-lg visible-xs">
+        Read this
+      </a>
+    </div>
+
+    <div class="col-sm-4 site-section-showoff">
+      <a href="config/reference/" class="eyecatcher">
+        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+        <span class="title">Reference</span>
+      </a>
+
+      <p>
+        Just looking to configure something? Read this list of configuration options, Ctrl-F to search.
+      </p>
+
+      <a href="config/reference/" class="btn btn-default btn-lg visible-xs">
+        Read this
+      </a>
+    </div>
+  </div>
+  <div class="row hidden-xs">
+    <div class="col-sm-4 site-section-showoff-aligned-action">
+      <a href="#walkthroughs" data-scroll class="btn btn-default btn-lg">
+        Read this
+      </a>
+    </div>
+    <div class="col-sm-4 site-section-showoff-aligned-action">
+      <a href="#guides" data-scroll class="btn btn-default btn-lg">
+        Read this
+      </a>
+    </div>
+    <div class="col-sm-4 site-section-showoff-aligned-action">
+      <a href="config/reference/" class="btn btn-default btn-lg">
+        Read this
+      </a>
+    </div>
+  </div>
+
+</section>
+
 <section class="bs-docs-section">
   <div class="section-header">
     <h2 id="walkthroughs" class="section-header">End-to-End Tutorials</h2>
@@ -42,7 +113,7 @@ skip_search: true
   <%= render_partial("/walkthroughs/index.html", locals: { quickstart: true, basics: true, deployment: true }) %>
 </section>
 
-<section class="bs-docs-section guide-container-frontpage" id="guides" class="guides-index">
+<section class="bs-docs-section" id="guides" class="guides-index">
   <div class="section-header">
     <h2>Guides on Specific Topics</h2>
     <p class="lead">For mastering Passenger.</p>
