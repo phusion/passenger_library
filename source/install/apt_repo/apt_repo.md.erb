@@ -2,15 +2,13 @@
 section: install
 ---
 <%
-@page_title = "Passenger #{integration_mode_name_as_passenger_suffix} APT repository"
+@page_title = "Passenger #{integration_mode_name_as_passenger_suffix} APT repository (.deb packages)"
 content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
 %>
 
-# Passenger <%= integration_mode_name_as_passenger_suffix %> APT repository
+# Passenger <%= integration_mode_name_as_passenger_suffix %> APT repository (.deb packages)
 
 We provide APT repositories for installing Passenger on Debian and Ubuntu systems. There are separate repositories for the open source and Enterprise versions.
-
-These APT repositories contain Passenger packages for multiple versions of Debian and Ubuntu. These packages are automatically built by our build server after we push out a source release, and thus are always up to date with the official source releases.
 
 <% if integration_mode_type == :nginx %>
   If you use these packages to install Passenger then you do not need to run `passenger-install-nginx-module`. These packages contain all the binaries that you need, including a Passenger-enabled Nginx binary.
@@ -18,16 +16,44 @@ These APT repositories contain Passenger packages for multiple versions of Debia
   If you use these packages to install Passenger then you do not need to run `passenger-install-apache2-module`. These packages contain all the binaries that you need.
 <% end %>
 
-Packages are available for the x86 and x86_64 architectures. Our policy is to support all Ubuntu LTS releases that are still supported by Canonical, plus the latest Ubuntu release, plus all Debian releases that are still supported by Debian.
+**Table of contents**
 
-## Limited package support for non-LTS Ubuntu versions
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Using the APT repository
+
+### Install latest Passenger <%= integration_mode_name_as_passenger_suffix %> from APT
+
+Please read the <%= link_to "installation guide", "/install/#{integration_mode_type}/install/index.html" %>. When asked to select an installation method, select <strong>"Debian, Ubuntu"</strong>.
+
+### Upgrade an APT-installed Passenger <%= integration_mode_name_as_passenger_suffix %>
+
+Please read the <%= link_to "upgrade guide", "/install/#{integration_mode_type}/upgrade/index.html?a=debian_ubuntu" %>.
+
+### Uninstall an APT-installed Passenger <%= integration_mode_name_as_passenger_suffix %>
+
+Please read the <%= link_to "uninstallation guide", "/install/#{integration_mode_type}/uninstall/index.html" %>.
+
+## Background information and release policy
+
+### Multiple versions, multiple distributions
+
+Our APT repositories contain Passenger packages for multiple versions of Debian and Ubuntu.
+
+### Always up-to-date
+
+Our p packages are automatically built by our build server after we push out a source release, and thus are always up to date with the official source releases.
+
+### Limited architectures
+
+Packages are available for the x86 and x86_64 architectures only.
+
+### Limited package support for non-LTS Ubuntu versions
+
+Our policy is to support all Ubuntu LTS releases that are still supported by Canonical, plus the latest Ubuntu release, plus all Debian releases that are still supported by Debian.
 
 Some Ubuntu releases are Long Term Supported (LTS) by Canonical, the company that created Ubuntu, for a period of 5 years. Other (non-LTS) Ubuntu versions are only supported by Canonical for 1 year.
 
 We provide Passenger package updates for LTS Ubuntu versions for 5 years. But for non-LTS Ubuntu versions, we only provide Passenger package updates for 6 months. That is around the time when the next Ubuntu version is out.
 
 So if you are using a non-LTS Ubuntu version, then when the next Ubuntu version is released, you must upgrade your system to that new Ubuntu version. Otherwise you won't receive Passenger updates in the form of .deb packages from us anymore.
-
-## Installation guides
-
-To learn more about installing Passenger or Passenger Enterprise through APT, please refer to one of the <a href="../install/">installation guides</a>. When asked to select an operating system, select <strong>"Debian, Ubuntu"</strong>.
