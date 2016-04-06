@@ -23,7 +23,7 @@ Fingerprint: D5F0 8514 2693 9232 F437  AB72 2AC7 45A5 0A21 2A8C
 
 This key is stored at [the Phusion website](http://www.phusion.nl/about/gpg) and at the key servers [sks-keyservers.net](http://pool.sks-keyservers.net/pks/lookup?op=get&search=0x2AC745A50A212A8C) and [keyserver.ubuntu.com](http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2AC745A50A212A8C). You can import it to your keyring with one of these command:
 
-    gpg --keyserver hkp://pool.sks-keyservers.net:80 --search-keys 0x2AC745A50A212A8C
+    gpg --keyserver hkps://hkps.pool.sks-keyservers.net --search-keys 0x2AC745A50A212A8C
 
 -OR-
 
@@ -37,20 +37,20 @@ The email address [software-signing@phusion.nl](mailto:software-signing@phusion.
 
 The Phusion Software Signing key is also *signed by the Phusion founders*. Their keys are as follows:
 
-Hongli Lai (hongli@phusion.nl)<br>
+**Hongli Lai (hongli@phusion.nl)**<br>
 Short key ID: 8C59158F<br>
 Long key ID: CD70085E8C59158F<br>
 Fingerprint: 218A 7255 83D0 2ECE F3A9 C2A7 CD70 085E 8C59 158F
 
-Ninh Bui (ninh@phusion.nl)<br>
+**Ninh Bui (ninh@phusion.nl)**<br>
 Short key ID: 69481265<br>
 Long key ID: AE405F7869481265<br>
 Fingerprint: A77C 9CEF 766D 0E7D A95B 8778 AE40 5F78 6948 1265
 
 Both keys are stored at both sks-keyservers.net and keyserver.ubuntu.com. Import them with:
 
-    gpg --keyserver hkp://pool.sks-keyservers.net:80 --search-keys 0xCD70085E8C59158F
-    gpg --keyserver hkp://pool.sks-keyservers.net:80 --search-keys 0xAE405F7869481265
+    gpg --keyserver hkps://hkps.pool.sks-keyservers.net --search-keys 0xCD70085E8C59158F
+    gpg --keyserver hkps://hkps.pool.sks-keyservers.net --search-keys 0xAE405F7869481265
 
 -OR-
 
@@ -91,7 +91,7 @@ Our [YUM repository](yum_repo/) is signed by [PackageCloud](https://packagecloud
 
 In the event our key is compromised, we will revoke the key and upload the revocation information to sks-keyservers.net and keyserver.ubuntu.com. However your system will not know about the revocation until you update the keys from the keyservers. You should update your keys regularly (e.g. once a week) by invoking:
 
-    gpg --refresh-keys --keyserver hkp://pool.sks-keyservers.net:80
+    gpg --refresh-keys --keyserver hkps://hkps.pool.sks-keyservers.net
 
 -OR-
 
