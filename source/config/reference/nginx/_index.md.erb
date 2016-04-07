@@ -2513,6 +2513,72 @@ Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/fly
 
 ## Union Station options
 
+### union_station_support
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>union_station_support <em>on|off</em>;<br>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>union_station_support off;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Turn on to start collecting and transmitting data to Union Station for the specific configured context.
+
+### union_station_key
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>union_station_key <em>your_application_key</em>;<br>
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+The key can be acquired by logging in to Union Station and creating a new application or examining the setup instructions within the settings section of an existing application.
+
+### union_station_proxy_address
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>union_station_proxy_address <em>scheme://user:password@proxy_host:proxy_port</em>;<br>
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.11</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+This option allows use of an intermediate proxy to relay data to the Union Station gateway. 
+The proxy client code uses `libcurl`, which supports the following values for <em>scheme<em>:<br>
+<em>http, socks5, socks5h, socks4, socks4a</em>
+
 ### union_station_filter
 
 <table class="table table-bordered table-condensed">
@@ -2590,6 +2656,79 @@ server {
     union_station_filter "starts_with(uri, '/users') && response_time > 100000";
 }
 ~~~
+
+
+### union_station_gateway_address
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>union_station_gateway_address <em>gateway_hostname</em>;<br>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>union_station_gateway_address gateway.unionstationapp.com;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+The hostname of the Union Station gateway to which data is sent. You should normally not reconfigure this, but the default value may be useful to know for firewall configuration.
+
+### union_station_gateway_port
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>union_station_gateway_port <em>gateway_port</em>;<br>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>union_station_gateway_port 443;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+The port of the Union Station gateway to which data is sent. You should normally not reconfigure this, but the default value may be useful to know for firewall configuration.
+
+### union_station_gateway_cert
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>union_station_gateway_cert <em>gateway_pinned_certificate_file</em>;<br>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>union_station_gateway_cert (passenger resources dir)/union_station_gateway.crt;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+The (pinned) security certificate of the Union Station gateway to which data is sent. You should normally not reconfigure this, but the default value may be useful to know for security audits.
 
 ## Deprecated or removed options
 

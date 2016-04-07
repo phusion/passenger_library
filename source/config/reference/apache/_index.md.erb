@@ -2412,12 +2412,78 @@ Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/fly
 
 ## Union Station options
 
+### UnionStationSupport
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>UnionStationSupport <em>on|off</em><br>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>UnionStationSupport off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+Turn on to start collecting and transmitting data to Union Station for the specific configured context.
+
+### UnionStationKey
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>UnionStationKey <em>your_application_key</em><br>
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+The key can be acquired by logging in to Union Station and creating a new application or examining the setup instructions within the settings section of an existing application.
+
+### UnionStationProxyAddress
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>UnionStationProxyAddress <em>scheme://user:password@proxy_host:proxy_port</em><br>
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.11</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>server config, virtual host</td>
+  </tr>
+</table>
+
+This option allows use of an intermediate proxy to relay data to the Union Station gateway. 
+The proxy client code uses `libcurl`, which supports the following values for <em>scheme<em>:<br>
+<em>http, socks5, socks5h, socks4, socks4a</em>
+
 ### UnionStationFilter
 
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>UnionStationFilter "<em>string</em>";</td>
+    <td>UnionStationFilter "<em>string</em>"</td>
   </tr>
   <tr>
     <th>Default</th>
@@ -2485,6 +2551,78 @@ Another example:
     <b>UnionStationFilter "starts_with(uri, '/users') &amp;&amp; response_time &gt; 100000"</b>
 &lt;/VirtualHost&gt;</pre>
 </div>
+
+### UnionStationGatewayAddress
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>UnionStationGatewayAddress <em>gateway_hostname</em><br>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>UnionStationGatewayAddress gateway.unionstationapp.com</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>server config, virtual host</td>
+  </tr>
+</table>
+
+The hostname of the Union Station gateway to which data is sent. You should normally not reconfigure this, but the default value may be useful to know for firewall configuration.
+
+### UnionStationGatewayPort
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>UnionStationGatewayPort <em>gateway_port</em><br>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>UnionStationGatewayPort 443</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>server config, virtual host</td>
+  </tr>
+</table>
+
+The port of the Union Station gateway to which data is sent. You should normally not reconfigure this, but the default value may be useful to know for firewall configuration.
+
+### UnionStationGatewayCert
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>UnionStationGatewayCert <em>gateway_pinned_certificate_file</em><br>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>UnionStationGatewayCert (passenger resources dir)/union_station_gateway.crt</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>server config, virtual host</td>
+  </tr>
+</table>
+
+The (pinned) security certificate of the Union Station gateway to which data is sent. You should normally not reconfigure this, but the default value may be useful to know for security audits.
 
 ## Deprecated or removed options
 

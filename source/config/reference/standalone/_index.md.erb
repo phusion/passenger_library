@@ -2280,3 +2280,117 @@ Possible values are:
 </table>
 
 Low-level mechanism to set arbitrary internal options.
+
+## Union Station options
+
+<div class="note">A number of Union Station options, such as proxy configuration, are only configurable through the <a href="../intro.html#nginx-configuration-template">Nginx configuration template</a>.</div>
+
+### `--union-station-key` / "union_station_key"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --union-station-key <em>APPLICATION_KEY</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"union_station_key": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_UNION_STATION_KEY=<em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>None</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+The key can be acquired by logging in to Union Station and creating a new application or examining the setup instructions within the settings section of an existing application.
+
+### `--union-station-gateway` / "union_station_gateway_address/port"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --union-station-gateway <em>HOST:PORT</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"union_station_gateway_address": "<em>HOST</em>"<br>
+        "union_station_gateway_port": <em>PORT</em>
+    </td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_UNION_STATION_GATEWAY_ADDRESS=<em>HOST</em><br>
+        PASSENGER_UNION_STATION_GATEWAY_PORT=<em>PORT</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>HOST: gateway.unionstationapp.com<br>
+        PORT: 443
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+The hostname and port of the Union Station gateway to which data is sent. You should normally not reconfigure this, but the default value may be useful to know for firewall configuration.
+
+### `--union-station-gateway-cert` / "--union_station_gateway_cert"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --union-station-gateway-cert <em>PATH</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"union_station_gateway_cert": "<em>PATH</em>"</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_UNION_STATION_GATEWAY_CERT</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>(passenger resources dir)/union_station_gateway.crt</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+The (pinned) security certificate of the Union Station gateway to which data is sent. You should normally not reconfigure this, but the default value may be useful to know for security audits.
