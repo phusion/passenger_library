@@ -1,0 +1,109 @@
+---
+section: config
+---
+<%
+@page_title = "#{language_name} and secure HTTP headers on Passenger #{integration_mode_name_as_passenger_suffix}"
+content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
+
+has_request_specific_secure_headers = language_type != :ruby && language_type != :python
+%>
+
+<h1><%= language_name %> and secure HTTP headers<br>
+<small>on Passenger <%= integration_mode_name_as_passenger_suffix %></small></h1>
+
+Passenger passes client-sent HTTP headers to the application.
+<% if has_request_specific_secure_headers -%>
+In addition to these client-sent HTTP headers, Passenger also sets _secure HTTP headers_ that cannot be spoofed by the client. These secure headers come in two forms:
+
+ 1. Secure HTTP headers set by Passenger, containing additional request-specific information.
+ 2. User-defined secure HTTP headers, set in the configuration file.
+<% else -%>
+In addition to these client-sent HTTP headers, Passenger also allows you to pass your own headers to the application, in a secure manner that cannot be spoofed by the client.
+<% end %>
+
+Passenger guarantees that secure HTTP headers cannot be spoofed by the client.
+<% if integration_mode_type == :standalone -%>
+Any secure HTTP headers that reach the application are guaranteed to come from Passenger.
+<% else -%>
+Any secure HTTP headers that reach the application are guaranteed to come from either Passenger, or from <%= integration_mode_name %>.
+<% end %>
+
+Secure HTTP headers were introduced in Passenger 5.0.21.
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Introduction and use case
+
+Sometimes it is useful for applications to know certain information about the request, such as the IP address of the client, whether the application is served over HTTPS, etc. However, <%= language_name %> applications do not talk to HTTP clients directly. Instead, Passenger sits in between the client and the application as a reverse proxy, so applications cannot obtain this information directly from the socket that they are listening on. Applications must obtain this information from Passenger.
+
+<% if has_request_specific_secure_headers %>
+Passenger communicates with <%= language_name %> applications over HTTP, so the only way for Passenger to send the above two kinds of information to the application is via HTTP headers. However, HTTP headers can be spoofed by the client. This is why Passenger supports secure headers: they are headers which cannot be spoofed by the client.
+<% else %>
+Passenger communicates with <%= language_name %> applications over an internal protocol that is not HTTP. As part of this protocol, Passenger passes a lot of request-specific information (e.g. IP address) to the application, in a secure manner that cannot be spoofed by the client. But sometimes you may want to pass request-specific information that the web server has, but that Passenger does not already pass to the application. Passenger allows you to do that through the secure HTTP headers mechanism.
+<% end %>
+
+## How it works
+
+An HTTP header is considered secure if it begins with `!~`. If the client-sent HTTP request contains any headers that begin with `!~`, then Passenger will reject that request. This prevents the client from spoofing any secure headers.
+
+Only Passenger may send secure headers to the application.
+
+<% if has_request_specific_secure_headers %>
+## List of predefined secure headers
+
+### `!~Passenger-Proto`
+
+This header is set to `https` if Passenger is serving an application over HTTPS.
+
+Note that Passenger also appends the `X-Forwarded-Proto: https` header. But since `X-Forwarded-Proto` can be spoofed by the client, you should prefer `!~Passenger-Proto` instead.
+
+### `!~Passenger-Client-Address`
+
+This header is set to the HTTP client's host name or IP address.
+
+Note that Passenger also appends the `X-Forwarded-For` header, which serves the same function. But since `X-Forwarded-For` can be spoofed by the client, you should prefer `!~Passenger-Client-Address` instead.
+
+### `!~Passenger-Envvars`
+
+This header contains [Apache per-request environment variables](apache_per_request_envvars.html).
+<% end %>
+
+## Setting your own secure headers
+
+<% if integration_mode_type == :nginx %>
+
+You can set your own secure headers through the <%= link_to_config_option(:set_header, locals) %> option. You can even interpolate the value with Nginx variables. Make sure you give the header the `!~` prefix. For example:
+
+~~~nginx
+server {
+    server_name www.foo.com;
+    root /webapps/foo/public;
+    passenger_enabled on;
+
+    passenger_set_header '!~Router' internal-router.foo.com;
+    passenger_set_header '!~GeoIP-Region' $geoip_region;
+}
+~~~
+
+<% elsif integration_mode_type == :apache %>
+
+You can only set your own secure headers when using [the Nginx integration mode or the Standalone mode](<%= url_for "/indepth/integration_modes.html" %>).
+
+<% elsif integration_mode_type == :standalone %>
+
+You can set your own secure headers through the <%= link_to 'passenger_set_header', '/config/nginx/reference/index.html#passenger_set_header' %> option in the <%= link_to 'Nginx configuration template', '/config/standalone/intro.html#nginx-configuration-template' %>. You can even interpolate the value with Nginx variables. Make sure you give the header the `!~` prefix. For example:
+
+~~~nginx
+server {
+    # ...
+
+    passenger_set_header '!~Router' internal-router.foo.com;
+    passenger_set_header '!~GeoIP-Region' $geoip_region;
+}
+~~~
+
+<% else %>
+  <% raise 'TODO' %>
+<% end %>

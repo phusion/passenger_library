@@ -164,6 +164,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html",
     "/config/dynamic_scaling_vs_fixed_app_processes/language_selection.html",
     locals: integration_mode_spec
+  proxy "/config/#{integration_mode_type}/secure_http_headers/index.html",
+    "/config/secure_http_headers/language_selection.html",
+    locals: integration_mode_spec
   proxy "/config/#{integration_mode_type}/optimization/index.html",
     "/config/optimization/optimization.html",
     locals: integration_mode_spec
@@ -185,6 +188,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
 
     proxy "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/#{language_type}/index.html",
       "/config/dynamic_scaling_vs_fixed_app_processes/dynamic_scaling_vs_fixed_app_processes.html",
+      locals: integration_mode_spec.merge(language_spec)
+    proxy "/config/#{integration_mode_type}/secure_http_headers/#{language_type}/index.html",
+      "/config/secure_http_headers/secure_http_headers.html",
       locals: integration_mode_spec.merge(language_spec)
   end
 end
@@ -208,6 +214,8 @@ ignore "/config/cloud_licensing_configuration/cloud_licensing_configuration.html
 ignore "/config/cloud_licensing_configuration/integration_mode_selection.html"
 ignore "/config/reference/reference.html"
 ignore "/config/action_cable_integration/index.html"
+ignore "/config/secure_http_headers/language_selection.html"
+ignore "/config/secure_http_headers/secure_http_headers.html"
 
 ###### Development ######
 
@@ -410,12 +418,6 @@ proxy "/indepth/ruby/spawn_methods/index.html",
 proxy "/indepth/nodejs/reverse_port_binding.html",
   "/indepth/reverse_port_binding.html",
   locals: LANG_NODEJS
-proxy "/indepth/nodejs/secure_http_headers.html",
-  "/indepth/secure_http_headers.html",
-  locals: LANG_NODEJS
-proxy "/indepth/meteor/secure_http_headers.html",
-  "/indepth/secure_http_headers.html",
-  locals: LANG_METEOR
 
 ignore "/indepth/index2.html"
 ignore "/indepth/app_autodetection/app_autodetection.html"
@@ -426,7 +428,6 @@ ignore "/indepth/apache_per_request_envvars/apache_per_request_envvars.html"
 ignore "/indepth/out_of_band_work.html"
 ignore "/indepth/spawn_methods/spawn_methods.html"
 ignore "/indepth/reverse_port_binding.html"
-ignore "/indepth/secure_http_headers.html"
 
 ###### Union Station logging ######
 

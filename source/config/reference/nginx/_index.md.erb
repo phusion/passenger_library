@@ -1764,6 +1764,8 @@ Yes. And it does not perform any certificate validation.
 
 Sets additional HTTP headers to pass to the web application. This is comparable to `ngx_http_proxy_module`'s `proxy_set_header` option. Nginx variables in the value are interpolated.
 
+If you prefix the header name with the special characters `!~` then Passenger will guarantee that the header cannot be spoofed by the client (<%= link_to 'secure HTTP headers', '/config/nginx/secure_http_headers/index.html' %>).
+
 Example:
 
 ~~~nginx
@@ -1772,8 +1774,13 @@ server {
     root /webapps/foo/public;
     passenger_enabled on;
 
+    # Normal headers (spoofable by the client)
     passenger_set_header X-Power-Level 9000;
     passenger_set_header X-Forwarded-For internal-router.foo.com;
+
+    # Secure headers (cannot be spoofed by the client)
+    passenger_set_header '!~Router' internal-router.foo.com;
+    passenger_set_header '!~GeoIP-Region' $geoip_region;
 }
 ~~~
 
@@ -2575,7 +2582,7 @@ The key can be acquired by logging in to Union Station and creating a new applic
   </tr>
 </table>
 
-This option allows use of an intermediate proxy to relay data to the Union Station gateway. 
+This option allows use of an intermediate proxy to relay data to the Union Station gateway.
 The proxy client code uses `libcurl`, which supports the following values for <em>scheme<em>:<br>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
