@@ -67,6 +67,10 @@ section: indepth
         <% elsif language_type == :meteor %>
           <li><a href="meteor.html">About Meteor support</a></li>
         <% end %>
+
+        <% if language_type == :nodejs || language_type == :meteor %>
+          <li><a href="secure_http_headers.html">Secure HTTP headers</a></li>
+        <% end %>
       </ul>
     </div>
   </div>
