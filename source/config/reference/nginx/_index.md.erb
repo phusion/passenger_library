@@ -1777,6 +1777,8 @@ server {
 }
 ~~~
 
+Headers set by this option **cannot be spoofed by the client**. Passenger/Nginx will not forward any client-supplied headers with the same names.
+
 <div class="warning">
   <h3 class="notoc">This configuration option is NOT inherited across contexts</h3>
   <p>
@@ -2575,7 +2577,7 @@ The key can be acquired by logging in to Union Station and creating a new applic
   </tr>
 </table>
 
-This option allows use of an intermediate proxy to relay data to the Union Station gateway. 
+This option allows use of an intermediate proxy to relay data to the Union Station gateway.
 The proxy client code uses `libcurl`, which supports the following values for <em>scheme<em>:<br>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
