@@ -536,7 +536,7 @@ server {
 
 This option specifies the startup file that Passenger should use when loading the application. This path is relative to the [application root](#passenger_app_root).
 
-Every application has a *startup file* or *entry point file*: a file where the application begins execution. Some languages have widely accepted conventions about how such a file should be called (e.g. Ruby, with its `config.ru`). Other languages have somewhat-accepted conventions (e.g. Node.js, with its `app.js`). In these cases, Passenger folows these conventions, and executes applications through those files.
+Every application has a *startup file* or *entry point file*: a file where the application begins execution. Some languages have widely accepted conventions about how such a file should be called (e.g. Ruby, with its `config.ru`). Other languages have somewhat-accepted conventions (e.g. Node.js, with its `app.js`). In these cases, Passenger follows these conventions, and executes applications through those files.
 
 Other languages have no conventions at all, and so Passenger invents one (e.g. Python WSGI with `passenger_wsgi.py`).
 
@@ -1324,7 +1324,7 @@ Specifies a timeout for the startup of application processes. If an application 
 
 Specifies the I/O concurrency model that should be used for Ruby application processes. Passenger supports two concurrency models:
 
- * `process` -- single-threaded, multi-processed I/O concurrency. Each application process only has a single thread and can only handle 1 request at a time. This is the concurrency model that Ruby applications traditionally used. It has excellent compatiblity (can work with applications that are not designed to be thread-safe) but is unsuitable for workloads in which the application has to wait for a lot of external I/O (e.g. HTTP API calls), and uses more memory because each process has a large memory overhead.
+ * `process` -- single-threaded, multi-processed I/O concurrency. Each application process only has a single thread and can only handle 1 request at a time. This is the concurrency model that Ruby applications traditionally used. It has excellent compatibility (can work with applications that are not designed to be thread-safe) but is unsuitable for workloads in which the application has to wait for a lot of external I/O (e.g. HTTP API calls), and uses more memory because each process has a large memory overhead.
  * `thread` -- multi-threaded, multi-processed I/O concurrency. Each application process has multiple threads (customizable via [passenger_thread_count](#passenger_thread_count). This model provides much better I/O concurrency and uses less memory because threads share memory with each other within the same process. However, using this model may cause compatibility problems if the application is not designed to be thread-safe.
 
 <div class="note">

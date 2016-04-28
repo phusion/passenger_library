@@ -196,7 +196,7 @@ You can shut down a Flying Passenger daemon by sending SIGINT or SIGTERM to it:
 
 <pre class="highlight"><span class="prompt">$ </span>kill `cat /var/run/flying-passenger.pid`</pre>
 
-We recommend using [daemontools](http://cr.yp.to/daemontools.html) or [runit](http://smarden.org/runit/) for managing the Flying Passenger daemon. These tools will allow automatically starting the Flying Passenger daemon at boot, and will automatically restart the daemon if it crashes. You can create and enable a daemontools/runit service as folows:
+We recommend using [daemontools](http://cr.yp.to/daemontools.html) or [runit](http://smarden.org/runit/) for managing the Flying Passenger daemon. These tools will allow automatically starting the Flying Passenger daemon at boot, and will automatically restart the daemon if it crashes. You can create and enable a daemontools/runit service as follows:
 
 <pre class="highlight"><span class="prompt">$ </span>sudo mkdir /etc/service/flying-passenger
 <span class="prompt">$ </span>sudo nano /etc/service/flying-passenger/run
