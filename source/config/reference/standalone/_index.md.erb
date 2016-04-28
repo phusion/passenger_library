@@ -1137,18 +1137,18 @@ A relative filename is given. Passenger will check for /apps/baz/restart_files/r
     <th>Default</th>
     <td>
       <p>
-        <em>When <a href="#--environment-environment"><code>--environment</code> / "environment"</a> is <code>staging</code> or <code>production</code>:</em><br>
-        Friendly error pages are off
+        <em>When <a href="#--environment-environment"><code>--environment</code> / "environment"</a> is <code>development</code>:</em><br>
+        Friendly error pages are on
       </p>
       <p>
         <em>Otherwise:</em><br>
-        Friendly error pages are on
+        Friendly error pages are off
       </p>
     </td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>4.0.42</td>
+    <td>5.0.28</td>
   </tr>
   <tr>
     <th>Engines</th>
@@ -1162,7 +1162,7 @@ A relative filename is given. Passenger will check for /apps/baz/restart_files/r
 
 Passenger can display friendly error pages whenever an application fails to start. This friendly error page presents the startup error message, some suggestions for solving the problem, a backtrace and a dump of the environment variables.
 
-This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are disabled by default when [--environment / "environment"](#--environment-environment) is set to `staging` or `production`, but enabled by default otherwise.
+This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are disabled by default, unless [--environment / "environment"](#--environment-environment) is set to `development`.
 
 You can use this option to explicitly enable or disable this feature. `--friendly-error-pages` always enables friendly error pages, and `--no-friendly-error-pages` always disables friendly error pages. Similarly, the `"friendly_error_pages": boolean` config option always enables or disables friendly error pages.
 

@@ -975,15 +975,15 @@ The default value is the primary group of the user specifified by [PassengerDefa
     <td>PassengerFriendlyErrorPages <em>on|off</em></td>
   </tr>
   <tr>
-    <th>Default (as of 4.0.42)</th>
+    <th>Default (as of 5.0.28)</th>
     <td>
       <p>
-        <em>When <a href="#passengerappenv">PassengerAppEnv</a> is <code>staging</code> or <code>production</code>:</em><br>
-        PassengerFriendlyErrorPages off;
+        <em>When <a href="#passengerappenv">PassengerAppEnv</a> is <code>development</code>:</em><br>
+        PassengerFriendlyErrorPages on;
       </p>
       <p>
         <em>Otherwise:</em><br>
-        PassengerFriendlyErrorPages on;
+        PassengerFriendlyErrorPages off;
       </p>
     </td>
   </tr>
@@ -1003,7 +1003,7 @@ The default value is the primary group of the user specifified by [PassengerDefa
 
 Passenger can display friendly error pages whenever an application fails to start. This friendly error page presents the startup error message, some suggestions for solving the problem, a backtrace and a dump of the environment variables.
 
-This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are disabled by default when [PassengerAppEnv](#passengerappenv) (or its aliases such as `RailsEnv` and `RackEnv`) is set to `staging` or `production`, but enabled by default otherwise. You can use this option to explicitly enable or disable this feature.
+This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are disabled by default, unless [PassengerAppEnv](#passengerappenv) (or its aliases such as `RailsEnv` and `RackEnv`) is set to `development`. You can use this option to explicitly enable or disable this feature.
 
 
 ## Resource control and optimization options
