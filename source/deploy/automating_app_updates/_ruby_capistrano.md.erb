@@ -6,13 +6,13 @@
 
 <figure><a href="http://capistranorb.com/"><img src="<%= url_for '/images/CapistranoLogo.png' %>" alt="Capistrano"></a></figure>
 
-If you have followed the [Ruby deployment walkthrough](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
+If you have followed the [Ruby deployment tutorial](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
 
 This guide teaches you how to automate the deployment of application updates through [Capistrano](http://capistranorb.com/). Capistrano is a popular task automation tool among Ruby developers. Once Capistrano is set up, deploying further application updates only takes a single command.
 
 **Notes:**
 
- * This guide assumes that you know how to manually deploy Ruby applications and how to manually deploy updates. Capistrano only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [Ruby deployment walkthrough](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>).
+ * This guide assumes that you know how to manually deploy Ruby applications and how to manually deploy updates. Capistrano only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [Ruby deployment tutorial](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>).
  * This guide assumes you are using at least Passenger 5.0.13. This guide does not work with earlier Passenger versions.
 
 ----
@@ -55,7 +55,7 @@ Both of these are covered in this guide.
 
 ### Capistrano-style directory structure
 
-In the [deployment walkthrough](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), we simply cloned our application code to `/var/www/myapp/code` and instructed Passenger serve the app from there. But if you use Capistrano's `capistrano/deploy` recipe to clone/pull from Git, it will use [a strictly defined directory structure](http://capistranorb.com/documentation/getting-started/structure/) on the server. Here is an example of how `/var/www/myapp` -- an example application directory -- will look like when Capistrano is used:
+In the [deployment tutorial](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), we simply cloned our application code to `/var/www/myapp/code` and instructed Passenger serve the app from there. But if you use Capistrano's `capistrano/deploy` recipe to clone/pull from Git, it will use [a strictly defined directory structure](http://capistranorb.com/documentation/getting-started/structure/) on the server. Here is an example of how `/var/www/myapp` -- an example application directory -- will look like when Capistrano is used:
 
 <pre class="highlight">
 myapp
@@ -91,7 +91,7 @@ myapp
 
     (5) and (6) show this mechanism in action.
 
-The advantage over the simple `/var/www/myapp/code` approach in the deployment walkthrough is twofold:
+The advantage over the simple `/var/www/myapp/code` approach in the deployment tutorial is twofold:
 
  1. It makes deployments atomic. If a deployment fails, the currently running version of the application is not affected. Users also never get to see a state in which an update is half-deployed.
  2. It makes rolling back to previous releases dead-simple. Simply change the `current` symlink, tell Passenger to restart the app, and done.
@@ -442,7 +442,7 @@ Install Git on your server if you haven't already:
 
 ### Setting up a user account (if you haven't already)
 
-If you have followed the [deployment walkthrough](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), then you have already setup a user account for your application (`myappuser` in our example), for the sake of using Passenger's [user account sandboxing feature](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>).
+If you have followed the [deployment tutorial](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), then you have already setup a user account for your application (`myappuser` in our example), for the sake of using Passenger's [user account sandboxing feature](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>).
 
 If not, you must set them up now. Login to your server(s), and run the following commands on each one:
 
@@ -509,7 +509,7 @@ bundle exec passenger start
 &nbsp;&nbsp;bundle exec passenger start</pre>
   </div>
 
-  If you created a Passengerfile.json on the server (as per the deployment walkthrough), then it is a good idea to copy that to the `shared` directory:
+  If you created a Passengerfile.json on the server (as per the deployment tutorial), then it is a good idea to copy that to the `shared` directory:
 
   <pre class="highlight"><span class="prompt">$ </span>cp /var/www/myapp/code/Passengerfile.json /var/www/myapp/shared/</pre>
 
