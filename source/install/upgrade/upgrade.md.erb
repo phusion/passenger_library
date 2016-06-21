@@ -30,7 +30,8 @@ end
     <p>If <%= edition_title %> was installed on OS X through Homebrew, then you can upgrade <%= edition_title %> as follows:</p>
 
     <% if integration_mode_type == :apache %>
-      <pre class="highlight">brew upgrade passenger</pre>
+      <pre class="highlight">brew update
+brew upgrade passenger</pre>
 
       <p>When done, read the Homebrew formula caveats and follow any Apache-specific instructions you see:</p>
 
