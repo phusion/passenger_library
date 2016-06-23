@@ -95,12 +95,10 @@ sudo apt-get install -y <%= packages %></code></pre>
 <% elsif integration_mode_type == :nginx %>
   <% step += 1 %>
   <h2>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h2>
-  <p>Edit <code>/etc/nginx/nginx.conf</code> and uncomment <code>passenger_root</code> and <code>passenger_ruby</code>. For example, you may see this:</p>
-  <pre class="highlight"># passenger_root /some-filename/locations.ini;
-# passenger_ruby /usr/bin/passenger_free_ruby;</pre>
+  <p>Edit <code>/etc/nginx/nginx.conf</code> and uncomment <code>include /etc/nginx/passenger.conf;</code>. For example, you may see this:</p>
+  <pre class="highlight"># include /etc/nginx/passenger.conf;</pre>
   <p>Remove the '#' characters, like this:</p>
-  <pre class="highlight">passenger_root /some-filename/locations.ini;
-passenger_ruby /usr/bin/passenger_free_ruby;</pre>
+  <pre class="highlight">include /etc/nginx/passenger.conf;</pre>
 
   <div class="note">
     <p>If you don't see a commented version of <code>passenger_root</code> inside nginx.conf, then you need to insert it yourself.</p>

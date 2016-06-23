@@ -28,6 +28,9 @@ http {
     passenger_ruby /usr/bin/ruby;
     passenger_max_pool_size 10;
 
+    # If you are using our Debian packages then you may encounter this:
+    include /etc/nginx/passenger.conf;
+
     gzip on;
 
     server {
@@ -48,6 +51,8 @@ http {
     # passenger_root /somewhere/passenger-x.x.x;
     # passenger_ruby /usr/bin/ruby;
     # passenger_max_pool_size 10;
+
+    # include /etc/nginx/passenger.conf;
 
     gzip on;
 
