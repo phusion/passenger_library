@@ -101,16 +101,11 @@ sudo apt-get install -y <%= packages %></code></pre>
   <pre class="highlight">include /etc/nginx/passenger.conf;</pre>
 
   <div class="note">
-    <p>If you don't see a commented version of <code>passenger_root</code> inside nginx.conf, then you need to insert it yourself.</p>
-    <p>Run <code>passenger-config --root</code>. It will tell output some path. For example:</p>
-    <pre class="highlight"><span class="prompt">$ </span>passenger-config --root
-<span class="output">/some-filename/locations.ini</span></pre>
-
-    <p>Insert a <code>passenger_root</code> configuration option into /etc/nginx/nginx.conf inside the <code>http</code> block, using the value you obtained. For example:</p>
+    <p>If you don't see a commented version of <code>include /etc/nginx/passenger.conf;</code> inside nginx.conf, then you need to insert it yourself. Insert it into /etc/nginx/nginx.conf inside the <code>http</code> block, using the value you obtained. For example:</p>
     <pre class="highlight">...
 
 http {
-    <span class="nf">passenger_root <span class="s">/some-filename/locations.ini</span>;</span>
+    <span class="nf">include /etc/nginx/passenger.conf;</span>
     ...
 }</pre>
   </div>
