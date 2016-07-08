@@ -1,0 +1,261 @@
+---
+title: Using SSL with Passenger in production
+section: deploy
+---
+<%
+
+content_for(:sidebar) do
+    render_partial("sidebar.html", locals: locals)
+end
+
+%>
+
+<h1>Using SSL with Passenger in Production</h1>
+
+This article covers how to configure your webserver to serve your app over https in a production deployment, and how to check it for correctness.
+
+##Obtain a Trusted SSL Certificate
+In order to have your production SSL configuration trusted by your users' browsers, you need a certificate signed by a trusted Certificate Authority (CA). While you have many choices in this regard, most of them cost money. One free option that you have though is to obtain your certificate from the [Let's Encrypt](https://letsencrypt.org/) organization.
+
+##Choose your tradeoffs
+A secure production ready configuration is an exercise in tradeoffs; broad compatibility and speed for strongest security. A great resource in this regard is the [Mozilla SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/) which will provide you with up-to-date web server configurations that either maximize compatibility or security. The following configuration was designed to be more broadly compatible, but your situation may warrant maximum security.
+
+<% if locals[:integration_mode_type] == :apache %>
+
+##Configure Apache
+The following is a partial example configuration for the Apache Web Server, meant to highlight the SSL configuration options you are likely to need in production. Replace `example.com` with your domain, and set the paths to your certificates, key, and app.
+
+~~~apache
+ServerTokens Prod
+SSLStrictSNIVHostCheck off # Necessary if you have more than one domain served from this webserver
+<VirtualHost *:80>
+    #redirect http traffic to https
+    Redirect permanent / https://www.example.com/
+    ServerName example.com
+    ServerAlias www.example.com
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerAdmin webmaster@example.com
+    ServerName example.com
+    ServerAlias www.example.com
+    DocumentRoot "/path/to/app/public"
+    <Directory "/path/to/app/public">
+        Options None
+        Require all granted # apache 2.4
+        Order allow,deny # apache 2.2
+        Allow from all # apache 2.2
+    </Directory>
+    PassengerAppEnv production
+    PassengerAppRoot "/path/to/app"
+    PassengerHighPerformance on
+
+    SSLEngine on
+    SSLCertificateFile      /path/to/signed_certificate # certificate for this server or wildcard certificate
+    SSLCertificateKeyFile   /path/to/private/key # private key for certificate
+    SSLCertificateChainFile /path/to/intermediate_certificate # additional certificates provided by CA for compatibility
+    SSLProtocol             all -SSLv2 -SSLv3
+    SSLHonorCipherOrder     on
+    SSLCipherSuite          ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+
+    ServerSignature off
+    SSLCompression off # not all combination of Apache+OpenSSL allow this option
+    SSLSessionTickets off # apache 2.4
+    SSLUseStapling on # apache 2.4
+    SSLStaplingResponderTimeout 5 # apache 2.4
+    SSLStaplingReturnResponderErrors off # apache 2.4
+    SSLStaplingCache shmcb:/var/run/ocsp(128000) # apache 2.4
+
+    <IfModule headers_module>
+        Header always edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure
+        Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains"
+    </IfModule>
+    #...
+</VirtualHost>
+~~~
+<% elsif locals[:integration_mode_type] == :nginx %>
+
+##Configure Nginx
+The following is a partial example configuration for the Nginx Web Server, meant to highlight the SSL configuration options you are likely to need in production.  Replace `example.com` with your domain, and set the paths to your certificates, key, and app.
+
+Generate the Diffie-Hellman parameters file using this command:
+<pre class ="highlight bash"><span class="prompt">$ </span>openssl dhparam -out <span class="si">/path/to/dhparam.pem</span> 2048</pre>
+
+~~~nginx
+server_tokens off;
+server {
+    # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response.
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    root /path/to/app/public;
+    server_name example.dev;
+    passenger_app_root /path/to/app;
+    passenger_enabled on;
+    passenger_app_env production;
+
+    ssl_certificate /path/to/signed_cert_plus_intermediates.pem;
+    ssl_certificate_key /path/to/private_key.pem;
+    ssl_dhparam /path/to/dhparam.pem;
+    ssl_trusted_certificate /path/to/root_CA_cert_plus_intermediates.pem;
+    resolver <DNS server IP>;
+
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+    ssl_prefer_server_ciphers on;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    add_header Strict-Transport-Security max-age=15768000;
+
+    #...
+}
+~~~
+<% elsif locals[:integration_mode_type] == :standalone %>
+
+## Configure Passenger Standalone
+
+The following is a partial example configuration for Passenger Standalone, meant to highlight the SSL configuration options you are likely to need in production.  Replace `example.com` with your domain, and set the user and paths to your certificates, key, and app.
+
+Generate the Diffie-Hellman parameters file using this command:
+<pre class ="highlight bash"><span class="prompt">$ </span>openssl dhparam -out <span class="si">/path/to/dhparam.pem</span> 2048</pre>
+
+Passengerfile.json
+
+~~~json
+{
+  "environment": "production",
+  "instance_registry_dir": "/var/run/passenger-instreg",
+  "daemonize": true,
+  "user": "myappuser",
+  "port": 443,
+  "ssl": true,
+  "ssl_certificate": "/path/to/ssl_cert.pem",
+  "ssl_certificate_key": "/path/to/ssl_key.pem",
+  "nginx_config_template": "/path/to/nginx.conf.erb"
+}
+~~~
+
+Make a copy of the Nginx Template:
+<pre class ="highlight bash"><span class="prompt">$ </span>cp $(passenger-config about resourcesdir)/templates/standalone/config.erb /path/to/nginx.conf.erb</pre>
+Edit your copy of the Nginx Template to include the lines in the `### BEGIN your own configuration options ###` block.
+
+~~~nginx
+##########################################################################
+#  Passenger Standalone is built on the same technology that powers
+#  Passenger for Nginx, so any configuration option supported by Passenger
+#  for Nginx can be applied to Passenger Standalone as well. You can do
+#  this by direct editing the Nginx configuration template that is used by
+#  Passenger Standalone.
+#
+#  This file is the original template. DO NOT EDIT THIS FILE DIRECTLY.
+#  Instead, make a copy of this file and pass the `--nginx-config-template`
+#  parameter to Passenger Standalone.
+#
+#  Learn more about using the Nginx configuration template at:
+#  https://www.phusionpassenger.com/library/config/standalone/intro.html#nginx-configuration-template
+#
+#  *** NOTE ***
+#  If you customize the template file, make sure you keep an eye on the
+#  original template file and merge any changes. New Phusion Passenger
+#  features may require changes to the template file.
+##############################################################
+
+<%%= include_passenger_internal_template('global.erb') %>
+
+worker_processes 1;
+events {
+    worker_connections 4096;
+}
+
+http {
+    <%%= include_passenger_internal_template('http.erb', 4) %>
+
+    ### BEGIN your own configuration options ###
+    # This is a good place to put your own config
+    # options. Note that your options must not
+    # conflict with the ones Passenger already sets.
+    # Learn more at:
+    # https://www.phusionpassenger.com/library/config/standalone/intro.html#nginx-configuration-template
+    server_tokens off;
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response.
+        return 301 https://$host$request_uri;
+    }
+    ### END your own configuration options ###
+
+    default_type application/octet-stream;
+    types_hash_max_size 2048;
+    server_names_hash_bucket_size 64;
+    client_max_body_size 1024m;
+    access_log off;
+    keepalive_timeout 60;
+    underscores_in_headers on;
+    gzip on;
+    gzip_comp_level 3;
+    gzip_min_length 150;
+    gzip_proxied any;
+    gzip_types text/plain text/css text/json text/javascript
+        application/javascript application/x-javascript application/json
+        application/rss+xml application/vnd.ms-fontobject application/x-font-ttf
+        application/xml font/opentype image/svg+xml text/xml;
+
+    <%% if @app_finder.multi_mode? %>
+        # Default server entry for mass deployment mode.
+        server {
+            <%%= include_passenger_internal_template('mass_deployment_default_server.erb', 12) %>
+        }
+    <%% end %>
+
+    <%% for app in @apps %>
+    server {
+        <%%= include_passenger_internal_template('server.erb', 8, true, binding) %>
+        <%%= include_passenger_internal_template('rails_asset_pipeline.erb', 8, false) %>
+
+        ### BEGIN your own configuration options ###
+        # This is a good place to put your own config
+        # options. Note that your options must not
+        # conflict with the ones Passenger already sets.
+        # Learn more at:
+        # https://www.phusionpassenger.com/library/config/standalone/intro.html#nginx-configuration-template
+        ssl_certificate <%%= app[:ssl_certificate] %>;
+        ssl_certificate_key <%%= app[:ssl_certificate_key] %>;
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:SSL:50m;
+        ssl_session_tickets off;
+        ssl_prefer_server_ciphers on;
+        add_header Strict-Transport-Security max-age=15768000;
+        ssl_stapling on;
+        ssl_stapling_verify on;
+
+        resolver <IP DNS resolver>;
+        ssl_dhparam /path/to/dhparam.pem;
+        ssl_trusted_certificate /path/to/root_CA_cert_plus_intermediates;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
+        ### END your own configuration options ###
+    }
+    passenger_pre_start <%%= listen_url(app) %>;
+    <%% end %>
+
+    <%%= include_passenger_internal_template('footer.erb', 4) %>
+}
+~~~
+
+<% end %>
+
+##Test With SSL Labs
+
+Qualys provides an excellent free test of your server's SSL configuration, you can use it [here](https://www.ssllabs.com/ssltest/) to check your setup for known issues. While a score of A or A+ is a good indication that you setup your config correctly, it is not a guarantee, so it's important to be informed or consult with someone who is.
+
+You should also keep in mind that a secure configuration is a moving target, you have to stay up to date on the latest vulnerabilities that are discovered, and update your configuration accordingly.

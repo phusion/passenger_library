@@ -1,0 +1,208 @@
+---
+title: Using an SSL terminating reverse proxy with Passenger Standalone
+section: deploy
+---
+<%
+locals.merge!(INTEGRATION_MODE_STANDALONE)
+globals.merge!(INTEGRATION_MODE_STANDALONE)
+content_for(:sidebar) do
+  render_partial("../sidebar.html", locals: locals.merge(
+    limit_choices: { "intmode" => [INTEGRATION_MODE_STANDALONE] }
+  ))
+end
+%>
+
+<h1>Using an SSL Terminating Reverse Proxy with Passenger Standalone</h1>
+
+An SSL terminating reverse proxy is simply a web server that is configured to accept encrypted https requests from clients, and to forward them as unencrypted http requests to another backend process, and to relay the unencrypted results from the backend process back to the client via the encrypted channel. In our case the backend process will be Passenger Standalone running on the same host. Setting up an SSL terminating reverse proxy is super easy, and this article will walk you through how to do it.
+
+### Which reverse proxy are you using?
+<select id="proxy_picker">
+  <option>Apache</option>
+  <option>Nginx</option>
+</select>
+
+
+## Prepare the system
+
+Follow [these instructions](<%= url_for "/deploy/standalone/reverse_proxy.html" %>), before continuing with this guide.
+
+Assumptions: you are using the bash shell, and have admin rights to your computer, and are using a modern browser. Ensure that OpenSSL is installed.
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <td>
+      Debian, Ubuntu
+    </td>
+    <td>
+      <pre class="highlight"><span class="prompt">$ </span>sudo apt-get update
+<span class="prompt">$ </span>sudo apt-get upgrade -y
+<span class="prompt">$ </span>sudo apt-get install -y openssl
+<span class="apache"><span class="prompt">$ </span>sudo a2enmod ssl</span></pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
+    </td>
+    <td>
+      <pre class="highlight"><span class="prompt">$ </span>sudo yum update -y
+<span class="prompt">$ </span>sudo yum install -y openssl
+<span class="apache"><span class="prompt">$ </span>sudo yum install -y mod24_ssl <span class="c">&#35; only if using httpd24</span>
+<span class="prompt">$ </span>sudo yum install -y mod_ssl <span class="c">&#35; only if using httpd</span></span></pre>
+
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mac OS X
+    </td>
+    <td>
+      <pre class="highlight"><span class="prompt">$ </span>sudo softwareupdate -i -a
+<span class="prompt">$ </span>brew update
+<span class="prompt">$ </span>brew upgrade
+<span class="prompt">$ </span>brew install openssl
+<span class="apache"><span class="prompt">$ </span>sudo sed -E -i.bak -e <span class="s">'s|#(LoadModule ssl_)|\1|'</span> /etc/apache2/httpd.conf</span></pre>
+    </td>
+  </tr>
+</table>
+
+## Software versions used in this article:
+
+To check the versions of the packages you have installed you can use the following commands:
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <th>
+      Package
+    </th>
+    <th>
+      Version
+    </th>
+    <th>
+      Version Command
+    </th>
+  </thead>
+  <tr>
+    <td>
+      OpenSSL
+    </td>
+    <td>
+      1.0.2h
+    </td>
+    <td>
+      <pre class="highlight"><span class="prompt">$ </span>openssl version</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Passenger
+    </td>
+    <td>
+      5.0.29
+    </td>
+    <td>
+      <pre class="highlight"><span class="prompt">$ </span>passenger -v</pre>
+    </td>
+  </tr>
+  <tr class="nginx">
+    <td>
+      Nginx
+    </td>
+    <td>
+      1.10.1
+    </td>
+    <td >
+      <pre class="highlight"><span class="prompt">$ </span>nginx -v</pre>
+    </td>
+  </tr>
+  <tr class="apache">
+    <td>
+      Apache Httpd
+    </td>
+    <td>
+      2.4.18
+    </td>
+    <td>
+      <pre class="highlight"><span class="prompt">$ </span>httpd -v || apache2 -v</pre>
+    </td>
+  </tr>
+</table>
+
+## Obtain your certificate / key pair
+You can read up on self signing a certificate in [this article](<%= url_for "/dev/standalone/dev_ssl.html#openssl-configuration" %>) or if this is for production use you can use [Let's Encrypt](https://letsencrypt.org/) or another certificate authority to get a valid certificate.
+
+## Configure Web Server
+Replace example.com with your domain:
+
+
+<p class="apache">Move your http/port-80 virtual host configuration to port 443, and setup a redirect, then add the SSL options to your port 443 virtualhost. The headers and server signature options are more useful in production. The end result should look similar to the provided configuration. If you have multiple https virtualhosts on the same box you must add <code>SSLStrictSNIVHostCheck off</code> to your Apache configuration, you can set it just above your virtualhost blocks.</p>
+
+~~~apache
+SSLStrictSNIVHostCheck off
+<VirtualHost *:80>
+    Redirect permanent / https://www.example.com/
+    ServerName example.com
+    ServerAlias www.example.com
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName www.example.com
+
+    ProxyPreserveHost On
+    ProxyPass / http://localhost:3000/
+    ProxyPassReverse / http://localhost:3000/
+
+    SSLEngine on
+    SSLProtocol all -SSLv2 -SSLv3
+    SSLHonorCipherOrder on
+    SSLCipherSuite ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+    SSLCertificateFile "/private/etc/apache2/server.crt"
+    SSLCertificateKeyFile "/private/etc/apache2/server.key"
+    SSLCompression off # not always present
+
+    Header always edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    ServerSignature Off
+</VirtualHost>
+~~~
+
+<p class="nginx">Change your listen options from port 80 to the SSL versions below. Create a redirect from http to https as shown. Add the SSL options as described below. You must generate a dhparam file, this can be done with <code><span class="prompt">$ </span>openssl dhparam -out <span class="si">/usr/local/etc/nginx/ssl/dhparam.pem</span> 2048</code></p>
+
+~~~nginx
+server_tokens off;
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    ssl_certificate /usr/local/etc/nginx/ssl/server.crt;
+    ssl_certificate_key /usr/local/etc/nginx/ssl/server.key;
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+    ssl_dhparam /usr/local/etc/nginx/ssl/dhparam.pem;
+    ssl_prefer_server_ciphers on;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
+
+    add_header Strict-Transport-Security max-age=31536000;
+    location / {
+        proxy_pass http://localhost:3000;
+    }
+}
+~~~
+
+
+## Start Passenger
+The instructions for starting passenger are the same for an SSL terminating reverse proxy as for a regular [reverse proxy](<%= url_for "/deploy/standalone/reverse_proxy.html#step-1-starting-all-applications" %>).
+
+## Done
+
+Now if you restart your web server, SSL should be working and Passenger should be serving your app.

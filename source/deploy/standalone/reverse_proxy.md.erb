@@ -21,6 +21,12 @@ There are two reasons why you may want to have this kind of reverse proxy:
  1. You already have an existing Nginx or Apache installation, but you want to use Passenger Standalone instead of using Passenger's Nginx or Apache [integration modes](<%= url_for "/indepth/integration_modes.html" %>).
  2. You have multiple Passenger Standalone instances, and you want all of them to be accessible on the same port, just with different host names.
 
+### Which reverse proxy are you using?
+<select id="proxy_picker">
+  <option>Nginx</option>
+  <option>Apache</option>
+</select>
+
 **Table of contents**
 
 <ul class="toc-container"><li>Loading...</li></ul>
@@ -39,20 +45,16 @@ There are two reasons why you may want to have this kind of reverse proxy:
 
 Notice the fact that we pass `--address 127.0.0.1`, which tells Passenger Standalone to only listen for requests that originate from the local machine. This is because the reverse proxy, not Passenger Standalone, is supposed to be responsible for receiving external HTTP requests. In this guide, we are teaching you how to run the reverse proxy on the same machine only, so limiting Passenger Standalone in this manner improves security.
 
-## Step 2: install and configure Nginx or Apache
+## Step 2: install and configure <span class="nginx">Nginx</span><span class="hidden"> or </span><span class="apache">Apache</span>
 
-The next step is to install Nginx or Apache to do the following:
+The next step is to install <span class="nginx">Nginx</span><span class="hidden"> or </span><span class="apache">Apache</span> to do the following:
 
  * To listen on port 80.
  * To forward requests to either 'foo' or 'bar', depending on the request's HTTP host name.
 
-If you don't know which one to install, then we recommend Nginx because it's smaller and easier to use than Apache.
+<p class="nginx">Here is how you can install Nginx:</p>
 
-### Nginx
-
-Here is how you can install Nginx:
-
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped nginx">
   <tr>
     <td>Debian, Ubuntu</td>
     <td><pre class="highlight">sudo apt-get install nginx-extras</pre></td>
@@ -74,9 +76,9 @@ Here is how you can install Nginx:
   </tr>
 </table>
 
-Open the Nginx configuration file:
+<p class="nginx">Open the Nginx configuration file:</p>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped nginx">
   <tr>
     <td>Debian, Ubuntu</td>
     <td>/etc/nginx/nginx.conf</td>
@@ -95,7 +97,7 @@ Open the Nginx configuration file:
   </tr>
 </table>
 
-Add virtual host entries for your applications foo and bar. While making the virtual host entries, you must determine what host names foo and bar should respond to. Let's say that foo should respond to `www.foo.com` and bar should respond to `www.bar.com`. Then the following entries will tell Nginx to listen on port 80, and to handle requests for the domains `www.foo.com` and `www.bar.com` differently.
+<p class="nginx">Add virtual host entries for your applications foo and bar. While making the virtual host entries, you must determine what host names foo and bar should respond to. Let's say that foo should respond to `www.foo.com` and bar should respond to <code>www.bar.com</code>. Then the following entries will tell Nginx to listen on port 80, and to handle requests for the domains <code>www.foo.com</code> and <code>www.bar.com</code> differently.</p>
 
 ~~~nginx
 http {
@@ -156,9 +158,9 @@ http {
 }
 ~~~
 
-Once you're done editing the Nginx configuration file, restart Nginx:
+<p class="nginx">Once you're done editing the Nginx configuration file, restart Nginx:</p>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped nginx">
   <tr>
     <td>Debian, Ubuntu</td>
     <td><pre class="highlight">sudo /etc/init.d/nginx restart</pre></td>
@@ -189,11 +191,10 @@ Once you're done editing the Nginx configuration file, restart Nginx:
   </tr>
 </table>
 
-### Apache
 
-Here is how you can install Apache. `mod_proxy` and `mod_proxy_http` must be enabled.
+<p class="apache">Here is how you can install Apache. <code>mod_proxy</code> and <code>mod_proxy_http</code> must be enabled.</p>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped apache">
   <tr>
     <td>Debian, Ubuntu</td>
     <td><pre class="highlight">sudo apt-get install apache2
@@ -214,48 +215,52 @@ sudo a2enmod proxy_http</pre></td>
   </tr>
 </table>
 
-[Open the Apache configuration file](<%= "/install/apache/working_with_the_apache_config_file.html" %>). Add virtual host entries for your applications foo and bar. While making the virtual host entries, you must determine what host names foo and bar should respond to. Let's say that foo should respond to `www.foo.com` and bar should respond to `www.bar.com`. Then the following entries will tell Apache to listen on port 80, and to handle requests for the domains `www.foo.com` and `www.bar.com` differently.
+<p class="apache"><a href="<%= "/install/apache/working_with_the_apache_config_file.html" %>">Open the Apache configuration file</a>. Add virtual host entries for your applications foo and bar. While making the virtual host entries, you must determine what host names foo and bar should respond to. Let's say that foo should respond to <code>www.foo.com</code> and bar should respond to <code>www.bar.com</code>. Then the following entries will tell Apache to listen on port 80, and to handle requests for the domains <code>www.foo.com</code> and <code>www.bar.com</code> differently.</p>
 
-<pre class="highlight">&lt;VirtualHost *:80&gt;
+~~~apache
+<VirtualHost *:80>
     ServerName www.foo.com
 
-    <span class="c"># Tells Apache to serve static assets from this directory.</span>
+    # Tells Apache to serve static assets from this directory.
     DocumentRoot /webapps/foo/public
 
-    <span class="c"># Tells Apache to forward all requests for www.foo.com
-    # to the Passenger Standalone instance listening on port 4000.</span>
+    # Tells Apache to forward all requests for www.foo.com
+    # to the Passenger Standalone instance listening on port 4000.
     ProxyPass / http://127.0.0.1:4000/
     ProxyPassReverse / http://127.0.0.1:4000/
     ProxyPreserveHost on
 
-    &lt;Proxy *&gt;
+    <Proxy *>
       Order deny,allow
       Allow from all
-    &lt;/Proxy&gt;
-&lt;/VirtualHost&gt;
+    </Proxy>
+</VirtualHost>
 
-<span class="c"># We handle bar in a similar manner.</span>
-&lt;VirtualHost *:80&gt;
+# We handle bar in a similar manner.
+<VirtualHost *:80>
     ServerName www.bar.com
     DocumentRoot /webapps/bar/public
 
-    <span class="c"># bar is listening on port 4010 instead of 4000, we
-    # change the URL here.</span>
+    # bar is listening on port 4010 instead of 4000, we
+    # change the URL here.
     ProxyPass / http://127.0.0.1:4010/
     ProxyPassReverse / http://127.0.0.1:4010/
     ProxyPreserveHost on
 
-    &lt;Proxy *&gt;
+    <Proxy *>
       Order deny,allow
       Allow from all
-    &lt;/Proxy&gt;
-&lt;/VirtualHost&gt;</pre>
+    </Proxy>
+</VirtualHost>
+~~~
 
-Once you're done editing the Apache configuration file, restart Apache:
+<div class="apache">
+<p>Once you're done editing the Apache configuration file, restart Apache:</p>
 
 <pre class="highlight"><span class="prompt">$ </span>sudo apache2ctl reload</pre>
 
-Note that on some systems, the command may be `apachectl` instead of `apache2ctl`.
+<p>Note that on some systems, the command may be <code>apachectl</code> instead of <code>apache2ctl</code>.</p>
+</div>
 
 ## Step 3: making all apps start at system boot
 
