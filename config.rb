@@ -231,11 +231,19 @@ SUPPORTED_LANGUAGES.each do |language_spec|
     locals: language_spec
 end
 
+INTEGRATION_MODES.each do |integration_mode_spec|
+  integration_mode_type = integration_mode_spec[:integration_mode_type]
+  proxy "/dev/#{integration_mode_type}/dev_ssl.html",
+    "/dev/dev_ssl.html",
+    locals: integration_mode_spec
+end
+
 ignore "/dev/index2.html"
 ignore "/dev/standalone_dev.html"
 ignore "/dev/code_reloading.html"
 ignore "/dev/multitenancy_and_microservices.html"
 ignore "/dev/turbocaching.html"
+ignore "/dev/dev_ssl.html"
 
 ###### Deployment, scaling and high availability ######
 
@@ -251,6 +259,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
     locals: integration_mode_spec
   proxy "/deploy/#{integration_mode_type}/deployment_error_resistance.html",
     "/deploy/deployment_error_resistance.html",
+    locals: integration_mode_spec
+  proxy "/deploy/#{integration_mode_type}/prod_ssl.html",
+    "/deploy/prod_ssl.html",
     locals: integration_mode_spec
 
 
@@ -295,6 +306,8 @@ ignore "/deploy/user_sandboxing.html"
 ignore "/deploy/zero_downtime_redeployments.html"
 ignore "/deploy/flying_passenger.html"
 ignore "/deploy/deployment_error_resistance.html"
+ignore "/deploy/prod_ssl.html"
+
 
 ###### Administration and troubleshooting ######
 
