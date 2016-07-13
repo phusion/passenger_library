@@ -162,6 +162,12 @@ a:focus {
   text-decoration: none;
 }
 
+div.editlink {
+  position: absolute;
+  top: 40px;
+  right: 0px;
+  font-size: smaller;
+}
 
 .bs-docs-container {
   dl, dt {
@@ -249,6 +255,19 @@ a:focus {
   color: #666;
 }
 
+.info_header {
+  display: block;
+  margin-top: 0px;
+  margin-bottom: 16px;
+  font-size: 1.25em;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #000;
+}
+
+.info_body {
+  color: #666;
+}
 .bs-docs-container p,
 .bs-docs-container li {
   line-height: 1.6;

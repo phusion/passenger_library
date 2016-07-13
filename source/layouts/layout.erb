@@ -158,6 +158,13 @@ end
           <!-- Content
           =========================================== -->
           <div class="col-md-8" role="main">
+          
+            <% if current_page.data.comments != false %>
+              <div style="position: relative; z-index: 1">
+                <div class="editlink"><a href="<%=h current_page_github_url %>">Edit page</a></div>
+              </div>
+            <% end %>
+        
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
@@ -166,6 +173,13 @@ end
           <!-- Content
           =========================================== -->
           <div class="col-md-8 col-md-offset-2" role="main">
+          
+            <% if current_page.data.comments != false %>
+              <div style="position: relative; z-index: 1">
+                <div class="editlink"><a href="<%=h current_page_github_url %>">Edit page</a></div>
+              </div>
+            <% end %>
+          
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
@@ -188,10 +202,8 @@ end
         </div>
         <div class="row" role="complementary" data-swiftype-index="false">
           <div class="<%= comments_section_classes %> bs-comments-section">
-            <div class="bs-comments-section-alert" role="alert">
-              <h3 class="notoc">You can <a href="<%=h current_page_github_url %>">edit this page</a> to improve it, or post feedback below.</h3>
-              <p>Edits are committed straight to GitHub and are periodically reviewed and included in this site.</p>
-            </div>
+            <div class="info"><span class="info_header">For <b>support</b>, please post to the <a href="https://groups.google.com/forum/#!forum/phusion-passenger">forum</a>.</span> 
+            <span class="info_body">The comments below are for feedback on the page content, we don't provide any timely help here.</span></div>
 
             <div id="disqus_thread"></div>
             <script>
