@@ -283,7 +283,7 @@ module CustomHelpers
     when nil
       url_for("/config/reference/index.html") + "?a=passenger_#{name}"
     else
-      raise "Unknown itegration mode #{locals[:integration_mode_type]}"
+      raise "Unknown integration mode #{locals[:integration_mode_type]}"
     end
   end
 
