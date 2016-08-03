@@ -1492,7 +1492,7 @@ If a request to '/expensive_computation' takes more than 10 seconds, or if a req
   <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
 
-The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will let finish processing all its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
+The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger allow it to finish processing all of its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
 
 This option is useful if your application is leaking memory. By shutting it down, all of its memory is guaranteed to be freed by the operating system.
 
@@ -2431,7 +2431,7 @@ Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/fly
   </tr>
 </table>
 
-When using Passenger on a LVE-enabled kernel, a security check (enter) is run for spawning application processes. This options tells the check to only allow 
+When using Passenger on a LVE-enabled kernel, a security check (enter) is run for spawning application processes. This options tells the check to only allow
 processes with PIDs equal to, or higher than, the specified value.
 
 ## Union Station options

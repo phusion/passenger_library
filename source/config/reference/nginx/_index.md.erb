@@ -1472,7 +1472,7 @@ If a request to '/expensive_computation' takes more than 10 seconds, or if a req
   <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
 
-The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will let finish processing all its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
+The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will allow it to finish processing all of its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
 
 This option is useful if your application is leaking memory. By shutting it down, all of its memory is guaranteed to be freed by the operating system.
 

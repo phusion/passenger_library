@@ -28,6 +28,7 @@ Here is an example of an Nginx configuration file which also configures Passenge
 server {
     server_name yourserver.com;
     root /var/www/myapp/code/public;
+    passenger_enabled on;
     passenger_ruby /usr/bin/ruby2.0;
     passenger_sticky_sessions on;
 }
@@ -35,7 +36,7 @@ server {
 
 ## Essential configuration
 
-For Passenger to work, only one configuration option needs to be setup in Nginx, namely [passenger_root](reference/#passenger_root). If you have already gone through the [installation process](<%= url_for "/install/nginx/install/index.html" %>), then it has already been set.
+For Passenger to work, only two configuration options need to be setup in Nginx, namely [passenger_enabled](reference/#passenger_enabled) and [passenger_root](reference/#passenger_root). If you have already gone through the [installation process](<%= url_for "/install/nginx/install/index.html" %>), then it has already been set.
 
 ## Start configuring Passenger
 
