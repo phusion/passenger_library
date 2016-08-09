@@ -18,14 +18,16 @@ If you want to [install Passenger in its Apache integration mode](<%= url_for "/
 
 ## The location of the Apache configuration file
 
-On most systems the Apache configuration file is located in one of these locations:
+On most systems if you installed Apache with a package manager, or it came preinstalled, the Apache configuration file is located in one of these locations:
 
  * `/etc/apache2/httpd.conf`
  * `/etc/apache2/apache2.conf`
  * `/etc/httpd/httpd.conf`
  * `/etc/httpd/conf/httpd.conf`
 
-Furthermore On OS X Server >= 10.8 Mountain Lion, the location of the Apache configuration file varies. Some paths are listed below, please refer to the OS X Server documentation for the complete information.
+If you installed Apache from source it is likely located in `/usr/local` or `/opt`, though the config files may have been moved to `/etc` as usual. Check your build script for more details.
+
+Furthermore On OS X Server >= 10.8 Mountain Lion, the location of the Apache configuration file varies. Some paths are listed below, please refer to the OS X Server documentation for complete information.
 <table class="table table-bordered table-striped">
   <tr>
     <td>Not using websites/webservices</td>
@@ -37,7 +39,7 @@ Furthermore On OS X Server >= 10.8 Mountain Lion, the location of the Apache con
   </tr>
   <tr>
     <td>OS X Server 5 websites</td>
-    <td>/Library/Server/Web/Config/Proxy/apache_serviceproxy.conf</td>
+    <td>/Library/Server/Web/Config/apache2/server-httpd.conf</td>
   </tr>
 </table>
 

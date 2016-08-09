@@ -36,7 +36,7 @@ You can't change variables in your program and expect all processes to see the c
 
 If a process crashes, other processes do not crash along with it. An application crash won't take down Passenger because Passenger runs in its own process. Even Passenger itself is implemented as multiple processes, so that Passenger can restart itself when Passenger crashes.
 
-### Accountabilty
+### Accountability
 
 Because processes are isolated from each other memory-wise, it's very easy to find out how much memory a process is using. You can't do that with threads because they all share memory. A very good analogy is a house shared by multiple tenants. If you visit that house, you can't tell what stuff belongs to who. Some stuff may even be owned by multiple people.
 
