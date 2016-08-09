@@ -54,7 +54,8 @@ end
 <span class="prompt">local-computer$ </span>ssh <span class="o">adminuser</span>@yourserver.com
 <% end -%>
 <span class="prompt">production-server$ </span>sudo mv passenger-enterprise-license /etc/passenger-enterprise-license
-<span class="prompt">production-server$ </span>chmod 644 /etc/passenger-enterprise-license</pre>
+<span class="prompt">production-server$ </span>chmod 644 /etc/passenger-enterprise-license<% if locals[:os_config_class] == :redhat %>
+<span class="prompt">production-server$ </span>/sbin/restorecon /etc/passenger-enterprise-license <span class="c unselectable"># this command fixes the file's SELinux context.</span><% end %></pre>
 
 <% if locals.fetch(:instruct_download_token, true) %>
   <% step += 1 %>
