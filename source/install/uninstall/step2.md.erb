@@ -54,12 +54,10 @@ Removing the Passenger files depends on how you installed Passenger.
       <td>Phusion's <a href="../../yum_repo/">YUM repository</a> for Red Hat/CentOS</td>
       <td><pre class="highlight">sudo yum remove -y <%= packages_rpm %></pre></td>
     </tr>
-    <% if edition_type == :oss %>
-      <tr>
-        <td>OS X + Homebrew</td>
-        <td><pre class="highlight">brew uninstall passenger</pre></td>
-      </tr>
-    <% end %>
+    <tr>
+      <td>OS X + Homebrew</td>
+      <td><pre class="highlight">brew uninstall passenger</pre></td>
+    </tr>
     <tr>
       <td>Ruby gem</td>
       <td><pre class="highlight">gem uninstall <%= gem_name %></pre></td>

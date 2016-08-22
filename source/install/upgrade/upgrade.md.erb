@@ -7,8 +7,12 @@ content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
 
 if edition_type == :oss
   gem_name = "passenger"
+  formula_name = "passenger"
+  nginx_formula = "nginx --with-passenger"
 else
   gem_name = "passenger-enterprise-server"
+  formula_name = "passenger-enterprise"
+  nginx_formula = "nginx-passenger-enterprise"
 end
 %>
 
@@ -24,29 +28,26 @@ end
   <div class="note">Are you using Ruby, and do you have "passenger" or "passenger-enterprise-server" in your Gemfile? Then take a look at the <a href="#gemfile">Gemfile upgrade instructions</a>.</div>
 <% end %>
 
-<% if edition_type == :oss %>
-  <h2 id="osx">Mac OS X (Homebrew)</h2>
-  <div>
-    <p>If <%= edition_title %> was installed on OS X through Homebrew, then you can upgrade <%= edition_title %> as follows:</p>
+<h2 id="osx">Mac OS X (Homebrew)</h2>
+<div>
+  <p>If <%= edition_title %> was installed on OS X through Homebrew, then you can upgrade <%= edition_title %> as follows:</p>
 
-    <% if integration_mode_type == :apache %>
-      <pre class="highlight">brew update
-brew upgrade passenger</pre>
+  <% if integration_mode_type == :apache %>
+    <pre class="highlight">brew update
+brew upgrade <%= formula_name %></pre>
+    <p>When done, read the Homebrew formula caveats and follow any Apache-specific instructions you see:</p>
 
-      <p>When done, read the Homebrew formula caveats and follow any Apache-specific instructions you see:</p>
+    <pre class="highlight">brew info <%= formula_name %></pre>
+  <% elsif integration_mode_type == :nginx %>
+    <pre class="highlight">brew upgrade <%= formula_name %> <%= nginx_formula %></pre>
 
-      <pre class="highlight">brew info passenger</pre>
-    <% elsif integration_mode_type == :nginx %>
-      <pre class="highlight">brew upgrade passenger nginx --with-passenger</pre>
+    <p>If Passenger has been updated, but no new Nginx version has been released, then you must also reinstall Nginx against the latest version of Passenger:</p>
 
-      <p>If Passenger has been updated, but no new Nginx version has been released, then you must also reinstall Nginx against the latest version of Passenger:</p>
-
-      <pre class="highlight">brew reinstall nginx --with-passenger</pre>
-    <% else %>
-      <pre class="highlight">brew upgrade passenger</pre>
-    <% end %>
-  </div>
-<% end %>
+    <pre class="highlight">brew reinstall <%= nginx_formula %></pre>
+  <% else %>
+    <pre class="highlight">brew upgrade <%= formula_name %></pre>
+  <% end %>
+</div>
 
 <h2 id="debian_ubuntu">Debian packages (Debian, Ubuntu)</h2>
 

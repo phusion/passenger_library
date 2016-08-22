@@ -1,5 +1,14 @@
 <% step = 0 %>
 
+<% if edition_type == :oss
+  formula_name = "passenger"
+  nginx_formula = "nginx --with-passenger"
+else
+  formula_name = "passenger-enterprise"
+  nginx_formula = "nginx-passenger-enterprise"
+end
+%>
+
 <% if edition_type == :enterprise %>
   <%=
   result = {}
@@ -15,11 +24,13 @@
 <p>
   You can install Passenger through <a href="http://brew.sh/">Homebrew</a>:
 </p>
-<% if integration_mode_type == :nginx %>
-  <pre class="highlight shell"><span class="prompt">$ </span>brew install nginx --with-passenger</pre>
-<% else %>
-  <pre class="highlight shell"><span class="prompt">$ </span>brew install passenger</pre>
+  <pre class="highlight shell"><% if edition_type == :enterprise %>
+<span class="prompt">$ </span>brew tap phusion/passenger
 <% end %>
+<span class="prompt">$ </span>brew install <%= (integration_mode_type == :nginx) ? nginx_formula : formula_name %></pre>
+<% if edition_type == :enterprise %><p>
+  You will be prompted to provide your download token the first time you install Passenger Enterprise through Homebrew.
+</p><% end %>
 <p>
   Not using Homebrew? Please <a href="<%= menu_selection_url %>">go back to the operating system selection menu</a> and choose "Other" as operating system</a>.
 </p>
@@ -28,9 +39,9 @@
   <% step += 1 %>
   <h2>Step <%= step %>: enable the Passenger Apache module and restart Apache</h2>
   <p>
-    Passenger is now installed, but it still needs to be enabled inside Apache. Run <code>brew info passenger</code> and follow the instructions in the "Caveats" section:
+    Passenger is now installed, but it still needs to be enabled inside Apache. Run <code>brew info <%= formula_name %></code> and follow the instructions in the "Caveats" section:
   </p>
-  <pre class="highlight shell"><span class="prompt">$ </span>brew info passenger
+  <pre class="highlight shell"><span class="prompt">$ </span>brew info <%= formula_name %>
 <span class="output">...
 ==&gt; Caveats
 ...
@@ -55,9 +66,9 @@ To activate Passenger for Apache, create /etc/apache2/other/passenger.conf:
   <% step += 1 %>
   <h2>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h2>
   <p>
-    Passenger is now installed, but it still needs to be enabled inside Nginx. Run <code>brew info nginx --with-passenger</code> and follow the instructions in the "Caveats" section:
+    Passenger is now installed, but it still needs to be enabled inside Nginx. Run <code>brew info <%= nginx_formula %></code> and follow the instructions in the "Caveats" section:
   </p>
-  <pre class="highlight shell"><span class="prompt">$ </span>brew info nginx --with-passenger
+  <pre class="highlight shell"><span class="prompt">$ </span>brew info <%= nginx_formula %>
 <span class="output">...
 ==&gt; Caveats
 ...
@@ -66,8 +77,8 @@ To activate Passenger, ...
 (...more instructions that you should follow...)</span></pre>
 
   <p>When you are done following the instructions, restart Nginx:</p>
-  <pre class="highlight shell"><span class="prompt">$ </span>sudo launchctl unload /usr/local/opt/nginx/*.plist
-<span class="prompt">$ </span>sudo launchctl load /usr/local/opt/nginx/*.plist</pre>
+  <pre class="highlight shell"><span class="prompt">$ </span>sudo launchctl unload /usr/local/opt/nginx<% if edition_type == :enterprise %>-passenger-enterprise<% end %>/*.plist
+<span class="prompt">$ </span>sudo launchctl load /usr/local/opt/nginx<% if edition_type == :enterprise %>-passenger-enterprise<% end %>/*.plist</pre>
 <% end %>
 
 <% step += 1 %>

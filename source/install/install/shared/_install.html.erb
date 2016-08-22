@@ -1,9 +1,6 @@
 <%= render_partial("/install/install/shared/debian.html", locals: locals.merge(id_prefix: "debian_")) %>
 <%= render_partial("/install/install/shared/redhat.html", locals: locals.merge(id_prefix: "redhat_")) %>
-<% if !enterprise %>
-  <%# Passenger Enterprise cannot be installed via Homebrew %>
-  <%= render_partial("/install/install/shared/osx.html", locals: locals.merge(id_prefix: "osx_")) %>
-<% end %>
+<%= render_partial("/install/install/shared/osx.html", locals: locals.merge(id_prefix: "osx_")) %>
 <div class="install_os install_os_other" style="display: none">
   <%= render_partial("/install/install/shared/other_rubygems.html",
         locals: locals.merge(id_prefix: "rubygems_rvm_", class_suffix: "_rvm", rvm: true)) %>

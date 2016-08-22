@@ -165,7 +165,7 @@ On Debian and Ubuntu, with an Apache installed through apt, Apache environment v
 
 On Red Hat, Fedora, CentOS and ScientificLinux, with an Apache installed through YUM, Apache environment variables are defined in `/etc/sysconfig/httpd`.
 
-On OS X they are defined in `/System/Library/LaunchDaemons/org.apache.httpd.plist`, as explained [here on Stack Overflow](http://stackoverflow.com/questions/6833939/path-environment-variable-for-apache2-on-mac).
+On OS X they are defined in `/usr/sbin/envvars` and `/System/Library/LaunchDaemons/org.apache.httpd.plist`, as explained [here on Stack Overflow](http://stackoverflow.com/questions/6833939/path-environment-variable-for-apache2-on-mac). As of OS X 10.11 you must temporarily disable SIP to edit these files as explained [here on Stack Overflow](http://stackoverflow.com/questions/30768087/restricted-folder-files-in-os-x-el-capitan).
 
 On other systems, or if you did not install Apache through the system's package manager, the configuration file for environment variables is specific to the vendor that supplied Apache. There may not even be such a configuration file. You should contact the vendor for support.
 

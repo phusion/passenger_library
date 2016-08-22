@@ -21,15 +21,12 @@ end
         <%= redhat_version_list_options(next_page) %>
       </ul>
     </li>
-    <% if edition_type == :oss %>
-      <%# Passenger Enterprise cannot be installed via Homebrew %>
-      <li>
-        <strong>Mac OS X</strong>
-        <ul>
-          <li><a href="osx/<%= next_page %>">Mac OS X + Homebrew</a></li>
-        </ul>
-      </li>
-    <% end %>
+    <li>
+      <strong>Mac OS X</strong>
+      <ul>
+        <li><a href="osx/<%= next_page %>">Mac OS X + Homebrew</a></li>
+      </ul>
+    </li>
     <li>
       <strong>Other / OS independent (generic installation method)</strong>
       <% if context == :install_passenger %>
@@ -61,10 +58,7 @@ end
   <option value="none" selected>Please select an operating system / installation method</option>
   <option value="debian">Debian, Ubuntu (with APT)</option>
   <option value="redhat">Red Hat, CentOS (with RPM)</option>
-  <% if edition_type == :oss %>
-    <%# Passenger Enterprise cannot be installed via Homebrew %>
-    <option value="osx">Mac OS X</option>
-  <% end %>
+  <option value="osx">Mac OS X</option>
   <option value="other">Other / OS independent (generic installation method)</option>
 </select></p>
 
