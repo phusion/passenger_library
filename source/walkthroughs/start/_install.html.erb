@@ -79,68 +79,49 @@ sudo apt-get install -y passenger</code></pre>
       <h3 class="notoc no_el6">Notes about SELinux on CentOS 7</h3>
       <p class="no_el6">If you experience dependency errors related to selinux-policy while installing Passenger first try <code>yum clean all && yum update</code>, and if that doesn't resolve the issue, try enabling the CR repo: <code>sudo yum update && sudo yum-config-manager --enable cr</code>.</p>
       <h3 class="notoc el6">Notes about SELinux on Red Hat 6 and CentOS 6</h3>
-      <p class="el6">If you are on Red Hat 6 or CentOS 6, and you are also using SELinux in enforcing mode, then Passenger 5.0.* requires kernel &gt;= 2.6.39, this requirement has been removed in Passenger 5.1.*.</p>
-      <p class="el6">If you want to install Passenger on Red Hat 6 or CentOS 6, without upgrading your kernel, then you must <strong>disable</strong> SELinux completely. Edit <code>/etc/selinux/config</code>, set <code>SELINUX=disabled</code> and reboot. Note that merely setting SELinux to permissive mode is not enough.</p>
+      <p class="el6">Passenger versions prior to 5.1 require kernel &gt;= 2.6.39 if you are installing on Red Hat 6 or CentOS 6 with SELinux set to enforcing mode.</p>
+      <p class="el6">The pre 5.1 Passenger versions can also be installed without upgrading the kernel if you completely <strong>disable</strong> SELinux. Edit <code>/etc/selinux/config</code>, set <code>SELINUX=disabled</code> and reboot. Note that merely setting SELinux to permissive mode is not enough.</p>
       <p class="el6">This issue does not apply to Red Hat &gt;= 7 and CentOS &gt;= 7, because these OS versions supply recent enough kernel versions.</p>
     </div>
 
-    <p>You can install Passenger through YUM. But first you need to enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>. The instructions differ depending on whether you are on Red Hat or CentOS.</p>
+    <p>You can install Passenger through YUM. But first you need to enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>. The instructions differ depending on whether you are on Red Hat or CentOS. The second step is only necessary on Red Hat.</p>
 
-    <h4 id="enable_epel_rhel">Enabling EPEL on Red Hat</h4>
+    <h4 id="enable_epel_rhel">Enabling EPEL</h4>
     <table class="table table-bordered table-striped">
       <tbody>
         <tr>
           <td><strong>Step 1:</strong><br>install EPEL package</td>
 
-          <td class="el6">
-            <p>If your system is 64-bit:</p>
-            <pre class="highlight"><span class="prompt">$ </span>if ! rpm -q epel-release; then sudo yum install -y yum-utils \
-  http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm; fi
-<span class="prompt">$ </span>sudo yum-config-manager --enable epel</pre>
-
-            <p>If your system is 32-bit:</p>
-            <pre class="highlight"><span class="prompt">$ </span>if ! rpm -q epel-release; then sudo yum install -y yum-utils \
-  http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm; fi
-<span class="prompt">$ </span>sudo yum-config-manager --enable epel</pre>
-          </td>
-
-          <td class="no_el6">
-            <pre class="highlight"><span class="prompt">$ </span>if ! rpm -q epel-release; then sudo yum install -y yum-utils \
-  http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm; fi
-<span class="prompt">$ </span>sudo yum-config-manager --enable epel</pre>
+          <td>
+            <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y epel-release yum-utils
+<span class="prompt">$ </span>sudo yum-config-manager --enable epel
+<span class="prompt">$ </span>sudo yum clean all && sudo yum update -y</pre>
           </td>
         </tr>
 
-        <tr class="el6">
+        <tr>
           <td>
-            <strong>Step 2:</strong><br>
+            <strong>step 2 (rhel only):</strong><br>
             enable the 'optional' repository
           </td>
           <td>
-            Enable the <em>optional</em> repository (<em>rhel-6-server-optional-rpms</em>). This can be done by enabling the RHEL optional <a href="https://access.redhat.com/kb/docs/DOC-11313">subchannel</a> for RHN-Classic. For certificate-based subscriptions see <a href="https://access.redhat.com/site/documentation/en-US/Red_Hat_Subscription_Management/1/html/RHSM/entitlements-and-yum.html#supplementary-repos">Red Hat Subscription Management Guide</a>.
-          </td>
-        </tr>
-
-        <tr class="no_el6">
-          <td>
-            <strong>Step 2:</strong><br>
-            enable the 'optional' and 'extras' repositories
-          </td>
-          <td>
-            Enable the <em>optional</em> and <em>extras</em> repositories (<em>rhel-7-server-optional-rpms</em>, <em>rhel-7-server-extras-rpms</em>). This can be done by enabling the RHEL optional <a href="https://access.redhat.com/kb/docs/DOC-11313">subchannel</a> for RHN-Classic. For certificate-based subscriptions see <a href="https://access.redhat.com/site/documentation/en-US/Red_Hat_Subscription_Management/1/html/RHSM/entitlements-and-yum.html#supplementary-repos">Red Hat Subscription Management Guide</a>.
+            enable the <em>optional</em> repository (<em>rhel-<span class="el6">6</span><span class="no_el6">7</span>-server-optional-rpms</em>). this can be done by enabling the rhel optional <a href="https://access.redhat.com/kb/docs/doc-11313">subchannel</a> for rhn-classic. for certificate-based subscriptions see <a href="https://access.redhat.com/site/documentation/en-us/red_hat_subscription_management/1/html/rhsm/entitlements-and-yum.html#supplementary-repos">red hat subscription management guide</a>.
           </td>
         </tr>
       </tbody>
     </table>
 
-    <h4 id="enable_epel_centos">Enabling EPEL on CentOS</h4>
-    <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y epel-release yum-utils
-<span class="prompt">$ </span>sudo yum-config-manager --enable epel</pre>
-
     <h4>Install Passenger itself</h4>
 
     <pre class="highlight shell"><code><span class="c unselectable"># Install other prerequisites</span>
-sudo yum install -y epel-release pygpgme curl
+sudo yum install -y pygpgme curl
+
+date
+<span class="c unselectable"># if the output of date is wrong, please follow these instructions to install ntp</span>
+sudo yum install -y ntp
+sudo chkconfig ntpd on
+sudo ntpdate pool.ntp.org
+sudo service ntpd start
 
 <span class="c unselectable"># Add our <span class="redhat_distro_name"></span> YUM repository</span>
 sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo

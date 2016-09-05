@@ -22,23 +22,22 @@ Ensure that you have prepared a sample application as described in [the previous
 
 You begin using Passenger Standalone by starting a Passenger Standalone server. This can be done with the `passenger start` command.
 
-<pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger start
+<pre class="highlight">
+<% if language_type == :meteor -%>
+<span class="prompt">$ </span>mkdir -p data log && mongod --dbpath data --logpath log/mongod.log --fork
+<span class="prompt">$ </span>export MONGO_URL=mongodb://127.0.0.1:27017/passenger
+<span class="prompt">$ </span>export ROOT_URL=http://0.0.0.0:3000/
+<% end %>
+<span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger start<% if language_type == :meteor -%> --app-type node --startup-file main.js<% end %>
 <span class="output">======= Phusion Passenger Standalone web server started =======
-PID file: /Users/phusion/<%= locals[:app_name] %>/tmp/pids/passenger.3000.pid   <span class="label label-info">1</span>
-Log file: /Users/phusion/<%= locals[:app_name] %>/log/passenger.3000.log        <span class="label label-info">2</span>
+PID file: /Users/phusion/<%= locals[:app_name] %><% if language_type == :ruby -%>/tmp/pids<% end %>/passenger.3000.pid   <span class="label label-info">1</span>
+Log file: /Users/phusion/<%= locals[:app_name] %><% if language_type == :ruby -%>/log<% end %>/passenger.3000.log        <span class="label label-info">2</span>
 Environment: development                     <span class="label label-info">3</span>
 Accessible via: http://0.0.0.0:3000/         <span class="label label-info">4</span>
 
 You can stop Phusion Passenger Standalone by pressing Ctrl-C.
 ===============================================================
-<% if language_type == :meteor -%>
-App 85125 stdout: [[[[[ ~/myapp ]]]]]   <span class="label label-info">5</span>
-App 85125 stdout:
-App 85125 stdout: => Started proxy.
-App 85125 stdout: => Started MongoDB.
-App 85125 stdout: => Started your app.
-App 85125 stdout:
-App 85125 stdout: => App running at: http://localhost:9822/  <span class="label label-info">6</span><% end %></span></pre>
+</span></pre>
 
 During startup, Passenger prints its runtime parameters to the console. There are several things you see here:
 
@@ -56,10 +55,6 @@ During startup, Passenger prints its runtime parameters to the console. There ar
  3. Passenger has started your app under the `development` environment. This means that it has set the environment variable `PASSENGER_APP_ENV` to the value `development`.
 <% end -%>
  4. Passenger is serving your app on [http://0.0.0.0:3000/](http://0.0.0.0:3000/).
-<% if language_type == :meteor -%>
- 5. Internally, Passenger runs your Meteor app by invoking the command `meteor run`. You can see the output of that command in the lines that are marked with "App xxx stdout". The xxx is the PID of the `meteor run` command.
- 6. `meteor run` starts its own server at http://localhost:9822/. But that is not the URL you should visit. Passenger listens on its own port, manages Meteor, and forwards requests to Meteor through the address http://localhost:9822/. So you should **ignore this line**.
-<% end -%>
 
 If you go to http://0.0.0.0:3000/, you will see your application:
 

@@ -30,10 +30,15 @@ substep = 0
     <h3><%= step %>.<%= substep %> Build and upload new package</h3>
 
     <p>
-      Inside your application's code directory, on your local computer, use the <code>meteor bundle</code> command to create a Meteor package tarball of the latest application code.
+      In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker.html") %>
+    </p>
+    <p>
+      Inside your application's code directory, on your local computer, use the <code class="meteor old">meteor bundle</code><code class="meteor new">meteor build</code> command to create a Meteor package tarball of the latest application code.
     </p>
 
-    <pre class="highlight"><span class="prompt">local-computer$ </span>meteor bundle package.tar.gz</pre>
+    <pre class="highlight meteor old"><span class="prompt">local-computer$ </span>meteor bundle package.tar.gz</pre>
+    <pre class="highlight meteor new"><span class="prompt">local-computer$ </span>meteor build --server-only ../new_package && mv ../new_package/*.tar.gz ./package.tar.gz</pre>
+
 
     <p>
       Copy the package to your production server, for example using <code>scp</code>:

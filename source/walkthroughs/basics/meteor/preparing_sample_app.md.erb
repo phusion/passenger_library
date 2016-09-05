@@ -20,32 +20,21 @@ Let us create an example Meteor app directory structure in your home directory. 
 
 In the previous step, you only created a Meteor app in development mode. In this tutorial, we also need a *packaged* version of your Meteor sample app. A packaged Meteor app contains the Meteor runtime and various other necessary things for running a Meteor app in production. Some Passenger features are only compatible with packaged Meteor apps.
 
-Inside the `leaderboard` directory, use the `meteor bundle` command to create a package tarball.
+<p>
+    In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker.html") %>
+</p>
 
-<pre class="highlight"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
+Inside the `leaderboard` directory, use the <code class="meteor old">meteor bundle</code><code class="meteor new">meteor build</code> command to create a package tarball.
 
-<div class="info">
-  <h3 class="notoc">Why creating a package?</h3>
-  <p>
-    Wondering why we instruct you to create a package, instead of just using the Meteor app in unpackaged form. Learn more at <a href="<%= url_for "/indepth/meteor/meteor.html" %>">About Meteor support</a>.
-  </p>
-</div>
+<pre class="highlight"><span class="prompt">$ </span>meteor <span class="meteor old">bundle package.tar.gz</span><span class="meteor new">build --server-only ../leaderboard-package</span></pre>
 
-<div class="note">
-  <h3 class="notoc">"meteor bundle" deprecated?</h3>
-  <p>
-    Meteor will probably tell you that <code>meteor bundle</code> is deprecated in favor of <code>meteor build</code>. Please ignore that message, because for the purpose of running a Meteor web application on Passenger, only `meteor bundle` does what we want.
-  </p>
-  <p>
-    `meteor bundle` creates a packaged web application, in the form of a Node.js web app with the Meteor runtime included. `meteor build` is a more comprehensive tool that not only does what `meteor bundle` does, but also builds iOS and Android app packages. However, Passenger is a web application server, so iOS and Android packages are not relevant to us, which is why we recommend using `meteor bundle` instead of `meteor build`.
-  </p>
-</div>
+<%= render_partial("/shared/meteor_package_note.html") %>
 
-The packaged app has now been placed in `package.tar.gz`. But Passenger expects a directory, so let us extract it in `../leaderboard-package`:
+<span class="meteor old">The packaged app has now been placed in `package.tar.gz`. But Passenger expects a directory, so let us extract it in <code>../leaderboard-package</code>:</span>
 
-<pre class="highlight"><span class="prompt">$ </span>mkdir ../leaderboard-package
-<span class="prompt">$ </span>cd ../leaderboard-package
-<span class="prompt">$ </span>tar xzf ../leaderboard/package.tar.gz</pre>
+<pre class="highlight"><span class="meteor old"><span class="prompt">$ </span>mkdir ../leaderboard-package
+</span><span class="prompt">$ </span>cd ../leaderboard-package
+<span class="prompt">$ </span>tar xzf <span class="meteor old">../leaderboard/package.tar.gz</span><span class="meteor new">*.tar.gz</span></pre>
 
 The packaged app directory doesn't contain any dependencies, so we need to install them. Run:
 
@@ -54,7 +43,7 @@ The packaged app directory doesn't contain any dependencies, so we need to insta
 
 Finally, return to the original `leaderboard` app directory:
 
-<pre class="highlight"><span class="prompt">$ </span>cd ../../../../leaderboard</pre>
+<pre class="highlight"><span class="prompt">$ </span>cd ~/leaderboard-package/bundle</pre>
 
 <div class="info">
   <h3 class="notoc">Meteor package and MongoDB</h3>

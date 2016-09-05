@@ -26,12 +26,12 @@ In this tutorial we will use [an example "hello world" application](https://gith
 
 The simplest way to run your app is with the `<%= command %>` command:
 
-<pre class="highlight"><span class="prompt">$ </span>node myapp.js</pre>
+<pre class="highlight"><span class="prompt">$ </span>node app.js</pre>
 
 Passenger can be used the same way as the `<%= command %>` command: you run your app with `passenger start` and two extra command line options:
 
 <pre class="highlight">
-<span class="prompt">$ </span>passenger start --app-type node --startup-file myapp.js
+<span class="prompt">$ </span>passenger start --app-type node --startup-file app.js
 <span class="output">======= Phusion Passenger Standalone web server started =======
 PID file: /Users/phusion/myapp/passenger.3000.pid
 Log file: /Users/phusion/myapp/passenger.3000.log
@@ -74,7 +74,7 @@ If you stop Passenger, Passenger will stop your app.
 There are two ways to stop the server. The first is by pressing Ctrl-C in the terminal.
 
 <pre class="highlight">
-<span class="prompt">$ </span>passenger start --app-type node --startup-file myapp.js
+<span class="prompt">$ </span>passenger start --app-type node --startup-file app.js
 <span class="output">...
 (press Ctrl-C here)
 Stopping web server... done!</span>

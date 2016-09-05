@@ -18,7 +18,7 @@ Before you can deploy your app on the production server, you need to install Nod
       <p>Run the following commands to install Node.js from the <a href="https://nodesource.com/">NodeSource</a> APT repository. With these commands, we also install a compiler so that we are able to install native addons from npm.</p>
       <pre class="highlight"><span class="prompt">$ </span>sudo apt-get update
 <span class="prompt">$ </span>sudo apt-get install -y curl apt-transport-https ca-certificates &amp;&amp;
-  <% if language_type == :nodejs %>curl --fail -ssL -o setup-nodejs https://deb.nodesource.com/setup_4.x &amp;&amp;<% end %><% if language_type == :meteor %>curl --fail -ssL -o setup-nodejs https://deb.nodesource.com/setup_<span class="meteor old">0.10</span><span class="meteor new">4.x</span> &amp;&amp;<% end %>
+  <% if language_type == :nodejs %>curl --fail -ssL -o setup-nodejs https://deb.nodesource.com/setup_6.x &amp;&amp;<% end %><% if language_type == :meteor %>curl --fail -ssL -o setup-nodejs https://deb.nodesource.com/setup_<span class="meteor old">0.10</span><span class="meteor new">4.x</span> &amp;&amp;<% end %>
   sudo bash setup-nodejs &amp;&amp;
   sudo apt-get install -y nodejs build-essential</pre>
     </td>
@@ -30,7 +30,7 @@ Before you can deploy your app on the production server, you need to install Nod
     <td>
       <p>Run the following commands to enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> and to install Node.js from the <a href="https://nodesource.com/">NodeSource</a> YUM repository. With these commands, we also install a compiler so that we are able to install native addons from npm.</p>
       <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y epel-release curl
-<span class="prompt">$ </span><% if language_type == :nodejs %>curl --fail -sSL -o setup-nodejs https://rpm.nodesource.com/setup_4.x<% end %><% if language_type == :meteor %>curl --fail -sSL -o setup-nodejs https://rpm.nodesource.com/setup_<span class="meteor old">0.10</span><span class="meteor new">4.x</span><% end %>
+<span class="prompt">$ </span><% if language_type == :nodejs %>curl --fail -sSL -o setup-nodejs https://rpm.nodesource.com/setup_6.x<% end %><% if language_type == :meteor %>curl --fail -sSL -o setup-nodejs https://rpm.nodesource.com/setup_<span class="meteor old">0.10</span><span class="meteor new">4.x</span><% end %>
 <span class="prompt">$ </span>sudo bash setup-nodejs
 <span class="prompt">$ </span>sudo yum install -y nodejs gcc-c++ make</pre>
     </td>

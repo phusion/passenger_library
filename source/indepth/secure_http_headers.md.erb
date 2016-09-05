@@ -47,3 +47,8 @@ Note that Passenger also appends the `X-Forwarded-For` header, which serves the 
 ### `!~Passenger-Envvars`
 
 This header contains [Apache per-request environment variables](apache_per_request_envvars.html).
+<% if locals[:language_type] == :meteor %>
+## Caveat
+
+Meteor uses sockjs behind the scenes to transform requests into connection objects, and sockjs enforces a whitelist on headers, so using `connection.httpHeaders` won't work to access our secure headers from meteor.
+<% end %>

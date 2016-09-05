@@ -148,6 +148,6 @@ export PATH</pre>
     Here is an example using curl:
   </p>
   <pre class="highlight"><span class="prompt">$ </span>unset HISTFILE
-<span class="prompt">$ </span>curl --fail -L -o passenger-enterprise-server-5.0.8.tar.gz -u download:<span class="si">YOUR_DOWNLOAD_KEY</span> 'https://www.phusionpassenger.com/orders/download?dir=5.0.8&amp;file=passenger-enterprise-server-5.0.8.tar.gz'</pre>
+<span class="prompt">$ </span>VERSION=5.0.30 && curl --fail -L -o passenger-enterprise-server-${VERSION}.tar.gz -u download:<span class="si">YOUR_DOWNLOAD_KEY</span> "https://www.phusionpassenger.com/orders/download?dir=${VERSION}&amp;file=passenger-enterprise-server-${VERSION}.tar.gz"</pre>
 <% end %>
 <%= render_partial("/install/install/shared/source_compilation_faq.html", locals: locals) %>

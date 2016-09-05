@@ -115,27 +115,15 @@ substep = 0
   </p>
 
   <p>
-    Inside your application's code directory, on your local computer, use the <code>meteor bundle</code> command to create a Meteor package tarball.
+    In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker.html") %>
+  </p>
+  <p>
+    Inside your application's code directory, on your local computer, use the <code class="meteor old">meteor bundle</code><code class="meteor new">meteor build</code> command to create a Meteor package tarball.
   </p>
 
-  <pre class="highlight"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
+  <pre class="highlight"><span class="prompt">$ </span>meteor <span class="meteor old">bundle package.tar.gz</span><span class="meteor new">build --server-only ../new_package && mv ../new_package/*.tar.gz package.tar.gz</span></pre>
 
-  <div class="info">
-    <h3 class="notoc">Why creating a package?</h3>
-    <p>
-      Wondering why we instruct you to create a package, instead of just using the Meteor app in unpackaged form. Learn more at <a href="<%= url_for "/indepth/meteor/meteor.html" %>">About Meteor support</a>.
-    </p>
-  </div>
-
-  <div class="note">
-    <h3 class="notoc">"meteor bundle" deprecated?</h3>
-    <p>
-      Meteor will probably tell you that <code>meteor bundle</code> is deprecated in favor of <code>meteor build</code>. Please ignore that message, because for the purpose of running a Meteor web application on Passenger, only `meteor bundle` does what we want.
-    </p>
-    <p>
-      `meteor bundle` creates a packaged web application, in the form of a Node.js web app with the Meteor runtime included. `meteor build` is a more comprehensive tool that not only does what `meteor bundle` does, but also builds iOS and Android app packages. However, Passenger is a web application server, so iOS and Android packages are not relevant to us, which is why we recommend using `meteor bundle` instead of `meteor build`.
-    </p>
-  </div>
+<%= render_partial("/shared/meteor_package_note.html") %>
 
   <% substep += 1 %>
   <%= h3(id_prefix, "#{header_step}.#{substep} Upload package to the server") %>

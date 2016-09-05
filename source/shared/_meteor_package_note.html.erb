@@ -1,0 +1,16 @@
+<div class="info">
+  <h3 class="notoc">Why create a package?</h3>
+  <p>
+    Wondering why we instruct you to create a package, instead of just using the Meteor app in unpackaged form? Learn more at <a href="<%= url_for "/indepth/meteor/meteor.html" %>">About Meteor support</a>.
+  </p>
+</div>
+
+<div class="note meteor old">
+  <h3 class="notoc">"meteor bundle" deprecated?</h3>
+  <p>
+    Meteor will probably tell you that <code>meteor bundle</code> is deprecated in favor of <code>meteor build</code>. Please ignore that message, because for the purpose of running a Meteor web application on Passenger, only <code>meteor bundle</code> does what we want.
+  </p>
+  <p>
+    <code>meteor bundle</code> creates a packaged web application, in the form of a Node.js web app with the Meteor runtime included. <code>meteor build</code> is a more comprehensive tool that not only does what <code>meteor bundle</code> does, but also builds iOS and Android app packages. However, Passenger is a web application server, so iOS and Android packages are not relevant to us, which is why we recommend using <code>meteor bundle</code> instead of <code>meteor build</code>.
+  </p>
+</div>
