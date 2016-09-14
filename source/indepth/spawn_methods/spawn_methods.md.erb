@@ -41,7 +41,7 @@ own private copy of the application code and web framework code.</figcaption>
 
 ## The smart spawning method
 
-It is possible to make the different processes share the memory occupied by application and web framework code. This is achieved by by utilizing so-called copy-on-write semantics of the virtual memory system on modern operating systems. As a side effect, the startup time is also reduced. This is technique is exploited by Passenger's `smart` spawn method.
+It is possible to make the different processes share the memory occupied by application and web framework code. This is achieved by utilizing so-called copy-on-write semantics of the virtual memory system on modern operating systems. As a side effect, the startup time is also reduced. This technique is exploited by Passenger's `smart` spawn method.
 
 For Ruby apps, the spawn method defaults to `smart`. This feature is similar to Unicorn's `preload_app true` feature.
 
@@ -49,7 +49,7 @@ For Ruby apps, the spawn method defaults to `smart`. This feature is similar to 
 
 When the `smart` spawn method is being used, Passenger will first create a so-called 'preloader' process. This process loads the entire application along with the web framework, by loading the file `config.ru`. The preloader process doesn't participate in request handling.
 
-Then, whenever Passenger needs a new application process, it will instruct the preloader to create one. The preloader then then spawns a child process (with the `fork()` system call). The operating system guarantees that this child process is an exact virtual copy of itself. This child process therefore already has the application code and the web framework code in memory.
+Then, whenever Passenger needs a new application process, it will instruct the preloader to create one. The preloader then spawns a child process (with the `fork()` system call). The operating system guarantees that this child process is an exact virtual copy of itself. This child process therefore already has the application code and the web framework code in memory.
 
 Creating a process like this is very fast, about 10 times faster than loading the Ruby application + framework from scratch. On top of that, the OS also applies an optimization called "copy-on-write". This means that all memory that the child
 process hasn't modified, is shared with the parent process.
@@ -256,7 +256,7 @@ Smart spawning can be disabled as follows:
   </tr>
 </table>
 
-### I am responsible for reestablishing database connections after the preloader has forked a child process?
+### Am I responsible for reestablishing database connections after the preloader has forked a child process?
 
 It depends. Passenger automatically reestablishes the ActiveRecord primary database connection. The vast majority of Rails only uses ActiveRecord (not any other database libraries), and only with a single database connection.
 
