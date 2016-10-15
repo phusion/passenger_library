@@ -1011,6 +1011,53 @@ Passenger can display friendly error pages whenever an application fails to star
 This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are disabled by default, unless [passenger_app_env](#passenger_app_env) (or its aliases such as `rails_env` and `rack_env`) is set to `development`. You can use this option to explicitly enable or disable this feature.
 
 
+### passenger_disable_security_update_check
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_disable_security_update_check <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_disable_security_update_check off;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+This option allows disabling the Passenger security update check, a daily check with <em>https://securitycheck.phusionpassenger.com</em> for 
+important security updates that might be available.
+
+
+### passenger_security_update_check_proxy
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_security_update_check_proxy <em>scheme://user:password@proxy_host:proxy_port</em>;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+This option allows use of an intermediate proxy for the Passenger security update check. 
+The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
+<em>http, socks5, socks5h, socks4, socks4a</em>
+
+
 ## Resource control and optimization options
 
 ### passenger_max_pool_size

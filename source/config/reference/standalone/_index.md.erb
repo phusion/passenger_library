@@ -2213,8 +2213,62 @@ If Passenger Standalone is using the [Nginx engine](<%= url_for "/indepth/standa
 
 ## Advanced options
 
-### `--engine` / "engine"
+### `--disable-security-update-check` / "disable_security_update_check"
 
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --disable-security-update-check</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"disable_security_update_check": <em>true</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_DISABLE_SECURITY_UPDATE_CHECK=<em>true</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>false</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+</table>
+
+This option allows disabling the Passenger security update check, a daily check with <em>https://securitycheck.phusionpassenger.com</em> for 
+important security updates that might be available.
+
+
+### `--security-update-check-proxy` / "security_update_check_proxy"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --security-update-check-proxy <em>scheme://user:password@proxy_host:proxy_port;</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"security_update_check_proxy": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_SECURITY_UPDATE_CHECK_PROXY=<em>string</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+</table>
+
+This option allows use of an intermediate proxy for the Passenger security update check. 
+The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
+<em>http, socks5, socks5h, socks4, socks4a</em>
+
+ 
+### `--engine` / "engine"
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
