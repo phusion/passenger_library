@@ -694,6 +694,40 @@ Touching restart.txt will [cause Passenger to restart the application](<%= url_f
 You can prevent this from happening by pointing PassengerRestartDir to a directory that's readable by Apache, but only writable by administrators.
 
 
+### PassengerShowVersionInHeader
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerShowVersionInHeader <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerShowVersionInHeader on;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.21</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+When turned on, Passenger will output its version number in the `X-Powered-By` header in all Passenger-served requests:
+
+~~~
+X-Powered-By: Phusion Passenger 5.0.13
+~~~
+
+When turned off, the version number will be hidden:
+
+~~~
+X-Powered-By: Phusion Passenger
+~~~
+
+
 ### PassengerSpawnMethod
 
 <table class="table table-bordered table-condensed">
