@@ -967,6 +967,43 @@ The default value is the primary group of the user specifified by [PassengerDefa
 </div>
 
 
+### PassengerShowVersionInHeader
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerShowVersionInHeader <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerShowVersionInHeader on;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+When turned on, Passenger will output its version number in the `X-Powered-By` header in all Passenger-served requests:
+
+~~~
+X-Powered-By: Phusion Passenger 5.0.13
+~~~
+
+When turned off, the version number will be hidden:
+
+~~~
+X-Powered-By: Phusion Passenger
+~~~
+
+<div class="note">
+  This option has no effect on the <code>Server</code> header. You can control the content of that header with Apache's <code>ServerTokens</code> option.
+</div>
+
 ### PassengerFriendlyErrorPages
 
 <table class="table table-bordered table-condensed">
