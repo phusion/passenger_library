@@ -1650,7 +1650,49 @@ Specifies the number of threads that Passenger should spawn per Ruby application
 </div>
 
 
-### `--memory-limit` / "memory-limit"
+### `--max-requests` / "max_requests"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --max-requests <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"max_requests": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MAX_REQUESTS=<em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+The maximum number of requests an application process will process. After serving that many requests, the application process will be shut down and Passenger will restart it. A value of 0 means that there is no maximum. The application process might also be shut down if its [idle timeout](#--pool-idle-time-pool_idle_time) is reached.
+
+This option is useful if your application is leaking memory. By shutting it down after a certain number of requests, all of its memory is guaranteed to be freed by the operating system. An alternative (and better) mechanism for dealing with memory leaks is [memory_limit](#--memory-limit-memory_limit).
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
+</div>
+
+
+### `--memory-limit` / "memory_limit"
 
 <table class="table table-bordered table-striped table-condensed">
   <tr>

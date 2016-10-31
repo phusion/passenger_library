@@ -1,0 +1,44 @@
+---
+section: admin
+---
+<%
+@page_title = "Dealing with memory leaks - #{integration_mode_name}"
+content_for(:sidebar) { render_partial("sidebar.html", locals: locals) }
+%>
+
+<h1>Dealing with memory leaks<br>
+<small>using Passenger <%= integration_mode_name_as_passenger_suffix %></small></h1>
+
+<h2>Analyzing application memory use</h2>
+
+You can use [passenger-status](<%= url_for "/admin/#{integration_mode_type}/overall_status_report.html" %>) to inspect the memory that your application process(es) are currently using. There are also other tools such as `ps` and `top`, but their output must be filtered manually and can even be misleading (see: [accurately measuring memory use](<%= url_for "/indepth/accurately_measuring_memory_usage.html" %>)).
+  
+It is normal for processes to initially keep increasing their memory use as they warm up, handling their first few requests. However, if the increase continues indefinitely then the application is most likely leaking memory, which will eventually make the system grind to a halt with "out of memory" errors. Note that memory leaks may also originate from libraries that your application depends on.
+
+<h2>Protecting the server with Passenger</h2>
+
+Passenger can restart application processes in order to reclaim leaked memory. This is done in the background so that users do not experience any disturbance.
+
+The 
+<% if integration_mode_type == :standalone %>
+[max_requests](<%= url_for "/config/standalone/reference/#--max-requests-max_requests" %>)
+<% elsif integration_mode_type == :nginx %>
+[passenger_max_requests](<%= url_for "/config/nginx/reference/#passenger_max_requests" %>)
+<% else %>
+[PassengerMaxRequests](<%= url_for "/config/apache/reference/#passengermaxrequests" %>)
+<% end %>
+configuration option can be used to restart processes based on how many requests they have handled. You tune this number depending on the speed and the amount of memory leaking.
+
+A more advanced option is
+<% if integration_mode_type == :standalone %>
+[memory_limit](<%= url_for "/config/standalone/reference/#--memory-limit-memory_limit" %>)
+<% elsif integration_mode_type == :nginx %>
+[passenger_memory_limit](<%= url_for "/config/nginx/reference/#passenger_memory_limit" %>)
+<% else %>
+[PassengerMemoryLimit](<%= url_for "/config/apache/reference/#passengermemorylimit" %>)
+<% end %>
+(available in [Passenger Enterprise](https://www.phusionpassenger.com/enterprise)), which checks the memory usage of a process after each request and restarts it in the background if the specified limit was exceeded.
+
+<h2>Memory leaks elsewhere</h2>
+
+If the memory usage of your application is stable, but the system still keeps running out of memory, there might be a memory leak in another component. There are presently no known memory leaks in any of the Passenger components, and to rule out this possibility in your setup can use the `passenger-memory-stats` command. It shows the memory use (in the "Private" column) of Passenger core components as well as the application processes.

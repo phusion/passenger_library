@@ -1404,7 +1404,7 @@ Specifies the number of threads that Passenger should spawn per Ruby application
   </tr>
 </table>
 
-The maximum number of requests an application process will process. After serving that many requests, the application process will be shut down and Passenger will restart it. A value of 0 means that there is no maximum: an application process will thus be shut down when its [idle timeout](#passengerpoolidletime) has been reached.
+The maximum number of requests an application process will process. After serving that many requests, the application process will be shut down and Passenger will restart it. A value of 0 means that there is no maximum. The application process might also be shut down if its [idle timeout](#passengerpoolidletime) is reached.
 
 This option is useful if your application is leaking memory. By shutting it down after a certain number of requests, all of its memory is guaranteed to be freed by the operating system. An alternative (and better) mechanism for dealing with memory leaks is [PassengerMemoryLimit](#passengermemorylimit).
 
