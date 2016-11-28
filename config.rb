@@ -358,6 +358,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/admin/#{integration_mode_type}/memory_leaks.html",
     "/admin/memory_leaks.html",
     locals: integration_mode_spec
+  proxy "/admin/#{integration_mode_type}/mac_keychain_popups.html",
+    "/admin/mac_keychain_popups.html",
+    locals: integration_mode_spec
 end
 
 proxy "/admin/log_file/index.html",
