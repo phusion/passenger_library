@@ -75,7 +75,7 @@ sudo apt-get install -y passenger</code></pre>
   <div class="supported_redhat_instructions">
     <div class="note">
       <h3 class="notoc">Notes about RPMs on Red Hat and CentOS</h3>
-      <p>If you are using cPanel/WHM, then the gem installation method is likely a better fit for your setup. This is due to cPanel installing EasyApache and Passenger RPMs being designed for the official distro Apache. You should also ensure you have the correct apache tools installed in this case, you can fix this with: <code>yum remove httpd-tools && yum install ea-apache24-devel</code>. You will also likely need to disable SELinux in this setup.</p>
+      <p>If you are using cPanel/WHM, note that it uses EasyApache whereas Passenger RPMs are designed for the official distro Apache. In this setup the gem installation method is likely a better fit, and you should ensure you have the correct apache tools installed: <code>yum remove httpd-tools && yum install ea-apache24-devel</code>. You will also likely need to disable SELinux when using the Passenger gem.</p>
       <h3 class="notoc no_el6">Notes about SELinux on CentOS 7</h3>
       <p class="no_el6">If you experience dependency errors related to selinux-policy while installing Passenger first try <code>yum clean all && yum update</code>, and if that doesn't resolve the issue, try enabling the CR repo: <code>sudo yum update && sudo yum-config-manager --enable cr</code>.</p>
       <h3 class="notoc el6">Notes about SELinux on Red Hat 6 and CentOS 6</h3>
