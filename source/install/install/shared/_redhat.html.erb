@@ -43,16 +43,17 @@ step = 0
   <% step += 1 %>
   <h2>Step <%= step %>: upgrade your kernel, or disable SELinux</h2>
   <% if step == 1 %>
-    <p>The first thing you need to do is to check on two things:</p>
+    <p>The first thing you need to do is to check on three things:</p>
   <% else %>
-    <p>You need to check on two things:</p>
+    <p>You need to check on three things:</p>
   <% end %>
   <ol>
+    <li>Are you installing Passenger 5.1.0 or later? If you follow this guide precicely you will install a sufficiently new Passenger.</li>
     <li>Which kernel version are you running? You can find out by running <code>uname -r</code>.</li>
     <li>Is SELinux enabled? You can find out by running <code>grep SELINUX /etc/selinux/config</code>. If it says "enforcing" or "permissive", then SELinux is enabled. If it says "disabled", then SELinux is disabled.</li>
   </ol>
 
-  <p>If SELinux is enabled, then Passenger requires kernel &gt;= 2.6.39. If your kernel is not recent enough, then there are two things you can do:</p>
+  <p>If SELinux is enabled, then Passenger 5.0.* requires kernel &gt;= 2.6.39, Passenger 5.1.* has removed this requirement. If your kernel is not recent enough, then there are two things you can do:</p>
   <ol>
     <li>
       Disable SELinux completely. Edit <code>/etc/selinux/config</code>, set <code>SELINUX=disabled</code> and reboot. Note that merely setting SELinux to permissive mode is not enough.
@@ -120,7 +121,8 @@ http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm; fi
 
 <h3 id="enable_epel_centos">CentOS</h3>
 <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y epel-release yum-utils
-<span class="prompt">$ </span>sudo yum-config-manager --enable epel</pre>
+<span class="prompt">$ </span>sudo yum-config-manager --enable epel
+<span class="prompt">$ </span>sudo yum clean all && sudo yum update</pre>
 
 <% step += 1 %>
 <h2 id="install_packages">Step <%= step %>: install Passenger packages</h2>
@@ -148,9 +150,7 @@ sudo chmod 600 /etc/yum.repos.d/passenger.repo
 <% end -%>
 
 <span class="c unselectable"># Install <%= packages_title %></span>
-sudo yum install -y <%= packages %></code></pre>
-
-<% if type == "apache" %>
+sudo yum install -y <%= packages %> || sudo yum-config-manager --enable cr && sudo yum install -y <%= packages %></code></pre><% if type == "apache" %>
   <% step += 1 %>
   <h2>Step <%= step %>: restart Apache</h2>
   <p>

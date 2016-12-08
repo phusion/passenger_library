@@ -73,11 +73,15 @@ sudo apt-get install -y passenger</code></pre>
   </select></p>
 
   <div class="supported_redhat_instructions">
-    <div class="note el6">
-      <h3 class="notoc">Notes about SELinux on Red Hat 6 and CentOS 6</h3>
-      <p>If you are on Red Hat 6 or CentOS 6, and you are also using SELinux in enforcing mode, then Passenger requires kernel &gt;= 2.6.39.</p>
-      <p>If you want to install Passenger on Red Hat 6 or CentOS 6, without upgrading your kernel, then you must <strong>disable</strong> SELinux completely. Edit <code>/etc/selinux/config</code>, set <code>SELINUX=disabled</code> and reboot. Note that merely setting SELinux to permissive mode is not enough.</p>
-      <p>This issue does not apply to Red Hat &gt;= 7 and CentOS &gt;= 7, because these OS versions supply recent enough kernel versions.</p>
+    <div class="note">
+      <h3 class="notoc">Notes about RPMs on Red Hat and CentOS</h3>
+      <p>If you are using cPanel/WHM, then the gem installation method is likely a better fit for your setup. This is due to cPanel installing EasyApache and Passenger RPMs being designed for the official distro Apache. You should also ensure you have the correct apache tools installed in this case, you can fix this with: <code>yum remove httpd-tools && yum install ea-apache24-devel</code>. You will also likely need to disable SELinux in this setup.</p>
+      <h3 class="notoc no_el6">Notes about SELinux on CentOS 7</h3>
+      <p class="no_el6">If you experience dependency errors related to selinux-policy while installing Passenger first try <code>yum clean all && yum update</code>, and if that doesn't resolve the issue, try enabling the CR repo: <code>sudo yum update && sudo yum-config-manager --enable cr</code>.</p>
+      <h3 class="notoc el6">Notes about SELinux on Red Hat 6 and CentOS 6</h3>
+      <p class="el6">If you are on Red Hat 6 or CentOS 6, and you are also using SELinux in enforcing mode, then Passenger 5.0.* requires kernel &gt;= 2.6.39, this requirement has been removed in Passenger 5.1.*.</p>
+      <p class="el6">If you want to install Passenger on Red Hat 6 or CentOS 6, without upgrading your kernel, then you must <strong>disable</strong> SELinux completely. Edit <code>/etc/selinux/config</code>, set <code>SELINUX=disabled</code> and reboot. Note that merely setting SELinux to permissive mode is not enough.</p>
+      <p class="el6">This issue does not apply to Red Hat &gt;= 7 and CentOS &gt;= 7, because these OS versions supply recent enough kernel versions.</p>
     </div>
 
     <p>You can install Passenger through YUM. But first you need to enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>. The instructions differ depending on whether you are on Red Hat or CentOS.</p>
