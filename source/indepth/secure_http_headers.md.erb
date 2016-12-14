@@ -14,6 +14,15 @@ Passenger passes client-sent HTTP headers to the application. In addition to the
 
 Secure HTTP headers were introduced in Passenger 5.0.21.
 
+<% if locals[:language_type] == :meteor %>
+<div class="note">
+  <h3 class="notoc">Caveat</h3>
+  <p>
+    Meteor uses sockjs behind the scenes to transform requests into connection objects, and sockjs enforces a whitelist on headers, so using <code>connection.httpHeaders</code> won't work to access our secure headers from meteor.
+  </p>
+</div>
+<% end %>
+
 **Table of contents**
 
 <ol class="toc-container"><li>Loading...</li></ol>
@@ -47,8 +56,3 @@ Note that Passenger also appends the `X-Forwarded-For` header, which serves the 
 ### `!~Passenger-Envvars`
 
 This header contains [Apache per-request environment variables](apache_per_request_envvars.html).
-<% if locals[:language_type] == :meteor %>
-## Caveat
-
-Meteor uses sockjs behind the scenes to transform requests into connection objects, and sockjs enforces a whitelist on headers, so using `connection.httpHeaders` won't work to access our secure headers from meteor.
-<% end %>
