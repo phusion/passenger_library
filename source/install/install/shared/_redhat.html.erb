@@ -48,21 +48,21 @@ step = 0
     <p>You need to check on three things:</p>
   <% end %>
   <ol>
-    <li>Are you installing Passenger 5.1.0 or later? If you follow this guide precicely you will install a sufficiently new Passenger.</li>
+    <li>Which Passenger version will be installed? You can check with <code>curl -s https://www.phusionpassenger.com/latest_stable_version.json | ruby -rjson -e 'p JSON.parse(STDIN.read)["version"]'</code>.</li>
     <li>Which kernel version are you running? You can find out by running <code>uname -r</code>.</li>
     <li>Is SELinux enabled? You can find out by running <code>grep SELINUX /etc/selinux/config</code>. If it says "enforcing" or "permissive", then SELinux is enabled. If it says "disabled", then SELinux is disabled.</li>
   </ol>
 
+  <p>If you are installing Passenger 5.1 or later, or if your kernel version was already at least 2.6.39, or if SELinux was already disabled, then you can <a href="#enable_epel">skip to the next step</a>.</p>
   <p>If SELinux is enabled, then Passenger versions prior to 5.1 require kernel &gt;= 2.6.39. Passenger 5.1 has removed this requirement. If your kernel is not recent enough, then there are two things you can do:</p>
   <ol>
     <li>
-      Disable SELinux completely. Edit <code>/etc/selinux/config</code>, set <code>SELINUX=disabled</code> and reboot. Note that merely setting SELinux to permissive mode is not enough.
+      Disable SELinux completely. Edit <code>/etc/selinux/config</code>, set <code>SELINUX=disabled</code> and reboot. Note that merely setting SELinux to permissive mode is not sufficient.
       <p>-OR-</p>
     </li>
     <li>Upgrade your kernel to at least 2.6.39.</li>
   </ol>
 
-  <p>If your kernel version was already at least 2.6.39, or if SELinux was already disabled, then you can <a href="#enable_epel">skip to the next step</a>.</p>
 <% end %>
 
 <% step += 1 %>
