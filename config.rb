@@ -173,6 +173,9 @@ INTEGRATION_MODES.each do |integration_mode_spec|
   proxy "/config/#{integration_mode_type}/cloud_licensing_configuration/index.html",
     "/config/cloud_licensing_configuration/cloud_licensing_configuration.html",
     locals: integration_mode_spec
+  proxy "/config/#{integration_mode_type}/cors_headers/index.html",
+    "/config/cors_headers/cors_headers.html",
+    locals: integration_mode_spec
   proxy "/config/#{integration_mode_type}/reference/index.html",
     "/config/reference/reference.html",
     locals: integration_mode_spec
