@@ -211,6 +211,7 @@ ignore "/config/cloud_licensing_configuration/cloud_licensing_configuration.html
 ignore "/config/cloud_licensing_configuration/integration_mode_selection.html"
 ignore "/config/reference/reference.html"
 ignore "/config/action_cable_integration/index.html"
+ignore "/config/cors_headers/cors_headers.html"
 
 ###### Development ######
 
