@@ -8,6 +8,10 @@ content_for(:sidebar) { render_partial("sidebar.html") }
 
 <h1>Dealing with macOS Keychain Popups</h1>
 
+<div class="note">
+Passenger 5.1.0 and 5.1.1 have a bug when used with the system Apache on macOS, the certificate is incorrectly added to the "certificates" section of the System Keychain instead of the "My certificates" section of your personal keychain. This has been addressed in 5.1.2 by providing the apache user with a private keychain while passenger is running.
+</div>
+
 <h2>Why is Passenger accessing my Keychain?</h2>
 
 Passenger 5.1 and later include a [security update check](<%= url_for("/indepth/security_update_check.html") %>), which periodically contacts Phusion's server to check if an update is available, and whether the update contains security fixes. One of the mechanisms that Phusion has employed to maintain the security of this system is to enforce both server-side and client certificates. The client-side is implemented using libcurl, which on macOS (Mavericks or later) is backed by the macOS Security framework and a small shim in libcurl called [darwinssl](https://opensource.apple.com/source/curl/curl-90/curl/lib/vtls/darwinssl.c).
