@@ -19,6 +19,7 @@ The update check works as follows:
   - Version number (Passenger)
   - Integration mode (Standalone, Nginx, Apache)
   - Integrated web server version number, if applicable (Nginx, Apache)
+  - Whether PassengerAgent is statically linked against curl
   - Nonce (for security against replay attacks)
 3. The server replies with a signed response containing the nonce and, if applicable, information about important security updates (what issue was discovered, what is the impact, what version contains the fix)
 4. Passenger verifies both the signature as well as the nonce in the server response, and logs the response (level 1 / error if there is an update or a failure)  
@@ -39,7 +40,7 @@ The check is built with state of the art security measures to ensure trust and c
 These measures ensure that even if an attacker manages to hack a Certificate Authority and impersonate the Phusion HTTPS certificate, as well as intercept the network 
 traffic between Passenger and the Phusion server, Passenger will still reject the response as long as the attacker doesn't have Phusion's private signing key.
 
-The source code related to the security update check, including encryption sequences, is open for inspection on GitHub.
+The source code related to the security update check, including encryption sequences, is open for inspection on GitHub. You can also run Passenger with its log level set to 7 in order to see exactly which fields are exchanged with the server.
 
 ## Options
 
