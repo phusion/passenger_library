@@ -26,15 +26,18 @@ In the previous step, you only created a Meteor app in development mode. In this
 
 Inside the `leaderboard` directory, use the <code class="meteor old">meteor bundle</code><code class="meteor new">meteor build</code> command to create a package tarball.
 
-<pre class="highlight"><span class="prompt">$ </span>meteor <span class="meteor old">bundle package.tar.gz</span><span class="meteor new">build --server-only ../leaderboard-package</span></pre>
+<pre class="highlight meteor new"><span class="prompt">$ </span>meteor build --server-only ../leaderboard-package</pre>
+<pre class="highlight meteor old"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
 
 <%= render_partial("/shared/meteor_package_note.html") %>
 
 <span class="meteor old">The packaged app has now been placed in `package.tar.gz`. But Passenger expects a directory, so let us extract it in <code>../leaderboard-package</code>:</span>
 
-<pre class="highlight"><span class="meteor old"><span class="prompt">$ </span>mkdir ../leaderboard-package
-</span><span class="prompt">$ </span>cd ../leaderboard-package
-<span class="prompt">$ </span>tar xzf <span class="meteor old">../leaderboard/package.tar.gz</span><span class="meteor new">*.tar.gz</span></pre>
+<pre class="highlight meteor old"><span class="prompt">$ </span>mkdir ../leaderboard-package
+<span class="prompt">$ </span>cd ../leaderboard-package
+<span class="prompt">$ </span>tar xzf ../leaderboard/package.tar.gz</pre>
+<pre class="highlight meteor new"><span class="prompt">$ </span>cd ../leaderboard-package
+<span class="prompt">$ </span>tar xzf *.tar.gz</pre>
 
 The packaged app directory doesn't contain any dependencies, so we need to install them. Run:
 
