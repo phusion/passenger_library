@@ -59,7 +59,9 @@ Both keys are stored at both sks-keyservers.net and keyserver.ubuntu.com. Import
 
 ## Verifying the gem and tarball
 
-You can find the open source version's gem and tarball GPG signatures at [https://www.phusionpassenger.com/file_releases](https://www.phusionpassenger.com/file_releases). The Enterprise version's GPG signatures can be found in the [Customer Area](https://www.phusionpassenger.com/orders). All signatures have the '.asc' extension. Once you have imported our key, you can verify the validity of a file against its signature as follows:
+For the Enterprise version, all GPG signatures can be found in the [Customer Area](https://www.phusionpassenger.com/customers). The GPG signature of the latest open source tarball can be downloaded from [here](https://www.phusionpassenger.com/latest_stable_tarball_signature) and for the latest gem the signature is [here](https://www.phusionpassenger.com/latest_stable_gem_signature).
+
+All signatures have the '.asc' extension. Once you have imported our key, you can verify the validity of a file against its signature as follows:
 
 <pre class="highlight"><span class="prompt">$ </span>gpg --verify passenger-x.x.x.tar.gz.asc passenger-x.x.x.tar.gz
 <span class="output">gpg: Signature made Mon Mar 11 09:45:46 2013 CET using RSA key ID 0A212A8C
