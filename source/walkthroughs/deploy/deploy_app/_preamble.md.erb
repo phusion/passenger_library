@@ -309,29 +309,14 @@ substep = 0
     During development, the Meteor runtime takes care of starting MongoDB for you. MongoDB is the database engine that Meteor uses. But a packaged Meteor app does not start MongoDB for you. Instead, a packaged Meteor app expects that MongoDB is already running somewhere, and that you tell the app where that MongoDB instance is.
   </p>
   <div>
+    <p>
+      You can install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>. 
     <% if os_config_class == :debian %>
-      <p>
-        If you are on Debian 8 or later, or on Ubuntu 14.04 or later, you can simply install MongoDB with apt-get:
-      </p>
-      <pre class="highlight"><span class="prompt">$ </span>sudo apt-get install -y mongodb</pre>
-      <p>
-        If you are on an older version of Debian or Ubuntu, please install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
-      </p>
+      While you can also install MongoDB via a package manager (apt-get), please note that this might be an outdated or even unsupported version. 
     <% elsif os_config_class == :redhat %>
-      <p>
-        If you are on Red Hat 7 or later, or on CentOS 7 or later, you can simply install MongoDB with YUM (assuming <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a> is enabled):
-      </p>
-      <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y mongodb-server
-<span class="prompt">$ </span>sudo systemctl enable mongod
-<span class="prompt">$ </span>sudo systemctl start mongod</pre>
-      <p>
-        If you are on an older version of Red Hat or CentOS, please install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
-      </p>
-    <% else %>
-      <p>
-        Please install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
-      </p>
+      While you can also install MongoDB via a package manager (yum), please note that this might be an outdated or even unsupported version.
     <% end %>
+    </p>
   </div>
   <div class="alert alert-info">
     See also: <a href="https://docs.mongodb.com/master/administration/security-checklist/">mongoDB security checklist</a> (notably the bindIp).
