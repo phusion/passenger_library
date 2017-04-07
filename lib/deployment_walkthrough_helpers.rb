@@ -281,13 +281,15 @@ module DeploymentWalkthroughHelpers
         os_config_description_with_preposition: "from RubyGems (without RVM)"
       }
     end
-    result << {
-      os_config_type: :osx,
-      os_config_class: :osx,
-      os_config_name: "Mac OS X",
-      os_config_description: "Mac OS X",
-      os_config_description_with_preposition: "on Mac OS X"
-    }
+    if locals[:infrastructure_type] == :ownserver
+      result << {
+        os_config_type: :osx,
+        os_config_class: :osx,
+        os_config_name: "Mac OS X",
+        os_config_description: "Mac OS X",
+        os_config_description_with_preposition: "on Mac OS X"
+      }
+    end
     SUPPORTED_DEBIAN_VERSIONS.each_pair do |codename, name|
       result << {
         os_config_type: codename.to_sym,
