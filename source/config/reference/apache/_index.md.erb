@@ -1066,7 +1066,7 @@ This feature is very useful during application development and useful for less e
   </tr>
 </table>
 
-This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for 
+This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for
 important security updates that might be available.
 
 
@@ -1087,7 +1087,7 @@ important security updates that might be available.
   </tr>
 </table>
 
-This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>). 
+This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>).
 The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
@@ -2492,6 +2492,7 @@ This option may be specified once, in the global server configuration.
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
     <td>server config</td>
   </tr>
+<%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
 
 Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) mode, and configures Apache to connect to the Flying Passenger daemon that's listening on the given socket filename.
@@ -2518,7 +2519,7 @@ Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/fly
 </table>
 
 When using Passenger on a LVE-enabled kernel, a security check (enter) is run for spawning application processes. This options tells the check to only allow
-processes with PIDs equal to, or higher than, the specified value.
+processes with UIDs equal to, or higher than, the specified value.
 
 ## Union Station options
 

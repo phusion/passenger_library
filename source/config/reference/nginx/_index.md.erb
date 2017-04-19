@@ -1028,7 +1028,7 @@ This feature is very useful during application development and useful for less e
   </tr>
 </table>
 
-This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for 
+This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for
 important security updates that might be available.
 
 
@@ -1049,7 +1049,7 @@ important security updates that might be available.
   </tr>
 </table>
 
-This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>). 
+This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>).
 The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
@@ -1613,7 +1613,7 @@ You can also set the file descriptor ulimit on a per-application basis (instead 
   </tr>
 </table>
 
-Sets the file descriptor operating system ulimit for application processes managed by Passenger. If you see "too many file descriptor" errors on a regular basis, and these errors originate from the Passenger core process (as opposed to the application processes), then increasing this limit will help.
+Sets the file descriptor operating system ulimit for application processes managed by Passenger. If you see "too many file descriptor" errors on a regular basis, and these errors originate from the application process (as opposed to the Passenger core processes), then increasing this limit will help.
 
 If the "too many file descriptor" errors originate from the Passenger core process, then setting this option will *not* help. Use [passenger_core_file_descriptor_ulimit](#passenger_core_file_descriptor_ulimit) for that.
 
@@ -1637,7 +1637,7 @@ The default file descriptor ulimit is inherited from the Passenger core process.
   </tr>
 </table>
 
-By default, Passenger does not start any application processes until said web application is first accessed. The result is that the first visitor of said web application might experience a small delay as Passenger is starting the web application on demand. If that is undesirable, then this option can be used to pre-started application processes during Nginx startup.
+By default, Passenger does not start any application processes until said web application is first accessed. The result is that the first visitor of said web application might experience a small delay as Passenger is starting the web application on demand. If that is undesirable, then this option can be used to pre-start application processes during Nginx startup.
 
 A few things to be careful of:
 
