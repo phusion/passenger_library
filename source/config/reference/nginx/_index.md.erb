@@ -2182,7 +2182,7 @@ If for whatever reason you want to turn Nginx-level response buffering on, you c
 
 Nginx's response buffering works differently from Passenger's. Nginx's buffering system buffers the entire response before attempting to send it to the client, while Passenger's attempts to send the data to the client immediately. Therefore, if you turn on `passenger_buffer_response`, you may interfere with applications that want to stream responses to the client.
 
-So keep in mind that enabling `passenger_buffering_response` will make streaming responses
+So keep in mind that enabling `passenger_buffer_response` will make streaming responses
 impossible. Consider for example this piece of Ruby on Rails code:
 
 ~~~ruby
