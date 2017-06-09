@@ -18,6 +18,7 @@ when :nginx
   passenger_user_doc = "#{ref_url}#passenger_user"
   passenger_group = "passenger_group"
   passenger_group_doc = "#{ref_url}#passenger_group"
+  passenger_startup_file_doc = "#{ref_url}#passenger_startup_file"
   passenger_instance_registry_dir_doc = "#{ref_url}#passenger_instance_registry_dir"
   passenger_friendly_error_pages = "passenger_friendly_error_pages"
   passenger_friendly_error_pages_doc = "#{ref_url}#passenger_friendly_error_pages"
@@ -33,6 +34,7 @@ when :apache
   passenger_user_doc = "#{ref_url}#passengeruser"
   passenger_group = "PassengerGroup"
   passenger_group_doc = "#{ref_url}#passengergroup"
+  passenger_startup_file_doc = "#{ref_url}#passengerstartupfile"
   passenger_instance_registry_dir_doc = "#{ref_url}#passengerinstanceregistrydir"
   passenger_friendly_error_pages = "PassengerFriendlyErrorPages"
   passenger_friendly_error_pages_doc = "#{ref_url}#passengerfriendlyerrorpages"
@@ -57,53 +59,30 @@ Passenger's user account sandboxing feature solves this problem. This feature ma
 
 ## How it works
 
-If the user account sandboxing feature is enabled, then the default behavior is as follows.
+If the user account sandboxing feature is enabled, Passenger will need to know what user / group to run the application as. This is determined as follows:
 
-Passenger will run applications as the owner of their "startup file", which depends on the application's language. You can learn more about that at [How Passenger autodetects applications](<%= url_for "/indepth/app_autodetection/index.html" %>). Below you will find a table of startup files.
-
-<table class="table table-striped table-bordered">
-  <thead>
-    <tr>
-      <th>Application type</th>
-      <th>Startup file</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% SUPPORTED_APP_TYPES.each do |spec| %>
-      <tr>
-        <td><%= spec[:name] %></td>
-        <td><%= spec[:startup_file] %></td>
-      </tr>
-    <% end -%>
-  </tbody>
-</table>
-
-So suppose that you have a Ruby app, and `config.ru` is owned by user 'joe'. Passenger will run the corresponding application under the OS user account `joe`. The exact rules are a little bit more complicated, and they're explained further down in this guide.
-
-User account sandboxing is the reason why, in all official Passenger Library documentation, we recommend that you create a new user account for each application.
+  1. Passenger tries to set the user and group name that you specify in [<%= passenger_user %>](<%= passenger_user_doc %>) and [<%= passenger_group %>](<%= passenger_group_doc %>).
+  
+  2. If the options above are not specified, Passenger tries to autodetect by looking at the owner of the application's "[startup file](<%= passenger_startup_file_doc %>)".
+  
+  3. If autodetection fails, or if the owner of the startup file is the `root` user, Passenger will set the user and group name specified in [<%= passenger_default_user %>](<%= passenger_default_user_doc %>) and [<%= passenger_default_group %>](<%= passenger_default_group_doc %>) instead (default: `nobody`).
+  
+<div class="warning">
+Don't rely on autodetection if users are untrusted (e.g. shared hosting). If a user somehow manages to specify a startup file that is owned by another user, Passenger will launch the startup file as that other user (it cannot check whether this is an allowed user or not).  
+</div>
 
 ## When is user account sandboxing enabled?
 
-User account sandboxing is only enabled when all of the following conditions are met:
+### Not using Flying Passenger
 
- * When not using [the Flying Passenger mode](flying_passenger.html) (this is probably the case):
-   - The [<%= passenger_user_switching %>](<%= passenger_user_switching_doc %>) option must be enabled. It is enabled by default.
-   - The <%= integration_mode_name %>'s control process must have root privileges. This is usually the case.
- * When using [the Flying Passenger mode](flying_passenger.html):
-   - The Flying Passenger daemon must be run with root privileges.
-
-This means that on most installations, user account sandboxing is already enabled.
-
-### Effects
-
-When not using Flying Passenger, the following table illustrates the effect for different combinations of the requirements.
+In most installations user account sandboxing is already enabled. Assuming you are not using [the Flying Passenger mode](flying_passenger.html) (this is probably the case), the following table shows the exceptions:
 
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
       <th></th>
-      <th><%= passenger_user_switching %> on</th>
-      <th><%= passenger_user_switching %> off</th>
+      <th><%= passenger_user_switching %> on (default)<br></th>
+      <th><%= passenger_user_switching %> off<br><br></th>
     </tr>
   </thead>
   <tbody>
@@ -120,24 +99,20 @@ When not using Flying Passenger, the following table illustrates the effect for 
   </tbody>
 </table>
 
+### Using Flying Passenger
+
 When using Flying Passenger, the effect is as follows:
 
 <table class="table table-bordered table-striped">
   <tr>
     <th>Daemon run with root privileges</th>
-    <td>User switching enabled.</td>
+    <td>User account sandboxing enabled.</td>
   </tr>
   <tr>
     <th>Daemon run without root privileges</th>
-    <td>User switching disabled. Apps are run as the daemon's user.</td>
+    <td>User account sandboxing disabled. Apps are run as the daemon's user.</td>
   </tr>
 </table>
-
-When user switching is enabled, the following rules are followed to determine what user an application should be run as. The first matching rule is the rule that will be followed.
-
-1. If <a href="<%= passenger_user_doc %>"><%= passenger_user %></a> or <a href="<%= passenger_group_doc %>"><%= passenger_group %></a> are set, then the application will be run as the specified user/group. Thus, these options are a good way to override user switching settings.
-2. If the startup file is owned by root or an unknown user, then the application will run as the user specified by <a href="<%= passenger_default_user_doc %>"><%= passenger_default_user %></a> and <a href="<%= passenger_default_group_doc %>"><%= passenger_default_group %></a>. This way, we discourage accidentally running applications as root, which is insecure.
-3. Otherwise, the application is run as the owner of the startup file.
 
 ## Caveats & troubleshooting
 
