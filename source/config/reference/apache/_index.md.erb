@@ -426,10 +426,6 @@ See also [How Passenger + Apache autodetects applications](<%= url_for "/indepth
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
     <td>server config, virtual host, directory, .htaccess</td>
   </tr>
-  <tr>
-    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
-    <td>Options</td>
-  </tr>
 </table>
 
 Sets the name of the application group that the current application should belong to. Its default value is the [application root](#passengerapproot), plus (if it is explicitly set), the [application environment name](#passengerappenv).
@@ -984,7 +980,7 @@ The default value is the primary group of the user specifified by [PassengerDefa
   </tr>
   <tr>
     <th>Context</th>
-    <td>http</td>
+    <td>server config</td>
   </tr>
 </table>
 
