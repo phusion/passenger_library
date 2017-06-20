@@ -199,7 +199,7 @@ You should give the user account the same name as your app. But for demonstratio
 We also ensure that that user has your SSH key installed:
 
 <pre class="highlight"><span class="prompt">$ </span>sudo mkdir -p ~<span class="o">myappuser</span>/.ssh
-<span class="prompt">$ </span>touch $HOME/.ssh/authorized_keys</span>
+<span class="prompt">$ </span>touch $HOME/.ssh/authorized_keys
 <span class="prompt">$ </span>sudo sh -c <span class="s">"cat $HOME/.ssh/authorized_keys &gt;&gt; ~<span class="o">myappuser</span>/.ssh/authorized_keys"</span>
 <span class="prompt">$ </span>sudo chown -R <span class="o">myappuser:</span> ~<span class="o">myappuser</span>/.ssh
 <span class="prompt">$ </span>sudo chmod <span>700</span> ~<span class="o">myappuser</span>/.ssh
