@@ -1,6 +1,7 @@
 require_relative 'constants'
 
 SUPPORTED_DEBIAN_VERSIONS = {
+  "stretch" => "Debian 9",
   "jessie"  => "Debian 8",
   "wheezy"  => "Debian 7",
   "zesty"   => "Ubuntu 17.04",
@@ -133,6 +134,10 @@ module CustomHelpers
     else
       %Q{<span class="prompt">$ </span>}
     end
+  end
+
+  def dynamic_nginx_module_available?(distro)
+    SUPPORTED_DEBIAN_VERSIONS.keys.include?(distro) && !["jessie", "wheezy", "xenial", "trusty", "precise"].include?(distro)
   end
 
   def debian_version_selection_options

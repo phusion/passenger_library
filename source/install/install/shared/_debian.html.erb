@@ -1,4 +1,5 @@
 <%
+helpers CustomHelpers
 case integration_mode_type
 when :apache
   if edition_type == :oss
@@ -9,12 +10,22 @@ when :apache
     packages_title = "Passenger Enterprise + Apache module"
   end
 when :nginx
-  if edition_type == :oss
-    packages = "nginx-extras passenger"
-    packages_title = "Passenger + Nginx"
+  if dynamic_nginx_module_available?(os_config_type.to_s)
+    if edition_type == :oss
+      packages = "nginx libnginx-mod-http-passenger passenger"
+      packages_title = "Passenger + Nginx"
+    else
+      packages = "nginx libnginx-mod-http-passenger-enterprise passenger-enterprise"
+      packages_title = "Passenger Enterprise + Nginx"
+    end
   else
-    packages = "nginx-extras passenger-enterprise"
-    packages_title = "Passenger Enterprise + Nginx"
+    if edition_type == :oss
+      packages = "nginx-extras passenger"
+      packages_title = "Passenger + Nginx"
+    else
+      packages = "nginx-extras passenger-enterprise"
+      packages_title = "Passenger Enterprise + Nginx"
+    end
   end
 else
   if edition_type == :oss
@@ -95,26 +106,40 @@ sudo apt-get install -y <%= packages %></code></pre>
 <% elsif integration_mode_type == :nginx %>
   <% step += 1 %>
   <h2>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h2>
-  <p>Edit <code>/etc/nginx/nginx.conf</code> and uncomment <code>include /etc/nginx/passenger.conf;</code>. For example, you may see this:</p>
-  <pre class="highlight"># include /etc/nginx/passenger.conf;</pre>
-  <p>Remove the '#' characters, like this:</p>
-  <pre class="highlight">include /etc/nginx/passenger.conf;</pre>
+  <% if dynamic_nginx_module_available?(os_config_type.to_s) %>
+    <p>Ensure the config files are in-place:</p>
+    <pre class="highlight shell"><span class="prompt">$ </span>if [ ! -f /etc/nginx/modules-enabled/50-mod-http-passenger.conf ]; then sudo ln -s /usr/share/nginx/modules-available/mod-http-passenger.load /etc/nginx/modules-enabled/50-mod-http-passenger.conf ; fi
+<span class="prompt">$ </span>sudo ls /etc/nginx/conf.d/mod-http-passenger.conf</pre>
+<div class="note">
+      <p>If you don't see a file at <code>/etc/nginx/conf.d/mod-http-passenger.conf</code>; then you need to create it yourself and set the <code>passenger_ruby</code> and <code>passenger_root</code> config options. For example:</p>
+     <pre class="highlight">
+<span class="nf">passenger_root</span> /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
+<span class="nf">passenger_ruby</span> /usr/bin/passenger_free_ruby;
+</pre>
+  </div>
+  <% else %>
+    <p>Edit <code>/etc/nginx/nginx.conf</code> and uncomment <code>include /etc/nginx/passenger.conf;</code>. For example, you may see this:</p>
+    <pre class="highlight"># include /etc/nginx/passenger.conf;</pre>
+    <p>Remove the '#' characters, like this:</p>
+    <pre class="highlight">include /etc/nginx/passenger.conf;</pre>
 
-  <div class="note">
-    <p>If you don't see a commented version of <code>include /etc/nginx/passenger.conf;</code> inside nginx.conf, then you need to insert it yourself. Insert it into /etc/nginx/nginx.conf inside the <code>http</code> block. For example:</p>
-    <pre class="highlight">...
+    <div class="note">
+      <p>If you don't see a commented version of <code>include /etc/nginx/passenger.conf;</code> inside nginx.conf, then you need to insert it yourself. Insert it into /etc/nginx/nginx.conf inside the <code>http</code> block. For example:</p>
+     <pre class="highlight">...
 
 http {
     <span class="nf">include /etc/nginx/passenger.conf;</span>
     ...
 }</pre>
   </div>
+  <% end %>
+    <p>
+      When you are finished with this step, restart Nginx:
+    </p>
+    <pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart</pre>
 
-  <p>
-    When you are finished with this step, restart Nginx:
-  </p>
-  <pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart</pre>
 <% end %>
+
 
 <% step += 1 %>
 <h2>Step <%= step %>: check installation</h2>

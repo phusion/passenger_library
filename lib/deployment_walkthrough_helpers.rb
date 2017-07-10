@@ -76,7 +76,7 @@ module DeploymentWalkthroughHelpers
     choice_val: "apache",
     integration_mode_type: :apache,
     integration_mode_name: "Apache",
-    integration_mode_name_with_determiner: "an Nginx",
+    integration_mode_name_with_determiner: "an Apache",
     integration_mode_name_as_passenger_suffix: "+ Apache",
     integration_mode_web_server_name: "Apache"
   }
