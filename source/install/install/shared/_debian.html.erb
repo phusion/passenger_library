@@ -12,11 +12,11 @@ when :apache
 when :nginx
   if dynamic_nginx_module_available?(os_config_type.to_s)
     if edition_type == :oss
-      packages = "nginx libnginx-mod-http-passenger passenger"
-      packages_title = "Passenger + Nginx"
+      packages = "libnginx-mod-http-passenger"
+      packages_title = "Passenger + Nginx module"
     else
-      packages = "nginx libnginx-mod-http-passenger-enterprise passenger-enterprise"
-      packages_title = "Passenger Enterprise + Nginx"
+      packages = "libnginx-mod-http-passenger-enterprise"
+      packages_title = "Passenger Enterprise + Nginx module"
     end
   else
     if edition_type == :oss
@@ -70,9 +70,16 @@ step = 0
 <% step += 1 %>
 <h2>Step <%= step %>: install Passenger packages</h2>
 
+<% if integration_mode_type == :nginx && os_config_type == :zesty %>
+  <div class="info">In July 2017, the Ubuntu 17.04 Zesty packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please uninstall it first:<br>
+    <ul>
+      <li>sudo apt-get remove nginx-extras (if that fails, use: sudo dpkg --remove --force-remove-reinstreq nginx-extras)</li>
+    </ul>
+  </div>
+<% end %>
 <p>
   These commands will install <%= packages_title %> through Phusion's APT repository.
-  <% if integration_mode_type == :nginx %>
+  <% if integration_mode_type == :nginx && !dynamic_nginx_module_available?(os_config_type.to_s) %>
     If you already had Nginx installed, then these commands will upgrade Nginx to Phusion's version (with Passenger compiled in).
   <% end %>
   <% if edition_type == :enterprise %>

@@ -9,10 +9,12 @@ if edition_type == :oss
   gem_name = "passenger"
   formula_name = "passenger"
   nginx_formula = "nginx --with-passenger"
+  module_name = "libnginx-mod-http-passenger"
 else
   gem_name = "passenger-enterprise-server"
   formula_name = "passenger-enterprise"
   nginx_formula = "nginx-passenger-enterprise"
+  module_name = "libnginx-mod-http-passenger-enterprise"
 end
 %>
 
@@ -50,6 +52,14 @@ brew upgrade <%= formula_name %></pre>
 </div>
 
 <h2 id="debian_ubuntu">Debian packages (Debian, Ubuntu)</h2>
+<% if integration_mode_type == :nginx %>
+  <div class="info">In July 2017, the Ubuntu 17.04 Zesty packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please remove it and install the new package with the system Nginx:<br>
+    <ul>
+      <li>sudo apt-get remove nginx-extras (if that fails, use: sudo dpkg --remove --force-remove-reinstreq nginx-extras)</li>
+      <li>sudo apt-get update && sudo apt-get install -y <%= module_name %> nginx</li>
+    </ul>
+  </div>
+<% end %>
 
 If <%= edition_title %> was installed through the Phusion Passenger [APT repository](<%= url_for "/install/#{integration_mode_type}/apt_repo/index.html" %>), then you can upgrade <%= edition_title %>
 <% if integration_mode_type != :standalone -%>
