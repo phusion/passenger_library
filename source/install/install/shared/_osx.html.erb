@@ -29,7 +29,7 @@ end
 <% end %>
 <span class="prompt">$ </span>brew install <%= (integration_mode_type == :nginx) ? nginx_formula : formula_name %></pre>
 <% if edition_type == :enterprise %><p>
-  You will be prompted to provide your download token the first time you install Passenger Enterprise through Homebrew.
+  You will be prompted to provide your download token when you install Passenger Enterprise through Homebrew, to avoid this prompt create a file at `~/.passenger-enterprise-download-token` containing only your token.
 </p><% end %>
 <p>
   Not using Homebrew? Please <a href="<%= menu_selection_url %>">go back to the operating system selection menu</a> and choose "Other" as operating system</a>.
