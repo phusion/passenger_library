@@ -219,7 +219,7 @@ skip_search: true
   </div>
 
 
-  <!-- Administration and troubleshooting -->
+  <!-- Administration and troubleshooting || In-depth-->
 
   <div class="row hidden-xs">
     <div class="col-sm-6">
@@ -227,6 +227,13 @@ skip_search: true
         <a href="<%= url_for "/admin/index.html" %>">
           <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
           Administration, debugging and troubleshooting
+        </a>
+      </h3>
+    </div>
+    <div class="col-sm-6">
+      <h3 class="front-page-link-header">
+        <a href="<%= url_for "/indepth/index.html" %>">
+          <span class="glyphicon glyphicon-book" aria-hidden="true"></span>In-depth
         </a>
       </h3>
     </div>
@@ -244,28 +251,6 @@ skip_search: true
         Essential tips for troubleshooting problematic installs or applications; making the best of administrative tools and where to find more support resources.
       </p>
     </div>
-  </div>
-
-
-  <!-- In-depth  ||  Union Station logging -->
-  <div class="row hidden-xs">
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header">
-        <a href="<%= url_for "/indepth/index.html" %>">
-          <span class="glyphicon glyphicon-book" aria-hidden="true"></span>In-depth
-        </a>
-      </h3>
-    </div>
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header">
-        <a href="<%= url_for "/unionstation/index.html" %>">
-          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>Union Station logging
-        </a>
-      </h3>
-    </div>
-  </div>
-
-  <div class="row">
     <div class="col-sm-6">
       <h3 class="front-page-link-header visible-xs">
         <a href="<%= url_for "/indepth/index.html" %>">
@@ -276,17 +261,6 @@ skip_search: true
       <p class="guide-description">
         Passenger concepts, modes and behavior explained in detail, with topics like process spawning,
         integration modes, turbocaching and load balancing.
-      </p>
-    </div>
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header visible-xs">
-        <a href="<%= url_for "/unionstation/index.html" %>">
-          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>Union Station logging
-        </a>
-      </h3>
-
-      <p class="guide-description">
-        Configuring and customizing logging to Union Station for detailed application monitoring and analysis.
       </p>
     </div>
   </div>
