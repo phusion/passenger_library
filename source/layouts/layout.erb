@@ -156,13 +156,13 @@ end
           <!-- Content
           =========================================== -->
           <div class="col-md-8" role="main">
-          
+
             <% if current_page.data.comments != false %>
               <div style="position: relative; z-index: 1">
                 <div class="editlink"><a href="<%=h current_page_github_url %>">Edit page</a></div>
               </div>
             <% end %>
-        
+
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
@@ -171,13 +171,13 @@ end
           <!-- Content
           =========================================== -->
           <div class="col-md-8 col-md-offset-2" role="main">
-          
+
             <% if current_page.data.comments != false %>
               <div style="position: relative; z-index: 1">
                 <div class="editlink"><a href="<%=h current_page_github_url %>">Edit page</a></div>
               </div>
             <% end %>
-          
+
             <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
