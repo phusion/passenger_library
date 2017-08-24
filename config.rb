@@ -468,7 +468,6 @@ end
 configure :build do
   set :url_root, PRODUCTION_URL_ROOT
   set :google_analytics, true
-  set :livechat, true
 
   # For example, change the Compass output style for deployment
   activate :minify_css
