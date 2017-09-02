@@ -60,6 +60,9 @@ end
   </head>
 
   <body class="<%= page_classes %>">
+    <% if config[:hiring_banner] %>
+      <div id="hiring-banner"><strong>We are hiring!</strong> - Come work with us at Phusion to help create awesome server tools to power the modern web. <a href="https://phusion.nl/careers#vacancies">Learn more</a>.</div>
+    <% end %>
     <!-- Main navigation
     =========================================== -->
     <header class="navbar navbar-static-top bs-docs-nav" id="top" data-swiftype-index="false">
