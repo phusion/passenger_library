@@ -7,8 +7,11 @@
   font-size: 13px;
   color: #ffffff;
 }
-#hiring-banner strong {
-  font-weight: bold;
+#hiring-banner span.shoutout {
+  font-size: 16px;
+  letter-spacing: 3.5px;
+  font-family: AvenirNext-Regular;
+  text-transform: uppercase;
 }
 #hiring-banner a {
   font-weight: bold;
