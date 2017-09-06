@@ -35,7 +35,7 @@ Requests in top-level queue : 0
   * PID: 25020   Sessions: 0       Processed: 83      Uptime: 9s
     CPU: 0%      Memory  : 14M     Last used: 15s ago</span></pre>
 
-By default, Passenger shuts down processes that haven't handled traffic for 5 minutes (300 seconds). If you wait 5 minutes and run `passenger-status` again, you should see that only one process is still alive:
+By default, Passenger shuts down processes that haven't handled traffic for 5 minutes (300 seconds). If you wait 5 minutes and run `passenger-status` again, you should see that only two processes are still alive:
 
 <pre class="highlight"><span class="prompt">$ </span>sleep 300
 <%= passenger_command_prefix_html(locals, cd: false) %>passenger-status
@@ -52,4 +52,6 @@ Requests in top-level queue : 0
   App root: /Users/phusion/<%= locals[:app_name] %>
   Requests in queue: 0
   * PID: 25015   Sessions: 0       Processed: 84      Uptime: 6m 23s
+    CPU: 0%      Memory  : 14M     Last used: 6m 1s ago
+  * PID: 25016   Sessions: 0       Processed: 84      Uptime: 6m 23s
     CPU: 0%      Memory  : 14M     Last used: 6m 1s ago</span></pre>
