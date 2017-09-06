@@ -56,7 +56,7 @@ Dynamic process scaling can be tweaked through the following configuration optio
 
 ### Example 1
 
-Suppose that you have a VPS with 2 GB RAM. You deploy 8 different web applications on that single server (instead of giving each application its own server) in order to minimize cost. Performance isn't terribly important to you: saving cost is more important. You want to allocate at most 1.5 GB of RAM for your web applications, leaving 512 MB for other serivces. Assuming that each application process consumes about 300 MB RAM, you can set:
+Suppose that you have a VPS with 2 GB RAM. You deploy 8 different web applications on that single server (instead of giving each application its own server) in order to minimize cost. Performance isn't terribly important to you: saving cost is more important. You want to allocate at most 1.5 GB of RAM for your web applications, leaving 512 MB for other services. Assuming that each application process consumes about 300 MB RAM, you can set:
 
  * min instances to 1
  * max pool size to 5 (`1500 / 300 = 5`)
@@ -65,7 +65,7 @@ Suppose that you have a VPS with 2 GB RAM. You deploy 8 different web applicatio
 
 Suppose that you have the same VPS with 2 GB RAM. The VPS is running an ecommerce site and a blog. The ecommerce site is more important than the blog, so whenever the blog isn't very active, you want to spin down blog processes to make more room for the ecommerce site.
 
-You want to allocate at most 1.5 GB of RAM for your web applications, leaving 512 MB for other serivces. Assuming that each application process consumes about 300 MB RAM, you can configure the following:
+You want to allocate at most 1.5 GB of RAM for your web applications, leaving 512 MB for other services. Assuming that each application process consumes about 300 MB RAM, you can configure the following:
 
  * Set max pool size to 5 (`1500 / 300 = 5`)
  * For the ecommerce site:
