@@ -37,7 +37,7 @@ sudo apt-get install -y curl gnupg build-essential</pre>
   </tr>
   <tr>
     <td>
-      Mac OS X
+      macOS
     </td>
     <td>
       You don't have to do anything. They are already installed.
@@ -55,7 +55,7 @@ Run the following commands on your production server to install RVM:
 
 You may need to use gpg2 instead of gpg on some systems.
 
-On systems where sudo is configured with `secure_path`, the shell environment needs to be modified to set `rvmsudo_secure_path=1`. `secure_path` is set on most Linux systems, but not on OS X. The following command tries to autodetect whether it is necessary to install `rvmsudo_secure_path=1`, and only installs the environment variable if it is the code.
+On systems where sudo is configured with `secure_path`, the shell environment needs to be modified to set `rvmsudo_secure_path=1`. `secure_path` is set on most Linux systems, but not on macOS. The following command tries to autodetect whether it is necessary to install `rvmsudo_secure_path=1`, and only installs the environment variable if it is the code.
 
 <pre class="highlight"><span class="prompt">$ </span><span class="k">if</span> sudo grep -q secure_path /etc/sudoers; <span class="k">then</span> sudo sh -c <span class="s">"echo export rvmsudo_secure_path=1 >> /etc/profile.d/rvm_secure_path.sh"</span> &amp;&amp; echo Environment variable installed; <span class="k">fi</span></pre>
 

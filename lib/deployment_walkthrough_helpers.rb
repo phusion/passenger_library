@@ -281,7 +281,7 @@ module DeploymentWalkthroughHelpers
         os_config_description_with_preposition: "from RubyGems (without RVM)"
       }
     end
-    if locals[:infrastructure_type] == :ownserver
+    if [:ownserver, nil].include? locals[:infrastructure_type]
       result << {
         os_config_type: :osx,
         os_config_class: :osx,

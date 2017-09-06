@@ -21,11 +21,11 @@ end
         <%= redhat_version_list_options(next_page) %>
       </ul>
     </li>
-    <% if locals[:infrastructure_type] == :ownserver %>
+    <% if [:ownserver, nil].include? locals[:infrastructure_type] %>
     <li>
-      <strong>Mac OS X</strong>
+      <strong>macOS</strong>
       <ul>
-        <li><a href="osx/<%= next_page %>">Mac OS X + Homebrew</a></li>
+        <li><a href="osx/<%= next_page %>">macOS + Homebrew</a></li>
       </ul>
     </li>
     <% end %>
@@ -60,7 +60,7 @@ end
   <option value="none" selected>Please select an operating system / installation method</option>
   <option value="debian">Debian, Ubuntu (with APT)</option>
   <option value="redhat">Red Hat, CentOS (with RPM)</option>
-  <% if locals[:infrastructure_type] == :ownserver %><option value="osx">Mac OS X</option><% end %>
+  <% if [:ownserver, nil].include? locals[:infrastructure_type] %><option value="osx">macOS</option><% end %>
   <option value="other">Other / OS independent (generic installation method)</option>
 </select></p>
 

@@ -66,7 +66,7 @@ Follow <%= link_to "these instructions", "/install/#{locals[:integration_mode_ty
   </tr>
   <tr>
     <td>
-      Mac OS X
+      macOS
     </td>
     <td>
       <pre class="highlight bash"><span class="prompt">$ </span>sudo softwareupdate -i -a
@@ -212,7 +212,7 @@ To check the versions of the packages you have installed you can use the followi
 
 When setting up a development environment with SSL it is better practice to use a self signed certificate, and leave your real certificate/key pair somewhere safe and encrypted, preferably on offline storage like a thumb drive in a safe place. In order to create a certificate that works and makes development convenient, you need to edit the `openssl.cnf` file.
 
-On OS X this is located at `/usr/local/etc/openssl/openssl.cnf` or if it isn't there you can copy `/usr/local/etc/openssl/openssl.cnf.default` to that path as a starting point, and edit from there.
+On macOS this is located at `/usr/local/etc/openssl/openssl.cnf` or if it isn't there you can copy `/usr/local/etc/openssl/openssl.cnf.default` to that path as a starting point, and edit from there.
 
 On linux it may be in one of the following locations: `/usr/local/ssl/openssl.cnf` `/usr/lib/ssl/openssl.cnf` `/etc/ssl/openssl.cnf` `/etc/pki/tls/openssl.cnf`
 
@@ -413,7 +413,7 @@ ess_cert_id_chain	= no	# Must the ESS cert id chain be included?
   </tr>
   <tr>
     <td>
-      Mac OS X
+      macOS
     </td>
     <td>
       <pre class="highlight shell"><code><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/etc/openssl/misc</code></pre>
@@ -435,7 +435,7 @@ The previous command will have created a new subdirectory called demoCA, you’l
 <table class="table table-bordered table-striped">
   <tr>
     <td>
-      Mac OS X with Safari or Chrome:
+      macOS with Safari or Chrome:
     </td>
     <td>
       <pre class="highlight"><span class="prompt">$ </span>sudo /usr/bin/security add-trusted-cert -d -r trustRoot -k \
@@ -566,7 +566,7 @@ server {
 
 Since you need the domain you visit in your browser to match the SSL certificate, you still need to direct all your development traffic back to localhost. One option is to edit your hosts file (located at `/etc/hosts`) and add entries to redirect each development domain back to your computer. That solution works*, but doesn't scale well. Next I'll describe setting up Dnsmasq & configuring your own top level domain in order to save having to edit the hosts file repeatedly.
 
-*Note some older versions of OS X actually ignored entries in the hosts file for new top level domains (for example: `.dev` stopped working once Google started responding to DNS queries for that top level domain. Google owns `.dev`, but they've stated it's for internal use only, so you're unlikely to break anything if you use it, unless you work for Google), which makes using a DNS resolver like Dnsmasq all the more useful, because you workaround that bug.
+*Note some older versions of macOS actually ignored entries in the hosts file for new top level domains (for example: `.dev` stopped working once Google started responding to DNS queries for that top level domain. Google owns `.dev`, but they've stated it's for internal use only, so you're unlikely to break anything if you use it, unless you work for Google), which makes using a DNS resolver like Dnsmasq all the more useful, because you workaround that bug.
 
 <table class="table table-bordered table-striped">
   <tr>
@@ -594,7 +594,7 @@ Since you need the domain you visit in your browser to match the SSL certificate
   </tr>
   <tr>
     <td>
-      OS X:
+      macOS:
     </td>
     <td>
       <pre class="highlight">
