@@ -1317,6 +1317,79 @@ Turns support for Ruby application debugging on or off. Please read the [Ruby de
 Sets arbitrary environment variables for the application.
 
 
+### `--defer-port-binding` / "defer_port_binding"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --defer-port-binding</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"defer_port_binding": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_DEFER_PORT_BINDING=true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.11</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Enables or disables support for delaying binding the tcp port until after the application(s) have started up. This is useful in environments where binding the tcp port is considered a signal that the app server is ready to handle requests, such as Heroku. This setup uses an Nginx server in a reverse proxy configuration to bind the tcp port and communicate with the main web server via a unix socket.
+
+
+### `--start-timeout` / "start_timeout"
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>--start-timeout <em>SECONDS</em>;</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>start_timeout: <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_START_TIMEOUT=<em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>90</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.11</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Specifies a timeout for the startup of application processes. If an application process fails to start within the timeout period then it will be forcefully killed with SIGKILL, and the error will be logged.
+
+
 ## Process management options
 
 <a name="passenger_max_instances"></a>
