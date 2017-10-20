@@ -101,6 +101,20 @@ step = 0
 </table>
 
 <% step += 1 %>
+<h2 id="install_packages">Step <%= step %>: repair potential system issues</h2>
+<p>These commands will fix common issues that prevent yum from installing Passenger</p>
+<pre class="highlight shell"><code><span class="c unselectable"># Ensure curl and nss/openssl are sufficiently up-to-date to talk to the repo</span>
+sudo yum update -y
+
+date
+<span class="c unselectable"># if the output of date is wrong, please follow these instructions to install ntp</span>
+sudo yum install -y ntp
+sudo chkconfig ntpd on
+sudo ntpdate pool.ntp.org
+sudo service ntpd start
+</code></pre>
+
+<% step += 1 %>
 <h2 id="install_packages">Step <%= step %>: install Passenger packages</h2>
 <p>
   These commands will install <%= packages_title %> through Phusion's YUM repository.
@@ -114,13 +128,6 @@ step = 0
 
 <pre class="highlight shell"><code><span class="c unselectable"># Install various prerequisites</span>
 sudo yum install -y pygpgme curl
-
-date
-<span class="c unselectable"># if the output of date is wrong, please follow these instructions to install ntp</span>
-sudo yum install -y ntp
-sudo chkconfig ntpd on
-sudo ntpdate pool.ntp.org
-sudo service ntpd start
 
 <span class="c unselectable"># Add our <span class="redhat_distro_name"><%= os_config_type %></span> YUM repository</span>
 <% if edition_type == :oss -%>

@@ -111,10 +111,10 @@ sudo apt-get install -y passenger</code></pre>
       </tbody>
     </table>
 
-    <h4>Install Passenger itself</h4>
+    <h4>Repair Potential System Issues</h4>
 
-    <pre class="highlight shell"><code><span class="c unselectable"># Install other prerequisites</span>
-sudo yum install -y pygpgme curl
+    <pre class="highlight shell"><code><span class="c unselectable"># Ensure curl and nss/openssl are sufficiently up-to-date to talk to the repo</span>
+sudo yum update -y
 
 date
 <span class="c unselectable"># if the output of date is wrong, please follow these instructions to install ntp</span>
@@ -122,6 +122,12 @@ sudo yum install -y ntp
 sudo chkconfig ntpd on
 sudo ntpdate pool.ntp.org
 sudo service ntpd start
+</code></pre>
+
+    <h4>Install Passenger itself</h4>
+
+    <pre class="highlight shell"><code><span class="c unselectable"># Install other prerequisites</span>
+sudo yum install -y pygpgme curl
 
 <span class="c unselectable"># Add our <span class="redhat_distro_name"></span> YUM repository</span>
 sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
