@@ -3,7 +3,7 @@ PassengerDefaultRuby /usr/bin/ruby2.1
 <span class="c"># Use Python 2.6 by default.</span>
 PassengerPython /usr/bin/python2.6
 <span class="c"># Use /usr/bin/node by default.</span>
-PassengerNodejs /usr/bin/node;
+PassengerNodejs /usr/bin/node
 
 &lt;VirtualHost *:80&gt;
     <span class="c"># This Ruby web app will use Ruby 2.1</span>
