@@ -1571,7 +1571,7 @@ You can decrease or almost entirely eliminate this overhead by setting `passenge
   </tr>
   <tr>
     <th>Default</th>
-    <td>See descriptor</td>
+    <td>Inherited from Nginx</td>
   </tr>
   <tr>
     <th>Since</th>
@@ -1583,13 +1583,17 @@ You can decrease or almost entirely eliminate this overhead by setting `passenge
   </tr>
 </table>
 
-Sets the file descriptor operating system ulimit for the Passenger core process. If you see "too many file descriptor" errors on a regular basis, then increasing this limit will help.
+Sets the file descriptor operating system ulimit for the Passenger core process. If you see "too many file descriptors" errors on a regular basis, then increasing this limit will help. 
 
-The default value is inherited from the process that started Passenger Standalone. If you started Passenger Standalone from the shell, then the file descriptor ulimit is inherited from the shell process (which you can inspect with `ulimit -a`). If you started Passenger Standalone from an OS startup script such as /etc/rc.local, then the file descriptor ulimit is inherited from the process that invoked the script. On most operating systems, the default ulimit can be configured with a config file such as /etc/security/limits.conf, but since ulimits are *inherited* on a process basis instead of set globally, using that file to change ulimits is usually an error-prone process. This Passenger configuration option provides an easier way (and a way that always works) to set the file descriptor ulimit in Passenger.
+The default value is inherited from the process that started Passenger, which is the Nginx master process in the Nginx integration mode. Assuming Passenger has enough access rights (normally true if the Nginx master process runs as root), it can override its ulimit to the requested setting.
 
-Because ulimits are inherited on a process basis, setting this this option also sets the ulimit of the application processes managed by Passenger. However, if you are using [passenger_load_shell_envvars](#passenger_load_shell_envvars) then the application processes are started through the shell, and the shell startup files may override the ulimits set by Passenger.
+On most operating systems, the default ulimit can also be configured with a config file such as /etc/security/limits.conf, but since ulimits are *inherited* on a process basis instead of set globally, using that file to change ulimits is usually an error-prone process. This Passenger configuration option provides an easier and high confidence way to set the file descriptor ulimit.
 
-You can also set the file descriptor ulimit on a per-application basis (instead of setting it globally for the Passenger core process) using [passenger_app_file_descriptor_ulimit](#passenger_app_file_descriptor_ulimit).
+Note that application ulimits may also be affected by this setting because ulimits are inherited on a process basis (i.e. from Passenger). There are two exceptions to this:
+
+1. If you are using [passenger_load_shell_envvars](#passenger_load_shell_envvars) then the application processes are started through the shell, and the shell startup files may override the ulimits set by Passenger.
+
+2. You can also set the file descriptor ulimit on a per-application basis (instead of setting it globally for the Passenger core process) using [passenger_app_file_descriptor_ulimit](#passenger_app_file_descriptor_ulimit).
 
 
 ### passenger_app_file_descriptor_ulimit
