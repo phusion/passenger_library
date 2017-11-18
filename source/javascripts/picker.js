@@ -7,7 +7,7 @@ $('#proxy_picker').change();
 
 function meteor_picker_callback(){
   $("div[role='main'] .meteor").hide();
-  $("."+$('#meteor_picker').val().toLowerCase()).show();
+  $("."+$('.meteor_picker').val().toLowerCase()).show();
 }
-$('#meteor_picker').change(meteor_picker_callback);
-$('#meteor_picker').change();
+$('.meteor_picker').change(meteor_picker_callback);
+$('.meteor_picker').change();
