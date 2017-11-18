@@ -118,11 +118,11 @@ substep = 0
     In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker.html") %>
   </p>
   <p>
-    Inside your application's code directory, on your local computer, use the <code class="meteor old">meteor bundle</code><code class="meteor new">meteor build</code> command to create a Meteor package tarball.
+    Inside your application's code directory, on your local computer, use the <code class="meteor v13">meteor bundle</code><code class="meteor v14 v16">meteor build</code> command to create a Meteor package tarball.
   </p>
 
-  <pre class="highlight meteor old"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
-  <pre class="highlight meteor new"><span class="prompt">$ </span>meteor build --server-only ../new_package && mv ../new_package/*.tar.gz package.tar.gz</pre>
+  <pre class="highlight meteor v13"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
+  <pre class="highlight meteor v14 v16"><span class="prompt">$ </span>meteor build --server-only ../new_package && mv ../new_package/*.tar.gz package.tar.gz</pre>
 
 <%= render_partial("/shared/meteor_package_note.html") %>
 
@@ -310,9 +310,9 @@ substep = 0
   </p>
   <div>
     <p>
-      You can install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>. 
+      You can install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
     <% if os_config_class == :debian %>
-      While you can also install MongoDB via a package manager (apt-get), please note that this might be an outdated or even unsupported version. 
+      While you can also install MongoDB via a package manager (apt-get), please note that this might be an outdated or even unsupported version.
     <% elsif os_config_class == :redhat %>
       While you can also install MongoDB via a package manager (yum), please note that this might be an outdated or even unsupported version.
     <% end %>

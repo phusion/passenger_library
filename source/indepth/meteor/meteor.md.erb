@@ -30,8 +30,9 @@ A packaged Meteor app contains the Meteor runtime and various other necessary th
 
 Passenger can run Meteor apps both in non-packaged and packaged form. However, we recommend using app packages in production for the following reasons:
 
- * You do not have to install the Meteor runtime in the production environment.
+ * Running Meteor applications in production as packaged apps is [the officially recommended](https://guide.meteor.com/deployment.html#deploying) way by <abbr title="Meteor Development Group">MDG</abbr> - "[__Never use `--production` flag to deploy!__](https://guide.meteor.com/deployment.html#never-use-production-flag)", creator of Meteor.
+ * You do not have to install the Meteor runtime in the production environment, you only need Node.js and MongoDB.
  * Many Passenger production-grade features, such as multi-process management, [load balancing](<%= url_for "/indepth/request_load_balancing/index.html" %>), etc. only work properly if you run the application as multiple [processes](<%= url_for "/indepth/processes.html" %>). However, Passenger can only run your Meteor app with multiple processes if it is in packaged form. In non-packaged form, the various processes conflict with each other because they all try to start MongoDB.
- * Packaged apps use less resources because they do not have to load the Meteor development tools.
+ * Packaged apps use fewer resources because they do not have to load the Meteor development tools.
 
 It is safe to deploy Meteor apps in unpackaged form, as long as you do not use multiple processes.
