@@ -2033,9 +2033,9 @@ If you customize the [Passenger Standalone Nginx config template](<%= url_for '/
   </tr>
 </table>
 
-When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum time a request may spend in that queue. If a request in the queue reaches this specified limit, then Passenger will immediately send a "504 Gateway Timeout" error to any incoming requests.
+When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum time a request may spend in that queue. If a request in the queue reaches this specified limit, then Passenger will send a "504 Gateway Timeout" error to any incoming requests. For performance reasons it might take up to 0.5 × `passenger_max_request_queue_time` after a request timed out before a 504 response is sent (when all application processes are stuck).
 
-A value of 0 means that the queue is unbounded.
+A value of 0 means that the queue time is unbounded.
 
 [This article on StackOverflow](http://stackoverflow.com/questions/20402801/what-is-optimal-value-for-phusion-passenger-passengermaxrequestqueuetime) explains how the request queue works, what it means for the queue to grow or become full, why that is bad, and what you can do about it.
 
@@ -2050,8 +2050,6 @@ If you customize the [Passenger Standalone Nginx config template](<%= url_for '/
    passenger_intercept_errors on;
    error_page 504 /error504.html;
    ~~~
-
-For performance reasons it might take up to 0.5 × `passenger_max_request_queue_time` after a request timed out before a 504 response is sent (when all application processes are stuck).
 
 
 ### `--sticky-sessions` / "sticky_sessions"
