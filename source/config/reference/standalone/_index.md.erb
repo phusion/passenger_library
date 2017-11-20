@@ -625,7 +625,7 @@ Note that application ulimits may also be affected by this setting because ulimi
 
 2. You can also set the file descriptor ulimit on a per-application basis (instead of setting it globally for the Passenger core process) using [`--app-file-descriptor-ulimit` / "app_file_descriptor_ulimit"](#--app-file-descriptor-ulimit-app_file_descriptor_ulimit).
 
-  
+
 ## Application loading options
 
 ### `--environment` / "environment"
@@ -2369,7 +2369,7 @@ If Passenger Standalone is using the [Nginx engine](<%= url_for "/indepth/standa
   </tr>
 </table>
 
-This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for 
+This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for
 important security updates that might be available.
 
 
@@ -2394,11 +2394,11 @@ important security updates that might be available.
   </tr>
 </table>
 
-This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>). 
+This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>).
 The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
- 
+
 ### `--engine` / "engine"
 <table class="table table-bordered table-striped table-condensed">
   <tr>

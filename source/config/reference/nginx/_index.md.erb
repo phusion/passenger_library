@@ -1583,7 +1583,7 @@ You can decrease or almost entirely eliminate this overhead by setting `passenge
   </tr>
 </table>
 
-Sets the file descriptor operating system ulimit for the Passenger core process. If you see "too many file descriptors" errors on a regular basis, then increasing this limit will help. 
+Sets the file descriptor operating system ulimit for the Passenger core process. If you see "too many file descriptors" errors on a regular basis, then increasing this limit will help.
 
 The default value is inherited from the process that started Passenger, which is the Nginx master process in the Nginx integration mode. Assuming Passenger has enough access rights (normally true if the Nginx master process runs as root), it can override its ulimit to the requested setting.
 
