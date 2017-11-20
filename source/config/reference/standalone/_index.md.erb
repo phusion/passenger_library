@@ -2000,6 +2000,60 @@ If you customize the [Passenger Standalone Nginx config template](<%= url_for '/
    ~~~
 
 
+### `--max-request-queue-time` / "max_request_queue_time"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --max-request-queue-time <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"max_request_queue_time": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MAX_REQUEST_QUEUE_TIME=<em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.12</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum time a request may spend in that queue. If a request in the queue reaches this specified limit, then Passenger will immediately send a "504 Gateway Timeout" error to any incoming requests.
+
+A value of 0 means that the queue is unbounded.
+
+[This article on StackOverflow](http://stackoverflow.com/questions/20402801/what-is-optimal-value-for-phusion-passenger-passengermaxrequestqueuetime) explains how the request queue works, what it means for the queue to grow or become full, why that is bad, and what you can do about it.
+
+#### Advanced configuration through Nginx config template
+
+If you customize the [Passenger Standalone Nginx config template](<%= url_for '/config/standalone/intro.html' %>#nginx-configuration-template) then you can further customize the behavior of request queue overflows.
+
+ * You may use [passenger_request_queue_timeout_status_code](<%= url_for '/config/nginx/reference/index.html' %>#passenger_request_queue_timeout_status_code) to customize the response status, if you do not want the status to be 504.
+ * You may use [passenger_intercept_errors](<%= url_for '/config/nginx/reference/index.html' %>#passenger_intercept_errors) and [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) to set a custom error page whenever the queue is overflown. In the following example, Nginx will serve /error504.html whenever the queue is full:
+
+   ~~~nginx
+   passenger_intercept_errors on;
+   error_page 504 /error504.html;
+   ~~~
+
+For performance reasons it might take up to 0.5 × `passenger_max_request_queue_time` after a request timed out before a 504 response is sent (when all application processes are stuck).
+
+
 ### `--sticky-sessions` / "sticky_sessions"
 
 <table class="table table-bordered table-striped table-condensed">

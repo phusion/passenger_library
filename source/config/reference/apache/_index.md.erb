@@ -2055,6 +2055,43 @@ ErrorDocument 503 /error503.html
 ~~~
 
 
+### PassengerMaxRequestQueueTime
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxRequestQueueTime <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxRequestQueueTime 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.12</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum time a request may spend in that queue. If a request in the queue reaches this specified limit, then Passenger will immediately send a "504 Gateway Timeout" error to any incoming requests.
+
+A value of 0 means that the queue time is unbounded.
+
+[This article on StackOverflow](http://stackoverflow.com/questions/20402801/what-is-optimal-value-for-phusion-passenger-passengermaxrequestqueuetime) explains how the request queue works, what it means for the queue to grow or become full, why that is bad, and what you can do about it.
+
+You may combine this option with [PassengerErrorOverride](#passengererroroverride) and [ErrorDocument](http://httpd.apache.org/docs/2.4/mod/core.html#errordocument) to set a custom error page whenever a request in the queue times out. In the following example, Apache will serve /error504.html whenever the queue is full:
+
+~~~
+PassengerErrorOverride on
+ErrorDocument 504 /error504.html
+~~~
+
+For performance reasons it might take up to 0.5 × `PassengerMaxRequestQueueTime` after a request timed out before a 504 response is sent (when all application processes are stuck).
+
+
 ### PassengerStickySessions
 
 <table class="table table-bordered table-condensed">
