@@ -405,8 +405,6 @@ See also [How Passenger + Apache autodetects applications](<%= url_for "/indepth
 </div>
 
 
-<a name="passenger_app_group_name"></a>
-
 ### PassengerAppGroupName
 
 <table class="table table-bordered table-condensed">
@@ -1176,8 +1174,6 @@ When you start Apache, there are 0 application processes for 'foobar.com'. Thing
 Now suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.com' simultaneously. Passenger will start 12 more application processes (`15 - 3 = 12`). After the idle timeout of 10 seconds has passed, Passenger will clean up 12 application processes, keeping 3 processes around.
 
 
-<a name="passenger_max_instances"></a>
-
 ### PassengerMaxInstances
 
 <table class="table table-bordered table-condensed">
@@ -1315,8 +1311,6 @@ This option allows you to set the preloader's idle timeout, in seconds. A value 
 Setting a higher value will mean that the preloader is kept around longer, which may slightly increase memory usage. But as long as the preloader server is running, the time to spawn a Ruby application process only takes about 10% of the time that is normally needed, assuming that you're using the `smart` [spawn method](#passengerspawnmethod). So if your system has enough memory, then is it recommended that you set this option to a high value or to `0`.
 
 
-<a name="passenger_force_max_concurrent_requests_per_process"></a>
-
 ### PassengerForceMaxConcurrentRequestsPerProcess
 
 <table class="table table-bordered table-condensed">
@@ -1388,8 +1382,6 @@ It is recommended that you do not touch this configuration option unless you wan
 Specifies a timeout for the startup of application processes. If an application process fails to start within the timeout period then it will be forcefully killed with SIGKILL, and the error will be logged.
 
 
-<a name="passenger_concurrency_model"></a>
-
 ### PassengerConcurrencyModel
 
 <table class="table table-bordered table-condensed">
@@ -1425,8 +1417,6 @@ Specifies the I/O concurrency model that should be used for Ruby application pro
   </ul>
 </div>
 
-
-<a name="passenger_thread_count"></a>
 
 ### PassengerThreadCount
 
@@ -2029,8 +2019,6 @@ This option does not affect the processing of informational (1xx), normal succes
 
 By default, all responses are sent as-is from the application or from the Passenger core. If you turn this option on then Apache will be able to handle such responses using the Apache [ErrorDocument](http://httpd.apache.org/docs/2.4/mod/core.html#errordocument) option.
 
-
-<a name="passenger_max_rqeuest_queue_size"></a>
 
 ### PassengerMaxRequestQueueSize
 
