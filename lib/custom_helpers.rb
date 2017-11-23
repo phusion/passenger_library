@@ -4,6 +4,7 @@ SUPPORTED_DEBIAN_VERSIONS = {
   "stretch" => "Debian 9",
   "jessie"  => "Debian 8",
   "wheezy"  => "Debian 7",
+  "artful"  => "Ubuntu 17.10",
   "zesty"   => "Ubuntu 17.04",
   "xenial"  => "Ubuntu 16.04 LTS",
   "trusty"  => "Ubuntu 14.04 LTS",
