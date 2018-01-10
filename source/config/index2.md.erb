@@ -43,7 +43,7 @@ content_for(:sidebar) { render_partial("sidebar.html", locals: locals.merge(cont
   <div class="col-md-6">
     <h3>Miscellaneous</h3>
     <ul class="list-unstyled list-links">
-      <li><a href="/config/data_reporting/">Data reporting mechanism</a></li>
+      <li><a href="<%= url_for "/config/data_reporting/index.html" %>">Data reporting mechanism</a></li>
     </ul>
   </div>
 </div>
