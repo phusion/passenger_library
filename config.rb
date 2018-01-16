@@ -127,6 +127,9 @@ proxy "/install/install/index.html",
   "/install/install/integration_mode_and_edition_selection.html"
 proxy "/install/upgrade/index.html",
   "/install/upgrade/integration_mode_and_edition_selection.html"
+proxy "/install/upgrade_to_enterprise.html",
+  "/install/upgrade_to_enterprise_integration_mode_selection.html"
+
 
 ignore "/install/index2.html"
 ignore "/install/disable.html"
@@ -142,6 +145,7 @@ ignore "/install/install/integration_mode_and_edition_selection.html"
 ignore "/install/install/step1.html"
 ignore "/install/install/step2.html"
 ignore "/install/install/step3.html"
+ignore "/install/upgrade_to_enterprise_integration_mode_selection.html"
 ignore "/install/upgrade/integration_mode_and_edition_selection.html"
 ignore "/install/upgrade/edition_selection.html"
 ignore "/install/upgrade/upgrade.html"
