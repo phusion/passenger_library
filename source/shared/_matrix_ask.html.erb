@@ -47,9 +47,54 @@ if (typeof knownChoices !== 'undefined') {
     return dest;
   }
 
+  function getParamValue(params, paramKey) {
+    if (params) {
+      for (var i=0; i<params.length; i++) {
+        var tmp = params[i].split("=");
+        if (tmp[0] === paramKey) {
+          return tmp[1];
+        }
+      };
+    } else {
+      return null;
+    }
+  }
+
+  function overrideParamStoreIfValid(urlParams, storeKey, validChoices) {
+    var paramValue = getParamValue(urlParams, storeKey);
+    for (var i=0; i<validChoices.length; i++) {
+      if (paramValue === validChoices[i]) {
+        if (window.localStorage) {
+          try {
+            window.localStorage.setItem(storeKey, paramValue);
+          } catch (err) {
+            // Safari in Private Browsing mode throws exceptions
+            // on localStorage.setItem(). Ignore and log these
+            // exceptions.
+            if (window.console) {
+              console.error(err);
+            }
+          }
+        }
+      }
+    }
+  }
+
   destFromLocals = getDestWithAnchor("<%= dest_from_locals %>");
 
   var knownChoices = {};
+
+  // Allow choice override through URL params (validation needed to prevent arbitrary redirects).
+  var urlParams = location.search.substr(1).split("&");
+
+<% data.each do |choicerow| %>
+  var <%= choicerow[:store_key] %>_valid_choices = [ 
+    <% choicerow[:choices].each_with_index do |choice, index| %><% if !is_choice_filtered?(choice, limit_choices[choicerow[:uri_key]]) %><% if index > 0 %>,<% end %>"<%= choice[:val] %>"<% end %><% end %>
+    ];
+
+  overrideParamStoreIfValid(urlParams, "<%= choicerow[:store_key] %>", <%= choicerow[:store_key] %>_valid_choices);
+<% end %>
+
   if (<%= dest_from_locals.length > 0 %> && window.localStorage && !<%= force_choice %>) {
     intModeSel = destFromLocals.indexOf(":intmode:") >= 0;
     intModeStore = window.localStorage.getItem('library_integration_mode');
