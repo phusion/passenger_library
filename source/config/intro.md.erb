@@ -82,6 +82,18 @@ For Passenger to work, only a few configuration options need to be setup in Apac
  2. The [PassengerRoot](reference/#passengerroot) option must exist in the Apache configuration. This option tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate.
  3. The [PassengerDefaultRuby](reference/#passengerdefaultruby) option does not have to exist, but it is strongly recommended that you set it.
 
+## Global, per-application, and per-request options
+
+When configuring Passenger it is important to realize that there are three different types of options that each make sense in different contexts:
+
+ 1. **Global options**. These should be set only once (at the global level). For example, there is one Passenger instance per Apache, so it only makes sense to set the [PassengerRoot](reference/#passengerroot) once in the Apache configuration. Apache will show warnings if you try to declare global options at a lower level such as the `<VirtualHost>`, because the value will become ambiguous: the first `<VirtualHost>` section to receive a request would determine the final value.
+
+ 2. **Per-application options**. Options such as [PassengerRuby](reference/#passengeruby) may be different for each application in the Apache config, but not for each request, because the value is needed during application process spawning. Once the process is spawned, changing the value makes no real sense, so per-application options cannot be declared in sections like `<Files>`, `<FilesMatch>`, `<If>`, and files like `.htaccess`. 
+
+ 3. **Per-request options**. This type of option can be set at any level, for any path. For example, Passenger can be enabled or disabled with [PassengerEnabled](reference/#passengerenabled) for any `<Location>`.
+
+Note: the warnings for global options and the concept of per-application options were introduced as part of the work in Passenger version 5.2.0 to make configuration more deterministic.
+
 ## Start configuring Passenger
 
 Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc. Please visit [the configuration index page](.) to learn what you can configure.
