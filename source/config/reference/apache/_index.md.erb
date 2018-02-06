@@ -2182,33 +2182,6 @@ The socket backlog is a queue of incoming connections (from Apache) not yet ackn
 
 ## Compatibility options
 
-### PassengerResolveSymlinksInDocumentRoot
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>PassengerResolveSymlinksInDocumentRoot <em>on|off</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>PassengerResolveSymlinksInDocumentRoot off</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
-    <td>server config, virtual host, directory, .htaccess</td>
-  </tr>
-  <tr>
-    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
-    <td>Options</td>
-  </tr>
-</table>
-
-Configures whether Passenger should resolve symlinks in the document root. Please read [How Passenger autodetects applications](<%= url_for "/indepth/app_autodetection/index.html" %>) for more information.
-
 ### PassengerAllowEncodedSlashes
 
 <table class="table table-bordered table-condensed">
@@ -2583,3 +2556,7 @@ This option is no longer available in version 4.0.0. There is no alternative bec
 ### PassengerDebugLogFile
 
 This option has been renamed in version 5.0.5 to [PassengerLogFile](#passengerlogfile).
+
+### PassengerResolveSymlinksInDocumentRoot
+
+This option is no longer available in version 5.2.0. Switch to PassengerAppRoot if you are setting the application root via a document root containing symlinks.
