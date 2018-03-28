@@ -2364,6 +2364,30 @@ File descriptor activity is logged as follows:
 Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/admin/#{integration_mode_type}/debugging_console/ruby/index.html" %>) guide for more information.
 
 
+### PassengerDumpConfigManifest
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDumpConfigManifest <em>filename</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerDebugger off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.2.2</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+If specified, Passenger will dump a representation of its own configuration to the given file, in JSON format. This option is usually only interesting to Passenger developers for the purpose of developing configuration-related features.
+
+
 ## Advanced options
 
 ### PassengerInstanceRegistryDir
