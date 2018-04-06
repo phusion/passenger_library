@@ -16,6 +16,20 @@ task :rsync => [:build] do
     "passenger_library@shell.phusion.nl:/home/phusion/websites/passenger_library/"
 end
 
+namespace :rsync do
+  desc "Upload documentation to staging server"
+  task :staging => [:build] do
+    sh "cd build && rsync -rv --progress --partial-dir=.rsync-partial --human-readable . " +
+      "passenger_library@staging.phusionpassenger.com:/var/www/passenger_library/"
+  end
+
+  desc "Upload documentation to production server"
+  task :production => [:build] do
+    sh "cd build && rsync -rv --progress --partial-dir=.rsync-partial --human-readable . " +
+      "passenger_library@www.phusionpassenger.com:/var/www/passenger_library/"
+  end
+end
+
 desc "Check broken links"
 task :checklinks do
   # Ignore everything besides http://127.0.0.1:4567
