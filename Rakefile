@@ -10,11 +10,7 @@ task :server do
   sh "bundle exec middleman server"
 end
 
-desc "Upload documentation to server"
-task :rsync => [:build] do
-  sh "cd build && rsync -rv --progress --partial-dir=.rsync-partial --human-readable . " +
-    "passenger_library@shell.phusion.nl:/home/phusion/websites/passenger_library/"
-end
+task :rsync => :'rsync:production'
 
 namespace :rsync do
   desc "Upload documentation to staging server"
