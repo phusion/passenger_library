@@ -6,7 +6,126 @@
 
 <ol class="toc-container"><li>Loading...</li></ol>
 
-## Server options
+## Standalone server options
+
+### `--engine` / "engine"
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --engine <em>nginx|builtin</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"engine": <em>"nginx"|"builtin"</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_ENGINE=<em>nginx|builtin</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>nginx</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+Sets the Passenger Standalone engine to use. [Learn more about Passenger Standalone engines.](<%= url_for "/indepth/standalone_engines.html" %>)
+
+### `--nginx-config-template` / "nginx_config_template"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --nginx-config-template <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"nginx_config_template": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_NGINX_CONFIG_TEMPLATE=<em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Enabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.1</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+Instructs Passenger Standalone's [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>) to use a specific Nginx config template, instead of the default. Learn more about this in the [configuration introduction](<%= url_for "/config/standalone/intro.html" %>#nginx-configuration-template).
+
+Please note that this option only works if Passenger Standalone is [configured](#--engine-engine) to use the [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>).
+
+<div class="warning">
+  <h3 class="notoc">The Nginx config file must follow a specific format</h3>
+  <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone <strong>must</strong> be based on the one provided by Passenger Standalone. Learn more about this in the <a href="<%= url_for "/config/standalone/intro.html" %>#nginx-configuration-template">configuration introduction</a>.</p>
+</div>
+
+<div class="warning">
+  <h3 class="notoc">Do not duplicate options set by Passenger Standalone</h3>
+  <p>Nginx only allows setting most configuration options once. This means that if you insert any configuration options already set by Passenger Standalone, then Nginx will abort with an error. Therefore, you should prefer using the configuration options provided by Passenger Standalone over setting them yourself in the Nginx configuration template. For example, do not set <a href="../../nginx/reference/#passenger_log_level">passenger_log_level</a> yourself; use the <a href="#--log-level-log_level"><code>--log-level</code> / <code>"log_level"</code></a> configuration option instead.</p>
+</div>
+
+<div class="note">
+  <h3 class="notoc">Keep your configuration template up to date</h3>
+  <p>The original configuration template file may change from time to time, e.g. because new features are introduced into Passenger. If your configuration template file does not contain the required changes, then these new features may not work properly. In the worst case, Passenger Standalone might even malfunction. Therefore, every time you upgrade Passenger, you should check whether the original configuration template file has changed, and merge back any changes into your own file.</p>
+</div>
+
+
+### `--debug-nginx-config` / "debug_nginx_config"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --debug-nginx-config</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"debug_nginx_config": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_DEBUG_NGINX_CONFIG=true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Enabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+If Passenger Standalone is using the [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>), then this configuration option will cause Passenger Standalone to print the contents of the generated Nginx configuration file, after which it exits. This allows you to inspect the generated configuration file, e.g. to debug problems.
+
 
 ### `--address` / "address"
 
@@ -305,86 +424,6 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
 
 Instructs Passenger to daemonize into the background.
 
-
-### `--user` / "user"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --user <em>USERNAME</em></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"user": <em>string</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_USER=<em>string</em></td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main</td>
-  </tr>
-</table>
-
-Instructs Passenger to drop its privilege to that of the given user as soon as Passenger has setup the socket. This only works if Passenger was started with root privileges.
-
-If this option is not given, then Passenger runs as the user that invoked it.
-
-
-### `--log-file` / "log_file"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --log-file <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"log_file": <em>string</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_LOG_FILE=<em>path</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>See description</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main</td>
-  </tr>
-</table>
-
-Log to the specified path, which is generally expected to be a file. Since version 5.0.29, /dev/stdout and /dev/stderr are also supported.
-
-The default behavior is as follows:
-
- 1. If there is a `log` subdirectory, log to `log/passenger.XXX.log`.
- 2. Otherwise, log to `passenger.XXX.log`.
-
-In both cases, XXX is the [port number](#--port-port) that Passenger listens on.
-
-If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default log filename does not contain the `.XXX` part.
-
-
 ### `--pid-file` / "pid_file"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -430,203 +469,7 @@ In both cases, XXX is the [port number](#--port-port) that Passenger listens on.
 If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default PID filename does not contain the `.XXX` part.
 
 
-### `--socket-backlog` / "socket_backlog"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --socket-backlog <em>NUMBER</em></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"socket_backlog": <em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_SOCKET_BACKLOG=<em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>
-      1024 (&lt; 5.0.25) <br>
-      2048 (&gt;= 5.0.26)
-    </td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.24</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main</td>
-  </tr>
-</table>
-
-The socket backlog is a queue of incoming connections not yet acknowledged by Passenger. The default value is chosen to match the default for Nginx' `worker_connections`. If you use the Nginx engine and increase the latter, it is likely that you'll also need to increase the `passenger_socket_backlog`. If connections are coming in too fast and overflow the backlog, you'll see the error (Nginx engine):
-
-<i>connect() to unix:/tmp/passenger... failed (11: Resource temporarily unavailable) while connecting to upstream</i>
-
-
-### `--instance-registry-dir` / "instance_registry_dir"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --instance-registry-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"instance_registry_dir": <em>string</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_INSTANCE_REGISTRY_DIR=<em>path</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>/tmp or /var/run/passenger-instreg</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.0</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main</td>
-  </tr>
-</table>
-
-Specifies the directory that Passenger should use for registering its current instance.
-
-When Passenger starts up, it creates a temporary directory inside the _instance registry directory_. This temporary directory is called the _instance directory_. It contains all sorts of files that are important to that specific running Passenger instance, such as Unix domain socket files so that all the different Passenger processes can communicate with each other. Command line tools such as `passenger-status` use the files in this directory in order to query Passenger's status.
-
-It is therefore important that, while Passenger is working, the instance directory is never removed or tampered with. However, the default path for the instance registry directory is the system's temporary directory, and some systems may run background jobs that periodically clean this directory. If this happens, and the files inside the instance directory are removed, then it will cause Passenger to malfunction: Passenger won't be able to communicate with its own processes, and you will see all kinds of connection errors in the log files. This malfunction can only be recovered from by restarting Passenger. You can prevent such cleaning background jobs from interfering by setting this option to a different directory.
-
-This option is also useful if the partition that the temporary directory lives on doesn't have enough disk space.
-
-The instance directory is automatically removed when Passenger shuts down.
-
-#### Default value
-
-The default value for this option is as follows:
-
- * If you are on Red Hat and CentOS, and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/install/standalone/yum_repo/index.html" %>), then the default value is `/var/run/passenger-instreg`.
- * Otherwise, the default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
-
-#### Note regarding command line tools
-
-Some Passenger command line administration tools, such as `passenger-status`, must know what Passenger's instance registry directory is in order to function properly. You can pass the directory through the `PASSENGER_INSTANCE_REGISTRY_DIR` or the `TMPDIR` environment variable.
-
-For example, if you set 'PassengerInstanceRegistryDir' to '/my_temp_dir', then invoke `passenger-status` after you've set the `PASSENGER_INSTANCE_REGISTRY_DIR`, like this:
-
-~~~bash
-export PASSENGER_INSTANCE_REGISTRY_DIR=/my_temp-dir
-sudo -E passenger-status
-~~~
-
-Notes regarding the above example:
-
- * The -E option tells 'sudo' to preserve environment variables.
- * If Passenger is installed through an RVM Ruby, then you must use `rvmsudo` instead of `sudo`.
-
-
-### `--data-buffer-dir` / "data_buffer_dir"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --data-buffer-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"data_buffer_dir": <em>string</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_DATA_BUFFER_DIR=<em>path</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>See description</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.0</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main</td>
-  </tr>
-</table>
-
-By default, Passenger buffers large web application responses. This prevents [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
-
-By default, such buffers are stored in the directory given by the `$TMPDIR` environment variable, or (if `$TMPDIR` is not set) the `/tmp` directory. This configuration option allows you to specify a different directory.
-
-Changing this option is especially useful if the partition that the default directory lives on doesn't have enough disk space.
-
-If you've specified such a directory (as opposed to using Passenger's default) then you *must* ensure that this directory exists.
-
-
-### `--core-file-descriptor-ulimit` / "core_file_descriptor_ulimit"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --core-file-descriptor-ulimit <em>NUMBER</em></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"core_file_descriptor_ulimit": <em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_CORE_FILE_DESCRIPTOR_ULIMIT=<em>path</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>See description</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.26</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main</td>
-  </tr>
-</table>
-
-Sets the file descriptor operating system ulimit for the Passenger core process. If you see "too many file descriptor" errors on a regular basis, then increasing this limit will help.
-
-The default value is inherited from the process that started Passenger Standalone. If you started Passenger Standalone from the shell, then the file descriptor ulimit is inherited from the shell process (which you can inspect with `ulimit -a`). If you started Passenger Standalone from an OS startup script such as /etc/rc.local, then the file descriptor ulimit is inherited from the process that invoked the script.
-
-On most operating systems, the default ulimit can also be configured with a config file such as /etc/security/limits.conf, but since ulimits are *inherited* on a process basis instead of set globally, using that file to change ulimits is usually an error-prone process. This Passenger configuration option provides an easier and high confidence way to set the file descriptor ulimit.
-
-Note that application ulimits may also be affected by this setting because ulimits are inherited on a process basis (i.e. from Passenger). There are two exceptions to this:
-
-1. If you are using [`--load-shell-envvars` / "load_shell_envvars"](#--load-shell-envvars-load_shell_envvars) then the application processes are started through the shell, and the shell startup files may override the ulimits set by Passenger.
-
-2. You can also set the file descriptor ulimit on a per-application basis (instead of setting it globally for the Passenger core process) using [`--app-file-descriptor-ulimit` / "app_file_descriptor_ulimit"](#--app-file-descriptor-ulimit-app_file_descriptor_ulimit).
-
-
-## Application loading options
+## Application loading
 
 ### `--environment` / "environment"
 
@@ -671,6 +514,35 @@ This option sets the value of the following environment variables:
 
 Some web frameworks, for example Rails and Connect.js, adjust their behavior according to the value in one of these environment variables.
 
+### `--envvar` / "envvars"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --envvar name1=value1 --envvar name2=value2 ...</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"envvars": { "name1": "value1", "name2": "value2", ... }</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>
+      Command line syntax: since 5.0.22<br>
+      Config file syntax: since 5.0.1
+    </td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Sets arbitrary environment variables for the application.
 
 ### `--ruby` / "ruby"
 
@@ -814,6 +686,72 @@ Specifies the Node.js command to use for serving Node.js web applications.
 When using a Meteor application in non-bundled mode, use this option to specify a JSON file with settings for the application. The `meteor run` command will be run with the `--settings` parameter set to this option.
 
 Note that this option is not intended to be used for bundled/packaged Meteor applications. When running bundled/packaged Meteor applications on Passenger, you should set the `METEOR_SETTINGS` environment variable.
+
+### `--instance-registry-dir` / "instance_registry_dir"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --instance-registry-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"instance_registry_dir": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_INSTANCE_REGISTRY_DIR=<em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>/tmp or /var/run/passenger-instreg</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+Specifies the directory that Passenger should use for registering its current instance.
+
+When Passenger starts up, it creates a temporary directory inside the _instance registry directory_. This temporary directory is called the _instance directory_. It contains all sorts of files that are important to that specific running Passenger instance, such as Unix domain socket files so that all the different Passenger processes can communicate with each other. Command line tools such as `passenger-status` use the files in this directory in order to query Passenger's status.
+
+It is therefore important that, while Passenger is working, the instance directory is never removed or tampered with. However, the default path for the instance registry directory is the system's temporary directory, and some systems may run background jobs that periodically clean this directory. If this happens, and the files inside the instance directory are removed, then it will cause Passenger to malfunction: Passenger won't be able to communicate with its own processes, and you will see all kinds of connection errors in the log files. This malfunction can only be recovered from by restarting Passenger. You can prevent such cleaning background jobs from interfering by setting this option to a different directory.
+
+This option is also useful if the partition that the temporary directory lives on doesn't have enough disk space.
+
+The instance directory is automatically removed when Passenger shuts down.
+
+#### Default value
+
+The default value for this option is as follows:
+
+ * If you are on Red Hat and CentOS, and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/install/standalone/yum_repo/index.html" %>), then the default value is `/var/run/passenger-instreg`.
+ * Otherwise, the default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
+
+#### Note regarding command line tools
+
+Some Passenger command line administration tools, such as `passenger-status`, must know what Passenger's instance registry directory is in order to function properly. You can pass the directory through the `PASSENGER_INSTANCE_REGISTRY_DIR` or the `TMPDIR` environment variable.
+
+For example, if you set 'PassengerInstanceRegistryDir' to '/my_temp_dir', then invoke `passenger-status` after you've set the `PASSENGER_INSTANCE_REGISTRY_DIR`, like this:
+
+~~~bash
+export PASSENGER_INSTANCE_REGISTRY_DIR=/my_temp-dir
+sudo -E passenger-status
+~~~
+
+Notes regarding the above example:
+
+ * The -E option tells 'sudo' to preserve environment variables.
+ * If Passenger is installed through an RVM Ruby, then you must use `rvmsudo` instead of `sudo`.
 
 
 ### `--rackup`
@@ -1026,42 +964,6 @@ For other cases you will need to specify the `startup-file` manually. For exampl
 This option controls whether Passenger spawns applications directly, or using a prefork copy-on-write mechanism. The [spawn methods guide](<%= url_for "/indepth/spawn_methods/index.html" %>) explains this in detail.
 
 
-### `--static-files-dir` / "static_files_dir"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --static-files-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"static_files_dir": <em>string</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_STATIC_FILES_DIR=<em>path</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td><em>app_dir</em>/public</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.25</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-</table>
-
-By default, Passenger automatically serves static files in the application's `public` subdirectory. Your application is offloaded from having to serve static files. In case your static files are not located in `public` but somewhere else, then use this option to specify the location.
-
-
 ### `--restart-dir` / "restart_dir"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -1119,58 +1021,6 @@ A relative filename is given. Passenger will check for /apps/baz/restart_files/r
     passenger start --restart-dir restart_files
 
 
-### `--friendly-error-pages`, `--no-friendly-error-pages` / "friendly_error_pages"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>
-      passenger start --friendly-error-pages<br>
-      passenger start --no-friendly-error-pages
-    </td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"friendly_error_pages": <em>boolean</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_FRIENDLY_ERROR_PAGES=<em>boolean</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>
-      <p>
-        <em>When <a href="#--environment-environment"><code>--environment</code> / "environment"</a> is <code>development</code>:</em><br>
-        Friendly error pages are on
-      </p>
-      <p>
-        <em>Otherwise:</em><br>
-        Friendly error pages are off
-      </p>
-    </td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.28</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-</table>
-
-Passenger can display friendly error pages whenever an application fails to start. This friendly error page presents the startup error message, some suggestions for solving the problem, a backtrace and a dump of the environment variables.
-
-This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are disabled by default, unless [--environment / "environment"](#--environment-environment) is set to `development`.
-
-You can use this option to explicitly enable or disable this feature. `--friendly-error-pages` always enables friendly error pages, and `--no-friendly-error-pages` always disables friendly error pages. Similarly, the `"friendly_error_pages": boolean` config option always enables or disables friendly error pages.
-
-
 ### `--load-shell-envvars` / "load_shell_envvars"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -1207,118 +1057,6 @@ You can use this option to explicitly enable or disable this feature. `--friendl
 Enables or disables the loading of shell environment variables before spawning the application.
 
 If this option is turned on, and the user's shell is `bash`, then applications are loaded by running them with `bash -l -c`. If this option is turned off, applications are loaded by running them directly from the `Passenger core` process.
-
-
-### `--app-file-descriptor-ulimit` / "app_file_descriptor_ulimit"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --app-file-descriptor-ulimit <em>NUMBER</em></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"app_file_descriptor_ulimit": <em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_APP_FILE_DESCRIPTOR_ULIMIT=<em>path</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>See description</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.26</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-</table>
-
-Sets the file descriptor operating system ulimit for application processes managed by Passenger. If you see "too many file descriptor" errors on a regular basis, and these errors originate from the Passenger core process (as opposed to the application processes), then increasing this limit will help.
-
-If the "too many file descriptor" errors originate from the Passenger core process, then setting this option will *not* help. Use [`--core-file-descriptor-ulimit` / "core_file_descriptor_ulimit"](#--core-file-descriptor-ulimit-core_file_descriptor_ulimit) for that.
-
-The default file descriptor ulimit is inherited from the Passenger core process. See [`--core-file-descriptor-ulimit` / "core_file_descriptor_ulimit"](#--core-file-descriptor-ulimit-core_file_descriptor_ulimit) to learn how the default file descriptor ulimit for Passenger core process is set.
-
-
-### `--debugger` / "debugger"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --debugger</td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"debugger": true</td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_DEBUGGER=true</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>Disabled</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
-</table>
-
-<div class="note">
-  At this time, this feature is supported for Ruby applications only.
-</div>
-
-Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/admin/#{integration_mode_type}/debugging_console/ruby/index.html" %>) guide for more information.
-
-
-### `--envvar` / "envvars"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --envvar name1=value1 --envvar name2=value2 ...</td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"envvars": { "name1": "value1", "name2": "value2", ... }</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>
-      Command line syntax: since 5.0.22<br>
-      Config file syntax: since 5.0.1
-    </td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-</table>
-
-Sets arbitrary environment variables for the application.
 
 
 ### `--defer-port-binding` / "defer_port_binding"
@@ -1394,7 +1132,221 @@ Enables or disables support for delaying binding the tcp port until after the ap
 Specifies a timeout for the startup of application processes. If an application process fails to start within the timeout period then it will be forcefully killed with SIGKILL, and the error will be logged.
 
 
-## Process management options
+### `--rolling-restarts` / "rolling_restarts"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --rolling-restarts</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"rolling_restarts": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_ROLLING_RESTARTS=true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/standalone/zero_downtime_redeployments/index.html" %>) through `restart.txt`.
+
+Please note that this option is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
+
+
+### `--resist-deployment-errors` / "resist_deployment_errors"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --resist-deployment-errors</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"resist_deployment_errors": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_RESIST_DEPLOYMENT_ERRORS=true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Enables or disables [resistance against deployment errors](<%= url_for "/deploy/standalone/deployment_error_resistance.html" %>).
+
+Suppose that you have upgraded your application and you have issued a command to restart it, but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
+
+By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file/index.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
+
+[Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/deploy/standalone/deployment_error_resistance.html" %>).
+
+Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/admin/standalone/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-(rolling-restart)).
+
+
+
+
+
+
+## Performance tuning
+
+### `--core-file-descriptor-ulimit` / "core_file_descriptor_ulimit"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --core-file-descriptor-ulimit <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"core_file_descriptor_ulimit": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_CORE_FILE_DESCRIPTOR_ULIMIT=<em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.26</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+Sets the file descriptor operating system ulimit for the Passenger core process. If you see "too many file descriptor" errors on a regular basis, then increasing this limit will help.
+
+The default value is inherited from the process that started Passenger Standalone. If you started Passenger Standalone from the shell, then the file descriptor ulimit is inherited from the shell process (which you can inspect with `ulimit -a`). If you started Passenger Standalone from an OS startup script such as /etc/rc.local, then the file descriptor ulimit is inherited from the process that invoked the script.
+
+On most operating systems, the default ulimit can also be configured with a config file such as /etc/security/limits.conf, but since ulimits are *inherited* on a process basis instead of set globally, using that file to change ulimits is usually an error-prone process. This Passenger configuration option provides an easier and high confidence way to set the file descriptor ulimit.
+
+Note that application ulimits may also be affected by this setting because ulimits are inherited on a process basis (i.e. from Passenger). There are two exceptions to this:
+
+1. If you are using [`--load-shell-envvars` / "load_shell_envvars"](#--load-shell-envvars-load_shell_envvars) then the application processes are started through the shell, and the shell startup files may override the ulimits set by Passenger.
+
+2. You can also set the file descriptor ulimit on a per-application basis (instead of setting it globally for the Passenger core process) using [`--app-file-descriptor-ulimit` / "app_file_descriptor_ulimit"](#--app-file-descriptor-ulimit-app_file_descriptor_ulimit).
+
+
+### `--app-file-descriptor-ulimit` / "app_file_descriptor_ulimit"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --app-file-descriptor-ulimit <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"app_file_descriptor_ulimit": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_APP_FILE_DESCRIPTOR_ULIMIT=<em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.26</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Sets the file descriptor operating system ulimit for application processes managed by Passenger. If you see "too many file descriptor" errors on a regular basis, and these errors originate from the Passenger core process (as opposed to the application processes), then increasing this limit will help.
+
+If the "too many file descriptor" errors originate from the Passenger core process, then setting this option will *not* help. Use [`--core-file-descriptor-ulimit` / "core_file_descriptor_ulimit"](#--core-file-descriptor-ulimit-core_file_descriptor_ulimit) for that.
+
+The default file descriptor ulimit is inherited from the Passenger core process. See [`--core-file-descriptor-ulimit` / "core_file_descriptor_ulimit"](#--core-file-descriptor-ulimit-core_file_descriptor_ulimit) to learn how the default file descriptor ulimit for Passenger core process is set.
+
+
+### `--socket-backlog` / "socket_backlog"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --socket-backlog <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"socket_backlog": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_SOCKET_BACKLOG=<em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>
+      1024 (&lt; 5.0.25) <br>
+      2048 (&gt;= 5.0.26)
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.24</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+The socket backlog is a queue of incoming connections not yet acknowledged by Passenger. The default value is chosen to match the default for Nginx' `worker_connections`. If you use the Nginx engine and increase the latter, it is likely that you'll also need to increase the `passenger_socket_backlog`. If connections are coming in too fast and overflow the backlog, you'll see the error (Nginx engine):
+
+<i>connect() to unix:/tmp/passenger... failed (11: Resource temporarily unavailable) while connecting to upstream</i>
 
 <a name="passenger_max_instances"></a>
 
@@ -1727,227 +1679,6 @@ Specifies the number of threads that Passenger should spawn per Ruby application
 </div>
 
 
-### `--max-requests` / "max_requests"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --max-requests <em>NUMBER</em></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"max_requests": <em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_MAX_REQUESTS=<em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>0</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.1.0</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-</table>
-
-The maximum number of requests an application process will process. After serving that many requests, the application process will be shut down and Passenger will restart it. A value of 0 means that there is no maximum. The application process might also be shut down if its [idle timeout](#--pool-idle-time-pool_idle_time) is reached.
-
-This option is useful if your application is leaking memory. By shutting it down after a certain number of requests, all of its memory is guaranteed to be freed by the operating system. An alternative (and better) mechanism for dealing with memory leaks is [memory_limit](#--memory-limit-memory_limit).
-
-<div class="note">
-  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
-</div>
-
-
-### `--memory-limit` / "memory_limit"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start [...] --memory-limit <em>MB</em></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"memory_limit": <em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_MEMORY_LIMIT=<em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>0</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.22</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
-</table>
-
-The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will allow it to finish processing all of its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
-
-This option is useful if your application is leaking memory. By shutting it down, all of its memory is guaranteed to be freed by the operating system.
-
-<div class="info">
-  <h3 class="notoc">A word about permissions</h3>
-  <p>
-    This option uses the <code>ps</code> command to query memory usage information. On Linux, it further queries <code>/proc</code> to obtain additional memory usage information that's not obtainable through <code>ps</code>. You should ensure that the <code>ps</code> works correctly and that the <code>/proc</code> filesystem is accessible by the <code>Passenger core</code> process.
-  </p>
-</div>
-
-<div class="note">
-  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
-</div>
-
-
-### `--rolling-restarts` / "rolling_restarts"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --rolling-restarts</td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"rolling_restarts": true</td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_ROLLING_RESTARTS=true</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>Disabled</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.0</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
-</table>
-
-Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/standalone/zero_downtime_redeployments/index.html" %>) through `restart.txt`.
-
-Please note that this option is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
-
-
-### `--resist-deployment-errors` / "resist_deployment_errors"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --resist-deployment-errors</td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"resist_deployment_errors": true</td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_RESIST_DEPLOYMENT_ERRORS=true</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>Disabled</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.0</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
-</table>
-
-Enables or disables [resistance against deployment errors](<%= url_for "/deploy/standalone/deployment_error_resistance.html" %>).
-
-Suppose that you have upgraded your application and you have issued a command to restart it, but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
-
-By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file/index.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
-
-[Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/deploy/standalone/deployment_error_resistance.html" %>).
-
-Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/admin/standalone/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-(rolling-restart)).
-
-
-## Request handling options
-
-### `--max-request-time` / "max_request_time"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --max-request-time <em>SECONDS</em></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"max_request_time": <em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_MAX_REQUEST_TIME=<em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>0</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.0</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
-</table>
-
-The maximum amount of time, in seconds, that an application process may take to process a request. If the request takes longer than this amount of time, then the application process will be forcefully shut down, and possibly restarted upon the next request. A value of 0 means that there is no time limit.
-
-This option is useful for preventing your application from getting stuck for an indefinite period of time.
-
-<div class="note">
-  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid stuck applications.
-</div>
-
-
 ### `--max-request-queue-size` / "max_request_queue_size"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -2051,6 +1782,254 @@ If you customize the [Passenger Standalone Nginx config template](<%= url_for '/
    error_page 504 /error504.html;
    ~~~
 
+### `--disable-turbocaching` / "turbocaching"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --disable-turbocaching</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"turbocaching": false</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_TURBOCACHING=false</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Enabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.14</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+Disables [turbocaching](<%= url_for "/dev/index.html" %>).
+
+
+### `--unlimited-concurrency-path` / "unlimited_concurrency_paths"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --unlimited-concurrency-path <em>URI-PATH1</em> [--unlimited-concurrency-path <em>URI-PATH2</em> ...]</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"unlimited_concurrency_paths": ["uri-path1", "uri-path2", ...]</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.25</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Use this option to tell Passenger that the application supports unlimited concurrency at the specified URI paths. The main use cases for this option are:
+
+ 1. To [SSE and WebSockets work well in Ruby applications.](<%= url_for "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html" %>)
+ 2. To [integrate Ruby on Rails Action Cable with Passenger Standalone](<%= url_for "/config/#{integration_mode_type}/action_cable_integration/index.html" %>).
+
+This option is functionally equivalent to setting <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> to 0, but only for the specify sub-URIs.
+
+
+
+
+
+
+## Security
+
+### `--user` / "user"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --user <em>USERNAME</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"user": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_USER=<em>string</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+Instructs Passenger to drop its privilege to that of the given user as soon as Passenger has setup the socket. This only works if Passenger was started with root privileges.
+
+If this option is not given, then Passenger runs as the user that invoked it.
+
+
+### `--data-buffer-dir` / "data_buffer_dir"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --data-buffer-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"data_buffer_dir": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_DATA_BUFFER_DIR=<em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+By default, Passenger buffers large web application responses. This prevents [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
+
+By default, such buffers are stored in the directory given by the `$TMPDIR` environment variable, or (if `$TMPDIR` is not set) the `/tmp` directory. This configuration option allows you to specify a different directory.
+
+Changing this option is especially useful if the partition that the default directory lives on doesn't have enough disk space.
+
+If you've specified such a directory (as opposed to using Passenger's default) then you *must* ensure that this directory exists.
+
+
+### `--disable-security-update-check` / "disable_security_update_check"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --disable-security-update-check</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"disable_security_update_check": <em>true</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_DISABLE_SECURITY_UPDATE_CHECK=<em>true</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>false</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+</table>
+
+This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for
+important security updates that might be available.
+
+
+### `--security-update-check-proxy` / "security_update_check_proxy"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --security-update-check-proxy <em>scheme://user:password@proxy_host:proxy_port;</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"security_update_check_proxy": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_SECURITY_UPDATE_CHECK_PROXY=<em>string</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+</table>
+
+This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>).
+The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
+<em>http, socks5, socks5h, socks4, socks4a</em>
+
+
+
+
+
+
+
+## Request / response customization
+
+### `--static-files-dir` / "static_files_dir"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --static-files-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"static_files_dir": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_STATIC_FILES_DIR=<em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td><em>app_dir</em>/public</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.25</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+By default, Passenger automatically serves static files in the application's `public` subdirectory. Your application is offloaded from having to serve static files. In case your static files are not located in `public` but somewhere else, then use this option to specify the location.
+
 
 ### `--sticky-sessions` / "sticky_sessions"
 
@@ -2139,28 +2118,33 @@ If you have a load balancer in front end of Passenger + Nginx, then you must con
 Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cookie.
 
 
-### `--disable-turbocaching` / "turbocaching"
+
+
+
+## Logging & troubleshooting
+
+### `--log-file` / "log_file"
 
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --disable-turbocaching</td>
+    <td>passenger start --log-file <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
-    <td>"turbocaching": false</td>
+    <td>"log_file": <em>string</em></td>
   </tr>
   <tr>
     <th>Environment variable syntax</th>
-    <td>PASSENGER_TURBOCACHING=false</td>
+    <td>PASSENGER_LOG_FILE=<em>path</em></td>
   </tr>
   <tr>
     <th>Default</th>
-    <td>Enabled</td>
+    <td>See description</td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>5.0.14</td>
+    <td>3.0.0</td>
   </tr>
   <tr>
     <th>Engines</th>
@@ -2172,261 +2156,16 @@ Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cooki
   </tr>
 </table>
 
-Disables [turbocaching](<%= url_for "/dev/index.html" %>).
+Log to the specified path, which is generally expected to be a file. Since version 5.0.29, /dev/stdout and /dev/stderr are also supported.
 
+The default behavior is as follows:
 
-### `--unlimited-concurrency-path` / "unlimited_concurrency_paths"
+ 1. If there is a `log` subdirectory, log to `log/passenger.XXX.log`.
+ 2. Otherwise, log to `passenger.XXX.log`.
 
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --unlimited-concurrency-path <em>URI-PATH1</em> [--unlimited-concurrency-path <em>URI-PATH2</em> ...]</td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"unlimited_concurrency_paths": ["uri-path1", "uri-path2", ...]</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.25</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-</table>
+In both cases, XXX is the [port number](#--port-port) that Passenger listens on.
 
-Use this option to tell Passenger that the application supports unlimited concurrency at the specified URI paths. The main use cases for this option are:
-
- 1. To [SSE and WebSockets work well in Ruby applications.](<%= url_for "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html" %>)
- 2. To [integrate Ruby on Rails Action Cable with Passenger Standalone](<%= url_for "/config/#{integration_mode_type}/action_cable_integration/index.html" %>).
-
-This option is functionally equivalent to setting <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> to 0, but only for the specify sub-URIs.
-
-
-### `--no-abort-websockets-on-process-shutdown` / "abort_websockets_on_process_shutdown"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --no-abort-websockets-on-process-shutdown</td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"abort_websockets_on_process_shutdown": false</td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_ABORT_WEBSOCKETS_ON_PROCESS_SHUTDOWN=false</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>Enabled</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.22</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx, builtin</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main, per-app</td>
-  </tr>
-</table>
-
-Before shutting down or restarting an application process, Passenger performs two operations:
-
- 1. It waits until existing requests routed to that process are finished. This way, existing requests will be finished gracefully.
- 2. It aborts WebSocket connections. This is because WebSocket connections can stay open for an arbitrary amount of time and will block the shutdown/restart.
-
-If you want Passenger to _not_ abort WebSocket connections, then use this option to turn the behavior off. That way, Passenger will wait for WebSocket connections to terminate by themselves, before proceeding with a process shutdown or restart. For this reason, you *must* modify your application code to ensure that WebSocket connections do not stay open for an arbitrary amount of time.
-
-
-## Nginx engine options
-
-### `--nginx-config-template` / "nginx_config_template"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --nginx-config-template <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"nginx_config_template": <em>string</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_NGINX_CONFIG_TEMPLATE=<em>string</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>Enabled</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.1</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main</td>
-  </tr>
-</table>
-
-Instructs Passenger Standalone's [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>) to use a specific Nginx config template, instead of the default. Learn more about this in the [configuration introduction](<%= url_for "/config/standalone/intro.html" %>#nginx-configuration-template).
-
-Please note that this option only works if Passenger Standalone is [configured](#--engine-engine) to use the [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>).
-
-<div class="warning">
-  <h3 class="notoc">The Nginx config file must follow a specific format</h3>
-  <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone <strong>must</strong> be based on the one provided by Passenger Standalone. Learn more about this in the <a href="<%= url_for "/config/standalone/intro.html" %>#nginx-configuration-template">configuration introduction</a>.</p>
-</div>
-
-<div class="warning">
-  <h3 class="notoc">Do not duplicate options set by Passenger Standalone</h3>
-  <p>Nginx only allows setting most configuration options once. This means that if you insert any configuration options already set by Passenger Standalone, then Nginx will abort with an error. Therefore, you should prefer using the configuration options provided by Passenger Standalone over setting them yourself in the Nginx configuration template. For example, do not set <a href="../../nginx/reference/#passenger_log_level">passenger_log_level</a> yourself; use the <a href="#--log-level-log_level"><code>--log-level</code> / <code>"log_level"</code></a> configuration option instead.</p>
-</div>
-
-<div class="note">
-  <h3 class="notoc">Keep your configuration template up to date</h3>
-  <p>The original configuration template file may change from time to time, e.g. because new features are introduced into Passenger. If your configuration template file does not contain the required changes, then these new features may not work properly. In the worst case, Passenger Standalone might even malfunction. Therefore, every time you upgrade Passenger, you should check whether the original configuration template file has changed, and merge back any changes into your own file.</p>
-</div>
-
-
-### `--debug-nginx-config` / "debug_nginx_config"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --debug-nginx-config</td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"debug_nginx_config": true</td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_DEBUG_NGINX_CONFIG=true</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>Enabled</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.22</td>
-  </tr>
-  <tr>
-    <th>Engines</th>
-    <td>nginx</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main</td>
-  </tr>
-</table>
-
-If Passenger Standalone is using the [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>), then this configuration option will cause Passenger Standalone to print the contents of the generated Nginx configuration file, after which it exits. This allows you to inspect the generated configuration file, e.g. to debug problems.
-
-
-## Advanced options
-
-### `--disable-security-update-check` / "disable_security_update_check"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --disable-security-update-check</td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"disable_security_update_check": <em>true</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_DISABLE_SECURITY_UPDATE_CHECK=<em>true</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>false</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.1.0</td>
-  </tr>
-</table>
-
-This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for
-important security updates that might be available.
-
-
-### `--security-update-check-proxy` / "security_update_check_proxy"
-
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --security-update-check-proxy <em>scheme://user:password@proxy_host:proxy_port;</em></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"security_update_check_proxy": <em>string</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_SECURITY_UPDATE_CHECK_PROXY=<em>string</em></td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.1.0</td>
-  </tr>
-</table>
-
-This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>).
-The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
-<em>http, socks5, socks5h, socks4, socks4a</em>
-
-
-### `--engine` / "engine"
-<table class="table table-bordered table-striped table-condensed">
-  <tr>
-    <th>Command line syntax</th>
-    <td>passenger start --engine <em>nginx|builtin</em></td>
-  </tr>
-  <tr>
-    <th>Config file syntax</th>
-    <td>"engine": <em>"nginx"|"builtin"</em></td>
-  </tr>
-  <tr>
-    <th>Environment variable syntax</th>
-    <td>PASSENGER_ENGINE=<em>nginx|builtin</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>nginx</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.0</td>
-  </tr>
-  <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
-    <td>Main</td>
-  </tr>
-</table>
-
-Sets the Passenger Standalone engine to use. [Learn more about Passenger Standalone engines.](<%= url_for "/indepth/standalone_engines.html" %>)
-
+If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default log filename does not contain the `.XXX` part.
 
 ### `--log-level` / "log_level"
 
@@ -2473,6 +2212,275 @@ Possible values are:
  * `5` (debug): Also show the most important debugging information. Reading this information requires some system or programming knowledge, but the information shown is typically high-level enough to be understood by experienced system administrators.
  * `6` (debug2): Show more debugging information. This is typically only useful for developers.
  * `7` (debug3): Show even more debugging information.
+
+
+### `--friendly-error-pages`, `--no-friendly-error-pages` / "friendly_error_pages"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>
+      passenger start --friendly-error-pages<br>
+      passenger start --no-friendly-error-pages
+    </td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"friendly_error_pages": <em>boolean</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_FRIENDLY_ERROR_PAGES=<em>boolean</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>
+      <p>
+        <em>When <a href="#--environment-environment"><code>--environment</code> / "environment"</a> is <code>development</code>:</em><br>
+        Friendly error pages are on
+      </p>
+      <p>
+        <em>Otherwise:</em><br>
+        Friendly error pages are off
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.28</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Passenger can display friendly error pages whenever an application fails to start. This friendly error page presents the startup error message, some suggestions for solving the problem, a backtrace and a dump of the environment variables.
+
+This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are disabled by default, unless [--environment / "environment"](#--environment-environment) is set to `development`.
+
+You can use this option to explicitly enable or disable this feature. `--friendly-error-pages` always enables friendly error pages, and `--no-friendly-error-pages` always disables friendly error pages. Similarly, the `"friendly_error_pages": boolean` config option always enables or disables friendly error pages.
+
+
+### `--debugger` / "debugger"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --debugger</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"debugger": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_DEBUGGER=true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+<div class="note">
+  At this time, this feature is supported for Ruby applications only.
+</div>
+
+Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/admin/#{integration_mode_type}/debugging_console/ruby/index.html" %>) guide for more information.
+
+
+
+### `--max-requests` / "max_requests"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --max-requests <em>NUMBER</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"max_requests": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MAX_REQUESTS=<em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+The maximum number of requests an application process will process. After serving that many requests, the application process will be shut down and Passenger will restart it. A value of 0 means that there is no maximum. The application process might also be shut down if its [idle timeout](#--pool-idle-time-pool_idle_time) is reached.
+
+This option is useful if your application is leaking memory. By shutting it down after a certain number of requests, all of its memory is guaranteed to be freed by the operating system. An alternative (and better) mechanism for dealing with memory leaks is [memory_limit](#--memory-limit-memory_limit).
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
+</div>
+
+
+### `--memory-limit` / "memory_limit"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start [...] --memory-limit <em>MB</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"memory_limit": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MEMORY_LIMIT=<em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will allow it to finish processing all of its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
+
+This option is useful if your application is leaking memory. By shutting it down, all of its memory is guaranteed to be freed by the operating system.
+
+<div class="info">
+  <h3 class="notoc">A word about permissions</h3>
+  <p>
+    This option uses the <code>ps</code> command to query memory usage information. On Linux, it further queries <code>/proc</code> to obtain additional memory usage information that's not obtainable through <code>ps</code>. You should ensure that the <code>ps</code> works correctly and that the <code>/proc</code> filesystem is accessible by the <code>Passenger core</code> process.
+  </p>
+</div>
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
+</div>
+
+### `--max-request-time` / "max_request_time"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --max-request-time <em>SECONDS</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"max_request_time": <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_MAX_REQUEST_TIME=<em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+The maximum amount of time, in seconds, that an application process may take to process a request. If the request takes longer than this amount of time, then the application process will be forcefully shut down, and possibly restarted upon the next request. A value of 0 means that there is no time limit.
+
+This option is useful for preventing your application from getting stuck for an indefinite period of time.
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid stuck applications.
+</div>
+
+
+### `--no-abort-websockets-on-process-shutdown` / "abort_websockets_on_process_shutdown"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --no-abort-websockets-on-process-shutdown</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"abort_websockets_on_process_shutdown": false</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_ABORT_WEBSOCKETS_ON_PROCESS_SHUTDOWN=false</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Enabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Before shutting down or restarting an application process, Passenger performs two operations:
+
+ 1. It waits until existing requests routed to that process are finished. This way, existing requests will be finished gracefully.
+ 2. It aborts WebSocket connections. This is because WebSocket connections can stay open for an arbitrary amount of time and will block the shutdown/restart.
+
+If you want Passenger to _not_ abort WebSocket connections, then use this option to turn the behavior off. That way, Passenger will wait for WebSocket connections to terminate by themselves, before proceeding with a process shutdown or restart. For this reason, you *must* modify your application code to ensure that WebSocket connections do not stay open for an arbitrary amount of time.
 
 
 ### `--admin-panel-url` / "admin_panel_url"
@@ -2606,7 +2614,6 @@ The URI to connect to the <a href="https://www.phusionpassenger.com/fuse-panel">
 
    The password that Passenger should use when connecting to the Fuse Panel with basic authentication. See \"Connect Passengers\" in the Fuse Panel for further instructions. 
 
-
 ### `--ctl` / "ctls"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -2637,3 +2644,4 @@ The URI to connect to the <a href="https://www.phusionpassenger.com/fuse-panel">
 </table>
 
 Low-level mechanism to set arbitrary internal options.
+

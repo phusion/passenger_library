@@ -2,7 +2,7 @@
 
 <ol class="toc-container"><li>Loading...</li></ol>
 
-## Essentials
+## Application loading
 
 ### passenger_root
 
@@ -42,9 +42,7 @@ If you lost the `passenger_root` configuration value (e.g. because you accidenta
 
 Once you have obtained the value, open your Nginx configuration file and insert a `passenger_root` option somewhere with that value.
 
-
-## Deployment options
-
+  
 ### passenger_enabled
 
 <table class="table table-bordered table-condensed">
@@ -82,17 +80,20 @@ server {
 
 Note that since version 5.0.0, `passenger_enabled` is inherited into subcontexts. This was not the case in previous versions.
 
-
-### passenger_base_uri
+### passenger_start_timeout
 
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>passenger_base_uri <em>uri</em>;</td>
+    <td>passenger_start_timeout <em>seconds</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_start_timeout 90;</td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>2.0.0</td>
+    <td>4.0.15</td>
   </tr>
   <tr>
     <th>Context</th>
@@ -100,34 +101,7 @@ Note that since version 5.0.0, `passenger_enabled` is inherited into subcontexts
   </tr>
 </table>
 
-<!-- TODO: fix link -->
-Used to specify that the given URI is an distinct application that should be served by Passenger. Please see [the deployment guide](<%= url_for "/deploy/nginx/index.html" %>) for more information.
-
-It is allowed to specify this option multiple times. Do this to deploy multiple applications in different sub-URIs under the same virtual host.
-
-
-### passenger_document_root
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_document_root <em>path</em>;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.25</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-<!-- TODO: fix link -->
-Used in sub-URI deployment scenarios to tell Passenger where it should look for static files. Please see [the deployment guide](<%= url_for "/deploy/nginx/index.html" %>) for more information.
-
-
-## Application loading options
+Specifies a timeout for the startup of application processes. If an application process fails to start within the timeout period then it will be forcefully killed with SIGKILL, and the error will be logged.
 
 ### passenger_ruby
 
@@ -791,8 +765,813 @@ By enabling deployment error resistance, Passenger Enterprise would "freeze" the
 
 Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/admin/nginx/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-(rolling-restart)).
 
+### passenger_instance_registry_dir
 
-## Security options
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_instance_registry_dir <em>path</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_instance_registry_dir /tmp|/var/run/passenger-instreg;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+Specifies the directory that Passenger should use for registering its current instance.
+
+When Passenger starts up, it creates a temporary directory inside the _instance registry directory_. This temporary directory is called the _instance directory_. It contains all sorts of files that are important to that specific running Passenger instance, such as Unix domain socket files so that all the different Passenger processes can communicate with each other. Command line tools such as `passenger-status` use the files in this directory in order to query Passenger's status.
+
+It is therefore important that, while Passenger is working, the instance directory is never removed or tampered with. However, the default path for the instance registry directory is the system's temporary directory, and some systems may run background jobs that periodically clean this directory. If this happens, and the files inside the instance directory are removed, then it will cause Passenger to malfunction: Passenger won't be able to communicate with its own processes, and you will see all kinds of connection errors in the log files. This malfunction can only be recovered from by restarting Nginx. You can prevent such cleaning background jobs from interfering by setting this option to a different directory.
+
+This option is also useful if the partition that the temporary directory lives on doesn't have enough disk space.
+
+The instance directory is automatically removed when Nginx shuts down.
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--instance-registry-dir")) %>
+
+#### Default value
+
+The default value for this option is as follows:
+
+ * If you are on Red Hat and CentOS, and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/install/nginx/yum_repo/index.html" %>), then the default value is `/var/run/passenger-instreg`.
+ * Otherwise, the default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
+
+#### Note regarding command line tools
+
+Some Passenger command line administration tools, such as `passenger-status`, must know what Passenger's instance registry directory is in order to function properly. You can pass the directory through the `PASSENGER_INSTANCE_REGISTRY_DIR` or the `TMPDIR` environment variable.
+
+For example, if you set 'PassengerInstanceRegistryDir' to '/my_temp_dir', then invoke `passenger-status` after you've set the `PASSENGER_INSTANCE_REGISTRY_DIR`, like this:
+
+~~~bash
+export PASSENGER_INSTANCE_REGISTRY_DIR=/my_temp-dir
+sudo -E passenger-status
+~~~
+
+Notes regarding the above example:
+
+ * The -E option tells 'sudo' to preserve environment variables.
+ * If Passenger is installed through an RVM Ruby, then you must use `rvmsudo` instead of `sudo`.
+
+
+
+### passenger_fly_with
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_fly_with <em>path</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Flying Passenger mode disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.1.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) mode, and configures Nginx to connect to the Flying Passenger daemon that's listening on the given socket filename.
+
+
+## Performance tuning
+
+### passenger_core_file_descriptor_ulimit
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_core_file_descriptor_ulimit <em>integer</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Inherited from Nginx</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.26</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+Sets the file descriptor operating system ulimit for the Passenger core process. If you see "too many file descriptors" errors on a regular basis, then increasing this limit will help.
+
+The default value is inherited from the process that started Passenger, which is the Nginx master process in the Nginx integration mode. Assuming Passenger has enough access rights (normally true if the Nginx master process runs as root), it can override its ulimit to the requested setting.
+
+On most operating systems, the default ulimit can also be configured with a config file such as /etc/security/limits.conf, but since ulimits are *inherited* on a process basis instead of set globally, using that file to change ulimits is usually an error-prone process. This Passenger configuration option provides an easier and high confidence way to set the file descriptor ulimit.
+
+Note that application ulimits may also be affected by this setting because ulimits are inherited on a process basis (i.e. from Passenger). There are two exceptions to this:
+
+1. If you are using [passenger_load_shell_envvars](#passenger_load_shell_envvars) then the application processes are started through the shell, and the shell startup files may override the ulimits set by Passenger.
+
+2. You can also set the file descriptor ulimit on a per-application basis (instead of setting it globally for the Passenger core process) using [passenger_app_file_descriptor_ulimit](#passenger_app_file_descriptor_ulimit).
+
+
+### passenger_app_file_descriptor_ulimit
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_app_file_descriptor_ulimit <em>integer</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.26</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Sets the file descriptor operating system ulimit for application processes managed by Passenger. If you see "too many file descriptor" errors on a regular basis, and these errors originate from the application process (as opposed to the Passenger core processes), then increasing this limit will help.
+
+If the "too many file descriptor" errors originate from the Passenger core process, then setting this option will *not* help. Use [passenger_core_file_descriptor_ulimit](#passenger_core_file_descriptor_ulimit) for that.
+
+The default file descriptor ulimit is inherited from the Passenger core process. See [passenger_core_file_descriptor_ulimit](#passenger_core_file_descriptor_ulimit) to learn how the default file descriptor ulimit for Passenger core process is set.
+
+
+### passenger_max_pool_size
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_max_pool_size <em>integer</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_max_pool_size 6;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>1.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+The maximum number of application processes that may simultaneously exist. A larger number results in higher memory usage,
+but improves the ability to handle concurrent HTTP requests.
+
+The optimal value depends on your system's hardware and your workload. Please read the [optimization guide](<%= url_for "/config/#{integration_mode_type}/optimization/index.html" %>) to learn how to find out the optimal value.
+
+This option behaves like a "safety switch" that prevents Passenger from overloading your system with too many processes. No matter how you configure [passenger_min_instances](#passenger_min_instances) and [passenger_max_instances](#passenger_max_instances), the total number of processes won't ever surpass the value set for this option. For example, if passenger_max_pool_size is set to 6, and you also deployed two applications on Passenger with each application's passenger_min_instances set to 4, then the maximum number processes that may simultaneously exist is 6, not 8.
+
+If you find that your server is running out of memory then you should lower this value. In order to prevent your server from crashing due to out-of-memory conditions, the default value is relatively low (6).
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--max-pool-size")) %>
+
+### passenger_min_instances
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_min_instances <em>integer</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_min_instances 1;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+This specifies the minimum number of application processes that should exist for a given application. You should set this option to a non-zero value if you want to avoid potentially long startup times after a website has been [idle](#passenger_pool_idle_time) for an extended period of time.
+
+Please note that this option does *not* pre-start application processes during Nginx startup. It just makes sure that when the application is first accessed:
+
+ 1. at least the given number of processes will be spawned.
+ 2. the given number of processes will be kept around even when processes are being [idle cleaned](#passenger_pool_idle_time).
+
+If you want to pre-start application processes during Nginx startup, then you should use the [passenger_pre_start](#passenger_pre_start) option, possibly in combination with `passenger_min_instances`. This behavior might seem counter-intuitive at first sight, but `passenger_pre_start` explains the rationale behind it.
+
+#### Example
+
+Suppose that you have the following configuration:
+
+~~~nginx
+http {
+    ...
+    passenger_max_pool_size 15;
+    passenger_pool_idle_time 10;
+
+    server {
+        listen 80;
+        server_name foobar.com;
+        root /webapps/foobar/public;
+        passenger_min_instances 3;
+    }
+}
+~~~
+
+When you start Nginx, there are 0 application processes for 'foobar.com'. Things will stay that way until someone visits 'foobar.com'. Suppose that there is only one visitor. One application process will be started immediately to serve the visitor, while two will be spawned in the background. After 10 seconds, when the idle timeout has been reached, these 3 application processes will not be cleaned up.
+
+Now suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.com' simultaneously. Passenger will start 12 more application processes (`15 - 3 = 12`). After the idle timeout of 10 seconds has passed, Passenger will clean up 12 application processes, keeping 3 processes around.
+
+
+### passenger_max_instances
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_max_instances <em>integer</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_max_instances 0;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+The maximum number of application processes that may simultaneously exist for an application. This helps to make sure that a single application will not occupy all available slots in the application pool.
+
+This value must be less than [passenger_max_pool_size](#passenger_max_pool_size). A value of 0 means that there is no limit placed on the number of processes a single application may spawn, i.e. only the global limit of `passenger_max_pool_size` will be enforced.
+
+#### Example
+
+Suppose that you're hosting two web applications on your server, a personal blog and an e-commerce website. You've set [passenger_max_pool_size](#passenger_max_pool_size) to 10. The e-commerce website is more important to you. You can then set `passenger_max_instances` to 3 for your blog, so that it will never spawn more than 3 processes, even if it suddenly gets a lot of traffic. Your e-commerce website on the other hand will be free to spawn up to 10 processes if it gets a lot of traffic.
+
+
+### passenger_max_instances_per_app
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_max_instances_per_app <em>integer</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_max_instances_per_app 0;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+The maximum number of application processes that may simultaneously exist for a single application. This helps to make sure that a single application will not occupy all available slots in the application pool.
+
+This value must be less than [passenger_max_pool_size](#passenger_max_pool_size). A value of 0 means that there is no limit placed on the number of processes a single application may use, i.e. only the global limit of `passenger_max_pool_size` will be enforced.
+
+#### Example
+
+Suppose that you're hosting two blogs (blog A and B) on your server, and that you've set [passenger_max_pool_size](#passenger_max_pool_size) to 10. Under normal circumstances, if blog A suddenly gets a lot of traffic, then A will use all 10 pool slots. If blog B suddenly gets some traffic, then it will only be able to use 1 pool slot (forcefully releasing 1 slot from A) until A's traffic has settled down and it has released more pool slots.
+
+If you consider both blogs equally important, then you can set `passenger_max_instances_per_app` to 5. This way, both blogs will never use more than 5 pool slots.
+
+#### Relation to passenger_max_instances
+
+Unlike [passenger_max_instances](#passenger_max_instances), this configuration option is global (only usable in the `http` context) and applies to all applications. `passenger_max_instances` on the other hand is per-virtual host.
+
+Suppose that you're hosting two web applications on your server, a personal blog and an e-commerce website. You've set [passenger_max_pool_size](#passenger_max_pool_size) to 10. The e-commerce website is more important to you. You can then set `passenger_max_instances` to 3 for your blog, so that it will never use more than 3 pool slots, even if it suddenly gets a lot of traffic. Your e-commerce website on the other hand will be free to use up all 10 slots if it gets a lot of traffic.
+
+In summary, `passenger_max_instances_per_app` divides the pool equally among the different web applications, while 'passenger_max_instances' allows one to divide the pool unequally, according to each web application's relative importance.
+
+
+### passenger_pool_idle_time
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_pool_idle_time <em>seconds</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_pool_idle_time 300; <em>(5 minutes)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+The maximum number of seconds that an application process may be idle. That is, if an application process hasn't received any traffic after the given number of seconds, then it will be shutdown in order to conserve memory.
+
+Decreasing this value means that applications will have to be spawned more often. Since spawning is a relatively slow operation, some visitors may notice a small delay when they visit your web app. However, it will also free up resources used by applications more quickly.
+
+The optimal value depends on the average time that a visitor spends on a single dynamic page. We recommend a value of `2 * x`, where `x` is the average number of seconds that a visitor spends on a single dynamic page. But your mileage may vary.
+
+When this value is set to `0`, application processes will not be shutdown unless it's really necessary. Here is a situation where Passenger seems necessary to shutdown an application process. Suppose that you have two apps on your server, foo and bar. If a user visits foo, but there are no processes for foo, and at the same time there are lots of application processes for bar (as many as the [pool limit](#passenger_max_pool_size)), then Passenger will wait until one of those bar processes is no longer handling a request. At time time, that process will be shutdown so that Passenger can spawn a foo process.
+
+Setting the value to 0 is recommended if you're on a non-shared host that's only running a few applications, each which must be available at all times.
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--pool-idle-time")) %>
+
+
+### passenger_max_preloader_idle_time
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_max_preloader_idle_time <em>seconds</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_max_preloader_idle_time 300; <em>(5 minutes)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+The preloader process (explained in [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#passenger_pool_idle_time). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
+
+This option allows you to set the preloader's idle timeout, in seconds. A value of `0` means that it should never idle timeout.
+
+Setting a higher value will mean that the preloader is kept around longer, which may slightly increase memory usage. But as long as the preloader server is running, the time to spawn a Ruby application process only takes about 10% of the time that is normally needed, assuming that you're using the `smart` [spawn method](#passenger_spawn_method). So if your system has enough memory, then is it recommended that you set this option to a high value or to `0`.
+
+
+### passenger_force_max_concurrent_requests_per_process
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_force_max_concurrent_requests_per_process <em>number</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_force_max_concurrent_requests_per_process -1;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+<%
+languages_requiring_hint_for_dynamic_process_scaling_to_work = []
+
+SUPPORTED_LANGUAGES.each do |language|
+  if language[:language_default_concurrency] == 0
+    languages_requiring_hint_for_dynamic_process_scaling_to_work << language[:language_name]
+  end
+end
+%>
+
+Use this option to tell Passenger how many concurrent requests the application can handle per process. A value of 0 means that each process can handle an unlimited number of connections, while a value of -1 (the default) means that Passenger will infer the value based on internal heuristics.
+
+There are two main use cases for this option:
+
+ 1. To make [dynamic process scaling](<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
+ 2. [To make SSE and WebSockets work well in Ruby applications.](<%= url_for "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html" %>) Set this option to 0.
+
+This option is a hint to Passenger and does not make the application *actually* able to handle that many concurrent requests per process. For example in Ruby applications, the amount of concurrency that your application process can handle usually depends on the number of [configured threads](#passenger_thread_count). If you set the number of threads, then Passenger will automatically infer that Ruby applications' max concurrency per process equals the number of threads. But in non-standard cases where this heuristic fails (e.g. in situations where a WebSocket library such as Faye spawns threads to handle WebSockets) then you can use this option to override Passenger's heuristic.
+
+It is recommended that you do not touch this configuration option unless you want to tweak Passenger for one of the two main use cases documented above.
+
+
+### passenger_concurrency_model
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_concurrency_model <em>process|thread</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_concurrency_model process;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Specifies the I/O concurrency model that should be used for Ruby application processes. Passenger supports two concurrency models:
+
+ * `process` -- single-threaded, multi-processed I/O concurrency. Each application process only has a single thread and can only handle 1 request at a time. This is the concurrency model that Ruby applications traditionally used. It has excellent compatibility (can work with applications that are not designed to be thread-safe) but is unsuitable for workloads in which the application has to wait for a lot of external I/O (e.g. HTTP API calls), and uses more memory because each process has a large memory overhead.
+ * `thread` -- multi-threaded, multi-processed I/O concurrency. Each application process has multiple threads (customizable via [passenger_thread_count](#passenger_thread_count). This model provides much better I/O concurrency and uses less memory because threads share memory with each other within the same process. However, using this model may cause compatibility problems if the application is not designed to be thread-safe.
+
+<div class="note">
+  <ul>
+    <li>This option only has effect on Ruby applications.</li>
+    <li>Multithreading is not supported for Python.</li>
+    <li>Multithreading is not applicable to Node.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+  </ul>
+</div>
+
+
+### passenger_thread_count
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_thread_count <em>integer</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_thread_count 1;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+Specifies the number of threads that Passenger should spawn per Ruby application process. This option only has effect if [passenger_concurrency_model](#passenger_concurrency_model) is `thread`.
+
+<div class="note">
+  <ul>
+    <li>This option only has effect on Ruby applications.</li>
+    <li>Multithreading is not supported for Python.</li>
+    <li>Multithreading is not applicable to Node.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+  </ul>
+</div>
+
+### passenger_stat_throttle_rate
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_stat_throttle_rate <em>seconds</em>;</td>
+  </tr>
+  <tr>
+    <th>Default (as of 5.0.0)</th>
+    <td>passenger_stat_throttle_rate 10;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>2.2.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+By default, Passenger performs several filesystem checks (or, in programmers jargon, "`stat()` calls") each time a request is processed:
+
+ * It checks which the application [startup files](<%= url_for "/indepth/app_autodetection/index.html" %>) are present, in order to autodetect the application type.
+ * It checks whether [restart.txt](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>) has changed or whether `always_restart.txt` exists, in order to determine whether the application should be restarted.
+
+On some systems where disk I/O is expensive, e.g. systems where the harddisk is already being heavily loaded, or systems where applications are stored on NFS shares, these filesystem checks can incur a lot of overhead.
+
+You can decrease or almost entirely eliminate this overhead by setting `passenger_stat_throttle_rate`. Setting this option to a value of `x` means that the above list of filesystem checks will be performed at most once every `x` seconds. Setting it to a value of '0' means that no throttling will take place, or in other words, that the above list of filesystem checks will be performed on every request.
+
+### passenger_pre_start
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_pre_start <em>url</em>;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+By default, Passenger does not start any application processes until said web application is first accessed. The result is that the first visitor of said web application might experience a small delay as Passenger is starting the web application on demand. If that is undesirable, then this option can be used to pre-start application processes during Nginx startup.
+
+A few things to be careful of:
+
+ * This option accepts the *URL* of the web application you want to pre-start, not a on/off value! This might seem a bit weird, but read on for rationale. As for the specifics of the URL:
+   - The domain part of the URL must be equal to the value of the `server_name` option of the `server` block that defines the web application.
+   - Unless the web application is deployed on port 80, the URL should contain the web application's port number too.
+   - The path part of the URL must point to some URI that the web application handles.
+ * You will probably want to combine this option with [passenger_min_instances](#passenger_min_instances) because application processes started with `passenger_pre_start` are subject to the usual idle timeout rules. See the example below for an explanation.
+
+<div class="note">
+  This option is currently not available when using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>.
+</div>
+
+#### Example 1: basic usage
+
+Suppose that you have the following web applications.
+
+~~~nginx
+server {
+    listen 80;
+    server_name foo.com;
+    root /webapps/foo/public;
+    passenger_enabled on;
+}
+
+server {
+    listen 3500;
+    server_name bar.com;
+    root /webapps/bar/public;
+    passenger_enabled on;
+}
+~~~
+
+You want both of them to be pre-started during Nginx startup. The URL for foo.com is `http://foo.com/` (or, equivalently, `http://foo.com:80/`) and the URL for bar.com is `http://bar.com:3500/`. So we add two `passenger_pre_start` options, like this:
+
+~~~nginx
+server {
+    listen 80;
+    server_name foo.com;
+    root /webapps/foo/public;
+    passenger_enabled on;
+}
+
+server {
+    listen 3500;
+    server_name bar.com;
+    root /webapps/bar/public;
+    passenger_enabled on;
+}
+
+passenger_pre_start http://foo.com/;           # <--- added
+passenger_pre_start http://bar.com:3500/;      # <--- added
+~~~
+
+#### Example 2: pre-starting apps that are deployed in sub-URIs
+
+Suppose that you have a web application deployed in a sub-URI `/store`, like this:
+
+~~~nginx
+server {
+    listen 80;
+    server_name myblog.com;
+    root /webapps/wordpress;
+    passenger_base_uri /store;
+}
+~~~
+
+Then specify the `server_name` value followed by the sub-URI, like this:
+
+~~~nginx
+server {
+    listen 80;
+    server_name myblog.com;
+    root /webapps/wordpress;
+    passenger_base_uri /store;
+}
+
+passenger_pre_start http://myblog.com/store;    # <----- added
+~~~
+
+The sub-URI *must* be included; if you don't then the option will have no effect. The following example is wrong and won't pre-start the store web application:
+
+~~~nginx
+passenger_pre_start http://myblog.com/;    # <----- WRONG! Missing "/store" part.
+~~~
+
+#### Example 3: combining with passenger_min_instances
+
+Application processes started with `passenger_pre_start` are also subject to the idle timeout rules as specified by [passenger_pool_idle_time](#passenger_pool_idle_time)! That means that by default, the pre-started application processes for foo.com and bar.com are shut down after a few minutes of inactivity. If you don't want that to happen, then you should combine `passenger_pre_start` with [passenger_min_instances](#passenger_min_instances), like this:
+
+~~~nginx
+server {
+    listen 80;
+    server_name foo.com;
+    root /webapps/foo/public;
+    passenger_enabled on;
+    passenger_min_instances 1;      # <--- added
+}
+
+server {
+    listen 3500;
+    server_name bar.com;
+    root /webapps/bar/public;
+    passenger_enabled on;
+    passenger_min_instances 1;      # <--- added
+}
+
+passenger_pre_start http://foo.com/;
+passenger_pre_start http://bar.com:3500/;
+~~~
+
+#### So why a URL? Why not just an on/off flag?
+
+An option that accepts a simple on/off flag is definitely more intuitive, but due technical difficulties w.r.t. the way Nginx works, it's very hard to implement it like that:
+
+It is very hard to obtain a full list of web applications defined in the Nginx configuration file(s). In other words, it's hard for Passenger to know which web applications are deployed on Nginx until a web application is first accessed, and without such a list Passenger wouldn't know which web applications to pre-start. So as a compromise, we made it accept a URL.
+
+#### What does Passenger do with the URL?
+
+During Nginx startup, Passenger will send a dummy HEAD request to the given URL and discard the result. In other words, Passenger simulates a web access at the given URL. However this simulated request is always sent to localhost, *not* to the IP that the domain resolves to. Suppose that bar.com in example 1 resolves to 209.85.227.99; Passenger will send the following HTTP request to 127.0.0.1 port 3500 (and not to 209.85.227.99 port 3500):
+
+~~~
+HEAD / HTTP/1.1
+Host: bar.com
+Connection: close
+~~~
+
+Similarly, for example 2, Passenger will send the following HTTP request to 127.0.0.1 port 80:
+
+~~~
+HEAD /store HTTP/1.1
+Host: myblog.com
+Connection: close
+~~~
+
+#### Do I need to edit /etc/hosts and point the domain in the URL to 127.0.0.1?
+
+No. See previous subsection.
+
+#### My web application consists of multiple web servers. What URL do I need to specify, and in which web server's Nginx config file?
+
+Put the web application's `server_name` value and the server block's port in the URL, and put `passenger_pre_start` on all machines that you want to pre-start the web application on. The simulated web request is always sent to 127.0.0.1, with the domain name in the URL as value for the 'Host' HTTP header, so you don't need to worry about the request ending up at a different web server in the cluster.
+
+#### Does passenger_pre_start support https:// URLs?
+
+Yes. And it does not perform any certificate validation.
+
+### passenger_response_buffer_high_watermark
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_response_buffer_high_watermark <em>bytes</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_response_buffer_high_watermark 134217728; <em>(128 MB)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+As explained in [passenger_buffer_response](#passenger_buffer_response), Passenger has two response buffering mechanisms. This option configures the maximum size of the real-time disk-backed response buffering system. If the buffer is full, the application will be blocked until the client has fully read the buffer.
+
+This buffering system has a default size of *128 MB* (134217728 bytes). This default value is large enough to prevent most applications from blocking on slow clients, but small enough to prevent broken applications from filling up the hard disk.
+
+You can't disable real-time disk-backed response buffering, but you can set the buffer size to a small value, which is effectively the same as disabling it.
+
+Most of the time, you won't need to tweak this value. But there is one good use case where you may want set this option to a low value: if you are streaming a large response, but want to detect client disconnections as soon as possible. If the buffer size is larger than your response size, then Passenger will read and buffer the response as fast as it can, offloading the application as soon as it can, thereby preventing the application from detecting client disconnects. But if the buffer size is sufficiently small (say, 64 KB), then your application will effectively output response data at the same speed as the client reads it, allowing you to detect client disconnects almost immediately. This is also a down side, because many slow clients blocking your application can result in a denial of service, so use this option with care.
+
+If your application outputs responses larger than 128 MB and you are not interested in detecting client disconnects as soon as possible, then you should raise this value, or set it to 0.
+
+A value of 0 means that the buffer size is unlimited.
+
+
+### passenger_max_request_queue_size
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_max_request_queue_size <em>integer</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_max_request_queue_size 100;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.15</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum size for that queue. If the queue is already at this specified limit, then Passenger will immediately send a "503 Service Unavailable" error to any incoming requests. You may use [passenger_request_queue_overflow_status_code](#passenger_request_queue_overflow_status_code) to customize the response status.
+
+A value of 0 means that the queue is unbounded.
+
+[This article on StackOverflow](http://stackoverflow.com/questions/20402801/what-is-optimal-value-for-phusion-passenger-passengermaxrequestqueuesize) explains how the request queue works, what it means for the queue to grow or become full, why that is bad, and what you can do about it.
+
+You may combine this option with [passenger_intercept_errors](#passenger_intercept_errors) and [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) to set a custom error page whenever the queue is full. In the following example, Nginx will serve /error503.html whenever the queue is full:
+
+~~~nginx
+passenger_intercept_errors on;
+error_page 503 /error503.html;
+~~~
+
+
+### passenger_max_request_queue_time
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_max_request_queue_time <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_max_request_queue_time 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.12</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum time a request may spend in that queue. If a request in the queue reaches this specified limit, then Passenger will send a "504 Gateway Timeout" error for that request. For performance reasons it might take up to 0.5 × `passenger_max_request_queue_time` after a request timed out before a 504 response is sent (when all application processes are stuck).
+
+A value of 0 means that the queue time is unbounded.
+
+[This blog article](https://blog.phusion.nl/2017/12/14/how-waiting-in-line-got-nicer/) explains how to use this option to optimize the user experience during rush hour, when queueing starts happening.
+
+You may combine this option with [passenger_intercept_errors](#passenger_intercept_errors) and [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) to set a custom error page whenever the queue is full. In the following example, Nginx will serve /error504.html whenever the queue is full:
+
+~~~nginx
+passenger_intercept_errors on;
+error_page 504 /error504.html;
+~~~
+
+### passenger_socket_backlog
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>
+      passenger_socket_backlog <em>size</em>;<br>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>
+      passenger_socket_backlog 1024; (&lt; 5.0.25)<br>
+      passenger_socket_backlog 2048; (&gt;= 5.0.26)
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.24</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+The socket backlog is a queue of incoming connections (from Nginx) not yet acknowledged by Passenger. The default value is chosen to match the default for Nginx' `worker_connections`. If you increase the latter, it is likely that you'll also need to increase the `passenger_socket_backlog`. If connections are coming in too fast and overflow the backlog, you'll see the error:
+
+<i>connect() to unix:/tmp/passenger... failed (11: Resource temporarily unavailable) while connecting to upstream</i>
+
+
+## Security
 
 ### passenger_user_switching
 
@@ -1053,555 +1832,12 @@ This option allows use of an intermediate proxy for the [Passenger security upda
 The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
-
-## Resource control and optimization options
-
-### passenger_max_pool_size
+### passenger_data_buffer_dir
 
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>passenger_max_pool_size <em>integer</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_max_pool_size 6;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>1.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http</td>
-  </tr>
-</table>
-
-The maximum number of application processes that may simultaneously exist. A larger number results in higher memory usage,
-but improves the ability to handle concurrent HTTP requests.
-
-The optimal value depends on your system's hardware and your workload. Please read the [optimization guide](<%= url_for "/config/#{integration_mode_type}/optimization/index.html" %>) to learn how to find out the optimal value.
-
-This option behaves like a "safety switch" that prevents Passenger from overloading your system with too many processes. No matter how you configure [passenger_min_instances](#passenger_min_instances) and [passenger_max_instances](#passenger_max_instances), the total number of processes won't ever surpass the value set for this option. For example, if passenger_max_pool_size is set to 6, and you also deployed two applications on Passenger with each application's passenger_min_instances set to 4, then the maximum number processes that may simultaneously exist is 6, not 8.
-
-If you find that your server is running out of memory then you should lower this value. In order to prevent your server from crashing due to out-of-memory conditions, the default value is relatively low (6).
-
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--max-pool-size")) %>
-
-
-### passenger_min_instances
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_min_instances <em>integer</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_min_instances 1;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-This specifies the minimum number of application processes that should exist for a given application. You should set this option to a non-zero value if you want to avoid potentially long startup times after a website has been [idle](#passenger_pool_idle_time) for an extended period of time.
-
-Please note that this option does *not* pre-start application processes during Nginx startup. It just makes sure that when the application is first accessed:
-
- 1. at least the given number of processes will be spawned.
- 2. the given number of processes will be kept around even when processes are being [idle cleaned](#passenger_pool_idle_time).
-
-If you want to pre-start application processes during Nginx startup, then you should use the [passenger_pre_start](#passenger_pre_start) option, possibly in combination with `passenger_min_instances`. This behavior might seem counter-intuitive at first sight, but `passenger_pre_start` explains the rationale behind it.
-
-#### Example
-
-Suppose that you have the following configuration:
-
-~~~nginx
-http {
-    ...
-    passenger_max_pool_size 15;
-    passenger_pool_idle_time 10;
-
-    server {
-        listen 80;
-        server_name foobar.com;
-        root /webapps/foobar/public;
-        passenger_min_instances 3;
-    }
-}
-~~~
-
-When you start Nginx, there are 0 application processes for 'foobar.com'. Things will stay that way until someone visits 'foobar.com'. Suppose that there is only one visitor. One application process will be started immediately to serve the visitor, while two will be spawned in the background. After 10 seconds, when the idle timeout has been reached, these 3 application processes will not be cleaned up.
-
-Now suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.com' simultaneously. Passenger will start 12 more application processes (`15 - 3 = 12`). After the idle timeout of 10 seconds has passed, Passenger will clean up 12 application processes, keeping 3 processes around.
-
-
-### passenger_max_instances
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_max_instances <em>integer</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_max_instances 0;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
-</table>
-
-The maximum number of application processes that may simultaneously exist for an application. This helps to make sure that a single application will not occupy all available slots in the application pool.
-
-This value must be less than [passenger_max_pool_size](#passenger_max_pool_size). A value of 0 means that there is no limit placed on the number of processes a single application may spawn, i.e. only the global limit of `passenger_max_pool_size` will be enforced.
-
-#### Example
-
-Suppose that you're hosting two web applications on your server, a personal blog and an e-commerce website. You've set [passenger_max_pool_size](#passenger_max_pool_size) to 10. The e-commerce website is more important to you. You can then set `passenger_max_instances` to 3 for your blog, so that it will never spawn more than 3 processes, even if it suddenly gets a lot of traffic. Your e-commerce website on the other hand will be free to spawn up to 10 processes if it gets a lot of traffic.
-
-
-### passenger_max_instances_per_app
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_max_instances_per_app <em>integer</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_max_instances_per_app 0;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http</td>
-  </tr>
-</table>
-
-The maximum number of application processes that may simultaneously exist for a single application. This helps to make sure that a single application will not occupy all available slots in the application pool.
-
-This value must be less than [passenger_max_pool_size](#passenger_max_pool_size). A value of 0 means that there is no limit placed on the number of processes a single application may use, i.e. only the global limit of `passenger_max_pool_size` will be enforced.
-
-#### Example
-
-Suppose that you're hosting two blogs (blog A and B) on your server, and that you've set [passenger_max_pool_size](#passenger_max_pool_size) to 10. Under normal circumstances, if blog A suddenly gets a lot of traffic, then A will use all 10 pool slots. If blog B suddenly gets some traffic, then it will only be able to use 1 pool slot (forcefully releasing 1 slot from A) until A's traffic has settled down and it has released more pool slots.
-
-If you consider both blogs equally important, then you can set `passenger_max_instances_per_app` to 5. This way, both blogs will never use more than 5 pool slots.
-
-#### Relation to passenger_max_instances
-
-Unlike [passenger_max_instances](#passenger_max_instances), this configuration option is global (only usable in the `http` context) and applies to all applications. `passenger_max_instances` on the other hand is per-virtual host.
-
-Suppose that you're hosting two web applications on your server, a personal blog and an e-commerce website. You've set [passenger_max_pool_size](#passenger_max_pool_size) to 10. The e-commerce website is more important to you. You can then set `passenger_max_instances` to 3 for your blog, so that it will never use more than 3 pool slots, even if it suddenly gets a lot of traffic. Your e-commerce website on the other hand will be free to use up all 10 slots if it gets a lot of traffic.
-
-In summary, `passenger_max_instances_per_app` divides the pool equally among the different web applications, while 'passenger_max_instances' allows one to divide the pool unequally, according to each web application's relative importance.
-
-
-### passenger_pool_idle_time
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_pool_idle_time <em>seconds</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_pool_idle_time 300; <em>(5 minutes)</em></td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http</td>
-  </tr>
-</table>
-
-The maximum number of seconds that an application process may be idle. That is, if an application process hasn't received any traffic after the given number of seconds, then it will be shutdown in order to conserve memory.
-
-Decreasing this value means that applications will have to be spawned more often. Since spawning is a relatively slow operation, some visitors may notice a small delay when they visit your web app. However, it will also free up resources used by applications more quickly.
-
-The optimal value depends on the average time that a visitor spends on a single dynamic page. We recommend a value of `2 * x`, where `x` is the average number of seconds that a visitor spends on a single dynamic page. But your mileage may vary.
-
-When this value is set to `0`, application processes will not be shutdown unless it's really necessary. Here is a situation where Passenger seems necessary to shutdown an application process. Suppose that you have two apps on your server, foo and bar. If a user visits foo, but there are no processes for foo, and at the same time there are lots of application processes for bar (as many as the [pool limit](#passenger_max_pool_size)), then Passenger will wait until one of those bar processes is no longer handling a request. At time time, that process will be shutdown so that Passenger can spawn a foo process.
-
-Setting the value to 0 is recommended if you're on a non-shared host that's only running a few applications, each which must be available at all times.
-
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--pool-idle-time")) %>
-
-
-### passenger_max_preloader_idle_time
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_max_preloader_idle_time <em>seconds</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_max_preloader_idle_time 300; <em>(5 minutes)</em></td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-The preloader process (explained in [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#passenger_pool_idle_time). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
-
-This option allows you to set the preloader's idle timeout, in seconds. A value of `0` means that it should never idle timeout.
-
-Setting a higher value will mean that the preloader is kept around longer, which may slightly increase memory usage. But as long as the preloader server is running, the time to spawn a Ruby application process only takes about 10% of the time that is normally needed, assuming that you're using the `smart` [spawn method](#passenger_spawn_method). So if your system has enough memory, then is it recommended that you set this option to a high value or to `0`.
-
-
-### passenger_force_max_concurrent_requests_per_process
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_force_max_concurrent_requests_per_process <em>number</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_force_max_concurrent_requests_per_process -1;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.22</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-<%
-languages_requiring_hint_for_dynamic_process_scaling_to_work = []
-
-SUPPORTED_LANGUAGES.each do |language|
-  if language[:language_default_concurrency] == 0
-    languages_requiring_hint_for_dynamic_process_scaling_to_work << language[:language_name]
-  end
-end
-%>
-
-Use this option to tell Passenger how many concurrent requests the application can handle per process. A value of 0 means that each process can handle an unlimited number of connections, while a value of -1 (the default) means that Passenger will infer the value based on internal heuristics.
-
-There are two main use cases for this option:
-
- 1. To make [dynamic process scaling](<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
- 2. [To make SSE and WebSockets work well in Ruby applications.](<%= url_for "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html" %>) Set this option to 0.
-
-This option is a hint to Passenger and does not make the application *actually* able to handle that many concurrent requests per process. For example in Ruby applications, the amount of concurrency that your application process can handle usually depends on the number of [configured threads](#passenger_thread_count). If you set the number of threads, then Passenger will automatically infer that Ruby applications' max concurrency per process equals the number of threads. But in non-standard cases where this heuristic fails (e.g. in situations where a WebSocket library such as Faye spawns threads to handle WebSockets) then you can use this option to override Passenger's heuristic.
-
-It is recommended that you do not touch this configuration option unless you want to tweak Passenger for one of the two main use cases documented above.
-
-
-### passenger_start_timeout
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_start_timeout <em>seconds</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_start_timeout 90;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.15</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-Specifies a timeout for the startup of application processes. If an application process fails to start within the timeout period then it will be forcefully killed with SIGKILL, and the error will be logged.
-
-
-### passenger_concurrency_model
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_concurrency_model <em>process|thread</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_concurrency_model process;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
-</table>
-
-Specifies the I/O concurrency model that should be used for Ruby application processes. Passenger supports two concurrency models:
-
- * `process` -- single-threaded, multi-processed I/O concurrency. Each application process only has a single thread and can only handle 1 request at a time. This is the concurrency model that Ruby applications traditionally used. It has excellent compatibility (can work with applications that are not designed to be thread-safe) but is unsuitable for workloads in which the application has to wait for a lot of external I/O (e.g. HTTP API calls), and uses more memory because each process has a large memory overhead.
- * `thread` -- multi-threaded, multi-processed I/O concurrency. Each application process has multiple threads (customizable via [passenger_thread_count](#passenger_thread_count). This model provides much better I/O concurrency and uses less memory because threads share memory with each other within the same process. However, using this model may cause compatibility problems if the application is not designed to be thread-safe.
-
-<div class="note">
-  <ul>
-    <li>This option only has effect on Ruby applications.</li>
-    <li>Multithreading is not supported for Python.</li>
-    <li>Multithreading is not applicable to Node.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
-  </ul>
-</div>
-
-
-### passenger_thread_count
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_thread_count <em>integer</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_thread_count 1;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
-</table>
-
-Specifies the number of threads that Passenger should spawn per Ruby application process. This option only has effect if [passenger_concurrency_model](#passenger_concurrency_model) is `thread`.
-
-<div class="note">
-  <ul>
-    <li>This option only has effect on Ruby applications.</li>
-    <li>Multithreading is not supported for Python.</li>
-    <li>Multithreading is not applicable to Node.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
-  </ul>
-</div>
-
-
-### passenger_max_requests
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_max_requests <em>integer</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_max_requests 0;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-The maximum number of requests an application process will process. After serving that many requests, the application process will be shut down and Passenger will restart it. A value of 0 means that there is no maximum. The application process might also be shut down if its [idle timeout](#passenger_pool_idle_time) is reached.
-
-This option is useful if your application is leaking memory. By shutting it down after a certain number of requests, all of its memory is guaranteed to be freed by the operating system. An alternative (and better) mechanism for dealing with memory leaks is [passenger_memory_limit](#passenger_memory_limit).
-
-<div class="note">
-  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
-</div>
-
-
-### passenger_max_request_time
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_max_request_time <em>seconds</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_max_request_time 0;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
-</table>
-
-The maximum amount of time, in seconds, that an application process may take to process a request. If the request takes longer than this amount of time, then the application process will be forcefully shut down, and possibly restarted upon the next request. A value of 0 means that there is no time limit.
-
-This option is useful for preventing your application from getting stuck for an indefinite period of time.
-
-<div class="note">
-  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid stuck applications.
-</div>
-
-#### Example
-
-Suppose that most of your requests are known to finish within 2 seconds. However, there is one URI, `/expensive_computation`, which is known to take up to 10 seconds. You can then configure Passenger as follows:
-
-~~~nginx
-server {
-    listen 80;
-    server_name www.example.com;
-    root /webapps/my_app/public;
-    passenger_enabled on;
-    passenger_max_request_time 2;
-    location /expensive_compuation {
-        passenger_enabled on;
-        passenger_max_request_time 10;
-    }
-}
-~~~
-
-If a request to '/expensive_computation' takes more than 10 seconds, or if a request to any other URI takes more than 2 seconds, then the corresponding application process will be forced to shutdown.
-
-
-### passenger_memory_limit
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_memory_limit <em>megabytes</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_memory_limit 0;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
-</table>
-
-The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will allow it to finish processing all of its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
-
-This option is useful if your application is leaking memory. By shutting it down, all of its memory is guaranteed to be freed by the operating system.
-
-<div class="info">
-  <h3 class="notoc">A word about permissions</h3>
-  <p>
-    This option uses the <code>ps</code> command to query memory usage information. On Linux, it further queries <code>/proc</code> to obtain additional memory usage information that's not obtainable through <code>ps</code>. You should ensure that the <code>ps</code> works correctly and that the <code>/proc</code> filesystem is accessible by the <code>Passenger core</code> process.
-  </p>
-</div>
-
-<div class="note">
-  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
-</div>
-
-
-### passenger_stat_throttle_rate
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_stat_throttle_rate <em>seconds</em>;</td>
-  </tr>
-  <tr>
-    <th>Default (as of 5.0.0)</th>
-    <td>passenger_stat_throttle_rate 10;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>2.2.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-By default, Passenger performs several filesystem checks (or, in programmers jargon, "`stat()` calls") each time a request is processed:
-
- * It checks which the application [startup files](<%= url_for "/indepth/app_autodetection/index.html" %>) are present, in order to autodetect the application type.
- * It checks whether [restart.txt](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>) has changed or whether `always_restart.txt` exists, in order to determine whether the application should be restarted.
-
-On some systems where disk I/O is expensive, e.g. systems where the harddisk is already being heavily loaded, or systems where applications are stored on NFS shares, these filesystem checks can incur a lot of overhead.
-
-You can decrease or almost entirely eliminate this overhead by setting `passenger_stat_throttle_rate`. Setting this option to a value of `x` means that the above list of filesystem checks will be performed at most once every `x` seconds. Setting it to a value of '0' means that no throttling will take place, or in other words, that the above list of filesystem checks will be performed on every request.
-
-
-### passenger_core_file_descriptor_ulimit
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_core_file_descriptor_ulimit <em>integer</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>Inherited from Nginx</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.26</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http</td>
-  </tr>
-</table>
-
-Sets the file descriptor operating system ulimit for the Passenger core process. If you see "too many file descriptors" errors on a regular basis, then increasing this limit will help.
-
-The default value is inherited from the process that started Passenger, which is the Nginx master process in the Nginx integration mode. Assuming Passenger has enough access rights (normally true if the Nginx master process runs as root), it can override its ulimit to the requested setting.
-
-On most operating systems, the default ulimit can also be configured with a config file such as /etc/security/limits.conf, but since ulimits are *inherited* on a process basis instead of set globally, using that file to change ulimits is usually an error-prone process. This Passenger configuration option provides an easier and high confidence way to set the file descriptor ulimit.
-
-Note that application ulimits may also be affected by this setting because ulimits are inherited on a process basis (i.e. from Passenger). There are two exceptions to this:
-
-1. If you are using [passenger_load_shell_envvars](#passenger_load_shell_envvars) then the application processes are started through the shell, and the shell startup files may override the ulimits set by Passenger.
-
-2. You can also set the file descriptor ulimit on a per-application basis (instead of setting it globally for the Passenger core process) using [passenger_app_file_descriptor_ulimit](#passenger_app_file_descriptor_ulimit).
-
-
-### passenger_app_file_descriptor_ulimit
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_app_file_descriptor_ulimit <em>integer</em>;</td>
+    <td>passenger_data_buffer_dir <em>path</em>;</td>
   </tr>
   <tr>
     <th>Default</th>
@@ -1609,31 +1845,7 @@ Note that application ulimits may also be affected by this setting because ulimi
   </tr>
   <tr>
     <th>Since</th>
-    <td>5.0.26</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-Sets the file descriptor operating system ulimit for application processes managed by Passenger. If you see "too many file descriptor" errors on a regular basis, and these errors originate from the application process (as opposed to the Passenger core processes), then increasing this limit will help.
-
-If the "too many file descriptor" errors originate from the Passenger core process, then setting this option will *not* help. Use [passenger_core_file_descriptor_ulimit](#passenger_core_file_descriptor_ulimit) for that.
-
-The default file descriptor ulimit is inherited from the Passenger core process. See [passenger_core_file_descriptor_ulimit](#passenger_core_file_descriptor_ulimit) to learn how the default file descriptor ulimit for Passenger core process is set.
-
-
-### passenger_pre_start
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_pre_start <em>url</em>;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>3.0.0</td>
+    <td>5.0.0</td>
   </tr>
   <tr>
     <th>Context</th>
@@ -1641,232 +1853,30 @@ The default file descriptor ulimit is inherited from the Passenger core process.
   </tr>
 </table>
 
-By default, Passenger does not start any application processes until said web application is first accessed. The result is that the first visitor of said web application might experience a small delay as Passenger is starting the web application on demand. If that is undesirable, then this option can be used to pre-start application processes during Nginx startup.
+By default, Passenger buffers large web application responses. This prevents [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
 
-A few things to be careful of:
+By default, such buffers are stored in the directory given by the `$TMPDIR` environment variable, or (if `$TMPDIR` is not set) the `/tmp` directory. This configuration option allows you to specify a different directory.
 
- * This option accepts the *URL* of the web application you want to pre-start, not a on/off value! This might seem a bit weird, but read on for rationale. As for the specifics of the URL:
-   - The domain part of the URL must be equal to the value of the `server_name` option of the `server` block that defines the web application.
-   - Unless the web application is deployed on port 80, the URL should contain the web application's port number too.
-   - The path part of the URL must point to some URI that the web application handles.
- * You will probably want to combine this option with [passenger_min_instances](#passenger_min_instances) because application processes started with `passenger_pre_start` are subject to the usual idle timeout rules. See the example below for an explanation.
+Changing this option is especially useful if the partition that the default directory lives on doesn't have enough disk space.
 
-<div class="note">
-  This option is currently not available when using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>.
-</div>
+If you've specified such a directory (as opposed to using Passenger's default) then you *must* ensure that this directory exists.
 
-#### Example 1: basic usage
+<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--data-buffer-dir")) %>
 
-Suppose that you have the following web applications.
-
-~~~nginx
-server {
-    listen 80;
-    server_name foo.com;
-    root /webapps/foo/public;
-    passenger_enabled on;
-}
-
-server {
-    listen 3500;
-    server_name bar.com;
-    root /webapps/bar/public;
-    passenger_enabled on;
-}
-~~~
-
-You want both of them to be pre-started during Nginx startup. The URL for foo.com is `http://foo.com/` (or, equivalently, `http://foo.com:80/`) and the URL for bar.com is `http://bar.com:3500/`. So we add two `passenger_pre_start` options, like this:
-
-~~~nginx
-server {
-    listen 80;
-    server_name foo.com;
-    root /webapps/foo/public;
-    passenger_enabled on;
-}
-
-server {
-    listen 3500;
-    server_name bar.com;
-    root /webapps/bar/public;
-    passenger_enabled on;
-}
-
-passenger_pre_start http://foo.com/;           # <--- added
-passenger_pre_start http://bar.com:3500/;      # <--- added
-~~~
-
-#### Example 2: pre-starting apps that are deployed in sub-URIs
-
-Suppose that you have a web application deployed in a sub-URI `/store`, like this:
-
-~~~nginx
-server {
-    listen 80;
-    server_name myblog.com;
-    root /webapps/wordpress;
-    passenger_base_uri /store;
-}
-~~~
-
-Then specify the `server_name` value followed by the sub-URI, like this:
-
-~~~nginx
-server {
-    listen 80;
-    server_name myblog.com;
-    root /webapps/wordpress;
-    passenger_base_uri /store;
-}
-
-passenger_pre_start http://myblog.com/store;    # <----- added
-~~~
-
-The sub-URI *must* be included; if you don't then the option will have no effect. The following example is wrong and won't pre-start the store web application:
-
-~~~nginx
-passenger_pre_start http://myblog.com/;    # <----- WRONG! Missing "/store" part.
-~~~
-
-#### Example 3: combining with passenger_min_instances
-
-Application processes started with `passenger_pre_start` are also subject to the idle timeout rules as specified by [passenger_pool_idle_time](#passenger_pool_idle_time)! That means that by default, the pre-started application processes for foo.com and bar.com are shut down after a few minutes of inactivity. If you don't want that to happen, then you should combine `passenger_pre_start` with [passenger_min_instances](#passenger_min_instances), like this:
-
-~~~nginx
-server {
-    listen 80;
-    server_name foo.com;
-    root /webapps/foo/public;
-    passenger_enabled on;
-    passenger_min_instances 1;      # <--- added
-}
-
-server {
-    listen 3500;
-    server_name bar.com;
-    root /webapps/bar/public;
-    passenger_enabled on;
-    passenger_min_instances 1;      # <--- added
-}
-
-passenger_pre_start http://foo.com/;
-passenger_pre_start http://bar.com:3500/;
-~~~
-
-#### So why a URL? Why not just an on/off flag?
-
-An option that accepts a simple on/off flag is definitely more intuitive, but due technical difficulties w.r.t. the way Nginx works, it's very hard to implement it like that:
-
-It is very hard to obtain a full list of web applications defined in the Nginx configuration file(s). In other words, it's hard for Passenger to know which web applications are deployed on Nginx until a web application is first accessed, and without such a list Passenger wouldn't know which web applications to pre-start. So as a compromise, we made it accept a URL.
-
-#### What does Passenger do with the URL?
-
-During Nginx startup, Passenger will send a dummy HEAD request to the given URL and discard the result. In other words, Passenger simulates a web access at the given URL. However this simulated request is always sent to localhost, *not* to the IP that the domain resolves to. Suppose that bar.com in example 1 resolves to 209.85.227.99; Passenger will send the following HTTP request to 127.0.0.1 port 3500 (and not to 209.85.227.99 port 3500):
-
-~~~
-HEAD / HTTP/1.1
-Host: bar.com
-Connection: close
-~~~
-
-Similarly, for example 2, Passenger will send the following HTTP request to 127.0.0.1 port 80:
-
-~~~
-HEAD /store HTTP/1.1
-Host: myblog.com
-Connection: close
-~~~
-
-#### Do I need to edit /etc/hosts and point the domain in the URL to 127.0.0.1?
-
-No. See previous subsection.
-
-#### My web application consists of multiple web servers. What URL do I need to specify, and in which web server's Nginx config file?
-
-Put the web application's `server_name` value and the server block's port in the URL, and put `passenger_pre_start` on all machines that you want to pre-start the web application on. The simulated web request is always sent to 127.0.0.1, with the domain name in the URL as value for the 'Host' HTTP header, so you don't need to worry about the request ending up at a different web server in the cluster.
-
-#### Does passenger_pre_start support https:// URLs?
-
-Yes. And it does not perform any certificate validation.
-
-
-## Connection handling options
-
-### passenger_set_header
+### passenger_buffer_response
 
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>passenger_set_header <em>HTTP-header-name</em> <em>value</em>;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-Sets additional HTTP headers to pass to the web application. This is comparable to `ngx_http_proxy_module`'s `proxy_set_header` option. Nginx variables in the value are interpolated.
-
-Example:
-
-~~~nginx
-server {
-    server_name www.foo.com;
-    root /webapps/foo/public;
-    passenger_enabled on;
-
-    passenger_set_header X-Power-Level 9000;
-    passenger_set_header X-Forwarded-For internal-router.foo.com;
-}
-~~~
-
-Headers set by this option **cannot be spoofed by the client**. Passenger/Nginx will not forward any client-supplied headers with the same names.
-
-<div class="warning">
-  <h3 class="notoc">This configuration option is NOT inherited across contexts</h3>
-  <p>
-    In each new context (e.g. in each new <code>location</code> block), you must re-specify <code>passenger_set_header</code>. Values set in parent contexts have no effect on subcontexts. For example:
-  </p>
-  <pre class="highlight">server {
-    ...
-    passenger_set_header X-Foo foo;
-
-    location /users {
-        passenger_enabled on;
-        <span class="c"># !!!THIS IS WRONG!!! The 'X-Foo' header will not
-        # be passed URLs beginning with /users because we didn't
-        # re-specify passenger_set_header.</span>
-    }
-
-    location /apps {
-        passenger_enabled on;
-        <span class="c"># This is correct. Here we re-specify passenger_set_header,
-        # so the 'X-Foo' header will be correctly passed to URLs
-        # starting with /apps.</span>
-        passenger_set_header X-Foo foo;
-    }
-}</pre>
-</div>
-
-
-### passenger_max_request_queue_size
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_max_request_queue_size <em>integer</em>;</td>
+    <td>passenger_buffer_response <em>on|off</em>;</td>
   </tr>
   <tr>
     <th>Default</th>
-    <td>passenger_max_request_queue_size 100;</td>
+    <td>passenger_buffer_response off;</td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>4.0.15</td>
+    <td>4.0.0</td>
   </tr>
   <tr>
     <th>Context</th>
@@ -1874,69 +1884,64 @@ Headers set by this option **cannot be spoofed by the client**. Passenger/Nginx 
   </tr>
 </table>
 
-When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum size for that queue. If the queue is already at this specified limit, then Passenger will immediately send a "503 Service Unavailable" error to any incoming requests. You may use [passenger_request_queue_overflow_status_code](#passenger_request_queue_overflow_status_code) to customize the response status.
+When turned on, application-generated responses are buffered by Nginx. Buffering will happen in memory and also on disk if the response is larger than a certain threshold.
 
-A value of 0 means that the queue is unbounded.
+Before we proceed with explaining this configuration option, we want to state the following to avoid confusion. If you use Passenger for Nginx, there are in fact two response buffering systems active:
 
-[This article on StackOverflow](http://stackoverflow.com/questions/20402801/what-is-optimal-value-for-phusion-passenger-passengermaxrequestqueuesize) explains how the request queue works, what it means for the queue to grow or become full, why that is bad, and what you can do about it.
+ 1. The Nginx response buffering system. `passenger_buffer_response` turns this on or off.
+ 2. The Passenger response buffering system, a.k.a. "real-time disk-backed response buffering". This buffering system is always on, regardless of the value of `passenger_buffer_response`, but its behavior can be tweaked with [passenger_response_buffer_high_watermark](#passenger_response_buffer_high_watermark).
 
-You may combine this option with [passenger_intercept_errors](#passenger_intercept_errors) and [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) to set a custom error page whenever the queue is full. In the following example, Nginx will serve /error503.html whenever the queue is full:
+Response buffering is useful because it protects against [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) that do not read responses immediately or quickly enough. Buffering prevents such slow clients from blocking web applications that have limited concurrency. Because Passenger's response buffering is always turned on, you are always protected. Therefore, `passenger_buffer_response` is off by default, and you never should have to turn it on.
 
-~~~nginx
-passenger_intercept_errors on;
-error_page 503 /error503.html;
+If for whatever reason you want to turn Nginx-level response buffering on, you can do so with this option.
+
+Nginx's response buffering works differently from Passenger's. Nginx's buffering system buffers the entire response before attempting to send it to the client, while Passenger's attempts to send the data to the client immediately. Therefore, if you turn on `passenger_buffer_response`, you may interfere with applications that want to stream responses to the client.
+
+So keep in mind that enabling `passenger_buffer_response` will make streaming responses
+impossible. Consider for example this piece of Ruby on Rails code:
+
+~~~ruby
+render :text => lambda { |response, output|
+  10.times do |i|
+    output.write("entry #{i}\n")
+    output.flush
+    sleep 1
+  end
+}
 ~~~
 
+...or this piece of Ruby Rack code:
 
-### passenger_max_request_queue_time
+~~~ruby
+class Response
+  def each
+    10.times do |i|
+      yield("entry #{i}\n")
+      sleep 1
+    end
+  end
+end
 
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_max_request_queue_time <em>integer</em></td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_max_request_queue_time 0</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.1.12</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum time a request may spend in that queue. If a request in the queue reaches this specified limit, then Passenger will send a "504 Gateway Timeout" error for that request. For performance reasons it might take up to 0.5 × `passenger_max_request_queue_time` after a request timed out before a 504 response is sent (when all application processes are stuck).
-
-A value of 0 means that the queue time is unbounded.
-
-[This article on StackOverflow](http://stackoverflow.com/questions/20402801/what-is-optimal-value-for-phusion-passenger-passengermaxrequestqueuetime) explains how the request queue works, what it means for the queue to grow or become full, why that is bad, and what you can do about it.
-
-You may combine this option with [passenger_intercept_errors](#passenger_intercept_errors) and [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) to set a custom error page whenever the queue is full. In the following example, Nginx will serve /error504.html whenever the queue is full:
-
-~~~nginx
-passenger_intercept_errors on;
-error_page 504 /error504.html;
+app = lambda do |env|
+  [200, { "Content-Type" => "text/plain" }, Response.new]
+end
 ~~~
 
+When `passenger_buffer_response` is turned on, Nginx will wait until the application is done sending the entire response before forwarding it to the client. The client will not receive anything for 10 seconds, after which it receives the entire response at once. When `passenger_buffer_response` is turned off, it works as expected: the client receives an "entry X" message every second for 10 seconds.
 
-### passenger_request_queue_overflow_status_code
+
+## Request / response customization
+
+### passenger_base_uri
 
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>passenger_request_queue_overflow_status_code <em>code</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_request_queue_overflow_status_code 503;</td>
+    <td>passenger_base_uri <em>uri</em>;</td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>4.0.15</td>
+    <td>2.0.0</td>
   </tr>
   <tr>
     <th>Context</th>
@@ -1944,23 +1949,22 @@ error_page 504 /error504.html;
   </tr>
 </table>
 
-This option allows you to customize the HTTP status code that is sent back when the request queue is full. See [passenger_max_request_queue_size](#passenger_max_request_queue_size) for more information.
+<!-- TODO: fix link -->
+Used to specify that the given URI is an distinct application that should be served by Passenger. Please see [the deployment guide](<%= url_for "/deploy/nginx/index.html" %>) for more information.
+
+It is allowed to specify this option multiple times. Do this to deploy multiple applications in different sub-URIs under the same virtual host.
 
 
-### passenger_request_queue_timeout_status_code
+### passenger_document_root
 
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>passenger_request_queue_timeout_status_code <em>code</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_request_queue_timeout_status_code 504;</td>
+    <td>passenger_document_root <em>path</em>;</td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>5.1.12</td>
+    <td>4.0.25</td>
   </tr>
   <tr>
     <th>Context</th>
@@ -1968,8 +1972,8 @@ This option allows you to customize the HTTP status code that is sent back when 
   </tr>
 </table>
 
-This option allows you to customize the HTTP status code that is sent back when a request remains in the queue for too long. See [passenger_max_request_queue_time](#passenger_max_request_queue_time) for more information.
-
+<!-- TODO: fix link -->
+Used in sub-URI deployment scenarios to tell Passenger where it should look for static files. Please see [the deployment guide](<%= url_for "/deploy/nginx/index.html" %>) for more information.
 
 ### passenger_sticky_sessions
 
@@ -2033,21 +2037,16 @@ If you have a load balancer in front end of Passenger, then you must configure s
 
 Sets the name of the [sticky sessions](#passenger_sticky_sessions) cookie.
 
-
-### passenger_abort_websockets_on_process_shutdown
+### passenger_set_header
 
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>passenger_abort_websockets_on_process_shutdown <em>on|off</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_abort_websockets_on_process_shutdown on;</td>
+    <td>passenger_set_header <em>HTTP-header-name</em> <em>value</em>;</td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>5.0.22</td>
+    <td>5.0.0</td>
   </tr>
   <tr>
     <th>Context</th>
@@ -2055,12 +2054,99 @@ Sets the name of the [sticky sessions](#passenger_sticky_sessions) cookie.
   </tr>
 </table>
 
-Before shutting down or restarting an application process, Passenger performs two operations:
+Sets additional HTTP headers to pass to the web application. This is comparable to `ngx_http_proxy_module`'s `proxy_set_header` option. Nginx variables in the value are interpolated.
 
- 1. It waits until existing requests routed to that process are finished. This way, existing requests will be finished gracefully.
- 2. It aborts WebSocket connections. This is because WebSocket connections can stay open for an arbitrary amount of time and will block the shutdown/restart.
+Example:
 
-If you want Passenger to _not_ abort WebSocket connections, then turn this option off. That way, Passenger will wait for WebSocket connections to terminate by themselves, before proceeding with a process shutdown or restart. For this reason, you *must* modify your application code to ensure that WebSocket connections do not stay open for an arbitrary amount of time.
+~~~nginx
+server {
+    server_name www.foo.com;
+    root /webapps/foo/public;
+    passenger_enabled on;
+
+    passenger_set_header X-Power-Level 9000;
+    passenger_set_header X-Forwarded-For internal-router.foo.com;
+}
+~~~
+
+Headers set by this option **cannot be spoofed by the client**. Passenger/Nginx will not forward any client-supplied headers with the same names.
+
+<div class="warning">
+  <h3 class="notoc">This configuration option is NOT inherited across contexts</h3>
+  <p>
+    In each new context (e.g. in each new <code>location</code> block), you must re-specify <code>passenger_set_header</code>. Values set in parent contexts have no effect on subcontexts. For example:
+  </p>
+  <pre class="highlight">server {
+    ...
+    passenger_set_header X-Foo foo;
+
+    location /users {
+        passenger_enabled on;
+        <span class="c"># !!!THIS IS WRONG!!! The 'X-Foo' header will not
+        # be passed URLs beginning with /users because we didn't
+        # re-specify passenger_set_header.</span>
+    }
+
+    location /apps {
+        passenger_enabled on;
+        <span class="c"># This is correct. Here we re-specify passenger_set_header,
+        # so the 'X-Foo' header will be correctly passed to URLs
+        # starting with /apps.</span>
+        passenger_set_header X-Foo foo;
+    }
+}</pre>
+</div>
+
+
+
+
+
+### passenger_request_queue_overflow_status_code
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_request_queue_overflow_status_code <em>code</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_request_queue_overflow_status_code 503;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.15</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+This option allows you to customize the HTTP status code that is sent back when the request queue is full. See [passenger_max_request_queue_size](#passenger_max_request_queue_size) for more information.
+
+
+### passenger_request_queue_timeout_status_code
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_request_queue_timeout_status_code <em>code</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_request_queue_timeout_status_code 504;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.12</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+This option allows you to customize the HTTP status code that is sent back when a request remains in the queue for too long. See [passenger_max_request_queue_time](#passenger_max_request_queue_time) for more information.
 
 
 ### passenger_ignore_client_abort
@@ -2211,107 +2297,6 @@ Sets the bucket size of the hash tables used by the [passenger_set_header](#pass
 Sets the maximum size of the hash tables used by the [passenger_set_header](#passenger_set_header) directive. The details of setting up hash tables are can be found in [the Nginx documentation](http://nginx.org/en/docs/hash.html).
 
 
-### passenger_buffer_response
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_buffer_response <em>on|off</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_buffer_response off;</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-When turned on, application-generated responses are buffered by Nginx. Buffering will happen in memory and also on disk if the response is larger than a certain threshold.
-
-Before we proceed with explaining this configuration option, we want to state the following to avoid confusion. If you use Passenger for Nginx, there are in fact two response buffering systems active:
-
- 1. The Nginx response buffering system. `passenger_buffer_response` turns this on or off.
- 2. The Passenger response buffering system, a.k.a. "real-time disk-backed response buffering". This buffering system is always on, regardless of the value of `passenger_buffer_response`, but its behavior can be tweaked with [passenger_response_buffer_high_watermark](#passenger_response_buffer_high_watermark).
-
-Response buffering is useful because it protects against [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) that do not read responses immediately or quickly enough. Buffering prevents such slow clients from blocking web applications that have limited concurrency. Because Passenger's response buffering is always turned on, you are always protected. Therefore, `passenger_buffer_response` is off by default, and you never should have to turn it on.
-
-If for whatever reason you want to turn Nginx-level response buffering on, you can do so with this option.
-
-Nginx's response buffering works differently from Passenger's. Nginx's buffering system buffers the entire response before attempting to send it to the client, while Passenger's attempts to send the data to the client immediately. Therefore, if you turn on `passenger_buffer_response`, you may interfere with applications that want to stream responses to the client.
-
-So keep in mind that enabling `passenger_buffer_response` will make streaming responses
-impossible. Consider for example this piece of Ruby on Rails code:
-
-~~~ruby
-render :text => lambda { |response, output|
-  10.times do |i|
-    output.write("entry #{i}\n")
-    output.flush
-    sleep 1
-  end
-}
-~~~
-
-...or this piece of Ruby Rack code:
-
-~~~ruby
-class Response
-  def each
-    10.times do |i|
-      yield("entry #{i}\n")
-      sleep 1
-    end
-  end
-end
-
-app = lambda do |env|
-  [200, { "Content-Type" => "text/plain" }, Response.new]
-end
-~~~
-
-When `passenger_buffer_response` is turned on, Nginx will wait until the application is done sending the entire response before forwarding it to the client. The client will not receive anything for 10 seconds, after which it receives the entire response at once. When `passenger_buffer_response` is turned off, it works as expected: the client receives an "entry X" message every second for 10 seconds.
-
-
-### passenger_response_buffer_high_watermark
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_response_buffer_high_watermark <em>bytes</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>passenger_response_buffer_high_watermark 134217728; <em>(128 MB)</em></td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http, server, location, if</td>
-  </tr>
-</table>
-
-As explained in [passenger_buffer_response](#passenger_buffer_response), Passenger has two response buffering mechanisms. This option configures the maximum size of the real-time disk-backed response buffering system. If the buffer is full, the application will be blocked until the client has fully read the buffer.
-
-This buffering system has a default size of *128 MB* (134217728 bytes). This default value is large enough to prevent most applications from blocking on slow clients, but small enough to prevent broken applications from filling up the hard disk.
-
-You can't disable real-time disk-backed response buffering, but you can set the buffer size to a small value, which is effectively the same as disabling it.
-
-Most of the time, you won't need to tweak this value. But there is one good use case where you may want set this option to a low value: if you are streaming a large response, but want to detect client disconnections as soon as possible. If the buffer size is larger than your response size, then Passenger will read and buffer the response as fast as it can, offloading the application as soon as it can, thereby preventing the application from detecting client disconnects. But if the buffer size is sufficiently small (say, 64 KB), then your application will effectively output response data at the same speed as the client reads it, allowing you to detect client disconnects almost immediately. This is also a down side, because many slow clients blocking your application can result in a denial of service, so use this option with care.
-
-If your application outputs responses larger than 128 MB and you are not interested in detecting client disconnects as soon as possible, then you should raise this value, or set it to 0.
-
-A value of 0 means that the buffer size is unlimited.
-
-
 ### passenger_buffer_size, passenger_buffers, passenger_busy_buffers_size
 
 <table class="table table-bordered table-condensed">
@@ -2348,38 +2333,8 @@ These options have the same effect as [ngx_http_proxy_module](http://nginx.org/e
  * [proxy_busy_buffers_size](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_busy_buffers_size)
 
 
-### passenger_socket_backlog
 
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>
-      passenger_socket_backlog <em>size</em>;<br>
-    </td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>
-      passenger_socket_backlog 1024; (&lt; 5.0.25)<br>
-      passenger_socket_backlog 2048; (&gt;= 5.0.26)
-    </td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>5.0.24</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http</td>
-  </tr>
-</table>
-
-The socket backlog is a queue of incoming connections (from Nginx) not yet acknowledged by Passenger. The default value is chosen to match the default for Nginx' `worker_connections`. If you increase the latter, it is likely that you'll also need to increase the `passenger_socket_backlog`. If connections are coming in too fast and overflow the backlog, you'll see the error:
-
-<i>connect() to unix:/tmp/passenger... failed (11: Resource temporarily unavailable) while connecting to upstream</i>
-
-
-## Logging and debugging options
+## Logging & troubleshooting
 
 ### passenger_log_level
 
@@ -2607,121 +2562,154 @@ The password that Passenger should use when connecting to the Fuse Panel with ba
 
 If specified, Passenger will dump a representation of its own configuration to the given file, in JSON format. This option is usually only interesting to Passenger developers for the purpose of developing configuration-related features.
 
-
-## Advanced options
-
-### passenger_instance_registry_dir
+### passenger_max_requests
 
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>passenger_instance_registry_dir <em>path</em>;</td>
+    <td>passenger_max_requests <em>integer</em>;</td>
   </tr>
   <tr>
     <th>Default</th>
-    <td>passenger_instance_registry_dir /tmp|/var/run/passenger-instreg;</td>
+    <td>passenger_max_requests 0;</td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>5.0.0</td>
+    <td>3.0.0</td>
   </tr>
   <tr>
     <th>Context</th>
-    <td>http</td>
+    <td>http, server, location, if</td>
   </tr>
 </table>
 
-Specifies the directory that Passenger should use for registering its current instance.
+The maximum number of requests an application process will process. After serving that many requests, the application process will be shut down and Passenger will restart it. A value of 0 means that there is no maximum. The application process might also be shut down if its [idle timeout](#passenger_pool_idle_time) is reached.
 
-When Passenger starts up, it creates a temporary directory inside the _instance registry directory_. This temporary directory is called the _instance directory_. It contains all sorts of files that are important to that specific running Passenger instance, such as Unix domain socket files so that all the different Passenger processes can communicate with each other. Command line tools such as `passenger-status` use the files in this directory in order to query Passenger's status.
+This option is useful if your application is leaking memory. By shutting it down after a certain number of requests, all of its memory is guaranteed to be freed by the operating system. An alternative (and better) mechanism for dealing with memory leaks is [passenger_memory_limit](#passenger_memory_limit).
 
-It is therefore important that, while Passenger is working, the instance directory is never removed or tampered with. However, the default path for the instance registry directory is the system's temporary directory, and some systems may run background jobs that periodically clean this directory. If this happens, and the files inside the instance directory are removed, then it will cause Passenger to malfunction: Passenger won't be able to communicate with its own processes, and you will see all kinds of connection errors in the log files. This malfunction can only be recovered from by restarting Nginx. You can prevent such cleaning background jobs from interfering by setting this option to a different directory.
-
-This option is also useful if the partition that the temporary directory lives on doesn't have enough disk space.
-
-The instance directory is automatically removed when Nginx shuts down.
-
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--instance-registry-dir")) %>
-
-#### Default value
-
-The default value for this option is as follows:
-
- * If you are on Red Hat and CentOS, and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/install/nginx/yum_repo/index.html" %>), then the default value is `/var/run/passenger-instreg`.
- * Otherwise, the default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
-
-#### Note regarding command line tools
-
-Some Passenger command line administration tools, such as `passenger-status`, must know what Passenger's instance registry directory is in order to function properly. You can pass the directory through the `PASSENGER_INSTANCE_REGISTRY_DIR` or the `TMPDIR` environment variable.
-
-For example, if you set 'PassengerInstanceRegistryDir' to '/my_temp_dir', then invoke `passenger-status` after you've set the `PASSENGER_INSTANCE_REGISTRY_DIR`, like this:
-
-~~~bash
-export PASSENGER_INSTANCE_REGISTRY_DIR=/my_temp-dir
-sudo -E passenger-status
-~~~
-
-Notes regarding the above example:
-
- * The -E option tells 'sudo' to preserve environment variables.
- * If Passenger is installed through an RVM Ruby, then you must use `rvmsudo` instead of `sudo`.
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
+</div>
 
 
-### passenger_data_buffer_dir
+### passenger_max_request_time
 
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>passenger_data_buffer_dir <em>path</em>;</td>
+    <td>passenger_max_request_time <em>seconds</em>;</td>
   </tr>
   <tr>
     <th>Default</th>
-    <td>See description</td>
+    <td>passenger_max_request_time 0;</td>
   </tr>
   <tr>
     <th>Since</th>
-    <td>5.0.0</td>
+    <td>3.0.0</td>
   </tr>
   <tr>
     <th>Context</th>
-    <td>http</td>
-  </tr>
-</table>
-
-By default, Passenger buffers large web application responses. This prevents [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
-
-By default, such buffers are stored in the directory given by the `$TMPDIR` environment variable, or (if `$TMPDIR` is not set) the `/tmp` directory. This configuration option allows you to specify a different directory.
-
-Changing this option is especially useful if the partition that the default directory lives on doesn't have enough disk space.
-
-If you've specified such a directory (as opposed to using Passenger's default) then you *must* ensure that this directory exists.
-
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--data-buffer-dir")) %>
-
-
-### passenger_fly_with
-
-<table class="table table-bordered table-condensed">
-  <tr>
-    <th>Syntax</th>
-    <td>passenger_fly_with <em>path</em>;</td>
-  </tr>
-  <tr>
-    <th>Default</th>
-    <td>Flying Passenger mode disabled</td>
-  </tr>
-  <tr>
-    <th>Since</th>
-    <td>4.1.0</td>
-  </tr>
-  <tr>
-    <th>Context</th>
-    <td>http</td>
+    <td>http, server, location, if</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only.html") %>
 </table>
 
-Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) mode, and configures Nginx to connect to the Flying Passenger daemon that's listening on the given socket filename.
+The maximum amount of time, in seconds, that an application process may take to process a request. If the request takes longer than this amount of time, then the application process will be forcefully shut down, and possibly restarted upon the next request. A value of 0 means that there is no time limit.
+
+This option is useful for preventing your application from getting stuck for an indefinite period of time.
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid stuck applications.
+</div>
+
+#### Example
+
+Suppose that most of your requests are known to finish within 2 seconds. However, there is one URI, `/expensive_computation`, which is known to take up to 10 seconds. You can then configure Passenger as follows:
+
+~~~nginx
+server {
+    listen 80;
+    server_name www.example.com;
+    root /webapps/my_app/public;
+    passenger_enabled on;
+    passenger_max_request_time 2;
+    location /expensive_compuation {
+        passenger_enabled on;
+        passenger_max_request_time 10;
+    }
+}
+~~~
+
+If a request to '/expensive_computation' takes more than 10 seconds, or if a request to any other URI takes more than 2 seconds, then the corresponding application process will be forced to shutdown.
+
+
+### passenger_memory_limit
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_memory_limit <em>megabytes</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_memory_limit 0;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will allow it to finish processing all of its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
+
+This option is useful if your application is leaking memory. By shutting it down, all of its memory is guaranteed to be freed by the operating system.
+
+<div class="info">
+  <h3 class="notoc">A word about permissions</h3>
+  <p>
+    This option uses the <code>ps</code> command to query memory usage information. On Linux, it further queries <code>/proc</code> to obtain additional memory usage information that's not obtainable through <code>ps</code>. You should ensure that the <code>ps</code> works correctly and that the <code>/proc</code> filesystem is accessible by the <code>Passenger core</code> process.
+  </p>
+</div>
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
+</div>
+
+
+### passenger_abort_websockets_on_process_shutdown
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_abort_websockets_on_process_shutdown <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_abort_websockets_on_process_shutdown on;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Before shutting down or restarting an application process, Passenger performs two operations:
+
+ 1. It waits until existing requests routed to that process are finished. This way, existing requests will be finished gracefully.
+ 2. It aborts WebSocket connections. This is because WebSocket connections can stay open for an arbitrary amount of time and will block the shutdown/restart.
+
+If you want Passenger to _not_ abort WebSocket connections, then turn this option off. That way, Passenger will wait for WebSocket connections to terminate by themselves, before proceeding with a process shutdown or restart. For this reason, you *must* modify your application code to ensure that WebSocket connections do not stay open for an arbitrary amount of time.
+
+
 
 ## Deprecated or removed options
 
