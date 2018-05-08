@@ -2309,6 +2309,31 @@ By default Passenger log messages are written to the Apache global error log. Wi
 <%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--log-file")) %>
 
 
+### PassengerAppLogFile
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAppLogFile <em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerAppLogFile <em>path-to-passenger-log-file</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.3.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>virtual host</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+By default Passenger log messages are all written to the Passenger log file. With this option, you can have the app specific messages logged to a different file in addition.
+
+
 ### PassengerFileDescriptorLogFile
 
 <table class="table table-bordered table-condensed">

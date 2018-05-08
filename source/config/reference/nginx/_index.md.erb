@@ -42,7 +42,7 @@ If you lost the `passenger_root` configuration value (e.g. because you accidenta
 
 Once you have obtained the value, open your Nginx configuration file and insert a `passenger_root` option somewhere with that value.
 
-  
+
 ### passenger_enabled
 
 <table class="table table-bordered table-condensed">
@@ -2397,6 +2397,31 @@ By default Passenger log messages are written to the Nginx global error log. Wit
 <%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--log-file")) %>
 
 
+### passenger_app_log_file
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_app_log_file <em>path</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_app_log_file <em>path-to-passenger-log-file</em>;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.3.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>server</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only.html") %>
+</table>
+
+By default Passenger log messages are all written to the Passenger log file. With this option, you can have the app specific messages logged to a different file in addition.
+
+
 ### passenger_file_descriptor_log_file
 
 <table class="table table-bordered table-condensed">
@@ -2460,7 +2485,7 @@ Turns support for Ruby application debugging on or off. Please read the [Ruby de
 
 
 ### passenger_admin_panel_url
- 
+
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
@@ -2475,12 +2500,12 @@ Turns support for Ruby application debugging on or off. Please read the [Ruby de
     <td>http</td>
   </tr>
 </table>
- 
+
 The URI to connect to the <a href="https://www.phusionpassenger.com/fuse-panel">Fuse Panel</a> with. Information is sent to enable monitoring, administering, analysis and troubleshooting of this Passenger instance and apps running on it. The feature is disabled if this option is not specified. See \"Connect Passengers\" in the Fuse Panel for further instructions.
 
 
 ### passenger_admin_panel_auth_type
- 
+
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
@@ -2499,12 +2524,12 @@ The URI to connect to the <a href="https://www.phusionpassenger.com/fuse-panel">
     <td>http</td>
   </tr>
 </table>
-    
+
 The authentication method Passenger should use when connecting to the Fuse Panel. Currently only basic authentication is supported. See \"Connect Passengers\" in the Fuse Panel for further instructions.
 
- 
+
 ### passenger_admin_panel_username
- 
+
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
@@ -2519,12 +2544,12 @@ The authentication method Passenger should use when connecting to the Fuse Panel
     <td>http</td>
   </tr>
 </table>
-    
+
 The username that Passenger should use when connecting to the Fuse Panel with basic authentication. See \"Connect Passengers\" in the Fuse Panel for further instructions.
 
- 
+
 ### passenger_admin_panel_password
- 
+
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
@@ -2539,10 +2564,10 @@ The username that Passenger should use when connecting to the Fuse Panel with ba
     <td>http</td>
   </tr>
 </table>
-  
+
 The password that Passenger should use when connecting to the Fuse Panel with basic authentication. See \"Connect Passengers\" in the Fuse Panel for further instructions.
 
- 
+
 ### passenger_dump_config_manifest
 
 <table class="table table-bordered table-condensed">
