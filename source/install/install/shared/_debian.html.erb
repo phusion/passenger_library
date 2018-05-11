@@ -12,10 +12,10 @@ when :apache
 when :nginx
   if dynamic_nginx_module_available?(os_config_type.to_s)
     if edition_type == :oss
-      packages = "libnginx-mod-http-passenger"
+      packages = "libnginx-mod-http-passenger nginx-extras"
       packages_title = "Passenger + Nginx module"
     else
-      packages = "libnginx-mod-http-passenger-enterprise"
+      packages = "libnginx-mod-http-passenger-enterprise nginx-extras"
       packages_title = "Passenger Enterprise + Nginx module"
     end
   else
