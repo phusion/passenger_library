@@ -101,9 +101,12 @@ sudo apt-get install -y apt-transport-https ca-certificates
 sudo sh -c <span class="s1">'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger <span class="debian_codename si"><%= os_config_type %></span> main &gt; /etc/apt/sources.list.d/passenger.list'</span>
 <% else -%>
 unset HISTFILE
-sudo sh -c <span class="s1">'echo deb https://download:<span class="si">YOUR_DOWNLOAD_TOKEN</span>@www.phusionpassenger.com/enterprise_apt <span class="debian_codename si"><%= os_config_type %></span> main &gt; /etc/apt/sources.list.d/passenger.list'</span>
+sudo sh -c <span class="s1">'echo machine www.phusionpassenger.com/enterprise_apt login download password <span class="si">YOUR_DOWNLOAD_TOKEN</span> &gt;&gt; /etc/apt/auth.conf'</span>
+sudo sh -c <span class="s1">'echo deb https://www.phusionpassenger.com/enterprise_apt <span class="debian_codename si"><%= os_config_type %></span> main &gt; /etc/apt/sources.list.d/passenger.list'</span>
 sudo chown root: /etc/apt/sources.list.d/passenger.list
-sudo chmod 600 /etc/apt/sources.list.d/passenger.list
+sudo chmod 644 /etc/apt/sources.list.d/passenger.list
+sudo chown root: /etc/apt/auth.conf
+sudo chmod 600 /etc/apt/auth.conf
 <% end -%>
 sudo apt-get update
 
