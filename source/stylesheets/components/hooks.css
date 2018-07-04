@@ -1,0 +1,37 @@
+#hooks table {
+  margin: 15px 0 20px;
+}
+
+#main-content #hooks h2 {
+  border: none;
+  margin: 0;
+  border-bottom: 1px solid #ECECEC;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+#main-content #hooks h3:not(:first-of-type) {
+  margin-top: 30px;
+  border-top: 1px solid #ECECEC;
+  padding-top: 20px;
+}
+
+#main-content #hooks .note h3 {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+#hooks h4 {
+  margin-top: 30px;
+  margin-bottom: 3px;
+}
+
+#hooks .table-value th {
+  font-weight: 400;
+}
+
+#hooks .table-value tr:first-of-type th,
+#hooks .table-value tr:first-of-type td {
+  font-weight: 700;
+}

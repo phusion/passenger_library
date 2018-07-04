@@ -1,0 +1,14 @@
+#table-of-contents {
+  margin: 25px 0;
+  padding-left: 0;
+}
+
+#table-of-contents p {
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+#table-of-contents li {
+  margin-left: 40px;
+  margin-top: 3px;
+}

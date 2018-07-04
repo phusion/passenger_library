@@ -1,0 +1,48 @@
+[ N 2018-04-06 18:25:52.7779 10495/T1 age/Wat/WatchdogMain.cpp:1267 ]: Starting Passenger watchdog...
+[ N 2018-04-06 18:25:52.8397 10497/T1 age/Cor/CoreMain.cpp:1165 ]: Starting Passenger core...
+[ N 2018-04-06 18:25:52.8483 10497/T1 age/Cor/CoreMain.cpp:249 ]: Passenger core running in multi-application mode.
+[ N 2018-04-06 18:25:52.9266 10497/T1 age/Cor/CoreMain.cpp:905 ]: Passenger core online, PID 10497
+2018/04/06 18:25:55 [error] 10500#0: *4 "/Users/luuk/Documents/Git/passenger_library/public/index.html" is not found (2: No such file or directory), client: 127.0.0.1, server: _, request: "HEAD / HTTP/1.1", host: "0.0.0.0"
+[ N 2018-04-06 18:25:55.7580 10497/T5 age/Cor/SecurityUpdateChecker.h:374 ]: Security update check: no update found (next check in 24 hours)
+[ E 2018-04-06 18:25:55.7947 10497/T5 Crypto.cpp:988 ]: Removing Passenger private key from keychain failed: write permissions error. Please remove the private key from the certificate labeled Phusion Passenger Open Source in your keychain.
+2018/04/06 18:25:58 [error] 10500#0: *5 "/Users/luuk/Documents/Git/passenger_library/public/index.html" is not found (2: No such file or directory), client: 127.0.0.1, server: _, request: "GET / HTTP/1.1", host: "localhost:3000"
+2018/04/06 18:25:58 [error] 10500#0: *5 open() "/Users/luuk/Documents/Git/passenger_library/public/favicon.ico" failed (2: No such file or directory), client: 127.0.0.1, server: _, request: "GET /favicon.ico HTTP/1.1", host: "localhost:3000", referrer: "http://localhost:3000/"
+2018/04/06 18:25:58 [error] 10500#0: *6 open() "/Users/luuk/Documents/Git/passenger_library/public/apple-touch-icon-precomposed.png" failed (2: No such file or directory), client: 127.0.0.1, server: _, request: "GET /apple-touch-icon-precomposed.png HTTP/1.1", host: "localhost:3000"
+2018/04/06 18:25:58 [error] 10500#0: *6 open() "/Users/luuk/Documents/Git/passenger_library/public/apple-touch-icon.png" failed (2: No such file or directory), client: 127.0.0.1, server: _, request: "GET /apple-touch-icon.png HTTP/1.1", host: "localhost:3000"
+2018/04/06 18:26:00 [error] 10500#0: *7 "/Users/luuk/Documents/Git/passenger_library/public/index.html" is not found (2: No such file or directory), client: 127.0.0.1, server: _, request: "GET / HTTP/1.1", host: "localhost:3000"
+
+[ N 2018-04-06 18:26:12.3386 10497/T7 age/Cor/CoreMain.cpp:589 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2018-04-06 18:26:12.3386 10497/T1 age/Cor/CoreMain.cpp:1080 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2018-04-06 18:26:12.3398 10497/Tb Ser/Server.h:885 ]: [ServerThr.3] Freed 128 spare client objects
+[ N 2018-04-06 18:26:12.3394 10497/Tf Ser/Server.h:885 ]: [ApiServer] Freed 0 spare client objects
+[ N 2018-04-06 18:26:12.3400 10497/Tb Ser/Server.h:531 ]: [ServerThr.3] Shutdown finished
+[ N 2018-04-06 18:26:12.3397 10497/T7 Ser/Server.h:885 ]: [ServerThr.1] Freed 128 spare client objects
+[ N 2018-04-06 18:26:12.3401 10497/T7 Ser/Server.h:531 ]: [ServerThr.1] Shutdown finished
+[ N 2018-04-06 18:26:12.3400 10497/Tf Ser/Server.h:531 ]: [ApiServer] Shutdown finished
+[ N 2018-04-06 18:26:12.3397 10497/T9 Ser/Server.h:885 ]: [ServerThr.2] Freed 128 spare client objects
+[ N 2018-04-06 18:26:12.3397 10497/Td Ser/Server.h:885 ]: [ServerThr.4] Freed 128 spare client objects
+[ N 2018-04-06 18:26:12.3401 10497/T9 Ser/Server.h:531 ]: [ServerThr.2] Shutdown finished
+[ N 2018-04-06 18:26:12.3401 10497/Td Ser/Server.h:531 ]: [ServerThr.4] Shutdown finished
+[ N 2018-04-06 18:26:12.4066 10497/T1 age/Cor/CoreMain.cpp:1150 ]: Passenger core shutdown finished
+[ N 2018-04-06 18:26:57.8364 10605/T1 age/Wat/WatchdogMain.cpp:1267 ]: Starting Passenger watchdog...
+[ N 2018-04-06 18:26:57.8951 10607/T1 age/Cor/CoreMain.cpp:1165 ]: Starting Passenger core...
+[ N 2018-04-06 18:26:57.9026 10607/T1 age/Cor/CoreMain.cpp:249 ]: Passenger core running in multi-application mode.
+[ N 2018-04-06 18:26:57.9815 10607/T1 age/Cor/CoreMain.cpp:905 ]: Passenger core online, PID 10607
+2018/04/06 18:27:00 [error] 10610#0: *4 "/Users/luuk/Documents/Git/passenger_library/public/index.html" is not found (2: No such file or directory), client: 127.0.0.1, server: _, request: "HEAD / HTTP/1.1", host: "0.0.0.0"
+[ N 2018-04-06 18:27:00.6852 10607/T5 age/Cor/SecurityUpdateChecker.h:374 ]: Security update check: no update found (next check in 24 hours)
+[ E 2018-04-06 18:27:00.6983 10607/T5 Crypto.cpp:988 ]: Removing Passenger private key from keychain failed: write permissions error. Please remove the private key from the certificate labeled Phusion Passenger Open Source in your keychain.
+2018/04/06 18:27:01 [error] 10610#0: *5 "/Users/luuk/Documents/Git/passenger_library/public/index.html" is not found (2: No such file or directory), client: 127.0.0.1, server: _, request: "GET / HTTP/1.1", host: "localhost:3000"
+
+[ N 2018-04-06 18:27:05.6501 10607/T7 age/Cor/CoreMain.cpp:589 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2018-04-06 18:27:05.6502 10607/T1 age/Cor/CoreMain.cpp:1080 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2018-04-06 18:27:05.6511 10607/T7 Ser/Server.h:885 ]: [ServerThr.1] Freed 128 spare client objects
+[ N 2018-04-06 18:27:05.6511 10607/T7 Ser/Server.h:531 ]: [ServerThr.1] Shutdown finished
+[ N 2018-04-06 18:27:05.6513 10607/Td Ser/Server.h:885 ]: [ServerThr.4] Freed 128 spare client objects
+[ N 2018-04-06 18:27:05.6513 10607/Tb Ser/Server.h:885 ]: [ServerThr.3] Freed 128 spare client objects
+[ N 2018-04-06 18:27:05.6513 10607/Tb Ser/Server.h:531 ]: [ServerThr.3] Shutdown finished
+[ N 2018-04-06 18:27:05.6511 10607/T9 Ser/Server.h:885 ]: [ServerThr.2] Freed 128 spare client objects
+[ N 2018-04-06 18:27:05.6514 10607/T9 Ser/Server.h:531 ]: [ServerThr.2] Shutdown finished
+[ N 2018-04-06 18:27:05.6513 10607/Tf Ser/Server.h:885 ]: [ApiServer] Freed 0 spare client objects
+[ N 2018-04-06 18:27:05.6514 10607/Tf Ser/Server.h:531 ]: [ApiServer] Shutdown finished
+[ N 2018-04-06 18:27:05.6513 10607/Td Ser/Server.h:531 ]: [ServerThr.4] Shutdown finished
+[ N 2018-04-06 18:27:05.7239 10607/T1 age/Cor/CoreMain.cpp:1150 ]: Passenger core shutdown finished

@@ -1,0 +1,15 @@
+#breadcrumb {
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  font-weight: 500;
+}
+
+#breadcrumb li:not(:last-child)::after {
+  content: '>';
+  color: #35373B;
+  margin: 0 5px;
+}

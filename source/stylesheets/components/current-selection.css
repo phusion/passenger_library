@@ -1,0 +1,22 @@
+#current-selection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #EFEFEF;
+}
+
+#current-selection p {
+  margin-right: 2px;
+  margin-bottom: 0;
+}
+
+#current-selection div {
+  display: flex;
+  align-items: center;
+}
+
+#current-selection div img {
+  height: 20px;
+  margin: 0 5px 0 10px;
+}

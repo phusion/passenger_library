@@ -1,0 +1,10 @@
+#right-content {
+  margin-left: 16px;
+  width: 292px;
+}
+
+@media(max-width: 1120px) {
+  #right-content {
+    display: none;
+  }
+}

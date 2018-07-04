@@ -1,0 +1,34 @@
+#references table {
+  margin: 15px 0 20px;
+}
+
+#main-content #references h2 {
+  border: none;
+  margin-bottom: -30px;
+}
+
+#main-content #references h3 {
+  margin-top: 30px;
+  border-top: 1px solid #ECECEC;
+  padding-top: 20px;
+}
+
+#main-content #references .note h3 {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+#references h4 {
+  margin-top: 30px;
+  margin-bottom: 3px;
+}
+
+#references .table-value th {
+  font-weight: 400;
+}
+
+#references .table-value tr:first-of-type th,
+#references .table-value tr:first-of-type td {
+  font-weight: 700;
+}

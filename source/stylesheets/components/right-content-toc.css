@@ -1,0 +1,43 @@
+#right-content-toc {
+  margin: 10px 0 25px 50px;
+  padding-left: 0;
+  top: 50px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#right-content-toc ol {
+  font-size: 14px;
+}
+
+#right-content-toc p {
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+#right-content-toc li {
+  margin-left: 30px;
+  margin-top: 3px;
+  line-height: 22px;
+}
+
+#right-content-toc #table-of-contents a {
+  font-weight: 500;
+  text-decoration: none;
+  color: #4EA0FF;
+}
+
+#right-content-toc img {
+  margin-top: 10px;
+}
+
+#right-content-toc .light-button {
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+#right-content-toc .light-button:focus {
+  outline: none;
+}

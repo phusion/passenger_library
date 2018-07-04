@@ -1,0 +1,77 @@
+@import url('https://rsms.me/inter/inter-ui.css');
+
+/****************
+ * FONTS.COM
+ ****************/
+
+@import url("https://fast.fonts.net/t/1.css?apiType=css&projectid=da2a03d1-cfb1-47c9-86ba-605e80e9e9b1");
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  font-family: 'Inter UI', 'Helvetica', sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#content {
+  max-width: 1220px;
+  width: 100%;
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.light-button {
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #3D404D;
+  border: 1px solid #BABECD;
+  border-radius: 4px;
+  padding: 15px 20px;
+  transition: background .2s ease-in-out;
+  text-decoration: none;
+  text-align: center;
+}
+
+.light-button:hover,
+.light-button:focus {
+  border: 1px solid #3D404D;
+  /* override the usual <a> tag */
+  font-weight: 600 !important;
+  color: #fff !important;
+  background: #3D404D;
+}
+
+.dark-button {
+  font-size: 14px;
+  text-transform: uppercase;
+  /* override the usual <a> tag */
+  font-weight: 600 !important;
+  color: #fff !important;
+  background: #4EA0FF;
+  border-radius: 4px;
+  padding: 15px 20px;
+  transition: background .2s ease-in-out;
+  text-decoration: none;
+  text-align: center;
+}
+
+.dark-button:hover,
+.dark-button:focus {
+  color: #fff;
+  background: #0076FF;
+}
+
+@media(max-width: 940px) {
+  #content {
+    display: block;
+  }
+}

@@ -1,0 +1,144 @@
+#left-nav {
+  width: 215px;
+  margin-right: 16px;
+}
+
+#left-nav-content {
+  margin-top: 5px;
+  background: #fff;
+}
+
+#left-nav-content span {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #818181;
+}
+
+#left-nav-content ul {
+  padding: 0;
+  list-style: none;
+}
+
+#left-nav-content ul li {
+  font-size: 14px;
+  color: #35373B;
+  line-height: 28px;
+  cursor: pointer;
+}
+
+#left-nav-content ul li:hover,
+#left-nav-content ul li:focus {
+  text-decoration: underline;
+}
+
+#left-nav-content ul li a {
+  text-decoration: none;
+  color: #35373B;
+  display: block;
+  height: 100%;
+}
+
+#left-nav-content .back-btn {
+  margin-top: 30px;
+}
+
+#left-nav-content ul .back-btn a {
+  display: inline;
+  height: auto;
+}
+
+#left-nav-content ul .back-btn:hover,
+#left-nav-content ul .back-btn:focus {
+  text-decoration: none;
+}
+
+#left-nav-content .version {
+  height: 17px;
+  margin-bottom: 15px;
+}
+
+#left-nav-content .selected {
+  font-weight: 500;
+  color: #4EA0FF;
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+/* TODO change focus style */
+.dropdown select:focus,
+.dropdown select:hover {
+  outline: 0;
+}
+
+.dropdown span {
+  margin-bottom: 10px;
+}
+
+.dropdown select {
+  background-color: #E9E9E9;
+  background-repeat: no-repeat;
+  background-size: 20px auto;
+  background-position: 6px 50%;
+  text-indent: 22px;
+  border: none;
+  border-radius: 2px;
+  font-size: 14px;
+  height: 36px;
+  width: 138px;
+  padding-left: 10px;
+  appearance: none;
+}
+
+@-moz-document url-prefix() {
+  .dropdown select {
+     text-indent: 10px;
+  }
+}
+
+.dropdown .arrow-down {
+  position: absolute;
+  margin-top: 38px;
+  margin-left: 120px;
+  border: solid black;
+  border-width: 0 1px 1px 0;
+  display: inline-block;
+  padding: 2px;
+  transform: rotate(45deg);
+}
+
+@media(min-height: 700px) {
+  #left-nav-content {
+    position: fixed;
+  }
+}
+
+@media(min-width: 940px) {
+  #left-nav {
+    display: block;
+  }
+}
+
+@media(max-width: 940px) {
+  #left-nav-content {
+    margin-top: 0;
+    position: fixed;
+    overflow-y: auto;
+    background: #fff;
+    top: 0;
+    left: 0;
+    padding-left: 20px;
+    width: 100vw;
+    height: 100vh;
+    padding-top: 80px;
+  }
+}
+
+@media(max-width: 1275px) {
+  #left-nav {
+    padding-left: 10px;
+  }
+}

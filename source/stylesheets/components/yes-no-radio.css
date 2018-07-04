@@ -1,0 +1,62 @@
+#yes-no-radio {
+  margin-bottom: 40px;
+}
+
+#yes-no-radio label::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: -25px;
+  width: 25px;
+  height: 25px;
+  background-color: #EAEEF4;
+  border-radius: 50%;
+}
+
+#yes-no-radio label {
+  position: relative;
+  cursor: pointer;
+  letter-spacing: 0.21px;
+  padding-left: 10px;
+  user-select: none;
+  background: none;
+  border: none !important;
+  margin: 0 25px;
+  color: #848796;
+}
+
+#yes-no-radio label:hover,
+#yes-no-radio label:focus {
+  opacity: .8;
+}
+
+#yes-no-radio input[type="radio"] {
+  display: none;
+}
+
+#yes-no-radio .radio::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: -25px;
+  width: 25px;
+  height: 25px;
+  background-color: #E9E9E9;
+  border-radius: 50%;
+}
+
+#yes-no-radio input[type="radio"]:checked + label .radio::before {
+  background-color: #FFF;
+  left: -25px;
+  border: 7.5px solid #4EA0FF;
+  width: 10px;
+  height: 10px;
+}
+
+#yes-no-radio input[type="radio"]:checked + label {
+  color: #000;
+}

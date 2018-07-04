@@ -1,0 +1,149 @@
+#header {
+  display: flex;
+  justify-content: center;
+  font-family: 'Avenir Next W01', sans-serif;
+  font-weight: 800;
+  width: 100%;
+  height: 54px;
+  border-bottom: 1px solid #DDE3EC;
+  z-index: 9999;
+}
+
+#header > div {
+  max-width: 1220px;
+  width: 100%;
+  display: flex;
+}
+
+#header ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#header li {
+  padding: 0 20px;
+}
+
+#header a {
+  color: #3D404D;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+#header input {
+  height: 54px;
+  width: 380px;
+  padding-left: 45px;
+  padding-right: 10px;
+  border-top: none;
+  border-bottom: none;
+  border-right: 0px;
+  border-left: 1px solid #DDE3EC;
+  position: absolute;
+  right: 0;
+  transition: width .5s ease-in-out;
+  background-image: url("../../../images/search_icon.svg");
+  background-repeat: no-repeat;
+  background-size: 17px;
+  background-position: 20px 50%;
+}
+
+#header input:hover,
+#header input:focus {
+  border-right: 0px;
+  width: 400px;
+}
+
+#header input:focus {
+  outline: none;
+  box-shadow: 2px 2px 8px #C3C3C3;
+}
+
+#header input::placeholder {
+  color: #7A7A7A;
+}
+
+#header .small-screen-search {
+  display: none;
+  width: 20px;
+  margin-top: 8px;
+  margin-left: 40px;
+}
+
+#header .selected {
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, #FFCF77 2%, #FF248C 100%);
+  border-image-slice: 0 0 1 0;
+}
+
+#header a:hover,
+#header a:focus {
+  opacity: .8;
+}
+
+#header img {
+  max-height: 38px;
+  margin-right: 20px;
+}
+
+#header .light-button {
+  margin-left: 40px;
+}
+
+@media(max-width: 1275px) {
+  #header ul {
+    padding-left: 10px;
+  }
+}
+
+@media(max-width: 940px) {
+  #header {
+    position: fixed;
+    background: #fff;
+    opacity: .9;
+    padding-left: 20px;
+  }
+
+  #header input {
+    display: none;
+  }
+
+  #header .small-screen-search {
+    display: block;
+  }
+}
+
+@media(max-width: 700px) {
+  #header {
+    justify-content: flex-start;
+  }
+
+  #header div {
+    width: 100%;
+  }
+
+  #header ul {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 80%;
+    border-right: 1px solid #EFEFEF;
+  }
+
+  #header .small-screen-search {
+    margin-left: 20px;
+  }
+
+  #header ul li a {
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  #header ul li {
+    padding: 0 2%;
+  }
+}

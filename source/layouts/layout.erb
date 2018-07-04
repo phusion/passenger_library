@@ -69,101 +69,75 @@ end
   </head>
 
   <body class="<%= page_classes %>">
-    <% if config[:hiring_banner] %>
-      <div id="hiring-banner" data-swiftype-index="false">New: Fuse Panel for Phusion Passenger! <a href="https://www.phusionpassenger.com/fuse-panel">Learn more</a>.</div>
-    <% end %>
+
     <!-- Main navigation
     =========================================== -->
-    <header class="navbar navbar-static-top bs-docs-nav" id="top" data-swiftype-index="false">
-      <div class="container">
-        <div class="navbar-header" role="banner">
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
-            <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> Navigation
-          </button>
-          <a class="navbar-brand" href="<%= maybe_absolute_url_for '/index.html' %>">
-            <span class="navbar-brand-part1">Passenger</span>
-            <span class="navbar-brand-part2">Library</span>
-          </a>
-        </div>
-        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-          <ul class="nav navbar-nav">
-            <% navbar_dropdown_section :start, :basics, :deploy_walkthrough do %>
-              <a href="<%= maybe_absolute_url_for '/walkthroughs/index.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <% navbar_section :start do %><%= maybe_absolute_link_to "Quickstart", "/walkthroughs/start/index.html" %><% end %>
-                <% navbar_section :basics do %><%= maybe_absolute_link_to "Basics", "/walkthroughs/basics/index.html" %><% end %>
-                <% navbar_section :deploy_walkthrough do %><%= maybe_absolute_link_to "Deploy to production", "/walkthroughs/deploy/index.html" %><% end %>
-              </ul>
-            <% end %>
-            <% navbar_dropdown_section :install, :config, :deploy, :admin, :indepth do %>
-              <a href="<%= maybe_absolute_url_for '/guides.html' %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Topics <span class="caret"></span></a>
-              <% if locals[:integration_mode_type] %>
-                <ul class="dropdown-menu" role="menu">
-                  <% navbar_section :install do %><%= maybe_absolute_link_to "Installation, upgrade and uninstallation", "/install/#{locals[:integration_mode_type]}/index.html" %><% end %>
-                  <% navbar_section :dev do %><%= maybe_absolute_link_to "Developing with Passenger", "/dev/index.html" %><% end %>
-                  <% navbar_section :config do %><%= maybe_absolute_link_to "Configuration and optimization", "/config/#{locals[:integration_mode_type]}/index.html" %><% end %>
-                  <% navbar_section :deploy do %><%= maybe_absolute_link_to "Deployment and scaling", "/deploy/#{locals[:integration_mode_type]}/index.html" %><% end %>
-                  <% navbar_section :admin do %><%= maybe_absolute_link_to "Administration, debugging and troubleshooting", "/admin/#{locals[:integration_mode_type]}/index.html" %><% end %>
-                  <% navbar_section :indepth do %><%= maybe_absolute_link_to "In-depth", "/indepth/index.html" %><% end %>
-                </ul>
-              <% else %>
-                <ul class="dropdown-menu" role="menu">
-                  <% navbar_section :install do %><%= maybe_absolute_link_to "Installation, upgrade and uninstallation", "/install/index.html" %><% end %>
-                  <% navbar_section :install do %><%= maybe_absolute_link_to "Developing with Passenger", "/dev/index.html" %><% end %>
-                  <% navbar_section :config do %><%= maybe_absolute_link_to "Configuration and optimization", "/config/index.html" %><% end %>
-                  <% navbar_section :deploy do %><%= maybe_absolute_link_to "Deployment and scaling", "/deploy/index.html" %><% end %>
-                  <% navbar_section :admin do %><%= maybe_absolute_link_to "Administration, debugging and troubleshooting", "/admin/index.html" %><% end %>
-                  <% navbar_section :indepth do %><%= maybe_absolute_link_to "In-depth", "/indepth/index.html" %><% end %>
-                </ul>
-              <% end %>
-              <% navbar_dropdown_section :reference do %>
-                <% if locals[:integration_mode_type] %>
-                  <a href="<%= maybe_absolute_url_for "/config/#{locals[:integration_mode_type]}/index.html" %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <% navbar_section :reference do %><%= maybe_absolute_link_to "Configuration reference", "/config/#{locals[:integration_mode_type]}/reference/index.html" %><% end %>
-                    <% navbar_section :reference do %><%= maybe_absolute_link_to "Hooks", "/indepth/hooks.html" %><% end %>
-                  </ul>
-                <% else %>
-                  <a href="<%= maybe_absolute_url_for "/config/index.html" %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <% navbar_section :reference do %><%= maybe_absolute_link_to "Configuration reference", "/config/reference/index.html" %><% end %>
-                    <% navbar_section :reference do %><%= maybe_absolute_link_to "Hooks", "/indepth/hooks.html" %><% end %>
-                  </ul>
-                <% end %>
-              <% end %>
-            <% end %>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li class="swiftype-container">
-              <form action="javascript:void(0)">
-                <input type="text" id="st-search-input" class="st-default-search-input form-control" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Enter a search term...">
-              </form>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="https://www.phusionpassenger.com/">Back to Passenger homepage</a></li>
-                <li><a href="<%= SUPPORT_URL %>" target="_blank">Support</a></li>
-                <li><a href="http://www.phusion.nl/contact" target="_blank">Contact</a></li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
+    <header id="header">
+      <div>
+        <ul>
+          <a href="https://phusionpassenger.com/"><img src="<%= url_for "/images/passenger_logo.svg" %>" alt="home" /></a>
+          <li><a href='/tutorials/'>Tutorials</a></li>
+          <li><a href='/advanced_guides/'>Advanced guides</a></li>
+          <li><a href="https://www.phusionpassenger.com/library/">References</a></li>
+          <li><a href="https://www.phusionpassenger.com/library/">Old docs</a></li>
+        </ul>
+        <img class="small-screen-search" src="<%= url_for "/images/search_icon.svg" %>"  alt="search docs.." />
+        <input type="search" placeholder="search docs.." />
       </div>
     </header>
 
-    <%= yield_content :masthead %>
+    <div id="content">
 
-    <div class="container bs-docs-container">
-      <div class="row">
-        <% if has_sidebar? %>
-          <!-- Sidebar
-          =========================================== -->
-          <div class="col-md-3" role="complementary">
-            <aside class="bs-docs-sidebar hidden-print" data-swiftype-index="false">
-              <%= yield_sidebar_content %>
-            </aside>
+      <!-- Left navigation
+      =========================================== -->
+      <div id="left-nav" style={{display: this.state.toggleHide ? 'none' : 'block'}}>
+        <div id="left-nav-content">
+          <img class="version" alt="gem version"/>
+
+          <div class="dropdown">
+            <span>Current Language</span>
+            <select name="Language">
+              <option value="Ruby">Ruby</option>
+            </select>
+            <span class="arrow-down"></span>
           </div>
+
+          <div class="dropdown">
+            <span>Current Integration</span>
+            <select name="Integration">
+              <option value="Nginx">Nginx</option>
+            </select>
+            <span class="arrow-down"></span>
+          </div>
+
+          <ul>
+            <span>About Passenger</span>
+            <li><a href="#">What is Passenger?</a></li>
+            <li><a href="#">Fundamental concepts</a></li>
+          </ul>
+
+          <ul>
+            <span>Getting started</span>
+            <li><a href="#">Quickstart</a></li>
+            <li><a href="#">Installation</a></li>
+            <li><a href="#">The ‘passenger’ command</a></li>
+            <li><a href="#">Process management</a></li>
+            <li><a href="#">Reloading code</a></li>
+            <li><a href="#">The --help option</a></li>
+          </ul>
+
+          <ul>
+            <span>Deployment</span>
+            <li><a href="#">Deploy to production</a></li>
+            <li><a href="#">Deploying updates</a></li>
+          </ul>
+
+        </div>
+      </div>
+
+      <!-- Main content
+      =========================================== -->
+      <div id="main-content">
 
           <!-- Content
           =========================================== -->
@@ -194,50 +168,19 @@ end
               <%= yield %>
             <%= '</section>' if !current_page.data.multisection %>
           </div>
-        <% end %>
+      </div>
+
+      <!-- Right sidebar
+      =========================================== -->
+      <div id="right-content">
+        <div id="fuse-panel">
+          <img src="<%= url_for "/images/FP_logo.svg" %>" alt="Fuse Panel logo"/>
+          <img class="fuse" src="<%= url_for "/images/fuse_panel.png" %>" alt="Fuse Panel"/>
+          <a class="light-button" href="https://www.phusionpassenger.com/fuse-panel">Try the beta</a>
+          <img src="<%= url_for "/images/feedback_placeholder.svg" %>" alt="feedback"/>
+        </div>
       </div>
     </div>
-
-
-    <!-- Footer
-    =========================================== -->
-    <footer class="bs-docs-footer" role="contentinfo" data-swiftype-index="false">
-      <div class="container">
-        <div class="bs-docs-social">
-          <ul class="bs-docs-social-buttons">
-            <li>
-              <iframe class="github-btn" src="https://ghbtns.com/github-btn.html?user=phusion&amp;repo=passenger&amp;type=watch&amp;count=true" width="90" height="20" title="Star on GitHub"></iframe>
-            </li>
-            <li>
-              <iframe class="github-btn" src="https://ghbtns.com/github-btn.html?user=phusion&amp;repo=passenger&amp;type=fork&amp;count=true" width="90" height="20" title="Fork on GitHub"></iframe>
-            </li>
-            <li>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.phusionpassenger.com" data-count="horizontal" data-via="phusion_nl" data-text="Phusion Passenger">Tweet</a>
-            </li>
-            <li>
-              <a href="https://twitter.com/phusion_nl" class="twitter-follow-button" data-show-count="true">Follow @phusion_nl</a>
-            </li>
-          </ul>
-        </div>
-
-        <p>
-          Documentation licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY SA 4.0</a>.
-        </p>
-        <p class="legal-notice-small">
-          Copyright &copy; 2008-<%= Date.today.year %> Phusion Holding B.V. and contributors to the Passenger Library.
-        </p>
-        <p class="legal-notice-small">
-          "Phusion", "Phusion Passenger", "Passenger" and the Phusion pinwheel logo are registered trademarks of Phusion Holding B.V.
-        </p>
-
-        <!-- Based on http://mistic100.github.io/jekyll-bootstrap-doc/ -->
-        <ul class="bs-docs-footer-links muted">
-          <li><a href="https://github.com/phusion/passenger">Passenger at Github</a></li>
-          <li>&middot;</li>
-          <li><a href="https://github.com/phusion/passenger_library">Passenger Library at Github</a></li>
-        </ul>
-      </div>
-    </footer>
 
     <%= globals[:layout_body_trailer] || "" %>
 

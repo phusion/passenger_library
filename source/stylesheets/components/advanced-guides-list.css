@@ -1,0 +1,13 @@
+#advanced-guides-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#advanced-guides-list li {
+  margin-top: 3px;
+}
+
+#advanced-guides-list  #current-selection {
+  margin-bottom: 0;
+  border: none;
+}

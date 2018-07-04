@@ -65,18 +65,18 @@ Passenger's feature set is very different from those of Unicorn and Puma. In par
 
 Passenger does many things, but some things are currently out of scope.
 
- * **Setting up a server with an operating system**<br>
-   Passenger assumes that you already have a server with a working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.<br>
+ * **Setting up a server with an operating system**
+   Passenger assumes that you already have a server with a working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.
    However, the Passenger Library contains excellent [documentation on setting up a server](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>).
- * **Installing Ruby**<br>
-   To run Ruby apps on Passenger, you must already have Ruby installed. Passenger does not do that for you. Passenger does not care how you install Ruby though; you sometimes just need to tell Passenger where Ruby is.<br>
+ * **Installing Ruby**
+   To run Ruby apps on Passenger, you must already have Ruby installed. Passenger does not do that for you. Passenger does not care how you install Ruby though; you sometimes just need to tell Passenger where Ruby is.
    Having said that, the Passenger Library contains excellent [documentation on installing Ruby during a production deployment](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>).
- * **Transferring the application code and files to the server**<br>
-   Passenger does not transfer the application code and files to the server for you. To do this, you should use something like Capistrano. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.<br>
+ * **Transferring the application code and files to the server**
+   Passenger does not transfer the application code and files to the server for you. To do this, you should use something like Capistrano. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.
    The Passenger Library contains documentation on [automating releases using shell scripts](<%= url_for "/deploy/automating_app_updates/index.html" %>).
- * **Installing application dependencies**<br>
+ * **Installing application dependencies**
    Passenger does not install your application's dependencies for you. That job belongs to Capistrano and Bundler.
- * **Managing the database**<br>
+ * **Managing the database**
    If your application requires a database, then Passenger does not install that database for you, nor does it sets up database accounts and tables for you. They must already be set up by the time you deploy your application to Passenger.
 
 ## Next step

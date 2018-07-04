@@ -1,6 +1,4 @@
-//= require "bootstrap.min.css"
-//= require "swiftype-embed.css"
-//= require "docs.css"
-//= require "style.css"
-//= require "hiring-banner.css"
+//= require "normalize.css"
+//= require "global.css"
+//= require_all "/components/"
 //= require_tree .
