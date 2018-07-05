@@ -467,6 +467,12 @@ configure :development do
   set :url_root, DEVELOPMENT_URL_ROOT
   activate :livereload, :port => 35730
   set :hiring_banner, true
+
+  # CSS prefixer
+  activate :autoprefixer
+
+  # For example, change the Compass output style for deployment
+  activate :minify_css
 end
 
 # Build-specific configuration
@@ -474,6 +480,9 @@ configure :build do
   set :url_root, PRODUCTION_URL_ROOT
   set :google_analytics, true
   set :hiring_banner, true
+
+  # CSS prefixer
+  activate :autoprefixer
 
   # For example, change the Compass output style for deployment
   activate :minify_css
