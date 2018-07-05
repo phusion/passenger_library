@@ -287,7 +287,10 @@
 #main-content .video-player {
   margin-bottom: 10px;
   position: relative;
-  z-index: -200;
+}
+
+#main-content video {
+  width: 100%;
 }
 
 #main-content .video-sub-text {

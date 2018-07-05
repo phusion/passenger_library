@@ -6,6 +6,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    autoprefixer-rails (8.6.4)
+      execjs
     builder (3.2.3)
     capybara (2.4.4)
       mime-types (>= 1.16)
@@ -60,6 +62,9 @@ GEM
       middleman-sprockets (>= 3.1.2)
       sass (>= 3.4.0, < 4.0)
       uglifier (~> 2.5)
+    middleman-autoprefixer (2.9.0)
+      autoprefixer-rails (~> 8.0)
+      middleman-core (>= 3.3.3)
     middleman-core (3.4.1)
       activesupport (~> 4.1)
       bundler (~> 1.1)
@@ -141,6 +146,7 @@ PLATFORMS
 DEPENDENCIES
   kramdown
   middleman (~> 3.4)
+  middleman-autoprefixer
   middleman-livereload (~> 3.4.0)
   middleman-search_engine_sitemap
   middleman-syntax
@@ -150,4 +156,4 @@ DEPENDENCIES
   wdm (~> 0.1.0)
 
 BUNDLED WITH
-   1.14.6
+   1.16.0

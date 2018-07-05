@@ -1,268 +1,62 @@
 ---
+title: What is Passenger?
 multisection: true
 comments: false
 skip_search: true
+languages:
+  - Ruby
+  - Python
+  - Node
+  - Meteor
+
+integrations:
+  - Nginx
+  - Apache
+  - Standalone
 ---
-<% content_for :masthead do %>
-  <div class="bs-docs-masthead" id="content">
-    <div class="container">
-      <h1 class="home-title">
-        <span class="home-title-brand">Phusion</span>
-        <span class="home-title-name">Passenger Library</span>
-      </h1>
-      <p class="lead">Build, deploy, manage and scale web apps with Passenger and its world-class documentation.</p>
-      <div class="swiftype-container">
-        <form action="javascript:void(0)">
-          <input type="text" class="st-masthead-search-input form-control" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search the library...">
-        </form>
+
+<div id="what-is-passenger">
+  <h1 class="solo-h1">What is Passenger?</h1>
+  <p>Phusion Passenger is an <label>open source</label> <b>web application server</b>.
+  It handles HTTP requests, manages processes and resources, and enables administration,
+  monitoring and problem diagnosis.</p>
+
+  <div class="video-player">
+    <video id="video" preload="metadata" controls>
+      <source src="https://player.vimeo.com/external/224923750.hd.mp4?s=6931550c8a2bedabba0822a6ec7966c45ee1fbc4&profile_id=174" type="video/mp4">
+    </video>
+  </div>
+
+  <p class="video-sub-text">Phusion Passenger - the smart app server</p>
+  <p>Passenger is very easy to use, makes deploying in production much easier and is scalable. If you aren't already familiar with the benefits, you can <a href="https://www.phusionpassenger.com/advantages">learn more about them</a>.</p>
+
+  <p>Passenger supports multiple programming languages, of which <b>Ruby</b> is one.
+  Passenger can also serve multiple applications at the same time (it is multitenant).</p>
+
+  <div class="supported-logos">
+    <strong>Supported languages:</strong>
+    <div class="logos">
+    <% current_page.data.languages.each do |language| %>
+      <div>
+        <%= tag :img, :src => "/images/#{language.downcase}.svg" %>
+        <span><%= language %></span>
       </div>
-      <p class="lead">
-        <a href="#site_intro" data-scroll class="btn btn-outline-inverse btn-outline-inverse-prominent btn-lg">
-          <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-          Read more
-        </a>
-        <a href="config/reference/" class="btn btn-outline-inverse btn-lg">
-          Config Reference
-        </a>
-      </p>
+    <% end %>
+    </div>
+
+    <strong>Supported integrations:</strong>
+    <div class="logos">
+    <% current_page.data.integrations.each do |integration| %>
+      <div>
+        <%= tag :img, :src => "/images/#{integration.downcase}.svg" %>
+        <span><%= integration %></span>
+      </div>
+    <% end %>
+    </div>
+
+    <div id="next-step">
+      <h2>Next step: Fundamental concepts</h2>
+      <a href="/tutorials/fundamental_concepts/" class="dark-button">Continue</a>
     </div>
   </div>
-<% end %>
-
-<section id="site_intro" class="site-intro">
-  <p class="home-welcome-message">
-    Welcome to the Passenger Library, a comprehensive online resource about Ruby, Python and Node.js deployment, administration, scaling, high availability and more &mdash; through the use of the <a href="https://www.phusionpassenger.com">Phusion Passenger</a> application server. The entire library is <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">open source</a>. Think anything can be improved? Just <a href="https://github.com/phusion/passenger_library">edit the content on Github</a>.
-  </p>
-</section>
-
-<br><br>
-
-<section class="bs-docs-section">
-  <div class="row">
-    <div class="col-sm-4 site-section-showoff">
-      <a href="#walkthroughs" data-scroll class="eyecatcher">
-        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-        <span class="title">Tutorials</span>
-      </a>
-
-      <p>
-        End-to-end. For <strong>beginners</strong>, helping you from zero to fully online. Great if you are not familiar with Passenger.
-      </p>
-
-      <a href="#walkthroughs" data-scroll class="btn btn-default btn-lg visible-xs">
-        Read this
-      </a>
-    </div>
-
-    <div class="col-sm-4 site-section-showoff">
-      <a href="#guides" data-scroll class="eyecatcher">
-        <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-        <span class="title">Topics</span>
-      </a>
-
-      <p>
-        Short, to-the-point guides on specific topics. Great if you already have experience with Passenger.
-      </p>
-
-      <a href="#guides" data-scroll class="btn btn-default btn-lg visible-xs">
-        Read this
-      </a>
-    </div>
-
-    <div class="col-sm-4 site-section-showoff">
-      <a href="config/reference/" class="eyecatcher">
-        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-        <span class="title">Reference</span>
-      </a>
-
-      <p>
-        Just looking to configure something? Read this list of configuration options, Ctrl-F to search.
-      </p>
-
-      <a href="config/reference/" class="btn btn-default btn-lg visible-xs">
-        Read this
-      </a>
-    </div>
-  </div>
-  <div class="row hidden-xs">
-    <div class="col-sm-4 site-section-showoff-aligned-action">
-      <a href="#walkthroughs" data-scroll class="btn btn-default btn-lg">
-        Read this
-      </a>
-    </div>
-    <div class="col-sm-4 site-section-showoff-aligned-action">
-      <a href="#guides" data-scroll class="btn btn-default btn-lg">
-        Read this
-      </a>
-    </div>
-    <div class="col-sm-4 site-section-showoff-aligned-action">
-      <a href="config/reference/" class="btn btn-default btn-lg">
-        Read this
-      </a>
-    </div>
-  </div>
-
-</section>
-
-<section class="bs-docs-section">
-  <div class="section-header">
-    <h2 id="walkthroughs" class="section-header">End-to-End Tutorials for Beginners</h2>
-    <p class="lead">Helping you from zero to fully online.</p>
-  </div>
-
-  <%= render_partial("/walkthroughs/index.html", locals: { quickstart: true, basics: true, deployment: true }) %>
-</section>
-
-<section class="bs-docs-section" id="guides" class="guides-index">
-  <div class="section-header">
-    <h2>Guides on Specific Topics</h2>
-    <p class="lead">For mastering Passenger.</p>
-  </div>
-
-
-  <!-- Installation  ||  Development -->
-
-  <div class="row hidden-xs">
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header">
-        <a href="<%= url_for "/install/index.html" %>">
-          <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
-          Installation, upgrade and uninstallation
-        </a>
-      </h3>
-    </div>
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header">
-        <a href="<%= url_for "/dev/index.html" %>">
-          <span class="glyphicon glyphicon-console" aria-hidden="true"></span>
-          Developing with Passenger
-        </a>
-      </h3>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header visible-xs">
-        <a href="<%= url_for "/install/index.html" %>">
-          <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
-          Installation, upgrade and uninstallation
-        </a>
-      </h3>
-
-      <p class="guide-description">
-        Everything related to secure installation, customization and removal, including automated upgrading and background info about integration with Nginx or Apache.
-      </p>
-    </div>
-
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header visible-xs">
-        <a href="<%= url_for "/dev/index.html" %>">
-          <span class="glyphicon glyphicon-console" aria-hidden="true"></span>
-          Developing with Passenger
-        </a>
-      </h3>
-
-      <p class="guide-description">
-        Using Passenger during application development. Learn how Passenger makes development easier. Integrate your application with Passenger features.
-      </p>
-    </div>
-  </div>
-
-
-  <!-- Configuration and optimization  ||  Deployment and scaling -->
-
-  <div class="row hidden-xs">
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header">
-        <a href="<%= url_for "/config/index.html" %>">
-          <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-          Configuration and optimization
-        </a>
-      </h3>
-    </div>
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header">
-        <a href="<%= url_for "/deploy/index.html" %>">
-          <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
-          Deployment and scaling
-        </a>
-      </h3>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header visible-xs">
-        <a href="<%= url_for "/config/index.html" %>">
-          <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-          Configuration and optimization
-        </a>
-      </h3>
-
-      <p class="guide-description">
-        Passenger configuration options and features explained, as well as tweaking guides for optimal performance for your specific situation and wishes.
-      </p>
-    </div>
-
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header visible-xs">
-        <a href="<%= url_for "/deploy/index.html" %>">
-          <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>Deployment, scaling and high availability
-        </a>
-      </h3>
-
-      <p class="guide-description">
-        Deploying web apps to a server that has Passenger installed; scaling to multiple servers in order to handle more traffic and always be up &amp; running.
-      </p>
-    </div>
-  </div>
-
-
-  <!-- Administration and troubleshooting || In-depth-->
-
-  <div class="row hidden-xs">
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header">
-        <a href="<%= url_for "/admin/index.html" %>">
-          <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-          Administration, debugging and troubleshooting
-        </a>
-      </h3>
-    </div>
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header">
-        <a href="<%= url_for "/indepth/index.html" %>">
-          <span class="glyphicon glyphicon-book" aria-hidden="true"></span>In-depth
-        </a>
-      </h3>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header visible-xs">
-        <a href="<%= url_for "/admin/index.html" %>">
-          <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Administration, debugging and troubleshooting
-        </a>
-      </h3>
-
-      <p class="guide-description">
-        Essential tips for troubleshooting problematic installs or applications; making the best of administrative tools and where to find more support resources.
-      </p>
-    </div>
-    <div class="col-sm-6">
-      <h3 class="front-page-link-header visible-xs">
-        <a href="<%= url_for "/indepth/index.html" %>">
-          <span class="glyphicon glyphicon-book" aria-hidden="true"></span>In-depth
-        </a>
-      </h3>
-
-      <p class="guide-description">
-        Passenger concepts, modes and behavior explained in detail, with topics like process spawning,
-        integration modes, turbocaching and load balancing.
-      </p>
-    </div>
-  </div>
-
-</section>
+</div>
