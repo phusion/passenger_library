@@ -1,0 +1,54 @@
+<div class="dropdown <%= dropdown_type.downcase %>">
+  <span>Current <%= dropdown_type %></span>
+  <select name="<%= dropdown_type %>" style="background-image: url(<%= url_for "/images/#{dropdown_items[0].downcase}.svg" %>)">
+    <% dropdown_items.each do |item| %>
+      <option value="<%= item %>"><%= item %></option>
+    <% end %>
+  </select>
+  <span class="arrow-down"></span>
+</div>
+
+<script>
+  var languageSelect = document.querySelector('.language select');
+  var integrationSelect = document.querySelector('.integration select');
+  var languageArr = ['ruby', 'python', 'node', 'meteor'];
+  var integrationArr = ['nginx', 'apache', 'standalone'];
+
+  function showSavedChoice(element) {
+    var value = localStorage.getItem(element.name);
+    var option = element.querySelector("option[value=" + value + "]");
+    option.setAttribute('selected', true);
+    element.style.backgroundImage = "url(\"../../../images/" + value.toLowerCase() + ".svg\")";
+  }
+
+  showSavedChoice(languageSelect);
+  showSavedChoice(integrationSelect);
+
+  function insertWordintoUrl(input, array, element) {
+    var location = window.location.href;
+    var value = input.value.toLowerCase();
+
+    array.forEach(function(item) {
+      if (location.indexOf(item) !== -1) {
+        if (value === 'node') {
+          value = 'nodejs';
+        }
+        window.location = location.replace(item, value);
+      }
+
+      // change logo if input doesn't change the content
+      element.style.backgroundImage = "url(\"../../../images/" + value + ".svg\")";
+
+      // save selection in localStorage
+      localStorage.setItem(element.name, input.value);
+    });
+  }
+
+  languageSelect.addEventListener('change', function() {
+    insertWordintoUrl(this, languageArr, languageSelect);
+  });
+
+  integrationSelect.addEventListener('change', function() {
+    insertWordintoUrl(this, integrationArr, integrationSelect);
+  });
+</script>

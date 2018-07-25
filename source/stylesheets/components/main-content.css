@@ -184,7 +184,7 @@
   z-index: -20;
   border-radius: 3px;
   background: #35373B;
-  background-image: url('/docs/img/info.svg');
+  background-image: url('../../images/info.svg');
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: -6px -1px;
@@ -219,7 +219,7 @@
   z-index: -20;
   border-radius: 3px;
   background: #35373B;
-  background-image: url('/docs/img/note.svg');
+  background-image: url('../../images/note.svg');
   background-repeat: no-repeat;
   background-size: 22px;
   background-position: -4px 4px;
@@ -246,7 +246,7 @@
   z-index: -20;
   border-radius: 3px;
   background: #35373B;
-  background-image: url('/docs/img/warning.svg');
+  background-image: url('../../images/warning.svg');
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: -6px -1px;
