@@ -14,15 +14,12 @@
   var languageArr = ['ruby', 'python', 'node', 'meteor'];
   var integrationArr = ['nginx', 'apache', 'standalone'];
 
-  function showSavedChoice(element) {
+  function selectSavedChoice(element) {
     var value = localStorage.getItem(element.name);
     var option = element.querySelector("option[value=" + value + "]");
     option.setAttribute('selected', true);
     element.style.backgroundImage = "url(\"../../../images/" + value.toLowerCase() + ".svg\")";
   }
-
-  showSavedChoice(languageSelect);
-  showSavedChoice(integrationSelect);
 
   function insertWordintoUrl(input, array, element) {
     var location = window.location.href;
@@ -51,4 +48,7 @@
   integrationSelect.addEventListener('change', function() {
     insertWordintoUrl(this, integrationArr, integrationSelect);
   });
+
+  selectSavedChoice(languageSelect);
+  selectSavedChoice(integrationSelect);
 </script>
