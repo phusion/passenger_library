@@ -9,23 +9,14 @@
 </div>
 
 <script>
-  var languageSelect = document.querySelector('.language select');
-  var integrationSelect = document.querySelector('.integration select');
-  var languageArr = ['ruby', 'python', 'node', 'meteor'];
-  var integrationArr = ['nginx', 'apache', 'standalone'];
+  var select = document.querySelector('.<%= dropdown_type.downcase %> select');
+  var arr = ["<%= dropdown_items.map(&:downcase).join('", "') %>"];
 
-  function selectSavedChoice(element) {
-    var value = localStorage.getItem(element.name);
-    var option = element.querySelector("option[value=" + value + "]");
-    option.setAttribute('selected', true);
-    element.style.backgroundImage = "url(\"../../../images/" + value.toLowerCase() + ".svg\")";
-  }
-
-  function insertWordintoUrl(input, array, element) {
+  select.addEventListener('change', function() {
     var location = window.location.href;
-    var value = input.value.toLowerCase();
+    var value = this.value.toLowerCase();
 
-    array.forEach(function(item) {
+    arr.forEach(function(item) {
       if (location.indexOf(item) !== -1) {
         if (value === 'node') {
           value = 'nodejs';
@@ -33,33 +24,28 @@
         window.location = location.replace(item, value);
       }
 
-      // change logo if input doesn't change the content
-      element.style.backgroundImage = "url(\"../../../images/" + value + ".svg\")";
+      // change logo if this's value doesn't change the content
+      select.style.backgroundImage = "url(\"../../../images/" + value + ".svg\")";
 
       // save selection in localStorage
-      localStorage.setItem(element.name, input.value);
+      localStorage.setItem(select.name, this.value);
     });
-  }
+  });
 
-  function getWordFromUrl(element, array) {
+  (function(element, array) {
     var location = window.location.href;
     var value = array.find(item => (location.indexOf(item) !== -1));
     if (value) {
-      localStorage.setItem(element.name, value);
+      localStorage.setItem(element.name, value.replace(/^(.)(.*)/, (match, p1, p2) =>
+        p1.toUpperCase() + p2.toLowerCase()
+      ));
     }
-  }
+  })(select, arr);
 
-  languageSelect.addEventListener('change', function() {
-    insertWordintoUrl(this, languageArr, languageSelect);
-  });
-
-  integrationSelect.addEventListener('change', function() {
-    insertWordintoUrl(this, integrationArr, integrationSelect);
-  });
-
-
-  getWordFromUrl(languageSelect, languageArr);
-  getWordFromUrl(integrationSelect, integrationArr);
-  selectSavedChoice(languageSelect);
-  selectSavedChoice(integrationSelect);
+  (function (element) {
+    var value = localStorage.getItem(element.name);
+    var option = element.querySelector("option[value=" + value + "]");
+    option.setAttribute('selected', true);
+    element.style.backgroundImage = "url(\"../../../images/" + value.toLowerCase() + ".svg\")";
+  })(select);
 </script>
