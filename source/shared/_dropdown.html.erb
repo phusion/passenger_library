@@ -41,6 +41,14 @@
     });
   }
 
+  function getWordFromUrl(element, array) {
+    var location = window.location.href;
+    var value = array.find(item => (location.indexOf(item) !== -1));
+    if (value) {
+      localStorage.setItem(element.name, value);
+    }
+  }
+
   languageSelect.addEventListener('change', function() {
     insertWordintoUrl(this, languageArr, languageSelect);
   });
@@ -49,6 +57,9 @@
     insertWordintoUrl(this, integrationArr, integrationSelect);
   });
 
+
+  getWordFromUrl(languageSelect, languageArr);
+  getWordFromUrl(integrationSelect, integrationArr);
   selectSavedChoice(languageSelect);
   selectSavedChoice(integrationSelect);
 </script>
