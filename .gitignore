@@ -20,3 +20,4 @@
 
 # Ignore JetBrains Webstorm IDE specific settings directory
 .idea
+passenger.*
