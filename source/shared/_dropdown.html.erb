@@ -9,12 +9,14 @@
 </div>
 
 <script>
+  (function(){
   var select = document.querySelector('.<%= dropdown_type.downcase %> select');
   var arr = ["<%= dropdown_items.map(&:downcase).join('", "') %>"];
 
-  select.addEventListener('change', function() {
+  function changeHandler() {
+    var self = this;
     var location = window.location.href;
-    var value = this.value.toLowerCase();
+    var value = self.value.toLowerCase();
 
     arr.forEach(function(item) {
       if (location.indexOf(item) !== -1) {
@@ -25,16 +27,21 @@
       }
 
       // change logo if this's value doesn't change the content
-      select.style.backgroundImage = "url(\"../../../images/" + value + ".svg\")";
+      self.style.backgroundImage = "url(\"../../../images/" + value + ".svg\")";
 
       // save selection in localStorage
-      localStorage.setItem(select.name, this.value);
+      localStorage.setItem(self.name, self.value);
     });
-  });
+  }
+
+  select.addEventListener('change', changeHandler.bind(select));
 
   (function(element, array) {
     var location = window.location.href;
     var value = array.find(item => (location.indexOf(item) !== -1));
+    if (!localStorage.getItem(element.name) && !value) {
+      value = array[0];
+    }
     if (value) {
       localStorage.setItem(element.name, value.replace(/^(.)(.*)/, (match, p1, p2) =>
         p1.toUpperCase() + p2.toLowerCase()
@@ -46,6 +53,7 @@
     var value = localStorage.getItem(element.name);
     var option = element.querySelector("option[value=" + value + "]");
     option.setAttribute('selected', true);
-    element.style.backgroundImage = "url(\"../../../images/" + value.toLowerCase() + ".svg\")";
+    changeHandler.bind(element)();
   })(select);
+  })();
 </script>
