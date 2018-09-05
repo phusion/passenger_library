@@ -19,7 +19,7 @@
     var value = self.value.toLowerCase();
 
     arr.forEach(function(item) {
-      if (location.indexOf(item) !== -1) {
+      if (item !== value && location.indexOf(item) !== -1) {
         if (value === 'node') {
           value = 'nodejs';
         }
