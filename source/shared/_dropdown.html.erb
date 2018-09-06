@@ -20,14 +20,16 @@
 
     arr.forEach(function(item) {
       if (item !== value && location.indexOf(item) !== -1) {
-        if (value === 'node') {
-          value = 'nodejs';
-        }
         window.location = location.replace(item, value);
       }
 
       // change logo if this's value doesn't change the content
       self.style.backgroundImage = "url(\"../../../images/" + value + ".svg\")";
+
+      arr.forEach(needle => {
+        document.querySelectorAll('a[href*="'+ needle +'"]').forEach(a=>{a.href=a.href.replace(needle, value)});
+      });
+      document.querySelectorAll('[data-<%= dropdown_type.downcase %>_placeholder]').forEach(e=>{e.innerText=value});
 
       // save selection in localStorage
       localStorage.setItem(self.name, self.value);
@@ -53,7 +55,7 @@
     var value = localStorage.getItem(element.name);
     var option = element.querySelector("option[value=" + value + "]");
     option.setAttribute('selected', true);
-    changeHandler.bind(element)();
+    document.addEventListener("DOMContentLoaded", changeHandler.bind(element));
   })(select);
   })();
 </script>

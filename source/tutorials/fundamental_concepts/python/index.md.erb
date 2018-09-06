@@ -1,0 +1,50 @@
+---
+title: 'Understanding Passenger - Passenger + Python basics'
+comments: false
+---
+# Fundamental concepts
+
+<p class="lead">We give you a basic understanding of what Passenger is. We also explain how Passenger fits in the stack and how it compares to other software that you may use.</p>
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## How Passenger fits in the stack
+
+When you deploy your web app to production, there are all sorts of components involved. You may have heard of GUnicorn, uWSGI, Nginx and Apache. Passenger replaces some components, while collaborating with other components.
+
+In a typical production stack, one would use Nginx or Apache as the web server, Passenger as application server, and Fabric as release automation tool. Passenger integrates with Nginx or Apache and manages the application and its resources.
+
+<figure>
+  <img src="<%= url_for '../shared/fundamentals.svg' %>">
+  <figcaption>Passenger integrates with Nginx/Apache, allows the app to speak HTTP and manages the app's processes and resources. Fabric automates releases.</figcaption>
+</figure>
+
+### Nginx and Apache
+
+Nginx and Apache are web servers. They provide HTTP transaction handling and serve static files. However, they are not Python application servers and cannot run Python applications directly. That is why Nginx and Apache are used in combination with an application server, such as Passenger.
+
+Application servers provide HTTP request handling services to Python web apps. That said, application servers typically aren't as good as Nginx and Apache at handling HTTP requests. The devil is in the details: Nginx and Apache are better at handling I/O security, HTTP concurrency management, connection timeouts, etc. That's why, in production environments, application servers are used in combination with Nginx or Apache.
+
+### Fabric
+
+Fabric is an application release automation tool. When releasing a new version of your web application, there are actions that need to be performed, such as uploading your application code to your servers, running a command to install your gem bundle, restarting processes, etc. Fabric allows you to automate these actions.
+
+Fabric is not a server that provides HTTP transaction handling, so it does not replace application servers or web servers. Instead, you are supposed to use Fabric in combination with them. For example, Fabric scripts typically contain instructions to restart the application server after a new application version has been released.
+
+### GUnicorn and uWSGI
+
+GUnicorn and uWSGI are alternative application servers. Passenger replaces GUnicorn and uWSGI.
+
+Passenger's feature set is very different from those of GUnicorn and uWSGI. In particular, Passenger has a stronger focus on ease of use, integration with other components, automatic management and enabling problem diagnosis. For example, Passenger can integrate with Nginx and Apache in order to reduce setup work, and provides tools for easy problem diagnosis.
+
+## Multiple integration modes
+
+<%= render_partial("../shared/integration_modes.md", locals: { context: :basics }) %>
+
+<%= render_partial("../shared/out_of_scope.md", locals: locals.merge(deploy_tools: "Git, scp, FTP, Capistrano, Fabric, etc", dependency_tools: "Virtualenv and pip")) %>
+
+##Next step: Quickstart
+
+<a class="dark-button" href="/tutorials/quickstart/python/">Continue</a>
