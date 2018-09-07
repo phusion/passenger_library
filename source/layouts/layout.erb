@@ -1,5 +1,5 @@
 <%
-locals.merge!(globals)
+locals = locals.merge(globals)
 
 # We use absolute paths in this template only if the page asked for it,
 # e.g. 404.html.erb.
@@ -31,7 +31,7 @@ end
     <% else %>
       <title><%= site_title %></title>
     <% end %>
-    <link rel="stylesheet" href="<%= maybe_absolute_url_for "/stylesheets/all.css" %>" type="text/css">
+    <link rel="stylesheet" href="<%= maybe_absolute_url_for "/packs/bundle.css" %>" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Open+Sans:400,600" rel="stylesheet" type="text/css">
     <% if current_page.data.skip_search || @skip_search %>
       <meta name="st:robots" content="noindex">
@@ -163,7 +163,7 @@ end
     <%= globals[:layout_body_trailer] || "" %>
 
     <% if !current_page.data.skip_default_javascript %>
-      <script src="<%= maybe_absolute_url_for "/javascripts/all.js" %>" async="true"></script>
+      <script src="<%= maybe_absolute_url_for "/packs/bundle.js" %>" async="true"></script>
     <% end %>
 
     <% if config[:google_analytics] %>
