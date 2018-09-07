@@ -56,6 +56,13 @@
 
 #main-content pre code {
   font-family: monospace;
+  flex-direction: column;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+  overflow: auto;
+  background-color: transparent;
+  border-radius: 0;
 }
 
 #main-content img {
@@ -133,18 +140,6 @@
 #main-content pre:hover::before,
 #main-content pre:focus::before {
   display: block;
-}
-
-
-#main-content pre code {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  font-size: inherit;
-  color: inherit;
-  overflow: auto;
-  background-color: transparent;
-  border-radius: 0;
 }
 
 #main-content .prompt {
