@@ -1,0 +1,42 @@
+{
+  "name": "passenger_docs",
+  "version": "1.0.0",
+  "description": "Welcome to the Passenger documentation project. The goal of this project is to write excellent documentation for the [Phusion Passenger application server](https://www.phusionpassenger.com/).",
+  "main": "source/javascripts/main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "babel": "babel --presets es2015 source/javascripts/main.js -o source/packs/bundle.js",
+    "start": "webpack --watch --progress --bail -p && npm run babel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phusion/passenger_library.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phusion/passenger_library/issues"
+  },
+  "homepage": "https://github.com/phusion/passenger_library#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@webpack-cli/init": "^0.1.0",
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.5",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "webpack": "^2.2.0-rc.4",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "css-loader": "^1.0.0"
+  }
+}
