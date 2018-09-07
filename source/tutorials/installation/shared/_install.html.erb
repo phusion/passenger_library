@@ -1,0 +1,200 @@
+<p><select id="os_install_select">
+  <option value="none" selected>Please select an operating system / installation method</option>
+  <option value="debian">Debian, Ubuntu (with APT)</option>
+  <option value="redhat">Red Hat, CentOS (with RPM)</option>
+  <option value="osx">macOS</option>
+  <option value="other">Other / OS independent (generic installation method)</option>
+</select></p>
+
+
+<!-- ***************************
+     OS: none selected
+     *************************** -->
+<div class="install_os install_os_none" style="display: none">
+  <p><small><a href="#windows_not_supported" data-toggle="collapse" aria-expanded="false" aria-controls="windows_not_supported">(Windows is not supported)</a></small></p>
+
+  <div class="collapse" id="windows_not_supported">
+    <div class="note">
+      Our apologies to Windows users. Passenger doesn't support Windows. We require a Unix-like operating system.
+    </div>
+  </div>
+</div>
+
+
+<!-- ***************************
+     OS: Debian and Ubuntu
+     *************************** -->
+<div class="install_os install_os_debian" style="display: none">
+  <p><select id="debian_version_select">
+    <%= debian_version_selection_options %>
+    <option value="other">Other</option>
+  </select></p>
+
+  <div class="supported_debian_instructions">
+    <div class="note limited_package_support_for_non_lts_ubuntu" style="display: none">
+      <h3 class="notoc">Limited package support for non-LTS Ubuntu versions</h3>
+      <p>
+        You have selected a non-Long Term Support version of Ubuntu. We only provide .deb packages for non-LTS Ubuntu versions until the next Ubuntu version comes out. Ubuntu versions come out every 6 months.
+      </p>
+      <p>
+        So when the next Ubuntu version is released, you must upgrade your system to that new Ubuntu version. Otherwise you won't receive Passenger updates in the form of .deb packages from us anymore.
+      </p>
+    </div>
+
+    <p>You can install Passenger through APT:</p>
+
+    <pre class="highlight shell"><code><span class="c unselectable"># Install our PGP key and add HTTPS support for APT</span>
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
+sudo apt-get install -y apt-transport-https ca-certificates
+
+<span class="c unselectable"># Add our APT repository</span>
+sudo sh -c <span class="s1">'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger <span class="debian_codename si"></span> main &gt; /etc/apt/sources.list.d/passenger.list'</span>
+sudo apt-get update
+
+<span class="c unselectable"># Install Passenger</span>
+sudo apt-get install -y passenger</code></pre>
+
+    <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
+  </div>
+
+  <div class="unsupported_debian_instructions">
+    Is your Debian or Ubuntu version not listed? Then sorry, we do not provide packages for this version at the moment. Please follow the <a href="javascript:void(showGenericInstallationInstructions())">generic installation instructions through tarball</a>.
+  </div>
+</div>
+
+
+<!-- ***************************
+     OS: Red Hat and CentOS
+     *************************** -->
+<div class="install_os install_os_redhat" style="display: none">
+  <p><select id="redhat_version_select">
+    <%= redhat_version_selection_options %>
+    <option value="other">Other</option>
+  </select></p>
+
+  <div class="supported_redhat_instructions">
+    <div class="note">
+      <h3 class="notoc">Notes about RPMs on Red Hat and CentOS</h3>
+      <p>If you are using cPanel/WHM, note that it uses EasyApache whereas Passenger RPMs are designed for the official distro Apache. In this setup the gem installation method is likely a better fit, and you should ensure you have the correct apache tools installed: <code>yum remove httpd-tools && yum install ea-apache24-devel</code>. You will also likely need to disable SELinux when using the Passenger gem.</p>
+      <h3 class="notoc no_el6">Notes about SELinux on CentOS 7</h3>
+      <p class="no_el6">If you experience dependency errors related to selinux-policy while installing Passenger first try <code>yum clean all && yum update</code>, and if that doesn't resolve the issue, try enabling the CR repo: <code>sudo yum update && sudo yum-config-manager --enable cr</code>.</p>
+      <h3 class="notoc el6">Notes about SELinux on Red Hat 6 and CentOS 6</h3>
+      <p class="el6">Passenger versions prior to 5.1 require kernel &gt;= 2.6.39 if you are installing on Red Hat 6 or CentOS 6 with SELinux set to enforcing mode.</p>
+      <p class="el6">The pre 5.1 Passenger versions can also be installed without upgrading the kernel if you completely <strong>disable</strong> SELinux. Edit <code>/etc/selinux/config</code>, set <code>SELINUX=disabled</code> and reboot. Note that merely setting SELinux to permissive mode is not enough.</p>
+      <p class="el6">This issue does not apply to Red Hat &gt;= 7 and CentOS &gt;= 7, because these OS versions supply recent enough kernel versions.</p>
+    </div>
+
+    <p>You can install Passenger through YUM. But first you need to enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>. The instructions differ depending on whether you are on Red Hat or CentOS. The second step is only necessary on Red Hat.</p>
+
+    <h4 id="enable_epel_rhel">Enabling EPEL</h4>
+    <table class="table table-bordered table-striped">
+      <tbody>
+        <tr>
+          <td><strong>Step 1:</strong><br>install EPEL package</td>
+
+          <td>
+            <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y epel-release yum-utils
+<span class="prompt">$ </span>sudo yum-config-manager --enable epel
+<span class="prompt">$ </span>sudo yum clean all && sudo yum update -y</pre>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>step 2 (rhel only):</strong><br>
+            enable the 'optional' repository
+          </td>
+          <td>
+            enable the <em>optional</em> repository (<em>rhel-<span class="el6">6</span><span class="no_el6">7</span>-server-optional-rpms</em>). this can be done by enabling the rhel optional <a href="https://access.redhat.com/kb/docs/doc-11313">subchannel</a> for rhn-classic. for certificate-based subscriptions see <a href="https://access.redhat.com/site/documentation/en-us/red_hat_subscription_management/1/html/rhsm/entitlements-and-yum.html#supplementary-repos">red hat subscription management guide</a>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Repair Potential System Issues</h4>
+
+    <pre class="highlight shell"><code><span class="c unselectable"># Ensure curl and nss/openssl are sufficiently up-to-date to talk to the repo</span>
+sudo yum update -y
+
+date
+<span class="c unselectable"># if the output of date is wrong, please follow these instructions to install ntp</span>
+sudo yum install -y ntp
+sudo chkconfig ntpd on
+sudo ntpdate pool.ntp.org
+sudo service ntpd start
+</code></pre>
+
+    <h4>Install Passenger itself</h4>
+
+    <pre class="highlight shell"><code><span class="c unselectable"># Install other prerequisites</span>
+sudo yum install -y pygpgme curl
+
+<span class="c unselectable"># Add our <span class="redhat_distro_name"></span> YUM repository</span>
+sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+
+<span class="c unselectable"># Install Passenger</span>
+sudo yum install -y --enablerepo=epel passenger</code></pre>
+
+    <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
+  </div>
+
+  <div class="unsupported_redhat_instructions">
+    Is your Red Hat or CentOS version not listed? Then sorry, we do not provide packages for this version at the moment. Please follow the <a href="javascript:void(showGenericInstallationInstructions())">generic installation instructions through tarball</a>.
+  </div>
+</div>
+
+
+<!-- ***************************
+     OS: macOS
+     *************************** -->
+<div class="install_os install_os_osx" style="display: none">
+  <p>
+    You can install Passenger through <a href="http://brew.sh/">Homebrew</a>:
+  </p>
+  <pre class="highlight shell"><span class="prompt">$ </span>brew install passenger</pre>
+  <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
+</div>
+
+
+<!-- ***************************
+     OS: other
+     *************************** -->
+<div class="install_os install_os_other" style="display: none">
+  <h3 class="notoc">Step 1: download and extract tarball</h3>
+  <p>Download the latest Passenger source tarball.</p>
+  <p>
+    <a href="https://www.phusionpassenger.com/latest_stable_tarball" class="btn btn-primary">
+      <span class="glyphicon glyphicon-download"></span>
+      Download tarball
+    </a>
+  </p>
+  <p>
+    Extract the tarball to some place <strong>permanent</strong>. Replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
+  </p>
+  <pre class="highlight shell"><span class="prompt">$ </span>tar -xzvf passenger-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span></pre>
+
+  <h3 class="notoc">Step 2: install Ruby</h3>
+  <%= render_partial("/install/install/shared/ruby.html") %>
+
+  <h3 class="notoc">Step 3: add Passenger to PATH</h3>
+  <p>
+    Add the Passenger <code>bin</code> directory to your PATH, so that your shell can locate the Passenger commands.
+  </p>
+  <p>
+    Open your shell's startup file. If you're using bash, this is usually <code>/etc/bashrc</code> or <code>/etc/bash.bashrc</code>. Inside that file, add this to the end:
+  </p>
+  <pre class="highlight shell">PATH=<span class="o">/somewhere-permanent</span>/passenger-<span class="o">X.X.X</span>/bin:$PATH
+export PATH</pre>
+  <p>
+    Again, replace X.X.X with the Passenger version, and <code>/somewhere-permanent</code> with an actual directory path.
+  </p>
+  <p>
+    When you're done, restart all your shells so that your new PATH takes effect.
+  </p>
+  <div class="note">
+    Make sure your bashrc is actually included by your bash profile, which might not be the case if you created the user with <code>useradd</code> instead of <code>adduser</code> for example.
+  </div>
+
+  <h3 class="notoc">Step 4: validate installation</h3>
+  <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
+</div>
