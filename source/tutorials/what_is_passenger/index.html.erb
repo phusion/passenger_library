@@ -16,7 +16,6 @@ integrations:
 ---
 
 <div id="what-is-passenger">
-  <a class="dark-button" href="/walkthroughs/basics/nodejs/fundamental_concepts.html">I am link hi</a>
   <h1 class="solo-h1">What is Passenger?</h1>
   <p>Phusion Passenger is an <label>open source</label> <b>web application server</b>.
   It handles HTTP requests, manages processes and resources, and enables administration,
@@ -31,7 +30,7 @@ integrations:
   <p class="video-sub-text">Phusion Passenger - the smart app server</p>
   <p>Passenger is very easy to use, makes deploying in production much easier and is scalable. If you aren't already familiar with the benefits, you can <a href="https://www.phusionpassenger.com/advantages">learn more about them</a>.</p>
 
-  <p>Passenger supports multiple programming languages, of which <b>Ruby</b> is one.
+  <p>Passenger supports multiple programming languages, of which <%= render_partial("/shared/lang.html") %> is one.
   Passenger can also serve multiple applications at the same time (it is multitenant).</p>
 
   <div class="supported-logos">
@@ -57,7 +56,7 @@ integrations:
 
     <div id="next-step">
       <h2>Next step: Fundamental concepts</h2>
-      <a href="/tutorials/fundamental_concepts/" class="dark-button">Continue</a>
+      <a href="/tutorials/fundamental_concepts/ruby/" class="dark-button">Continue</a>
     </div>
   </div>
 </div>

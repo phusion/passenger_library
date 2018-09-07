@@ -4,18 +4,6 @@
   $(document).ready(function() {
     ZeroClipboard.config({ swfPath: "<%= config[:url_root] %>/javascripts/ZeroClipboard.swf" });
 
-    // Add copy buttons
-    $('pre.highlight').each(function() {
-      var pre = $(this);
-
-      var button = $('<button class="btn btn-copy">Copy</button>');
-      button.prependTo(pre);
-
-      // Install a spacer element so that text inside the 'pre' wrap around the copy button
-      var spacer = $('<div class="btn-copy-spacer">Copy</div>');
-      spacer.prependTo(pre);
-    });
-
     // Install copy button behavior
     var client = new ZeroClipboard($('.btn-copy'));
     client.on( 'ready', function(event) {
