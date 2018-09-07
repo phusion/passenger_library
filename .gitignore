@@ -21,3 +21,6 @@
 # Ignore JetBrains Webstorm IDE specific settings directory
 .idea
 passenger.*
+
+/node_modules
+/source/packs

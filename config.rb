@@ -1,10 +1,10 @@
-require "./lib/constants"
+require "./helpers/constants"
 require "./lib/languages"
-require "./lib/custom_helpers"
-require "./lib/deployment_walkthrough_helpers"
+require "./helpers/custom_helpers"
+require "./helpers/deployment_walkthrough_helpers"
 require "./lib/kramdown_patch"
-helpers CustomHelpers
-helpers DeploymentWalkthroughHelpers
+include CustomHelpers
+include DeploymentWalkthroughHelpers
 
 #################################################
 # Page options, layouts, aliases and proxies
@@ -495,3 +495,11 @@ configure :build do
 
   activate :search_engine_sitemap
 end
+
+# external pipeline/webpack
+activate :external_pipeline,
+   name: :webpack,
+   command: build? ? 'npm run build' : 'npm run start',
+   source: 'assets',
+   latency: 1
+
