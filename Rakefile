@@ -1,4 +1,4 @@
-require_relative 'lib/constants'
+require_relative 'helpers/constants'
 
 desc "Build site"
 task :build do

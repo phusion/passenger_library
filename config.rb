@@ -506,6 +506,5 @@ end
 activate :external_pipeline,
    name: :webpack,
    command: build? ? 'npm run build' : 'npm run start',
-   source: 'assets',
+   source: 'source/packs',
    latency: 1
-
