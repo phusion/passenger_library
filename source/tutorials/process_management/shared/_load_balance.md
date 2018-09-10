@@ -1,0 +1,1 @@
+Passenger load balances traffic over processes in order to improve performance and concurrency. Passenger keeps track of the number of requests that each process is handling. When a new request comes in, Passenger forwards the request to the process that is handling the least number of requests.

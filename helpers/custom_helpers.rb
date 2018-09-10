@@ -121,19 +121,20 @@ module CustomHelpers
   end
 
   def passenger_command_prefix_html(locals, options = {})
+    result = ""
+    if options.fetch(:cd, true)
+      result << %Q{<span class="prompt">$ </span>cd /path-to-your-app\n}
+    end
     if locals[:language_type] == :ruby || current_page.data.language_type == 'ruby'
-      result = ""
-      if options.fetch(:cd, true)
-        result << %Q{<span class="prompt">$ </span>cd /path-to-your-app\n}
-      end
       if should_use_bundle_exec_for_passenger?(locals)
         result << %Q{<span class="prompt">$ </span>bundle exec }
       else
-        %Q{<span class="prompt">$ </span>}
+        result << %Q{<span class="prompt">$ </span>}
       end
     else
-      %Q{<span class="prompt">$ </span>}
+      result << %Q{<span class="prompt">$ </span>}
     end
+    result
   end
 
   def dynamic_nginx_module_available?(distro)

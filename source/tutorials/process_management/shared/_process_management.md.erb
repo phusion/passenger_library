@@ -1,0 +1,47 @@
+# Process management
+
+<p class="lead">Passenger manages multiple processes in order to maximize stability and performance. Learn how Passenger manages processes and learn about Passenger's process management tools.</p>
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Introduction
+
+<%= render_partial("../shared/intro.md", locals: locals) %>
+
+## Working with a single process
+
+<%= render_partial("../shared/single_process.md", locals: locals) %>
+
+### Stopping the server
+
+<%= render_partial("../shared/stop.md", locals: locals) %>
+
+## Working with multiple processes
+
+<% if locals[:language_type] == :meteor %>
+### Preparations
+
+<%= render_partial("./preparations.md", locals: locals) %>
+<% end %>
+
+### Seeing it in action
+
+<%= render_partial(locals[:language_type] == :meteor ? "./multi_process_in_action.md" : "../shared/multi_process_in_action.md", locals: locals) %>
+
+### Processes are supervised
+
+<%= render_partial("../shared/supervision.md", locals: locals) %>
+
+### Traffic is load balanced
+
+<%= render_partial("../shared/load_balance.md", locals: locals) %>
+
+### Processes are dynamically scaled
+
+<%= render_partial("../shared/process_scaling.md", locals: locals) %>
+
+## Next step: Reloading code
+
+<%= render_partial("../shared/conclusion.md", locals: locals) %>

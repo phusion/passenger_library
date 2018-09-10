@@ -1,0 +1,30 @@
+The easiest way to see Passenger handling multiple processes is by passing `--min-instances 2 --sticky-sessions`.
+
+ * `--min-instances 2` tells Passenger to keep at least 2 processes around. The default value for this option is 1, which is why in the previous step you only saw 1 process.
+ * `--sticky-sessions` tells Passenger to use so "sticky routing", which is necessary to make long polling in Meteor work over multiple processes. The details are a bit boring, but you can [read about them](<%= url_for "/config/nginx/reference/index.html" %>#passenger_sticky_sessions) if you want to. For now, just remember to always use `--sticky-sessions` if you have more than 1 process, otherwise bad things will happen.
+
+Run Passenger:
+
+<pre class="highlight"><span class="prompt">$ </span>passenger start --min-instances 2 --sticky-sessions</pre>
+
+Switch to the second terminal again and run `passenger-status` again:
+
+<pre class="highlight"><span class="prompt">$ </span>passenger-status
+<span class="output">Version : 5.0.6
+Date    : 2015-04-14 21:57:30 +0100
+Instance: 25002
+----------- General information -----------
+Max pool size : 6
+Processes     : 2
+Requests in top-level queue : 0
+
+----------- Application groups -----------
+/Users/phusion/leaderboard-packaged/bundle#default:
+  App root: /Users/phusion/leaderboard-packaged/bundle
+  Requests in queue: 0
+  * PID: 25015   Sessions: 0       Processed: 2       Uptime: 9s
+    CPU: 0%      Memory  : 14M     Last used: 3s ago
+  * PID: 25016   Sessions: 0       Processed: 0       Uptime: 9s
+    CPU: 0%      Memory  : 14M     Last used: 3s ago</span></pre>
+
+As you can see, there are now two processes, namely PID 25015 and 25016.
