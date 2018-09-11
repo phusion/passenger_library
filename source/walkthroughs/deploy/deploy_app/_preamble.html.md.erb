@@ -35,7 +35,7 @@ end
 <% if edition_type == :enterprise %>
   <%=
   result2 = {}
-  output = render_partial("/install/install/shared/enterprise_preamble.html",
+  output = render_partial("/install/install/shared/enterprise_preamble",
     locals: locals.merge(result: result2, heading_level: 3, step_format: "#{header_step}.%s"))
   substep = result2[:step]
   output
@@ -115,7 +115,7 @@ substep = 0
   </p>
 
   <p>
-    In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker.html") %>
+    In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker") %>
   </p>
   <p>
     Inside your application's code directory, on your local computer, use the <code class="meteor v13">meteor bundle</code><code class="meteor v14 v16">meteor build</code> command to create a Meteor package tarball.
@@ -124,7 +124,7 @@ substep = 0
   <pre class="highlight meteor v13"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
   <pre class="highlight meteor v14 v16"><span class="prompt">$ </span>meteor build --server-only ../new_package && mv ../new_package/*.tar.gz package.tar.gz</pre>
 
-<%= render_partial("/shared/meteor_package_note.html") %>
+<%= render_partial("/shared/meteor_package_note") %>
 
   <% substep += 1 %>
   <%= h3(id_prefix, "#{header_step}.#{substep} Upload package to the server") %>

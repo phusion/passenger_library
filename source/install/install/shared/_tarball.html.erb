@@ -9,7 +9,7 @@ step = 0
 
 <% if integration_mode_type == :nginx %>
   <h2 id="note_about_nginx">Before you begin: a note about Nginx</h2>
-  <%= render_partial("/install/install/shared/nginx_preamble.md", locals: locals) %>
+  <%= render_partial("/install/install/shared/nginx_preamble", locals: locals) %>
 <% end %>
 
 <h2>Installation</h2>
@@ -17,7 +17,7 @@ step = 0
 <% if edition_type == :enterprise %>
   <%=
   result = {}
-  output = render_partial("/install/install/shared/enterprise_preamble.html",
+  output = render_partial("/install/install/shared/enterprise_preamble",
     locals: locals.merge(instruct_download_token: false, result: result, heading_level: 3))
   step = result[:step]
   output
@@ -71,12 +71,12 @@ step = 0
     <% end %>
   </em>
 <% end %>
-<%= render_partial("/install/install/shared/ruby.html") %>
+<%= render_partial("/install/install/shared/ruby") %>
 
 <% if integration_mode_type == :nginx %>
   <% step += 1 %>
   <h3 id="uninstall_os_nginx">Step <%= step %> (optional): uninstall the OS-installed Nginx</h3>
-  <%= render_partial("/install/install/shared/uninstall_nginx_os_package.html", locals: locals) %>
+  <%= render_partial("/install/install/shared/uninstall_nginx_os_package", locals: locals) %>
 <% end %>
 
 <% step += 1 %>
@@ -124,17 +124,17 @@ export PATH</pre>
 
 <% step += 1 %>
 <h3>Step <%= step %>: validate installation</h3>
-<%= render_partial("/install/install/shared/postinstall_check.html",
+<%= render_partial("/install/install/shared/postinstall_check",
       locals: locals.merge(apache_process_name: "apache2")) %>
 
 <% if integration_mode_type == :nginx %>
   <h2 id="using_nginx">Using Nginx</h2>
-  <%= render_partial("/install/install/shared/using_nginx.html", locals: locals) %>
+  <%= render_partial("/install/install/shared/using_nginx", locals: locals) %>
 <% end %>
 
 <h2>FAQ</h2>
 <% if integration_mode_type == :nginx %>
-  <%= render_partial("/install/install/shared/nginx_faq.html", locals: locals) %>
+  <%= render_partial("/install/install/shared/nginx_faq", locals: locals) %>
 <% end %>
 <% if edition_type == :enterprise %>
   <h3>How do I automate the downloading of the tarball?</h3>
@@ -150,4 +150,4 @@ export PATH</pre>
   <pre class="highlight"><span class="prompt">$ </span>unset HISTFILE
 <span class="prompt">$ </span>VERSION=5.0.30 && curl --fail -L -o passenger-enterprise-server-${VERSION}.tar.gz -u download:<span class="si">YOUR_DOWNLOAD_KEY</span> "https://www.phusionpassenger.com/orders/download?dir=${VERSION}&amp;file=passenger-enterprise-server-${VERSION}.tar.gz"</pre>
 <% end %>
-<%= render_partial("/install/install/shared/source_compilation_faq.html", locals: locals) %>
+<%= render_partial("/install/install/shared/source_compilation_faq", locals: locals) %>

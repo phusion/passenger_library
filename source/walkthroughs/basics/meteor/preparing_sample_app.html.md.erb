@@ -21,7 +21,7 @@ Let us create an example Meteor app directory structure in your home directory. 
 In the previous step, you only created a Meteor app in development mode. In this tutorial, we also need a *packaged* version of your Meteor sample app. A packaged Meteor app contains the Meteor runtime and various other necessary things for running a Meteor app in production. Some Passenger features are only compatible with packaged Meteor apps.
 
 <p>
-    In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker.html") %>
+    In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker") %>
 </p>
 
 Inside the `leaderboard` directory, use the <code class="meteor v13">meteor bundle</code><code class="meteor v14 v16">meteor build</code> command to create a package tarball.
@@ -29,7 +29,7 @@ Inside the `leaderboard` directory, use the <code class="meteor v13">meteor bund
 <pre class="highlight meteor v14 v16"><span class="prompt">$ </span>meteor build --server-only ../leaderboard-package</pre>
 <pre class="highlight meteor v13"><span class="prompt">$ </span>meteor bundle package.tar.gz</pre>
 
-<%= render_partial("/shared/meteor_package_note.html") %>
+<%= render_partial("/shared/meteor_package_note") %>
 
 <span class="meteor v13">The packaged app has now been placed in `package.tar.gz`. But Passenger expects a directory, so let us extract it in <code>../leaderboard-package</code>:</span>
 

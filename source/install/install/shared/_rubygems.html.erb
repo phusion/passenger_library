@@ -2,7 +2,7 @@
 
 <% if integration_mode_type == :nginx %>
   <h2 id="note_about_nginx">Before you begin: a note about Nginx</h2>
-  <%= render_partial("/install/install/shared/nginx_preamble.md", locals: locals) %>
+  <%= render_partial("/install/install/shared/nginx_preamble", locals: locals) %>
 <% end %>
 
 <h2>Installation</h2>
@@ -10,7 +10,7 @@
 <% if edition_type == :enterprise %>
   <%=
   result = {}
-  output = render_partial("/install/install/shared/enterprise_preamble.html",
+  output = render_partial("/install/install/shared/enterprise_preamble",
     locals: locals.merge(result: result, heading_level: 3))
   step = result[:step]
   output
@@ -77,7 +77,7 @@
 <% elsif integration_mode_type == :nginx %>
   <% step += 1 %>
   <h3>Step <%= step %> (optional): uninstall the OS-installed Nginx</h3>
-  <%= render_partial("/install/install/shared/uninstall_nginx_os_package.html", locals: locals) %>
+  <%= render_partial("/install/install/shared/uninstall_nginx_os_package", locals: locals) %>
 
   <% step += 1 %>
   <h3>Step <%= step %>: run the Passenger Nginx module installer</h3>
@@ -89,13 +89,13 @@
 
 <% step += 1 %>
 <h3>Step <%= step %>: validate installation</h3>
-<%= render_partial("/install/install/shared/postinstall_check.html",
+<%= render_partial("/install/install/shared/postinstall_check",
       locals: locals.merge(apache_process_name: "apache2",
       sudo: os_config_type == :rubygems_rvm ? "rvmsudo" : "sudo")) %>
 
 <% if integration_mode_type == :nginx %>
   <h2 id="using_nginx">Using Nginx</h2>
-  <%= render_partial("/install/install/shared/using_nginx.html", locals: locals) %>
+  <%= render_partial("/install/install/shared/using_nginx", locals: locals) %>
 <% end %>
 
 <h2>FAQ</h2>
@@ -117,6 +117,6 @@
   </p>
 <% end %>
 <% if integration_mode_type == :nginx %>
-  <%= render_partial("/install/install/shared/nginx_faq.html", locals: locals) %>
+  <%= render_partial("/install/install/shared/nginx_faq", locals: locals) %>
 <% end %>
-<%= render_partial("/install/install/shared/source_compilation_faq.html", locals: locals) %>
+<%= render_partial("/install/install/shared/source_compilation_faq", locals: locals) %>

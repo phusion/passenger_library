@@ -34,5 +34,5 @@ locals[:web_server_name] = integration_mode_name
   <ul class="toc-container"><li>Loading...</li></ul>
 </div>
 
-<%= render_partial("/install/install/shared/#{os_config_class}.html",
+<%= render_partial("/install/install/shared/#{os_config_class}",
       locals: locals.merge(menu_selection_url: "../#select_os")) %>

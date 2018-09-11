@@ -8,7 +8,7 @@ skip_search: true
 
 # Troubleshooting Passenger
 
-<%= render_partial("/shared/ask_intmode_lang.html", locals: {
+<%= render_partial("/shared/ask_intmode_lang", locals: {
   dest: "../:intmode:/troubleshooting/:lang:/",
   limit_choices: { "lang" => [LANG_RUBY, LANG_PYTHON, LANG_NODEJS, LANG_METEOR] }
 }) %>

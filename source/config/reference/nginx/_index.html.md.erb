@@ -132,9 +132,9 @@ If `passenger_ruby` is not specified, then it defaults to `ruby`, which means th
 
 Closely related to `passenger_ruby` is [passenger_python](#passenger_python), [passenger_nodejs](#passenger_nodejs), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
-<%= render_partial("/config/reference/nginx/passenger_ruby_example.md", locals: locals) %>
+<%= render_partial("/config/reference/nginx/passenger_ruby_example", locals: locals) %>
 
-<%= render_partial("/config/reference/passenger_ruby_extra_info.md", locals: locals) %>
+<%= render_partial("/config/reference/passenger_ruby_extra_info", locals: locals) %>
 
 
 ### passenger_python
@@ -162,7 +162,7 @@ This option specifies the Python interpreter to use for serving Python web appli
 
 Closely related to this option is [passenger_ruby](#passenger_ruby), [passenger_nodejs](#passenger_nodejs), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
-<%= render_partial("/config/reference/nginx/passenger_ruby_example.md", locals: locals) %>
+<%= render_partial("/config/reference/nginx/passenger_ruby_example", locals: locals) %>
 
 
 ### passenger_nodejs
@@ -190,7 +190,7 @@ This option specifies the Node.js command to use for serving Node.js web applica
 
 Closely related to this option is [passenger_ruby](#passenger_ruby), [passenger_python](#passenger_python), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
-<%= render_partial("/config/reference/nginx/passenger_ruby_example.md", locals: locals) %>
+<%= render_partial("/config/reference/nginx/passenger_ruby_example", locals: locals) %>
 
 
 ### passenger_meteor_app_settings
@@ -723,7 +723,7 @@ If this option is turned off, applications are loaded by running them directly f
     <th>Context</th>
     <td>http, server, location, if</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/nginx/zero_downtime_redeployments/index.html" %>) through `restart.txt`.
@@ -752,7 +752,7 @@ NOTE: Are you looking to prevent applications from being restarted when you rest
     <th>Context</th>
     <td>http, server, location, if</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Enables or disables [resistance against deployment errors](<%= url_for "/deploy/nginx/deployment_error_resistance.html" %>).
@@ -796,7 +796,7 @@ This option is also useful if the partition that the temporary directory lives o
 
 The instance directory is automatically removed when Nginx shuts down.
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--instance-registry-dir")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--instance-registry-dir")) %>
 
 #### Default value
 
@@ -842,7 +842,7 @@ Notes regarding the above example:
     <th>Context</th>
     <td>http</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) mode, and configures Nginx to connect to the Flying Passenger daemon that's listening on the given socket filename.
@@ -942,7 +942,7 @@ This option behaves like a "safety switch" that prevents Passenger from overload
 
 If you find that your server is running out of memory then you should lower this value. In order to prevent your server from crashing due to out-of-memory conditions, the default value is relatively low (6).
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--max-pool-size")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--max-pool-size")) %>
 
 ### passenger_min_instances
 
@@ -1017,7 +1017,7 @@ Now suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.
     <th>Context</th>
     <td>http, server, location, if</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 The maximum number of application processes that may simultaneously exist for an application. This helps to make sure that a single application will not occupy all available slots in the application pool.
@@ -1100,7 +1100,7 @@ When this value is set to `0`, application processes will not be shutdown unless
 
 Setting the value to 0 is recommended if you're on a non-shared host that's only running a few applications, each which must be available at all times.
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--pool-idle-time")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--pool-idle-time")) %>
 
 
 ### passenger_max_preloader_idle_time
@@ -1193,7 +1193,7 @@ It is recommended that you do not touch this configuration option unless you wan
     <th>Context</th>
     <td>http, server, location, if</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Specifies the I/O concurrency model that should be used for Ruby application processes. Passenger supports two concurrency models:
@@ -1229,7 +1229,7 @@ Specifies the I/O concurrency model that should be used for Ruby application pro
     <th>Context</th>
     <td>http, server, location, if</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Specifies the number of threads that Passenger should spawn per Ruby application process. This option only has effect if [passenger_concurrency_model](#passenger_concurrency_model) is `thread`.
@@ -1525,7 +1525,7 @@ error_page 503 /error503.html;
     <th>Context</th>
     <td>http, server, location, if</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum time a request may spend in that queue. If a request in the queue reaches this specified limit, then Passenger will send a "504 Gateway Timeout" error for that request. For performance reasons it might take up to 0.5 × `passenger_max_request_queue_time` after a request timed out before a 504 response is sent (when all application processes are stuck).
@@ -1862,7 +1862,7 @@ Changing this option is especially useful if the partition that the default dire
 
 If you've specified such a directory (as opposed to using Passenger's default) then you *must* ensure that this directory exists.
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--data-buffer-dir")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--data-buffer-dir")) %>
 
 ### passenger_buffer_response
 
@@ -2395,7 +2395,7 @@ Possible values are:
 
 By default Passenger log messages are written to the Nginx global error log. With this option, you can have those messages logged to a different file instead.
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--log-file")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--log-file")) %>
 
 
 ### passenger_app_log_file
@@ -2417,7 +2417,7 @@ By default Passenger log messages are written to the Nginx global error log. Wit
     <th>Context</th>
     <td>server</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 By default Passenger log messages are all written to the Passenger log file. With this option, you can have the app specific messages logged to a different file in addition.
@@ -2453,7 +2453,7 @@ File descriptor activity is logged as follows:
  * If `passenger_file_descriptor_log_file` is not set, then file descriptor activity is logged to the [main log file](#passenger_log_file), but only if the [log level](#passenger_log_level) is 5 (debug) or higher.
  * If `passenger_file_descriptor_log_file` is set, then file descriptor activity is logged to the specified file, regardless of the log level.
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--file-descriptor-log-file")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--file-descriptor-log-file")) %>
 
 
 ### passenger_debugger
@@ -2475,7 +2475,7 @@ File descriptor activity is logged as follows:
     <th>Context</th>
     <td>http, server, location, if</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 <div class="note">
@@ -2637,7 +2637,7 @@ This option is useful if your application is leaking memory. By shutting it down
     <th>Context</th>
     <td>http, server, location, if</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 The maximum amount of time, in seconds, that an application process may take to process a request. If the request takes longer than this amount of time, then the application process will be forcefully shut down, and possibly restarted upon the next request. A value of 0 means that there is no time limit.
@@ -2688,7 +2688,7 @@ If a request to '/expensive_computation' takes more than 10 seconds, or if a req
     <th>Context</th>
     <td>http, server, location, if</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will allow it to finish processing all of its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.

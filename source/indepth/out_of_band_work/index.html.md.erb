@@ -8,7 +8,7 @@ skip_search: true
 # Out-of-band work and out-of-band garbage collection
 
 <%= 
-render_partial("/shared/ask_lang.html", locals: { 
+render_partial("/shared/ask_lang", locals: { 
   dest: "../:lang:/out_of_band_work.html",
   limit_choices: { "lang" => [LANG_RUBY] } 
 }) 

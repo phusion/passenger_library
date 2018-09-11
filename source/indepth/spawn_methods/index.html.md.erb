@@ -8,7 +8,7 @@ skip_search: true
 # Spawn methods explained
 
 <%=
-render_partial("/shared/ask_lang.html", locals: {
+render_partial("/shared/ask_lang", locals: {
   dest: "../:lang:/spawn_methods/",
   limit_choices: { "lang" => [LANG_RUBY] }
 })

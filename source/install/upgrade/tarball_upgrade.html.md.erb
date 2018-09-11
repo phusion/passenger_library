@@ -186,5 +186,5 @@ Remove the previous Passenger version:
 
 <% step += 1 %>
 <h3>Step <%= step %>: validate installation</h3>
-<%= render_partial("/install/install/shared/postinstall_check.html",
+<%= render_partial("/install/install/shared/postinstall_check",
       locals: locals.merge(apache_process_name: "apache2")) %>

@@ -35,11 +35,11 @@ Please refer to [Apache's documentation](https://httpd.apache.org/docs/2.4/env.h
 ## How <%= language_name %> apps can access per-request environment variables
 
 <% if language_type == :ruby %>
-  <%= render_partial("/indepth/apache_per_request_envvars/ruby.md", locals: locals) %>
+  <%= render_partial("/indepth/apache_per_request_envvars/ruby", locals: locals) %>
 <% elsif language_type == :python %>
-  <%= render_partial("/indepth/apache_per_request_envvars/python.md", locals: locals) %>
+  <%= render_partial("/indepth/apache_per_request_envvars/python", locals: locals) %>
 <% elsif language_type == :nodejs || language_type == :meteor %>
-  <%= render_partial("/indepth/apache_per_request_envvars/nodejs.md", locals: locals) %>
+  <%= render_partial("/indepth/apache_per_request_envvars/nodejs", locals: locals) %>
 <% else %>
   <% raise "Unrecognized language #{language_type}" %>
 <% end %>

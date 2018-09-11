@@ -16,4 +16,4 @@ choices << { img: url_for("/images/nodejs.png"), w: 133, h:96, alt: "Node.js", v
 choices << { img: url_for("/images/meteor.png"), w: 133, h:96, alt: "Meteor", val: "meteor" }
 %>
 
-<%= render_partial("/shared/matrix_ask.html", locals: locals.merge( ask_data: ask_data )) %>
+<%= render_partial("/shared/matrix_ask", locals: locals.merge( ask_data: ask_data )) %>

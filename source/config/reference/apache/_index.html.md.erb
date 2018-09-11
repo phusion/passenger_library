@@ -181,9 +181,9 @@ The `PassengerRuby` option specifies the Ruby interpreter to use for serving Rub
 
 Closely related to `PassengerRuby` is [PassengerPython](#passengerpython), [PassengerNodejs](#passengernodejs), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
-<%= render_partial("/config/reference/apache/passenger_ruby_example.md", locals: locals) %>
+<%= render_partial("/config/reference/apache/passenger_ruby_example", locals: locals) %>
 
-<%= render_partial("/config/reference/passenger_ruby_extra_info.md", locals: locals) %>
+<%= render_partial("/config/reference/passenger_ruby_extra_info", locals: locals) %>
 
 
 ### PassengerPython
@@ -215,7 +215,7 @@ This option specifies the Python interpreter to use for serving Python web appli
 
 Closely related to this option is [PassengerRuby](#passengerruby), [PassengerNodejs](#passengernodejs), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
-<%= render_partial("/config/reference/apache/passenger_ruby_example.md", locals: locals) %>
+<%= render_partial("/config/reference/apache/passenger_ruby_example", locals: locals) %>
 
 
 ### PassengerNodejs
@@ -247,7 +247,7 @@ This option specifies the Node.js command to use for serving Node.js web applica
 
 Closely related to this option is [PassengerRuby](#passengerruby), [PassengerPython](#passengerpython), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
-<%= render_partial("/config/reference/apache/passenger_ruby_example.md", locals: locals) %>
+<%= render_partial("/config/reference/apache/passenger_ruby_example", locals: locals) %>
 
 
 ### PassengerMeteorAppSettings
@@ -766,7 +766,7 @@ If this option is turned off, applications are loaded by running them directly f
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
     <td>Options</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/apache/zero_downtime_redeployments/index.html" %>) through `restart.txt`.
@@ -799,7 +799,7 @@ NOTE: Are you looking to prevent applications from being restarted when you rest
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
     <td>Options</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Enables or disables [resistance against deployment errors](<%= url_for "/deploy/apache/deployment_error_resistance.html" %>).
@@ -844,7 +844,7 @@ This option is also useful if Apache is not allowed to write to the system's tem
 
 The instance directory is automatically removed when Apache shuts down.
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--instance-registry-dir")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--instance-registry-dir")) %>
 
 #### Default value
 
@@ -890,7 +890,7 @@ Notes regarding the above example:
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
     <td>server config</td>
   </tr>
-<%= render_partial("/config/reference/enterprise_only.html") %>
+<%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) mode, and configures Apache to connect to the Flying Passenger daemon that's listening on the given socket filename.
@@ -927,7 +927,7 @@ This option behaves like a "safety switch" that prevents Passenger from overload
 
 If you find that your server is running out of memory then you should lower this value. In order to prevent your server from crashing due to out-of-memory conditions, the default value is relatively low (6).
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--max-pool-size")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--max-pool-size")) %>
 
 
 ### PassengerMinInstances
@@ -1007,7 +1007,7 @@ Now suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
     <td>Limits</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 The maximum number of application processes that may simultaneously exist for an application. This helps to make sure that a single application will not occupy all available slots in the application pool.
@@ -1090,7 +1090,7 @@ When this value is set to `0`, application processes will not be shutdown unless
 
 Setting the value to 0 is recommended if you're on a non-shared host that's only running a few applications, each which must be available at all times.
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--pool-idle-time")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--pool-idle-time")) %>
 
 
 ### PassengerMaxPreloaderIdleTime
@@ -1182,7 +1182,7 @@ It is recommended that you do not touch this configuration option unless you wan
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
     <td>server config, virtual host, directory, .htaccess</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Specifies the I/O concurrency model that should be used for Ruby application processes. Passenger supports two concurrency models:
@@ -1218,7 +1218,7 @@ Specifies the I/O concurrency model that should be used for Ruby application pro
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
     <td>server config, virtual host, directory, .htaccess</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Specifies the number of threads that Passenger should spawn per Ruby application process. This option only has effect if [PassengerConcurrencyModel](#passengerconcurrencymodel) is `thread`.
@@ -1597,7 +1597,7 @@ ErrorDocument 503 /error503.html
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
     <td>server config, virtual host, directory, .htaccess</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum time a request may spend in that queue. If a request in the queue reaches this specified limit, then Passenger will send a "504 Gateway Timeout" error for that request. For performance reasons it might take up to 0.5 × `PassengerMaxRequestQueueTime` after a request timed out before a 504 response is sent (when all application processes are stuck).
@@ -1948,7 +1948,7 @@ You can disable client request body buffering by turning [PassengerBufferUpload]
 
 This option may be specified once, in the global server configuration.
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--data-buffer-dir")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--data-buffer-dir")) %>
 
 
 ### PassengerBufferUpload
@@ -2307,7 +2307,7 @@ Possible values are:
 
 By default Passenger log messages are written to the Apache global error log. With this option, you can have those messages logged to a different file instead.
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--log-file")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--log-file")) %>
 
 
 ### PassengerAppLogFile
@@ -2329,7 +2329,7 @@ By default Passenger log messages are written to the Apache global error log. Wi
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
     <td>virtual host</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 By default Passenger log messages are all written to the Passenger log file. With this option, you can have the app specific messages logged to a different file in addition.
@@ -2365,7 +2365,7 @@ File descriptor activity is logged as follows:
  * If `PassengerFileDescriptorLogFile` is not set, then file descriptor activity is logged to the [main log file](#passengerlogfile), but only if the [log level](#passengerloglevel) is 5 (debug) or higher.
  * If `PassengerFileDescriptorLogFile` is set, then file descriptor activity is logged to the specified file, regardless of the log level.
 
-<%= render_partial("/config/reference/alternative_for_flying_passenger.md", locals: locals.merge(option: "--file-descriptor-log-file")) %>
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--file-descriptor-log-file")) %>
 
 
 ### PassengerDebugger
@@ -2391,7 +2391,7 @@ File descriptor activity is logged as follows:
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
     <td>Options</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/admin/#{integration_mode_type}/debugging_console/ruby/index.html" %>) guide for more information.
@@ -2561,7 +2561,7 @@ This option is useful if your application is leaking memory. By shutting it down
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
     <td>Limits</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 The maximum amount of time, in seconds, that an application process may take to process a request. If the request takes longer than this amount of time, then the application process will be forcefully shut down, and possibly restarted upon the next request. A value of 0 means that there is no time limit.
@@ -2614,7 +2614,7 @@ If a request to '/expensive_computation' takes more than 10 seconds, or if a req
     <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
     <td>Limits</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger allow it to finish processing all of its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.

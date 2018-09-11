@@ -16,4 +16,4 @@ content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
 </p>
 <div class="note">If you need Websockets, be aware of <a href="https://github.com/phusion/passenger/issues/1202">issues with Apache</a>.</div>
 
-<%= render_partial("/shared/ask_intmode.html", locals: { dest: ":intmode:/open_source_vs_enterprise.html", force_choice: true }) %>
+<%= render_partial("/shared/ask_intmode", locals: { dest: ":intmode:/open_source_vs_enterprise.html", force_choice: true }) %>

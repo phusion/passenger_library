@@ -97,12 +97,12 @@ end
           <div id="left-nav-content">
             <img src="https://badge.fury.io/rb/passenger.svg" class="version" alt="gem version"/>
 
-            <%= render_partial("/shared/dropdown.html", locals: locals.merge(
+            <%= render_partial("/shared/dropdown", locals: locals.merge(
               dropdown_type: "Language",
               dropdown_items: ['Ruby', 'Python', 'Node', 'Meteor']
             )) %>
 
-            <%= render_partial("/shared/dropdown.html", locals: locals.merge(
+            <%= render_partial("/shared/dropdown", locals: locals.merge(
               dropdown_type: "Integration",
               dropdown_items: ['Nginx', 'Apache', 'Standalone']
             )) %>
@@ -197,6 +197,6 @@ end
       </script>
     <% end %>
 
-    <%= render_partial('/layouts/swiftype_container.html') %>
+    <%= render_partial('/layouts/swiftype_container') %>
   </body>
 </html>

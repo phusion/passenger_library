@@ -54,7 +54,7 @@ sudo apt-get update
 <span class="c unselectable"># Install Passenger</span>
 sudo apt-get install -y passenger</code></pre>
 
-    <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
+    <%= render_partial("/walkthroughs/start/postinstall_check") %>
   </div>
 
   <div class="unsupported_debian_instructions">
@@ -135,7 +135,7 @@ sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phus
 <span class="c unselectable"># Install Passenger</span>
 sudo yum install -y --enablerepo=epel passenger</code></pre>
 
-    <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
+    <%= render_partial("/walkthroughs/start/postinstall_check") %>
   </div>
 
   <div class="unsupported_redhat_instructions">
@@ -152,7 +152,7 @@ sudo yum install -y --enablerepo=epel passenger</code></pre>
     You can install Passenger through <a href="http://brew.sh/">Homebrew</a>:
   </p>
   <pre class="highlight shell"><span class="prompt">$ </span>brew install passenger</pre>
-  <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
+  <%= render_partial("/walkthroughs/start/postinstall_check") %>
 </div>
 
 
@@ -174,7 +174,7 @@ sudo yum install -y --enablerepo=epel passenger</code></pre>
   <pre class="highlight shell"><span class="prompt">$ </span>tar -xzvf passenger-<span class="o">X.X.X</span>.tar.gz -C <span class="o">/somewhere-permanent</span></pre>
 
   <h3 class="notoc">Step 2: install Ruby</h3>
-  <%= render_partial("/install/install/shared/ruby.html") %>
+  <%= render_partial("/install/install/shared/ruby") %>
 
   <h3 class="notoc">Step 3: add Passenger to PATH</h3>
   <p>
@@ -196,5 +196,5 @@ export PATH</pre>
   </div>
 
   <h3 class="notoc">Step 4: validate installation</h3>
-  <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
+  <%= render_partial("/walkthroughs/start/postinstall_check") %>
 </div>

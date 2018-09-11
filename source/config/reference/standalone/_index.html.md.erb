@@ -579,7 +579,7 @@ Sets arbitrary environment variables for the application.
 
 Specifies the Ruby interpreter to use for serving Ruby web applications.
 
-<%= render_partial("/config/reference/passenger_ruby_extra_info.md", locals: locals) %>
+<%= render_partial("/config/reference/passenger_ruby_extra_info", locals: locals) %>
 
 
 ### `--python` / "python"
@@ -1090,7 +1090,7 @@ If this option is turned on, and the user's shell is `bash`, then applications a
     <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Enables or disables support for delaying binding the tcp port until after the application(s) have started up. This is useful in environments where binding the tcp port is considered a signal that the app server is ready to handle requests, such as Heroku. This setup uses an Nginx server in a reverse proxy configuration to bind the tcp port and communicate with the main web server via a unix socket.
@@ -1163,7 +1163,7 @@ Specifies a timeout for the startup of application processes. If an application 
     <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/standalone/zero_downtime_redeployments/index.html" %>) through `restart.txt`.
@@ -1202,7 +1202,7 @@ Please note that this option is completely unrelated to the `passenger-config re
     <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Enables or disables [resistance against deployment errors](<%= url_for "/deploy/standalone/deployment_error_resistance.html" %>).
@@ -1616,7 +1616,7 @@ It is recommended that you do not touch this configuration option unless you wan
     <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 Specifies the I/O concurrency model that should be used for Ruby application processes. Passenger supports two concurrency models:
@@ -1762,7 +1762,7 @@ If you customize the [Passenger Standalone Nginx config template](<%= url_for '/
     <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum time a request may spend in that queue. If a request in the queue reaches this specified limit, then Passenger will send a "504 Gateway Timeout" error for that request. For performance reasons it might take up to 0.5 × `passenger_max_request_queue_time` after a request timed out before a 504 response is sent (when all application processes are stuck).
@@ -2298,7 +2298,7 @@ You can use this option to explicitly enable or disable this feature. `--friendl
     <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 <div class="note">
@@ -2382,7 +2382,7 @@ This option is useful if your application is leaking memory. By shutting it down
     <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger will allow it to finish processing all of its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
@@ -2431,7 +2431,7 @@ This option is useful if your application is leaking memory. By shutting it down
     <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
-  <%= render_partial("/config/reference/enterprise_only.html") %>
+  <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
 The maximum amount of time, in seconds, that an application process may take to process a request. If the request takes longer than this amount of time, then the application process will be forcefully shut down, and possibly restarted upon the next request. A value of 0 means that there is no time limit.

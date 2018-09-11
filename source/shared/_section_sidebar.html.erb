@@ -49,7 +49,7 @@ end
             <h4 class="modal-title">&nbsp;</h4>
           </div>
           <div class="modal-body">
-            <%= render_partial("/shared/ask_intmode.html", locals: locals.merge(
+            <%= render_partial("/shared/ask_intmode", locals: locals.merge(
               dest: current_url_generalized(":intmode:", ["nginx", "apache", "standalone"]),
               force_choice: true
             )) %>
@@ -89,7 +89,7 @@ end
               url_suffix: current_url_suffix_without_programming_language
             }
 
-            render_partial("/shared/ask_lang.html", locals: locals.merge(
+            render_partial("/shared/ask_lang", locals: locals.merge(
               dest: current_url_generalized(":lang:", ["ruby", "python", "nodejs", "meteor"]),
               force_choice: true
               ))
@@ -123,7 +123,7 @@ end
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <%= render_partial("/shared/ask_edition.html", locals: locals.merge(
+            <%= render_partial("/shared/ask_edition", locals: locals.merge(
               dest: current_url_generalized(":edition:", ["oss", "enterprise"]),
               force_choice: true
               ))

@@ -6,7 +6,7 @@ end
 
 <%=
 result = {}
-output = render_partial("/walkthroughs/deploy/deploy_app/preamble.md", locals: locals.merge(result: result))
+output = render_partial("/walkthroughs/deploy/deploy_app/preamble", locals: locals.merge(result: result))
 header_step = result[:header_step]
 output
 %>
