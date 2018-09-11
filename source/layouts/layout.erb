@@ -65,6 +65,9 @@ end
         gtag('config', 'UA-32583440-10', { 'anonymize_ip': true });
       </script>
     <% end %>
+    <% if !current_page.data.skip_default_javascript %>
+      <script src="<%= maybe_absolute_url_for "/packs/bundle.js" %>"></script>
+    <% end %>
     <%= yield_content :head %>
   </head>
 
@@ -161,10 +164,6 @@ end
       </div>
 
     <%= globals[:layout_body_trailer] || "" %>
-
-    <% if !current_page.data.skip_default_javascript %>
-      <script src="<%= maybe_absolute_url_for "/packs/bundle.js" %>" async="true"></script>
-    <% end %>
 
     <% if config[:google_analytics] %>
       <script>
