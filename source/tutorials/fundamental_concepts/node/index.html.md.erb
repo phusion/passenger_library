@@ -74,9 +74,9 @@ If you are using Passenger, and we hope you do, then you must not include the Cl
 
 ## Multiple integration modes
 
-<%= render_partial("../shared/integration_modes.md", locals: locals.merge(context: :basics)) %>
+<%= render_partial("../shared/integration_modes", locals: locals.merge(context: :basics)) %>
 
-<%= render_partial("../shared/out_of_scope.md", locals: locals.merge(deploy_tools: "Git, scp, FTP, Capistrano, Fabric, etc", dependency_tools: "npm or yarn")) %>
+<%= render_partial("../shared/out_of_scope", locals: locals.merge(deploy_tools: "Git, scp, FTP, Capistrano, Fabric, etc", dependency_tools: "npm or yarn")) %>
 
 ##Next step: Quickstart
 

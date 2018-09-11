@@ -19,11 +19,11 @@ locals[:language_name] = "Meteor"
 
 ## Introduction
 
-<%= render_partial("../shared/process_management/intro.md", locals: locals) %>
+<%= render_partial("../shared/process_management/intro", locals: locals) %>
 
 ## Working with a single process
 
-<%= render_partial("../shared/process_management/single_process.md", locals: locals) %>
+<%= render_partial("../shared/process_management/single_process", locals: locals) %>
 
 ### Stopping the server
 
@@ -121,15 +121,15 @@ As you can see, there are now two processes, namely PID 25015 and 25016.
 
 ### Processes are supervised
 
-<%= render_partial("../shared/process_management/supervision.md", locals: locals.merge(app_name: "leaderboard-package/bundle")) %>
+<%= render_partial("../shared/process_management/supervision", locals: locals.merge(app_name: "leaderboard-package/bundle")) %>
 
 ### Traffic is load balanced
 
-<%= render_partial("../shared/process_management/load_balance.md", locals: locals.merge(app_name: "leaderboard-package/bundle")) %>
+<%= render_partial("../shared/process_management/load_balance", locals: locals.merge(app_name: "leaderboard-package/bundle")) %>
 
 ### Processes are dynamically scaled
 
-<%= render_partial("../shared/process_management/process_scaling.md", locals: locals.merge(app_name: "leaderboard-package/bundle")) %>
+<%= render_partial("../shared/process_management/process_scaling", locals: locals.merge(app_name: "leaderboard-package/bundle")) %>
 
 ## Next step
 

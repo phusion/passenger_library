@@ -50,9 +50,9 @@ Passenger's feature set is very different from those of Unicorn and Puma. In par
 
 ## Multiple integration modes
 
-<%= render_partial("../shared/integration_modes.md", locals: { context: :basics }) %>
+<%= render_partial("../shared/integration_modes", locals: { context: :basics }) %>
 
-<%= render_partial("../shared/out_of_scope.md", locals: locals.merge(deploy_tools: "Capistrano", dependency_tools: "Bundler and Capistrano")) %>
+<%= render_partial("../shared/out_of_scope", locals: locals.merge(deploy_tools: "Capistrano", dependency_tools: "Bundler and Capistrano")) %>
 
 ##Next step: Quickstart
 

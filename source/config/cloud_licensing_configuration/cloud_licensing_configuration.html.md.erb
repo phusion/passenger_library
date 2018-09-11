@@ -3,7 +3,7 @@ section: config
 ---
 <%
 @page_title = "Passenger Enterprise #{integration_mode_name_as_passenger_suffix} cloud licensing configuration"
-content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
+content_for(:sidebar) { render_partial("../sidebar", locals: locals) }
 %>
 
 <h1>Cloud licensing configuration<br>

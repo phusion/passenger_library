@@ -8,22 +8,22 @@
 
 ## Introduction
 
-<%= render_partial("../shared/intro.md", locals: locals) %>
+<%= render_partial("../shared/intro", locals: locals) %>
 
 ## Working with a single process
 
-<%= render_partial("../shared/single_process.md", locals: locals) %>
+<%= render_partial("../shared/single_process", locals: locals) %>
 
 ### Stopping the server
 
-<%= render_partial("../shared/stop.md", locals: locals) %>
+<%= render_partial("../shared/stop", locals: locals) %>
 
 ## Working with multiple processes
 
 <% if locals[:language_type] == :meteor %>
 ### Preparations
 
-<%= render_partial("./preparations.md", locals: locals) %>
+<%= render_partial("./preparations", locals: locals) %>
 <% end %>
 
 ### Seeing it in action
@@ -32,16 +32,16 @@
 
 ### Processes are supervised
 
-<%= render_partial("../shared/supervision.md", locals: locals) %>
+<%= render_partial("../shared/supervision", locals: locals) %>
 
 ### Traffic is load balanced
 
-<%= render_partial("../shared/load_balance.md", locals: locals) %>
+<%= render_partial("../shared/load_balance", locals: locals) %>
 
 ### Processes are dynamically scaled
 
-<%= render_partial("../shared/process_scaling.md", locals: locals) %>
+<%= render_partial("../shared/process_scaling", locals: locals) %>
 
 ## Next step: Reloading code
 
-<%= render_partial("../shared/conclusion.md", locals: locals) %>
+<%= render_partial("../shared/conclusion", locals: locals) %>
