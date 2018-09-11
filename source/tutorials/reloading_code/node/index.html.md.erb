@@ -3,10 +3,7 @@ title: 'Reloading code - Passenger + Node.js basics'
 section: basics
 comments: false
 ---
-<%
-  locals[:language_type] = :nodejs
-  locals[:language_name] = "Node.js"
-%>
+<% locals = locals.merge(language_type: :nodejs, language_name: "Node.js") %>
 
 # Reloading code
 

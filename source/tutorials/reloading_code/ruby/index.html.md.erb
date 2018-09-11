@@ -3,10 +3,7 @@ title: 'Reloading code - Passenger + Ruby basics'
 section: basics
 comments: false
 ---
-<%
-  locals[:language_type] = :ruby
-  locals[:language_name] = "Ruby"
-%>
+<% locals = locals.merge(language_type: :ruby, language_name: "Ruby") %>
 
 # Reloading code
 
