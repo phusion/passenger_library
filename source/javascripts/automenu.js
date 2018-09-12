@@ -1,4 +1,4 @@
-import $ from './jquery-2.1.3.min.js';
+import $ from 'jquery';
 
 function autoGenerateMenu() {
   // build side menu
@@ -48,6 +48,6 @@ function autoGenerateMenu() {
   $('.toc-container .toc-1').remove();
 }
 
-$(document).ready(function() {
-  autoGenerateMenu();
-});
+window.autoGenerateMenu = autoGenerateMenu;
+
+$(document).ready(autoGenerateMenu);
