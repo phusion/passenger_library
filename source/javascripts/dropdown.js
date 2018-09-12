@@ -17,6 +17,7 @@ function makeDropdown(dropdown_type, dropdown_items) {
 
       array.forEach(needle => {
         document.querySelectorAll(`a[href*="${needle}"]`).forEach(a=>{a.href=a.href.replace(needle, value)});
+        document.querySelectorAll(`[data-${needle}_only]`).forEach(e=>e.style.display = (value == needle ? "inherit" : "none"));
       });
       document.querySelectorAll(`[data-${dropdown_type.toLowerCase()}_placeholder]`).forEach(e=>{e.innerText=value});
 

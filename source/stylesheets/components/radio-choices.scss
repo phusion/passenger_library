@@ -1,58 +1,54 @@
-#radio-choices > div {
-  display: flex;
-  margin: 20px 0 0;
-  flex-wrap: wrap;
-}
+.radio-choices {
+    & > div {
+        display: flex;
+        margin: 20px 0 0;
+        flex-wrap: wrap;
+        & > div {
+            display: flex;
+            flex-direction: column;
+            margin-top: 5px;
+            margin-bottom: 5px;
 
-#radio-choices > div > div {
-  display: flex;
-  flex-direction: column;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
+            & > input {
+                display: none;
+            }
 
-#radio-choices label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 20px;
-  margin-bottom: 10px;
-  width: 160px;
-  border: 1px solid #fff;
-  border-radius: 5px;
-  padding: 10px 10px;
-  cursor: pointer;
-  text-align: center;
-}
-
-#radio-choices label:hover,
-#radio-choices label:focus {
-  border: 1px solid #BABECD;
-}
-
-#radio-choices input {
-  display: none;
-}
-
-#radio-choices label p {
-  font-size: 14px;
-  margin-bottom: 0;
-  height: 25px;
-}
-
-#radio-choices label h3 {
-  font-size: 17px;
-  height: 45px;
-  margin: 11px 0 5px;
-}
-
-#radio-choices img {
-  height: 45px;
-  max-width: 100px;
-  margin: 8px 0 !important;
+            & > label {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-right: 20px;
+                margin-bottom: 10px;
+                width: 160px;
+                border: 1px solid #fff;
+                border-radius: 5px;
+                padding: 10px 10px;
+                cursor: pointer;
+                text-align: center;
+                &:hover, &:focus {
+                    border: 1px solid #BABECD;
+                }
+                p {
+                    font-size: 14px;
+                    margin-bottom: 0;
+                    height: 25px;
+                }
+                & > h3 {
+                    font-size: 17px !important;
+                    height: 45px !important;
+                    margin: 11px 0 5px !important;
+                }
+                & > img {
+                    height: 45px;
+                    max-width: 100px;
+                    margin: 8px 0 !important;
+                }
+            }
+        }
+    }
 }
 
 input[type="radio"]:checked + label {
-  background: #E9E9E9;
-  border: 1px solid #BABECD !important;
+    background: #E9E9E9;
+    border: 1px solid #BABECD !important;
 }
