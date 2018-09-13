@@ -9,5 +9,5 @@
 </div>
 
 <script>
-  makeDropdown(<%= dropdown_type.inspect %>, <%= dropdown_items.inspect %>);
+  document.addEventListener("DOMContentLoaded", () => makeDropdown(<%= dropdown_type.inspect %>, <%= dropdown_items.inspect %>));
 </script>

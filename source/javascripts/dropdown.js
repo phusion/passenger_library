@@ -43,7 +43,7 @@ function makeDropdown(dropdown_type, dropdown_items) {
   const value = localStorage.getItem(element.name);
   const option = element.querySelector(`option[value=${value}]`);
   option.setAttribute('selected', true);
-  document.addEventListener("DOMContentLoaded", changeHandler.bind(element));
+  changeHandler.bind(element)();
 }
 
 export default makeDropdown;
