@@ -27,12 +27,6 @@ include DeploymentWalkthroughHelpers
 # proxy "/this-page-has-no-template.html", "/template-file.html", :locals => {
 #  :which_fake_page => "Rendering a fake page with a local variable" }
 
-
-redirect "", to: "/tutorials/what_is_passenger/index.html"
-redirect "index.html", to: "/tutorials/what_is_passenger/index.html"
-redirect "tutorials", to: "/tutorials/what_is_passenger/index.html"
-redirect "tutorials/index.html", to: "/tutorials/what_is_passenger/index.html"
-
 ###### Deployment walkthrough ######
 
 define_deployment_walkthrough_pages do |*proxy_args|
@@ -471,7 +465,6 @@ activate :relative_assets
 
 configure :development do
   set :url_root, DEVELOPMENT_URL_ROOT
-  activate :livereload, :port => 35730
   set :hiring_banner, true
 
   # CSS prefixer

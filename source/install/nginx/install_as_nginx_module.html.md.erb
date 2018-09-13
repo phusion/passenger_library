@@ -6,7 +6,7 @@ section: install
 locals.merge!(INTEGRATION_MODE_NGINX)
 globals.merge!(INTEGRATION_MODE_NGINX)
 content_for(:sidebar) do
-  render_partial("../sidebar.html", locals: locals.merge(
+  render_partial("../sidebar", locals: locals.merge(
     limit_choices: { "intmode" => [INTEGRATION_MODE_NGINX] }
   ))
 end

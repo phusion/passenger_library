@@ -2,10 +2,10 @@
 section: deploy_walkthrough
 subsection: launch_server
 ---
-<% content_for(:sidebar) { render_partial("_toc.html", locals: locals) } %>
+<% content_for(:sidebar) { render_partial("_toc", locals: locals) } %>
 
 <!-- See launch_server/_*.md for the main content file. -->
-<%= render_partial("launch_server/#{infrastructure_type}.md", locals: locals) %>
+<%= render_partial("launch_server/#{infrastructure_type}", locals: locals) %>
 
 <% spec = deployment_walkthrough_next_step_after_launching_server(locals) %>
 <a href="<%= spec[:url] %>" class="btn btn-primary btn-lg">Continue: <%= spec[:title] %> &raquo;</a>

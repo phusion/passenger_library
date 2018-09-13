@@ -1,0 +1,59 @@
+---
+title: Deploying to Production
+section: deploy_walkthrough
+comments: false
+---
+
+<h1>Deploy to production</h1>
+
+<p>
+  This is an <em>end-to-end tutorial</em> that teaches you how to install <%= render_partial('/shared/lang') %> and Passenger on a production server. This tutorial will ask you some questions, so the exact tutorial steps depend on the choices you make.
+</p>
+
+<h2>Select your deployment method</h2>
+<p>
+  Please start by picking the hosting provider or infrastructure that you want to deploy to.
+</p>
+
+<div class="radio-choices">
+  <div>
+    <% available_infrastructures(locals.merge(language_type: :ruby)).each do |infra_spec| %>
+      <div <% if [:heroku, :cloud66].include? infra_spec[:infrastructure_type] %> data-ruby_only <% end %>>
+        <input type="radio" id="radio-<%= infra_spec[:infrastructure_type] %>" value="<%= infra_spec[:infrastructure_type] %>" data-label="Platform">
+        <label for="radio-<%= infra_spec[:infrastructure_type] %>">
+          <% if infra_spec[:infrastructure_type] == :ownserver %>
+            <h3>(other)<br>Linux/Unix</h3>
+          <% else %>
+            <img src="<%= url_for("/images/#{infra_spec[:infrastructure_type]}.svg") %>" alt="<%= infra_spec[:infrastructure_long_name] %> logo">
+          <% end %>
+        </label>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<h2>Open source or Enterprise?</h2>
+<p>Please select the Passenger edition that you are using.</p>
+
+<div class="radio-choices">
+  <div>
+    <div>
+      <input type="radio" id="radio-os" value="os" data-label="Edition">
+      <label for="radio-os"><img src="<%= url_for("/images/passenger_logo.svg") %>" alt="open-source">
+        <span>Passenger open source</span>
+      </label>
+    </div>
+    <div>
+      <input type="radio" id="radio-enterprise" value="enterprise" data-label="Edition">
+      <label for="radio-enterprise">
+        <img src="<%= url_for("/images/passenger_logo.svg") %>" alt="enterprise">
+        <span>Passenger Enterprise</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div id="next-step">
+  <h2>Next step: Deployment installations</h2>
+  <a class="dark-button" href="/tutorials/deploy_to_production/launch_server/os/aws/">Continue</a>
+</div>

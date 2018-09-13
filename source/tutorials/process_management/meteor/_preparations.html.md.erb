@@ -1,0 +1,47 @@
+Now it is time to get you familiar with running multiple processes. But first, we need to do some preparations. Passenger's multi-process feature is only compatible with **packaged** Meteor apps, not with regular development-mode Meteor apps. Luckily, we had already prepared a packaged sample app in [Preparing a sample app](preparing_sample_app.html). We will use that now.
+
+#### Packaged sample app
+
+Enter the packaged sample app's directory:
+
+<pre class="highlight"><span class="prompt">$ </span>cd ~/leaderboard-packaged/bundle</pre>
+
+Create a `Passengerfile.json` in this directory that tells Passenger how to start this app. Put this text in that file:
+
+~~~json
+{
+  "app_type": "node",
+  "startup_file": "main.js"
+}
+~~~
+
+#### MongoDB
+
+When you run a Meteor app in development mode using `meteor run`, Meteor takes care of running the MongoDB database server for you. But a packaged Meteor app doesn't run MongoDB for you. Instead, it expects that you already have MongoDB running, and that you tell the app where that MongoDB instance is.
+
+Install MongoDB: <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
+
+Run a MongoDB instance (it will run on port 27017 by default):
+
+<pre class="highlight"><span class="prompt">$ </span>mkdir -p data log
+<span class="prompt">$ </span>mongod --dbpath data --logpath log/mongod.log --fork</pre>
+
+Verify that MongoDB is up:
+
+<pre class="highlight"><span class="prompt">$ </span>mongo &lt;&lt;&lt;<span class="s">'db.version()'</span>
+<span class="output">MongoDB shell version: 2.4.1
+connecting to: test
+2.4.1
+bye</span></pre>
+
+(If you get an error, look in log/mongod.log to learn what went wrong.)
+
+#### Environment variables
+
+Finally, we need to set some environment variables that tell the app what its parameters are.
+
+<pre class="highlight"><span class="prompt">$ </span>export MONGO_URL=mongodb://127.0.0.1:27017/passenger
+<span class="prompt">$ </span>export ROOT_URL=http://0.0.0.0:3000/</pre>
+
+ * `MONGO_URL` tells the app where our MongoDB server is.
+ * `ROOT_URL` tells the app what its root URL is.

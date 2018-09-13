@@ -16,14 +16,14 @@ locals[:enterprise] = false
   <img src="<%= url_for '/images/passenger.png' %>" alt="Passenger">
 </div>
 
-<%= render_partial("../shared/intro.md", locals: locals) %>
+<%= render_partial("../shared/intro", locals: locals) %>
 
 This guide is NOT for Ruby apps!
 : Are you deploying Ruby apps? Check out [the Ruby-specific Standalone installation guide](<%= url_for 'ruby.html' %>).
 
 <h2 class="notoc">Select operating system</h2>
 
-<%= render_partial("../shared/os_selector.html", locals: locals) %>
+<%= render_partial("../shared/os_selector", locals: locals) %>
 
 <div class="install_os install_os_any" style="display: none">
   <p><strong>Table of contents</strong></p>
@@ -39,8 +39,8 @@ This guide is NOT for Ruby apps!
   Remember, this installation guide is <em>not for Ruby apps</em>! Are you deploying Ruby apps? Check out <a href="<%= url_for 'ruby.html' %>">the Ruby-specific Standalone installation guide</a>.
 </div>
 
-<%= render_partial("../shared/install.html", locals: locals) %>
+<%= render_partial("../shared/install", locals: locals) %>
 
 ## Conclusion
 
-<%= render_partial("../shared/conclusion.html", locals: locals) %>
+<%= render_partial("../shared/conclusion", locals: locals) %>

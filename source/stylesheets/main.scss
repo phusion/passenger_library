@@ -1,4 +1,3 @@
-@import './normalize.scss';
 @import './global.scss';
 @import './components/yes-no-radio.scss';
 @import './components/main-content.scss';
@@ -18,3 +17,5 @@
 @import './components/footer.scss';
 @import './components/right-content-toc.scss';
 @import './components/custom-algolia.scss';
+@import './components/dropdown.css';
+@import "~bootstrap/scss/bootstrap";

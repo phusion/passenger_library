@@ -19,11 +19,11 @@ globals.merge!(LANG_PYTHON)
 
 ## What is Passenger?
 
-<%= render_partial("_what_is_passenger.md", locals: { language_type: :python }) %>
+<%= render_partial("_what_is_passenger", locals: { language_type: :python }) %>
 
 ## Install Passenger
 
-<%= render_partial("_install.html") %>
+<%= render_partial("_install") %>
 
 ## Preparing the example application
 
@@ -113,4 +113,4 @@ You may now be interested in intermediate-level tutorial.
 
 You may now be interested in follow-up tutorials.
 
-<%= render_partial("next_step.html", locals: { language_type: :python }) %>
+<%= render_partial("next_step", locals: { language_type: :python }) %>

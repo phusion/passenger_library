@@ -4,7 +4,7 @@ subsection: deploy_updates
 ---
 <%
 @page_title = "Deploying application updates - #{deployment_walkthrough_page_title(locals)}"
-content_for(:sidebar) { render_partial("_toc.html", locals: locals) }
+content_for(:sidebar) { render_partial("_toc", locals: locals) }
 step = 0
 %>
 

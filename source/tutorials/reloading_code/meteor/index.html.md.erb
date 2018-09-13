@@ -1,0 +1,34 @@
+---
+title: 'Reloading code - Passenger + Meteor basics'
+section: basics
+comments: false
+---
+<% locals = locals.merge(language_type: :meteor, language_name: "Meteor") %>
+
+# Reloading code
+
+<p class="lead">When developing a web application, you will often want your code changes to take effect as soon as possible. In this section we will discuss code reloading mechanisms that Passenger makes available, and how they compare to code reloading mechanisms provided by web frameworks such as Meteor.</p>
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Introduction
+
+Meteor provides built-in code reloading mechanisms. However this is not enabled in a bundled Meteor app. Passenger provides a number of restarting mechanisms to make life easier for you, while you are working in bundled mode.
+
+## passenger-config restart-app
+
+<%= render_partial("../shared/restart_app", locals: locals) %>
+
+## tmp/always_restart.txt
+
+<%= render_partial("../shared/always_restart", locals: locals) %>
+
+## Conclusion
+
+Congratulations, you have almost reached the conclusion of this basics tutorial. Next, we will teach you how to get help in case you need it.
+
+## Next step: The 'Help' option
+
+<a class="dark-button" href="/tutorials/the_help_option/meteor/">Continue</a>

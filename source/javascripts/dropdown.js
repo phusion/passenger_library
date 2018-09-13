@@ -1,47 +1,49 @@
-(function(){
-var select = document.querySelector('.<%= dropdown_type.downcase %> select');
-var arr = ["<%= dropdown_items.map(&:downcase).join('", "') %>"];
+function makeDropdown(dropdown_type, dropdown_items) {
+  const element = document.querySelector(`.${dropdown_type.toLowerCase()} select`);
+  const array = dropdown_items.map(e=>e.toLowerCase());
 
-function changeHandler() {
-  var self = this;
-  var location = window.location.href;
-  var value = self.value.toLowerCase();
+  function changeHandler() {
+    const self = this;
+    const location = window.location.href;
+    const value = self.value.toLowerCase();
 
-  arr.forEach(function(item) {
-    if (item !== value && location.indexOf(item) !== -1) {
-      if (value === 'node') {
-        value = 'nodejs';
+    array.forEach(function(item) {
+      if (item !== value && location.indexOf(item) !== -1) {
+        window.location = location.replace(item, value);
       }
-      window.location = location.replace(item, value);
-    }
 
-    // change logo if this's value doesn't change the content
-    self.style.backgroundImage = "url(\"../../../images/" + value + ".svg\")";
+      // change logo if this's value doesn't change the content
+      self.style.backgroundImage = `url("../../../images/${value}.svg")`;
 
-    // save selection in localStorage
-    localStorage.setItem(self.name, self.value);
-  });
-}
+      array.forEach(needle => {
+        document.querySelectorAll(`a[href*="${needle}"]`).forEach(a=>{a.href=a.href.replace(needle, value)});
+        document.querySelectorAll(`[data-${needle}_only]`).forEach(e=>e.style.display = (value == needle ? "inherit" : "none"));
+      });
+      document.querySelectorAll(`[data-${dropdown_type.toLowerCase()}_placeholder]`).forEach(e=>{e.innerText=value});
 
-select.addEventListener('change', changeHandler.bind(select));
-
-(function(element, array) {
-  var location = window.location.href;
-  var value = array.find(item => (location.indexOf(item) !== -1));
-  if (!localStorage.getItem(element.name) && !value) {
-    value = array[0];
+      // save selection in localStorage
+      localStorage.setItem(self.name, self.value);
+    });
   }
-  if (value) {
-    localStorage.setItem(element.name, value.replace(/^(.)(.*)/, (match, p1, p2) =>
+
+  element.addEventListener('change', changeHandler.bind(element));
+
+  const location = window.location.href;
+  let urlValue = array.find(item => location.includes(item));
+
+  if (!urlValue && !localStorage.getItem(element.name)) {
+    urlValue = array[0];
+  }
+  if (urlValue) {
+    localStorage.setItem(element.name, urlValue.replace(/^(.)(.*)/, (match, p1, p2) =>
       p1.toUpperCase() + p2.toLowerCase()
     ));
   }
-})(select, arr);
 
-(function (element) {
-  var value = localStorage.getItem(element.name);
-  var option = element.querySelector("option[value=" + value + "]");
+  const value = localStorage.getItem(element.name);
+  const option = element.querySelector(`option[value=${value}]`);
   option.setAttribute('selected', true);
-  changeHandler.bind(element)();
-})(select);
-})();
+  document.addEventListener("DOMContentLoaded", changeHandler.bind(element));
+}
+
+export default makeDropdown;

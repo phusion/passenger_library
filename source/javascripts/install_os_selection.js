@@ -1,6 +1,8 @@
 // JavaScript for displaying OS-specific installation instructions
 // in the "Getting Started" tutorials.
 
+import $ from 'jquery';
+
 function installOsChanged() {
   var selection = $('#os_install_select').val();
   $('.install_os').hide();

@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 function autoGenerateMenu() {
   // build side menu
   var toc = [];
@@ -46,6 +48,6 @@ function autoGenerateMenu() {
   $('.toc-container .toc-1').remove();
 }
 
-$(document).ready(function() {
-  autoGenerateMenu();
-});
+window.autoGenerateMenu = autoGenerateMenu;
+
+$(document).ready(autoGenerateMenu);

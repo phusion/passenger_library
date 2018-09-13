@@ -1,0 +1,40 @@
+---
+title: 'Reloading code - Passenger + Ruby basics'
+section: basics
+comments: false
+---
+<% locals = locals.merge(language_type: :ruby, language_name: "Ruby") %>
+
+# Reloading code
+
+<p class="lead">When developing a web application, you will often want your code changes to take effect as soon as possible. In this section we will discuss code reloading mechanisms that Passenger makes available, and how they compare to code reloading mechanisms provided by web frameworks such as Rails.</p>
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Introduction
+
+Some frameworks -- most notably Rails -- provide built-in code reloading mechanisms. They usually work by installing a hook so that whenever a non-existant class is referenced, the hook code attempts to locate and load the file associated to that class. For example, when code is executed that references the `User` class, Rails will infer that a `user.rb` file should be loaded from one of its load paths. After every request, Rails removes all user-defined classes from memory so that fresh code can be loaded on the next request.
+
+Such mechanisms are much faster than restarting the server. Restarting the server may take a few seconds, but builtin reloading take a few miliseconds. But they have a drawback too: not all code can be reloaded, especially initialization-related code. For example, Rails cannot reload code in `config/application.rb` without a server restart.
+
+Other frameworks -- such as Sinatra -- do not provide a code reloading mechanism at all, requiring you to restart the server after every code change. Needless to say, performing a restart after every change is cumbersome.
+
+Passenger provides a number of restarting mechanisms to make life easier for you, in case the builtin web framework code reloading isn't good enough for you (if it exists at all).
+
+## passenger-config restart-app
+
+<%= render_partial("../shared/restart_app", locals: locals) %>
+
+## tmp/always_restart.txt
+
+<%= render_partial("../shared/always_restart", locals: locals) %>
+
+## Conclusion
+
+Congratulations, you have almost reached the conclusion of this basics tutorial. Next, we will teach you how to get help in case you need it.
+
+## Next step: The 'Help' option
+
+<a class="dark-button" href="/tutorials/the_help_option/ruby/">Continue</a>

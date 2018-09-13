@@ -1,0 +1,32 @@
+When you start Passenger Standalone, it spawns one process. You can see this in action as follows. First, start Passenger Standalone:
+
+<pre class="highlight"><%= passenger_command_prefix_html(locals, :cd => false) %>passenger start</pre>
+
+Next, open a new terminal and run `passenger-status` to query the process management status of the Passenger instance:
+
+<pre class="highlight"><%= passenger_command_prefix_html(locals) %>passenger-status
+<span class="output">Version : 5.0.6
+Date    : 2015-04-14 21:55:30 +0100
+Instance: 25002
+----------- General information -----------
+Max pool size : 6                       <span class="label label-info">1</span>
+Processes     : 1
+Requests in top-level queue : 0
+
+----------- Application groups -----------
+/Users/phusion/testapp#default:         <span class="label label-info">2</span>
+  App root: /Users/phusion/testapp
+  Requests in queue: 0
+  * PID: 25012   Sessions: 0       Processed: 1       Uptime: 9s      <span class="label label-info">3</span>
+    CPU: 0%      Memory  : 14M     Last used: 3s ago</span></pre>
+
+There are several things you see here:
+
+ 1. `Max pool size` indicates the maximum number of processes that Passenger will keep around. There is a limit because each process consumes memory, so having too many processes can crash the server. This limit is configurable through the `--max-pool-size` command line option. Passenger won't ever pass this limit.
+ 2. Passenger is serving one application, /Users/phusion/testapp.
+ 3. There is a single process for that application, namely PID 25012. It is not using any CPU right now, and its memory usage is 14 MB.
+
+<div class="warning">
+  <h3 class="notoc">Notice the dash in <code>passenger-status</code></h3>
+  <p>The command for querying the process management status is <code>passenger-status</code> with a dash. Do not confuse it with <code>passenger status</code> (without a dash). This latter command is for checking whether a Passenger Standalone instance is running.</p>
+</div>

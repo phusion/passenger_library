@@ -6,7 +6,7 @@ section: deploy
 locals.merge!(INTEGRATION_MODE_STANDALONE)
 globals.merge!(INTEGRATION_MODE_STANDALONE)
 content_for(:sidebar) do
-  render_partial("../sidebar.html", locals: locals.merge(
+  render_partial("../sidebar", locals: locals.merge(
     limit_choices: { "intmode" => [INTEGRATION_MODE_STANDALONE] }
   ))
 end

@@ -2,7 +2,7 @@
 title: Request load balancing
 section: indepth
 ---
-<% content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) } %>
+<% content_for(:sidebar) { render_partial("../sidebar", locals: locals) } %>
 
 # Request load balancing
 
@@ -15,9 +15,9 @@ At its core, Passenger is a process manager and HTTP request router. In order to
 ## Introduction
 
 <% if language_type == :ruby || language_type == :python %>
-  <%= render_partial('intro_ruby_python.md', locals: locals) %>
+  <%= render_partial('intro_ruby_python', locals: locals) %>
 <% elsif language_type == :nodejs || language_type == :meteor %>
-  <%= render_partial('intro_nodejs.md', locals: locals) %>
+  <%= render_partial('intro_nodejs', locals: locals) %>
 <% else %>
   <% raise "Unrecognized language #{language_type}" %>
 <% end %>
@@ -26,7 +26,7 @@ At its core, Passenger is a process manager and HTTP request router. In order to
 
 A core concept in the load balancing algorithm is that of the **maximum process concurrency**. This is the maximum number of concurrent requests that a particular process can handle.
 
-<%= render_partial('process_concurrency_concept.md', locals: locals) %>
+<%= render_partial('process_concurrency_concept', locals: locals) %>
 
 For this reason, load balancing requests between multiple processes is beneficial.
 
@@ -83,10 +83,10 @@ Instead, the Passenger implementation can be compared to using a single (shared)
 <% end %>
 
 <% if language_min_concurrency == 1 %>
-  <%= render_partial('example_max_concurrency_1.md', locals: locals) %>
+  <%= render_partial('example_max_concurrency_1', locals: locals) %>
 <% end %>
 <% if language_max_concurrency != 1 %>
-  <%= render_partial('example_max_concurrency_4.md', locals: locals) %>
+  <%= render_partial('example_max_concurrency_4', locals: locals) %>
 <% end %>
 
 ## Customized balancing through additional request queues

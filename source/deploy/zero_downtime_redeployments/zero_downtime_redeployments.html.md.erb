@@ -3,7 +3,7 @@ section: deploy
 ---
 <%
 @page_title = "Zero-downtime application updates and restarts for #{language_name} apps - #{integration_mode_name}"
-content_for(:sidebar) { render_partial("../sidebar.html", locals: locals) }
+content_for(:sidebar) { render_partial("../sidebar", locals: locals) }
 %>
 
 <h1>Zero-downtime application updates and restarts<br>

@@ -1,0 +1,16 @@
+You have learned in [Fundamental concepts](fundamental_concepts.html) that at its core, Passenger is a process manager. Instead of running an application inside its process space, Passenger launches the application as external processes, and manages them. Passenger load balances traffic between processes, shuts down processes when they're no longer needed or when they misbehave, keeps them running and restarts them when they crash, etc.
+
+<div class="info">
+  If you're not familiar with the concept of processes (and threads), please read <a href="<%= url_for '/indepth/processes.html' %>">About processes</a> first. There are a number of caveats that you should know about, such as the fact that processes don't share memory with each other.
+</div>
+
+Initially, Passenger only spawns one application process. But sometimes it may decide to spawn multiple processes. Here are the reasons why this is sometimes beneficial:
+
+ * **Performance**<br>
+   The more processes you run, the better the CPU core utilization, up until the hardware limit.
+ * **I/O concurrency**<br>
+   The more processes you run, the greater the amount of available I/O concurrency. This makes your app perform better.
+ * **Stability**<br>
+   If an application process crashes, other processes are unaffected and can take over while Passenger restarts the crashed process.
+ * **Keeping problems in check**<br>
+   Many problems, such as leaking memory or getting stuck, can be kept in check by restarting the process where the problems occurred.

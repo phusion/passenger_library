@@ -4,7 +4,7 @@ section: deploy
 ---
 <%
 content_for(:sidebar) do
-  render_partial("sidebar.html", locals: locals.merge(
+  render_partial("sidebar", locals: locals.merge(
     limit_choices: { "intmode" => [INTEGRATION_MODE_NGINX, INTEGRATION_MODE_APACHE] }
   ))
 end

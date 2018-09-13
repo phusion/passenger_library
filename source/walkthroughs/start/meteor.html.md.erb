@@ -19,11 +19,11 @@ globals.merge!(LANG_METEOR)
 
 ## What is Passenger?
 
-<%= render_partial("_what_is_passenger.md", locals: { language_type: :meteor }) %>
+<%= render_partial("_what_is_passenger", locals: { language_type: :meteor }) %>
 
 ## Install Passenger
 
-<%= render_partial("_install.html") %>
+<%= render_partial("_install") %>
 
 ## Preparing the example application
 
@@ -89,4 +89,4 @@ The second way is by starting a seperate terminal, changing the working director
 
 Congratulations! Now that you've passed this tutorial and seen Passenger in action, you may be interested in follow-up tutorials.
 
-<%= render_partial("next_step.html", locals: { language_type: :meteor }) %>
+<%= render_partial("next_step", locals: { language_type: :meteor }) %>
