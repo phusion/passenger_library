@@ -31,6 +31,8 @@ end
     <% else %>
       <title><%= site_title %></title>
     <% end %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css"
+/>
     <link rel="stylesheet" href="<%= maybe_absolute_url_for "/packs/bundle.css" %>" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Open+Sans:400,600" rel="stylesheet" type="text/css">
     <% if current_page.data.skip_search || @skip_search %>
@@ -82,7 +84,7 @@ end
           <li><a href="https://www.phusionpassenger.com/library/">Old docs</a></li>
         </ul>
         <img class="small-screen-search" src="<%= url_for "/images/search_icon.svg" %>"  alt="search docs.." />
-        <input type="search" placeholder="search docs.." />
+        <input id="search-bar" type="search" placeholder="search docs.." />
       </div>
     </header>
 
@@ -159,6 +161,8 @@ end
           <img src="<%= url_for "/images/feedback_placeholder.svg" %>" alt="feedback"/>
         </div>
       </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
 
     <%= globals[:layout_body_trailer] || "" %>
 
