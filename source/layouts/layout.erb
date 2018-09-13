@@ -67,9 +67,6 @@ end
         gtag('config', 'UA-32583440-10', { 'anonymize_ip': true });
       </script>
     <% end %>
-    <% if !current_page.data.skip_default_javascript %>
-      <script src="<%= maybe_absolute_url_for "/packs/bundle.js" %>"></script>
-    <% end %>
     <%= yield_content :head %>
   </head>
 
@@ -166,6 +163,9 @@ end
       </div>
 
     <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <% if !current_page.data.skip_default_javascript %>
+      <script src="<%= maybe_absolute_url_for "/packs/bundle.js" %>"></script>
+    <% end %>
 
     <%= globals[:layout_body_trailer] || "" %>
 
@@ -201,6 +201,5 @@ end
     <% end %>
 
     <%= render_partial('/layouts/swiftype_container') %>
-    <%= render_partial('/layouts/modal') %>
   </body>
 </html>

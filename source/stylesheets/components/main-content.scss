@@ -65,6 +65,22 @@
   border-radius: 0;
 }
 
+#main-content .copy-btn {
+    margin-top: -2px;
+    font-size: 13px;
+    margin-right: -8px;
+    padding: 0px 8px 2px;
+    border-radius: 4px;
+    position: relative;
+    z-index: 9000;
+    background: #122b3b;
+    display: none;
+    color: #faf6e4;
+    float: right;
+    cursor: pointer;
+    border: 1px solid #faf6e4;
+}
+ 
 #main-content img {
   margin-top: 25px;
 }
@@ -120,26 +136,11 @@
   overflow-x: auto;
 }
 
-#main-content pre::before {
-  content: 'copy';
-  margin-top: -2px;
-  font-size: 13px;
-  margin-right: -8px;
-  padding: 0px 8px 2px;
-  border-radius: 4px;
-  position: relative;
-  z-index: 9000;
-  background: #122b3b;
-  color: #faf6e4;
-  float: right;
-  display: none;
-  cursor: pointer;
-  border: 1px solid #faf6e4;
-}
-
-#main-content pre:hover::before,
-#main-content pre:focus::before {
-  display: block;
+#main-content pre:hover,
+#main-content pre:focus {
+  .copy-btn {
+    display: block !important;
+  }
 }
 
 #main-content .prompt {
