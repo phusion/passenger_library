@@ -28,8 +28,8 @@ function copyToken() {
       document.body.removeChild(element);
       this.textContent = 'copied!';
       setTimeout(() => {
-        that.textContent = 'copy';
-        that.classList.remove('copied');
+        this.textContent = 'copy';
+        this.classList.remove('copied');
       }, 1500);
     }
   } else {
