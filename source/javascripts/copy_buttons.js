@@ -23,13 +23,18 @@ function copyToken() {
   document.body.appendChild(element);
   element.select();
   element.setSelectionRange(0, element.value.length);
-  document.execCommand('copy');
-  document.body.removeChild(element);
-  this.textContent = 'copied!';
-  setTimeout(() => {
-    this.textContent = 'copy';
-    this.classList.remove('copied');
-  }, 1500);
+  if (document.queryCommandSupported('copy') && document.queryCommandEnabled('copy')) {
+    if (document.execCommand('copy')) {
+      document.body.removeChild(element);
+      this.textContent = 'copied!';
+      setTimeout(() => {
+        that.textContent = 'copy';
+        that.classList.remove('copied');
+      }, 1500);
+    }
+  } else {
+    document.body.removeChild(element);
+  }
 }
 
 copyBtn.forEach(b => b.addEventListener('click', copyToken));
