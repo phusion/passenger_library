@@ -1,0 +1,54 @@
+<%
+case integration_mode_type
+when :nginx
+  passenger_ruby = "passenger_ruby"
+when :apache
+  passenger_ruby = "PassengerRuby"
+else
+  passenger_ruby = "--ruby / \"ruby\""
+end
+%>
+
+#### Notes about multiple Ruby interpreters
+
+If your system has multiple Ruby interpreters, then it is important that you set this configuration option to the right value. If you do not set this configuration option correctly, and your app is run under the wrong Ruby interpreter, then all sorts of things may go wrong, such as:
+
+ * The app won't be able to find its installed gems.
+ * The app won't be able to run because of syntax and feature differences between Ruby versions.
+
+Note that a different RVM gemset also counts as "a different Ruby interpreter".
+
+<h4 id="setting_correct_passenger_ruby_value">How to set the correct value</h4>
+
+If you are not sure what value to set `<%= passenger_ruby %>` to, then you can find out the correct value as follows.
+
+First, find out the location to the `passenger-config` tool and take note of it:
+
+<div>
+  <pre class="highlight"><span class="prompt">$ </span>which passenger-config
+<span class="output">/opt/passenger/bin/passenger-config</span></pre>
+</div>
+
+Next, activate the Ruby interpreter (and if applicable, the gemset) you want to use. For example, if you are on RVM and you use Ruby 2.2.1, you may want to run this:
+
+<div>
+  <pre class="highlight"><span class="prompt">$ </span>rvm use 2.2.1</pre>
+</div>
+
+Finally, invoke `passenger-config` with its full path, passing `--ruby-command` as parameter:
+
+<div>
+  <pre class="highlight"><span class="prompt">$ </span>/opt/passenger/bin/passenger-config --ruby-command
+<span class="output">passenger-config was invoked through the following Ruby interpreter:
+  Command: /usr/local/rvm/wrappers/ruby-1.8.7-p358/ruby
+  Version: ruby 1.8.7 (2012-02-08 patchlevel 358) [universal-darwin12.0]
+  To use in Apache: PassengerRuby /usr/local/rvm/wrappers/ruby-1.8.7-p358/ruby
+  To use in Nginx : passenger_ruby /usr/local/rvm/wrappers/ruby-1.8.7-p358/ruby
+  To use with Standalone: /usr/local/rvm/wrappers/ruby-1.8.7-p358/ruby /opt/passenger/bin/passenger start
+
+
+## Notes for RVM users
+Do you want to know which command to use for a different Ruby interpreter? 'rvm use' that Ruby interpreter, then re-run 'passenger-config --ruby-command'.</span></pre>
+</div>
+
+The output tells you what value to set.

@@ -1,0 +1,2696 @@
+---
+title: 'Configuration reference - Passenger + Apache'
+---
+
+<%
+  locals = locals.merge(INTEGRATION_MODE_APACHE)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+<script>
+// The apache options are named like the nginx options but without _, so this trick allows us to deeplink to apache/nginx
+// with the same url.
+if (window.location.hash) {
+  var anchor = window.location.hash;
+  if (anchor.indexOf("_") >= 0) {
+    anchor = anchor.replace(/_/g, "");
+    window.location.hash = anchor;
+  }
+}
+</script>
+
+<h1>Configuration reference<br>
+<small>for Passenger + Apache</small></h1>
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Application loading
+
+### PassengerRoot
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerRoot <em>dir-path</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>1.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+Refers to the location to the Passenger root directory, or to a location configuration file. This configuration option is essential to Passenger, and allows Passenger to locate its own data files.
+
+You normally do not need to set this configuration option. If you used our [Debian](<%= url_for "/install/apache/apt_repo/index.html" %>) or [RPM](<%= url_for "/install/apache/yum_repo/index.html" %>) packages to [install Passenger](<%= url_for "/install/apache/install/index.html" %>), then they automatically configure `PassengerRoot` for you with the right value. If you installed Passenger from Homebrew, tarball or RubyGems, then at some point during the installation process you are told what the correct value should be, and instructed to insert it into your Apache configuration file.
+
+#### What happens if this option is not set, or set wrongly
+
+If you do not set `PassengerRoot`, then Passenger will complain about it and prevent Apache from starting.
+
+If you set `PassengerRoot` to the wrong value, then Passenger will attempt to locate some of its own files, fail to do so, then complain with an error message and abort Apache.
+
+#### How to fix PassengerRoot
+
+If you lost the PassengerRoot configuration value (e.g. because you accidentally removed the Apache configuration file, and you are trying to reconstruct it), if you didn't follow the installation instructions correctly, or if you [moved Passenger to a different directory](<%= url_for "/install/apache/moving.html" %>), then you can fix PassengerRoot as follows:
+
+ * If you installed Passenger through source tarball or by cloning it from the Passenger Github repository, then the value should be the path to the Passenger directory.
+ * In all other cases, obtain the correct value by running the following command:
+
+       passenger-config --root
+
+Once you have obtained the value, [open your Apache configuration file](<%= url_for "/install/apache/working_with_the_apache_config_file.html" %>) and insert a `PassengerRoot` option somewhere with that value.
+
+### PassengerDefaultRuby
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDefaultRuby <em>file-path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerDefaultRuby ruby</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+This option specifies:
+
+ * which Ruby interpreter Passenger should use for its internal Ruby helper tools, e.g. the one used by [PassengerPreStart](#passengerprestart). See [Lightweight Ruby dependency](<%= url_for "/indepth/lightweight_ruby_dependency.html" %>) for more information.
+ * the default Ruby interpreter to use for Ruby web apps. Naturally, this is not applicable if you do not use Passenger to serve Ruby web apps. Please see [PassengerRuby](#passengerruby) for more information, as well as how it relates to PassengerDefaultRuby.
+
+The default value is `ruby`, meaning that the Ruby interpreter will be looked up according to [the PATH environment variable](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable).
+
+If you want to specify the Ruby interpreter to use for serving a specific Ruby web application, then we recommend that you use the [PassengerRuby](#passengerruby) configuration option instead of `PassengerDefaultRuby`. While `PassengerDefaultRuby` specifies a default value for `PassengerRuby`, the main reason why `PassengerDefaultRuby` exists is to specify which Ruby interpreter to use for internal Ruby helper tools.
+
+If you installed Passenger through source tarball or RubyGems, then you should know that it is okay if `PassengerDefaultRuby` refers to a different Ruby interpreter than the one you used originally installed Passenger with. Please learn more at [How having multiple Ruby interpreters affects Passenger](<%= url_for "/indepth/ruby/multiple_rubies.html" %>).
+
+### PassengerEnabled
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerEnabled <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerEnabled on</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+This option enables or disables Passenger for that particular context. Passenger is enabled by default. You can set this option to `off` to completely disable Passenger for that context. This option is useful if, for example, you want a certain location to be handled by a different Apache module, not by Passenger.
+
+#### Example
+
+Suppose that you have a Ruby application in `/apps/foo`. Suppose that you've dropped Wordpress -- a blogging application written in PHP -- in `/apps/foo/public/wordpress`. You want can then configure Passenger as follows so that Passenger doesn't interfere with the Wordpress installation:
+
+<div>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.foo.com
+    DocumentRoot /apps/foo/public
+    &lt;Directory /apps/foo/public/wordpress&gt;
+        PassengerEnabled off
+        <span class="c"># Makes Wordpress's .htaccess file work</span>
+        AllowOverride all
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+</div>
+
+### PassengerStartTimeout
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerStartTimeout <em>seconds</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerStartTimeout 90</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.15</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+</table>
+
+Specifies a timeout for the startup of application processes. If an application process fails to start within the timeout period then it will be forcefully killed with SIGKILL, and the error will be logged.
+
+
+### PassengerRuby
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerRuby <em>path-to-ruby-interpreter</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerRuby <em>(value of PassengerDefaultRuby)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+The `PassengerRuby` option specifies the Ruby interpreter to use for serving Ruby web applications. If `PassengerRuby` is not specified, then it defaults to the value of [PassengerDefaultRuby](#passengerdefaultruby) (which in itself defaults to `ruby`, meaning the first `ruby` command found in [PATH](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable)).
+
+Closely related to `PassengerRuby` is [PassengerPython](#passengerpython), [PassengerNodejs](#passengernodejs), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
+
+<%= render_partial("/config/reference/apache/passenger_ruby_example", locals: locals) %>
+
+<%= render_partial("/config/reference/passenger_ruby_extra_info", locals: locals) %>
+
+
+### PassengerPython
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerPython <em>path-to-python-interpreter</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerPython <em>python</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+This option specifies the Python interpreter to use for serving Python web applications. If it is not specified, then it uses the first `python` command found in [PATH](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable).
+
+Closely related to this option is [PassengerRuby](#passengerruby), [PassengerNodejs](#passengernodejs), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
+
+<%= render_partial("/config/reference/apache/passenger_ruby_example", locals: locals) %>
+
+
+### PassengerNodejs
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerNodejs <em>path-to-node-js</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerNodejs <em>node</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.24</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+This option specifies the Node.js command to use for serving Node.js web applications. If it is not specified, then it uses the first `node` command found in [PATH](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable).
+
+Closely related to this option is [PassengerRuby](#passengerruby), [PassengerPython](#passengerpython), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
+
+<%= render_partial("/config/reference/apache/passenger_ruby_example", locals: locals) %>
+
+
+### PassengerMeteorAppSettings
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMeteorAppSettings <em>path-to-json-settings-file</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.7</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+When using a Meteor application in non-bundled mode, use this option to specify a JSON file with settings for the application. The `meteor run` command will be run with the `--settings` parameter set to this option.
+
+Note that this option is not intended to be used for bundled/packaged Meteor applications. When running bundled/packaged Meteor applications on Passenger, you should set the `METEOR_SETTINGS` environment variable using [SetEnv](http://httpd.apache.org/docs/2.4/mod/mod_env.html#setenv).
+
+
+### PassengerAppEnv
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAppEnv <em>name</em></td>
+  </tr>
+  <tr>
+    <th>Aliases</th>
+    <td>
+      RailsEnv <em>name</em><br>
+      RackEnv <em>name</em>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerAppEnv production</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+This option sets, for the current application, the value of the following environment variables:
+
+ * `RAILS_ENV`
+ * `RACK_ENV`
+ * `WSGI_ENV`
+ * `NODE_ENV`
+ * `PASSENGER_APP_ENV`
+
+Some web frameworks, for example Rails and Connect.js, adjust their behavior according to the value in one of these environment variables.
+
+Passenger sets the default value to **production**. If you're developing the application (instead of running it in production), then you should set this to `development`.
+
+If you want to set other environment variables, please use [SetEnv](http://httpd.apache.org/docs/2.4/mod/mod_env.html#setenv).
+
+Setting this option also adds the application environment name to the default [application group name](#passengerappgroupname), so that you can run multiple versions of your application with different application environment names.
+
+
+### RailsEnv, RackEnv
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>
+      RailsEnv <em>name</em><br>
+      RackEnv <em>name</em>
+    </td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>
+      RailsEnv production<br>
+      RackEnv production
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>2.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+These are aliases for [PassengerAppEnv](#passengerappenv).
+
+
+### PassengerAppRoot
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAppRoot <em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerAppRoot <em>parent-directory-of-DocumentRoot</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+By default, Passenger assumes that the application's root directory is the parent directory of the DocumentRoot. This option allows one to the application's root independently from the DocumentRoot, which is useful if your application does not follow the conventions that Passenger assumes.
+
+See also [How Passenger + Apache autodetects applications](<%= url_for "/indepth/app_autodetection/index.html" %>).
+
+#### Example
+
+<div>
+  <pre class="highlight">&lt;VirtualHost test.host&gt;
+    DocumentRoot /var/rails/zena/sites/example.com/public
+    <span class="c"># Normally Passenger would have assumed that the
+    # application root is "/var/rails/zena/sites/example.com".
+    # This overrides it.</span>
+    PassengerAppRoot /var/rails/zena
+&lt;/VirtualHost&gt;</pre>
+</div>
+
+
+### PassengerAppGroupName
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAppGroupName <em>name</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+Sets the name of the application group that the current application should belong to. Its default value is the [application root](#passengerapproot), plus (if it is explicitly set), the [application environment name](#passengerappenv).
+
+Passenger stores and caches most application spawning settings -- such as environment variables, process limits, etc -- on a per-app-group-name basis. This means that if you want to start two versions of your application, with each version having different environment variables, then you must assign them under different application group names.
+
+The [request queue](<%= url_for "/indepth/request_queueing.html" %>) is also per-application group, so creating multiple application groups allow you to separate requests into different queues.
+
+#### Example
+
+Consider a situation in which you are running multiple versions of the same app, with each version intended for a different customer. You use the `CUSTOMER_NAME` environment variable to tell the app which customer that version should serve.
+
+<div>
+  <pre class="highlight"><span class="c"># WRONG example! Doesn't work!</span>
+
+&lt;VirtualHost *:80&gt;
+    ServerName customer1.foo.com
+    DocumentRoot /webapps/foo/public
+    SetEnv CUSTOMER_NAME customer1
+&lt;/VirtualHost&gt;
+
+&lt;VirtualHost *:80&gt;
+    ServerName customer2.foo.com
+    DocumentRoot /webapps/foo/public
+    SetEnv CUSTOMER_NAME customer2
+&lt;/VirtualHost&gt;</pre>
+</div>
+
+This example doesn't work, because Passenger thinks that they are the same application. When a user visits customer1.foo.com, Passenger will start a process with `CUSTOMER_NAME=customer1`. When another user visits customer2.foo.com, Passenger will route the request to the application process that was started earlier. Because environment variables are only set during application process startup, the second user will be served the website for customer 1.
+
+To make this work, assign unique application group names:
+
+~~~
+<VirtualHost *:80>
+    ServerName customer1.foo.com
+    DocumentRoot /webapps/foo/public
+    SetEnv CUSTOMER_NAME customer1
+    PassengerAppGroupName foo_customer1
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName customer2.foo.com
+    DocumentRoot /webapps/foo/public
+    SetEnv CUSTOMER_NAME customer2
+    PassengerAppGroupName foo_customer2
+</VirtualHost>
+~~~
+
+Note that it is not necessary to set `PassengerAppGroupName` if you want to run two versions of your application under different [application environment names](#passengerappenv), because the application environment name is included in the default application group name. For example, consider a situation in which you want to run a production and a staging version of your application. The following configuration will work fine:
+
+<div>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName bar.com
+    DocumentRoot /webapps/bar/public
+    <span class="c"># Passenger implicitly sets:
+    # PassengerAppGroupName /webapps/bar</span>
+&lt;/VirtualHost&gt;
+
+&lt;VirtualHost *:80&gt;
+    ServerName staging.bar.com
+    DocumentRoot /webapps/bar/public
+    PassengerAppEnv staging
+    <span class="c"># Passenger implicitly sets:
+    # PassengerAppGroupName '/webapps/bar (staging)'</span>
+&lt;/VirtualHost&gt;</pre>
+</div>
+
+
+### PassengerAppType
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAppType <em>name</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td><a href="<%= url_for "/indepth/app_autodetection/index.html" %>">Autodetected</a></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.25</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+By default, Passenger [autodetects](<%= url_for "/indepth/app_autodetection/index.html" %>) the type of the application, e.g. whether it's a Ruby, Python, Node.js or Meteor app. If it's unable to autodetect the type of the application (e.g. because you've specified a custom [PassengerStartupFile](#passengerstartupfile)) then you can use this option to force Passenger to recognize the application as a specific type.
+
+Allowed values are:
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <th>Value</th>
+    <th>Application type</th>
+  </thead>
+  <tbody>
+    <% SUPPORTED_APP_TYPES.each do |spec| %>
+      <tr>
+        <td><%= spec[:type] %></td>
+        <td><%= spec[:name] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+If you set this option, then you **must** also set [PassengerAppRoot](#passengerapproot), otherwise Passenger will not properly recognize your application.
+
+#### Example
+
+<div>
+  <pre class="highlight">&lt;VirtualHost test.host&gt;
+    DocumentRoot /webapps/example.com/public
+    <span class="c"># Use server.js as the startup file (entry point file) for
+    # your Node.js application, instead of the default app.js</span>
+    PassengerStartupFile server.js
+    PassengerAppType node
+    PassengerAppRoot /webapps/example.com
+&lt;/VirtualHost&gt;</pre>
+</div>
+
+
+### PassengerStartupFile
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerStartupFile <em>relative-path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td><a href="<%= url_for "/indepth/app_autodetection/index.html" %>">Autodetected</a></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.25</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+This option specifies the startup file that Passenger should use when loading the application. This path is relative to the [application root](#passengerapproot).
+
+Every application has a *startup file* or *entry point file*: a file where the application begins execution. Some languages have widely accepted conventions about how such a file should be called (e.g. Ruby, with its `config.ru`). Other languages have somewhat-accepted conventions (e.g. Node.js, with its `app.js`). In these cases, Passenger follows these conventions, and executes applications through those files.
+
+Other languages have no conventions at all, and so Passenger invents one (e.g. Python WSGI with `passenger_wsgi.py`).
+
+Passenger tries to autodetect according to the following language-specific conventions:
+
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>Language</th>
+      <th>Passenger convention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% SUPPORTED_APP_TYPE_CONVENTIONS.each do |spec| %>
+      <tr>
+        <td><%= spec[:name] %></td>
+        <td><%= spec[:startup_file] %></td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>
+
+For other cases you will need to specify the `startup-file` manually. For example, on Node.js, you might need to use `bin/www` as the startup file instead if you are using the Express app generator.
+
+#### Notes
+
+ * Customizing the startup file affects [user account sandboxing](<%= url_for "/deploy/apache/user_sandboxing.html" %>). After all, if user account sandboxing is enabled, the application is executed as the user that owns the startup file.
+ * If you set this option, you **must** also set [PassengerAppRoot](#passengerapproot) and [PassengerAppType](#passengerapptype), otherwise Passenger doesn't know what kind of application it is.
+
+#### Example
+
+<div>
+  <pre class="highlight">&lt;VirtualHost test.host&gt;
+    DocumentRoot /webapps/example.com/public
+    <span class="c"># Use server.js as the startup file (entry point file) for
+    # your Node.js application, instead of the default app.js</span>
+    PassengerStartupFile server.js
+    PassengerAppType node
+    PassengerAppRoot /webapps/example.com
+&lt;/VirtualHost&gt;</pre>
+</div>
+
+
+### PassengerRestartDir
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerRestartDir <em>absolute-or-relative-path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerRestartDir tmp</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+As described in [Restarting applications](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>), Passenger checks the file `tmp/restart.txt` in the [application root directory](#passengerapproot) to determine whether it should restart the application. Sometimes it may be desirable for Passenger to look in a different directory instead, for example for security reasons (see below). This option allows you to customize the directory in which `restart.txt` is searched for.
+
+You can either set it to an absolute directory, or to a directory relative to the application root.
+
+#### Examples
+
+<div>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.foo.com
+    <span class="c"># Passenger will check for /apps/foo/public/tmp/restart.txt</span>
+    DocumentRoot /apps/foo/public
+&lt;/VirtualHost&gt;
+
+&lt;VirtualHost *:80&gt;
+    ServerName www.bar.com
+    DocumentRoot /apps/bar/public
+    <span class="c"># An absolute filename is given; Passenger will
+    # check for /restart_files/bar/restart.txt</span>
+    PassengerRestartDir /restart_files/bar
+&lt;/VirtualHost&gt;
+
+&lt;VirtualHost *:80&gt;
+    ServerName www.baz.com
+    DocumentRoot /apps/baz/public
+    <span class="c"># A relative filename is given; Passenger will
+    # check for /apps/baz/restart_files/restart.txt
+    #
+    # Note that this directory is relative to the APPLICATION ROOT, *not*
+    # the value of DocumentRoot!</span>
+    PassengerRestartDir restart_files
+&lt;/VirtualHost&gt;</pre>
+</div>
+
+#### Security reasons for wanting to customize PassengerRestartDir
+
+Touching restart.txt will [cause Passenger to restart the application](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>). So anybody who can touch restart.txt can effectively cause a Denial-of-Service attack by touching restart.txt over and over. If your web server or one of your web applications has the permission to touch restart.txt, and one of them has a security flaw which allows an attacker to touch restart.txt, then that will allow the attacker to cause a Denial-of-Service.
+
+You can prevent this from happening by pointing PassengerRestartDir to a directory that's readable by Apache, but only writable by administrators.
+
+
+### PassengerSpawnMethod
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerSpawnMethod <em>smart|direct</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>
+      For Ruby apps: PassengerSpawnMethod smart<br>
+      For other apps: PassengerSpawnMethod direct
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>2.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host</td>
+  </tr>
+</table>
+
+This option controls whether Passenger spawns applications directly, or using a prefork copy-on-write mechanism. The [spawn methods guide](<%= url_for "/indepth/spawn_methods/index.html" %>) explains this in detail.
+
+
+### PassengerLoadShellEnvvars
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerLoadShellEnvvars <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerLoadShellEnvvars on</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.20</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+Enables or disables the loading of shell environment variables before spawning the application.
+
+If this option is turned on, and the user's shell is `bash`, then applications are loaded by running them with `bash -l -c`. The benefit of this is that you can specify environment variables in .bashrc, and they will appear in the application as one would expect.
+
+If this option is turned off, applications are loaded by running them directly from the `Passenger core` process.
+
+
+### PassengerRollingRestarts
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerRollingRestarts <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerRollingRestarts off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/apache/zero_downtime_redeployments/index.html" %>) through `restart.txt`.
+
+Please note that `PassengerRollingRestarts` is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
+
+NOTE: Are you looking to prevent applications from being restarted when you restart Apache? That is handled by the [Flying Passenger mode](<%= url_for "/deploy/apache/flying_passenger.html" %>), not by the rolling restarts feature.
+
+
+### PassengerResistDeploymentErrors
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerResistDeploymentErrors <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerResistDeploymentErrors off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+Enables or disables [resistance against deployment errors](<%= url_for "/deploy/apache/deployment_error_resistance.html" %>).
+
+Suppose that you have upgraded your application and you have issued a command to restart it, but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
+
+By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file/index.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
+
+[Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/deploy/apache/deployment_error_resistance.html" %>).
+
+Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/admin/apache/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-(rolling-restart)).
+
+
+### PassengerInstanceRegistryDir
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerInstanceRegistryDir <em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerInstanceRegistryDir /tmp|/var/run/passenger-instreg</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+Specifies the directory that Passenger should use for registering its current instance.
+
+When Passenger starts up, it creates a temporary directory inside the _instance registry directory_. This temporary directory is called the _instance directory_. It contains all sorts of files that are important to that specific running Passenger instance, such as Unix domain socket files so that all the different Passenger processes can communicate with each other. Command line tools such as `passenger-status` use the files in this directory in order to query Passenger's status.
+
+It is therefore important that, while Passenger is working, the instance directory is never removed or tampered with. However, the default path for the instance registry directory is the system's temporary directory, and some systems may run background jobs that periodically clean this directory. If this happens, and the files inside the instance directory are removed, then it will cause Passenger to malfunction: Passenger won't be able to communicate with its own processes, and you will see all kinds of connection errors in the log files. This malfunction can only be recovered from by restarting Apache. You can prevent such cleaning background jobs from interfering by setting this option to a different directory.
+
+This option is also useful if Apache is not allowed to write to the system's temporary directory (which is the case on some systems with strict SELinux policies) or if the partition that the temporary directory lives on doesn't have enough disk space.
+
+The instance directory is automatically removed when Apache shuts down.
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--instance-registry-dir")) %>
+
+#### Default value
+
+The default value for this option is as follows:
+
+ * If you are on Red Hat and CentOS, and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/install/apache/yum_repo/index.html" %>), then the default value is `/var/run/passenger-instreg`.
+ * Otherwise, the default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
+
+#### Note regarding command line tools
+
+Some Passenger command line administration tools, such as `passenger-status`, must know what Passenger's instance registry directory is in order to function properly. You can pass the directory through the `PASSENGER_INSTANCE_REGISTRY_DIR` or the `TMPDIR` environment variable.
+
+For example, if you set 'PassengerInstanceRegistryDir' to '/my_temp_dir', then invoke `passenger-status` after you've set the `PASSENGER_INSTANCE_REGISTRY_DIR`, like this:
+
+~~~bash
+export PASSENGER_INSTANCE_REGISTRY_DIR=/my_temp-dir
+sudo -E passenger-status
+~~~
+
+Notes regarding the above example:
+
+ * The -E option tells 'sudo' to preserve environment variables.
+ * If Passenger is installed through an RVM Ruby, then you must use `rvmsudo` instead of `sudo`.
+
+
+
+### PassengerFlyWith
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerFlyWith <em>path-to-socket</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Flying Passenger mode disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.45</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+<%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) mode, and configures Apache to connect to the Flying Passenger daemon that's listening on the given socket filename.
+
+
+## Performance tuning
+
+### PassengerMaxPoolSize
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxPoolSize <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxPoolSize 6</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>1.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The maximum number of application processes that may simultaneously exist. Generally speaking, the more application processes you run, the more concurrent traffic you can handle and the better your CPU core utilization becomes, until your hardware is saturated. But running more processes also means higher memory consumption.
+
+The optimal value depends on your system's hardware and your workload. Please read the [optimization guide](<%= url_for "/config/#{integration_mode_type}/optimization/index.html" %>) to learn how to find out the optimal value.
+
+This option behaves like a "safety switch" that prevents Passenger from overloading your system with too many processes. No matter how you configure [PassengerMinInstances](#passengermininstances) and [PassengerMaxInstances](#passengermaxinstances), the total number of processes won't ever surpass the value set for this option. For example, if PassengerMaxPoolSize is set to 6, and you also deployed two applications on Passenger with each application's PassengerMinInstances set to 4, then the maximum number processes that may simultaneously exist is 6, not 8.
+
+If you find that your server is running out of memory then you should lower this value. In order to prevent your server from crashing due to out-of-memory conditions, the default value is relatively low (6).
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--max-pool-size")) %>
+
+
+### PassengerMinInstances
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMinInstances <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMinInstances 1</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+</table>
+
+This specifies the minimum number of application processes that should exist for a given application. You should set this option to a non-zero value if you want to avoid potentially long startup times after a website has been [idle](#passengerpoolidletime) for an extended period of time.
+
+Please note that this option does *not* pre-start application processes during Apache startup. It just makes sure that when the application is first accessed:
+
+ 1. at least the given number of processes will be spawned.
+ 2. the given number of processes will be kept around even when processes are being [idle cleaned](#passengerpoolidletime).
+
+If you want to pre-start application processes during Apache startup, then you should use the [PassengerPreStart](#passengerprestart) option, possibly in combination with `PassengerMinInstances`. This behavior might seem counter-intuitive at first sight, but `PassengerPreStart` explains the rationale behind it.
+
+#### Example
+
+Suppose that you have the following configuration:
+
+~~~
+PassengerMaxPoolSize 15
+PassengerPoolIdleTime 10
+
+<VirtualHost *:80>
+    ServerName foobar.com
+    DocumentRoot /webapps/foobar/public
+    PassengerMinInstances 3
+</VirtualHost>
+~~~
+
+When you start Apache, there are 0 application processes for 'foobar.com'. Things will stay that way until someone visits 'foobar.com'. Suppose that there is only one visitor. One application process will be started immediately to serve the visitor, while two will be spawned in the background. After 10 seconds, when the idle timeout has been reached, these 3 application processes will not be cleaned up.
+
+Now suppose that there's a sudden spike of traffic, and 100 users visit 'foobar.com' simultaneously. Passenger will start 12 more application processes (`15 - 3 = 12`). After the idle timeout of 10 seconds has passed, Passenger will clean up 12 application processes, keeping 3 processes around.
+
+
+### PassengerMaxInstances
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxInstances <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxInstances 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+The maximum number of application processes that may simultaneously exist for an application. This helps to make sure that a single application will not occupy all available slots in the application pool.
+
+This value must be less than [PassengerMaxPoolSize](#passengermaxpoolsize). A value of 0 means that there is no limit placed on the number of processes a single application may spawn, i.e. only the global limit of `PassengerMaxPoolSize` will be enforced.
+
+#### Example
+
+Suppose that you're hosting two web applications on your server, a personal blog and an e-commerce website. You've set [PassengerMaxPoolSize](#passengermaxpoolsize) to 10. The e-commerce website is more important to you. You can then set `PassengerMaxInstances` to 3 for your blog, so that it will never spawn more than 3 processes, even if it suddenly gets a lot of traffic. Your e-commerce website on the other hand will be free to spawn up to 10 processes if it gets a lot of traffic.
+
+
+### PassengerMaxInstancesPerApp
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxInstancesPerApp <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxInstancesPerApp 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The maximum number of application processes that may simultaneously exist for a single application. This helps to make sure that a single application will not occupy all available slots in the application pool.
+
+This value must be less than [PassengerMaxPoolSize](#passengermaxpoolsize). A value of 0 means that there is no limit placed on the number of processes a single application may use, i.e. only the global limit of `PassengerMaxPoolSize` will be enforced.
+
+#### Example
+
+Suppose that you're hosting two blogs (blog A and B) on your server, and that you've set [PassengerMaxPoolSize](#passengermaxpoolsize) to 10. Under normal circumstances, if blog A suddenly gets a lot of traffic, then A will use all 10 pool slots. If blog B suddenly gets some traffic, then it will only be able to use 1 pool slot (forcefully releasing 1 slot from A) until A's traffic has settled down and it has released more pool slots.
+
+If you consider both blogs equally important, then you can set `PassengerMaxInstancesPerApp` to 5. This way, both blogs will never use more than 5 pool slots.
+
+#### Relation to PassengerMaxInstances
+
+Unlike [PassengerMaxInstances](#passengermaxinstances), this configuration option is global and applies to all applications. `PassengerMaxInstances` on the other hand is per-virtual host.
+
+Suppose that you're hosting two web applications on your server, a personal blog and an e-commerce website. You've set [PassengerMaxPoolSize](#passengermaxpoolsize) to 10. The e-commerce website is more important to you. You can then set `PassengerMaxInstances` to 3 for your blog, so that it will never use more than 3 pool slots, even if it suddenly gets a lot of traffic. Your e-commerce website on the other hand will be free to use up all 10 slots if it gets a lot of traffic.
+
+In summary, `PassengerMaxInstancesPerApp` divides the pool equally among the different web applications, while 'PassengerMaxInstances' allows one to divide the pool unequally, according to each web application's relative importance.
+
+
+### PassengerPoolIdleTime
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerPoolIdleTime <em>seconds</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerPoolIdleTime 300 <em>(5 minutes)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>1.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The maximum number of seconds that an application process may be idle. That is, if an application process hasn't received any traffic after the given number of seconds, then it will be shutdown in order to conserve memory.
+
+Decreasing this value means that applications will have to be spawned more often. Since spawning is a relatively slow operation, some visitors may notice a small delay when they visit your web app. However, it will also free up resources used by applications more quickly.
+
+The optimal value depends on the average time that a visitor spends on a single dynamic page. We recommend a value of `2 * x`, where `x` is the average number of seconds that a visitor spends on a single dynamic page. But your mileage may vary.
+
+When this value is set to `0`, application processes will not be shutdown unless it's really necessary. Here is a situation where Passenger seems necessary to shutdown an application process. Suppose that you have two apps on your server, foo and bar. If a user visits foo, but there are no processes for foo, and at the same time there are lots of application processes for bar (as many as the [pool limit](#passengermaxpoolsize)), then Passenger will wait until one of those bar processes is no longer handling a request. At time time, that process will be shutdown so that Passenger can spawn a foo process.
+
+Setting the value to 0 is recommended if you're on a non-shared host that's only running a few applications, each which must be available at all times.
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--pool-idle-time")) %>
+
+
+### PassengerMaxPreloaderIdleTime
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxPreloaderIdleTime <em>seconds</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxPreloaderIdleTime 300 <em>(5 minutes)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host</td>
+  </tr>
+</table>
+
+The preloader process (explained in [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#passengerpoolidletime). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
+
+This option allows you to set the preloader's idle timeout, in seconds. A value of `0` means that it should never idle timeout.
+
+Setting a higher value will mean that the preloader is kept around longer, which may slightly increase memory usage. But as long as the preloader server is running, the time to spawn a Ruby application process only takes about 10% of the time that is normally needed, assuming that you're using the `smart` [spawn method](#passengerspawnmethod). So if your system has enough memory, then is it recommended that you set this option to a high value or to `0`.
+
+
+### PassengerForceMaxConcurrentRequestsPerProcess
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerForceMaxConcurrentRequestsPerProcess <em>number</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerForceMaxConcurrentRequestsPerProcess -1</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.22</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+<%
+languages_requiring_hint_for_dynamic_process_scaling_to_work = []
+
+SUPPORTED_LANGUAGES.each do |language|
+  if language[:language_default_concurrency] == 0
+    languages_requiring_hint_for_dynamic_process_scaling_to_work << language[:language_name]
+  end
+end
+%>
+
+Use this option to tell Passenger how many concurrent requests the application can handle per process. A value of 0 means that each process can handle an unlimited number of connections, while a value of -1 (the default) means that Passenger will infer the value based on internal heuristics.
+
+There are two main use cases for this option:
+
+ 1. To make [dynamic process scaling](<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
+ 2. [To make SSE and WebSockets work well in Ruby applications.](<%= url_for "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html" %>) Set this option to 0.
+
+This option is a hint to Passenger and does not make the application *actually* able to handle that many concurrent requests per process. For example in Ruby applications, the amount of concurrency that your application process can handle usually depends on the number of [configured threads](#PassengerThreadCount). If you set the number of threads, then Passenger will automatically infer that Ruby applications' max concurrency per process equals the number of threads. But in non-standard cases where this heuristic fails (e.g. in situations where a WebSocket library such as Faye spawns threads to handle WebSockets) then you can use this option to override Passenger's heuristic.
+
+It is recommended that you do not touch this configuration option unless you want to tweak Passenger for one of the two main use cases documented above.
+
+### PassengerConcurrencyModel
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerConcurrencyModel <em>process|thread</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerConcurrencyModel process</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+Specifies the I/O concurrency model that should be used for Ruby application processes. Passenger supports two concurrency models:
+
+ * `process` -- single-threaded, multi-processed I/O concurrency. Each application process only has a single thread and can only handle 1 request at a time. This is the concurrency model that Ruby applications traditionally used. It has excellent compatibility (can work with applications that are not designed to be thread-safe) but is unsuitable for workloads in which the application has to wait for a lot of external I/O (e.g. HTTP API calls), and uses more memory because each process has a large memory overhead.
+ * `thread` -- multi-threaded, multi-processed I/O concurrency. Each application process has multiple threads (customizable via [PassengerThreadCount](#passengerthreadcount). This model provides much better I/O concurrency and uses less memory because threads share memory with each other within the same process. However, using this model may cause compatibility problems if the application is not designed to be thread-safe.
+
+<div class="note">
+  <ul>
+    <li>This option only has effect on Ruby applications.</li>
+    <li>Multithreading is not supported for Python.</li>
+    <li>Multithreading is not applicable to Node.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+  </ul>
+</div>
+
+
+### PassengerThreadCount
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerThreadCount <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerThreadCount 1</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+Specifies the number of threads that Passenger should spawn per Ruby application process. This option only has effect if [PassengerConcurrencyModel](#passengerconcurrencymodel) is `thread`.
+
+<div class="note">
+  <ul>
+    <li>This option only has effect on Ruby applications.</li>
+    <li>Multithreading is not supported for Python.</li>
+    <li>Multithreading is not applicable to Node.js and Meteor because they are evented and do not need (and cannot use) multithreading.</li>
+  </ul>
+</div>
+
+
+### PassengerStatThrottleRate
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerStatThrottleRate <em>seconds</em></td>
+  </tr>
+  <tr>
+    <th>Default (as of 5.0.0)</th>
+    <td>PassengerStatThrottleRate 10</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>2.2.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+By default, Passenger performs several filesystem checks (or, in programmers jargon, "`stat()` calls") each time a request is processed:
+
+ * It checks which the application [startup files](<%= url_for "/indepth/app_autodetection/index.html" %>) are present, in order to autodetect the application type.
+ * It checks whether [restart.txt](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>) has changed or whether `always_restart.txt` exists, in order to determine whether the application should be restarted.
+
+On some systems where disk I/O is expensive, e.g. systems where the harddisk is already being heavily loaded, or systems where applications are stored on NFS shares, these filesystem checks can incur a lot of overhead.
+
+You can decrease or almost entirely eliminate this overhead by setting `PassengerStatThrottleRate`. Setting this option to a value of `x` means that the above list of filesystem checks will be performed at most once every `x` seconds. Setting it to a value of '0' means that no throttling will take place, or in other words, that the above list of filesystem checks will be performed on every request.
+
+
+### PassengerPreStart
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerPreStart <em>url</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+By default, Passenger does not start any application processes until said web application is first accessed. The result is that the first visitor of said web application might experience a small delay as Passenger is starting the web application on demand. If that is undesirable, then this option can be used to pre-started application processes during Apache startup.
+
+A few things to be careful of:
+
+ * This option accepts the *URL* of the web application you want to pre-start, not a on/off value! This might seem a bit weird, but read on for rationale. As for the specifics of the URL:
+   - The domain part of the URL must be equal to the value of the `ServerName` option of the VirtualHost block that defines the web application.
+   - Unless the web application is deployed on port 80, the URL should contain the web application's port number too.
+   - The path part of the URL must point to some URI that the web application handles.
+ * You will probably want to combine this option with [PassengerMinInstances](#passengermininstances) because application processes started with `PassengerPreStart` are subject to the usual idle timeout rules. See the example below for an explanation.
+
+<div class="note">
+  This option is currently not available when using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>.
+</div>
+
+#### Example 1: basic usage
+
+Suppose that you have the following web applications.
+
+~~~
+<VirtualHost *:80>
+   ServerName foo.com
+   DocumentRoot /webapps/foo/public
+</VirtualHost>
+
+<VirtualHost *:3500>
+   ServerName bar.com
+   DocumentRoot /webapps/bar/public
+</VirtualHost>
+~~~
+
+You want both of them to be pre-started during Apache startup. The URL for foo.com is `http://foo.com/` (or, equivalently, `http://foo.com:80/`) and the URL for bar.com is `http://bar.com:3500/`. So we add two `PassengerPreStart` options, like this:
+
+~~~
+<VirtualHost *:80>
+   ServerName foo.com
+   DocumentRoot /webapps/foo/public
+</VirtualHost>
+
+<VirtualHost *:3500>
+   ServerName bar.com
+   DocumentRoot /webapps/bar/public
+</VirtualHost>
+
+PassengerPreStart http://foo.com/           # <--- added
+PassengerPreStart http://bar.com:3500/      # <--- added
+~~~
+
+#### Example 2: pre-starting apps that are deployed in sub-URIs
+
+Suppose that you have a web application deployed in a sub-URI `/store`, like this:
+
+~~~
+<VirtualHost *:80>
+   ServerName myblog.com
+   DocumentRoot /webapps/wordpress
+
+   Alias /store /websites/store/public
+    <Location /store>
+        PassengerBaseURI /store
+        PassengerAppRoot /websites/store
+    </Location>
+    <Directory /websites/store/public>
+        Allow from all
+        Options -MultiViews
+        # Uncomment this if you're on Apache >= 2.4:
+        #Require all granted
+    </Directory>
+</VirtualHost>
+~~~
+
+Then specify the domain name of its containing virtual host followed by the sub-URI, like this:
+
+~~~
+<VirtualHost *:80>
+   ServerName myblog.com
+   DocumentRoot /webapps/wordpress
+
+   Alias /store /websites/store/public
+    <Location /store>
+        PassengerBaseURI /store
+        PassengerAppRoot /websites/store
+    </Location>
+    <Directory /websites/store/public>
+        Allow from all
+        Options -MultiViews
+        # Uncomment this if you're on Apache >= 2.4:
+        #Require all granted
+    </Directory>
+</VirtualHost>
+
+PassengerPreStart http://myblog.com/store    # <----- added
+~~~
+
+The sub-URI *must* be included; if you don't then the option will have no effect. The following example is wrong and won't pre-start the store web application:
+
+~~~
+PassengerPreStart http://myblog.com/    # <----- WRONG! Missing "/store" part.
+~~~
+
+#### Example 3: combining with PassengerMinInstances
+
+Application processes started with `PassengerPreStart` are also subject to the idle timeout rules as specified by [PassengerPoolIdleTime](#passengerpoolidletime)! That means that by default, the pre-started application processes for foo.com and bar.com are shut down after a few minutes of inactivity. If you don't want that to happen, then you should combine `PassengerPreStart` with [PassengerMinInstances](#passengermininstances), like this:
+
+~~~
+<VirtualHost *:80>
+   ServerName foo.com
+   DocumentRoot /webapps/foo/public
+   # Added!
+   PassengerMinInstances 1
+</VirtualHost>
+
+<VirtualHost *:3500>
+   ServerName bar.com
+   DocumentRoot /webapps/bar/public
+   # Added!
+   PassengerMinInstances 1
+</VirtualHost>
+
+PassengerPreStart http://foo.com/
+PassengerPreStart http://bar.com:3500/
+~~~
+
+#### So why a URL? Why not just an on/off flag?
+
+An option that accepts a simple on/off flag is definitely more intuitive, but due technical difficulties w.r.t. the way Apache works, it's very hard to implement it like that:
+
+ * It is very hard to obtain a full list of web applications defined in the Apache configuration file(s). In other words, it's hard for Passenger to know which web applications are deployed on Apache until a web application is first accessed, and without such a list Passenger wouldn't know which web applications to pre-start. It's probably not completely impossible to obtain such a list, but this brings us to the following point;
+ * Users expect things like `mod_env` to work even in combination with Passenger. For example some people put `SetEnv PATH ....` in their virtual host block and they expect the web application to pick that environment variable up when it's started. Information like this is stored in module-specific locations that Passenger cannot access directly. Even if the previous bullet point is solved and we can obtain a list of web applications, we cannot start the application with the correct `mod_env` information. `mod_env` is just one such example; there are probably many other Apache modules, all of which people expect to work, but we cannot answer to those expectations if `PassengerPreStart` is implemented as a simple on/off flag.
+
+So as a compromise, we made it accept a URL. This is easier to implement for us and altough it looks weird, it behaves consistently w.r.t. cooperation with other Apache modules.
+
+#### What does Passenger do with the URL?
+
+During Apache startup, Passenger will send a dummy HEAD request to the given URL and discard the result. In other words, Passenger simulates a web access at the given URL. However this simulated request is always sent to localhost, *not* to the IP that the domain resolves to. Suppose that bar.com in example 1 resolves to 209.85.227.99; Passenger will send the following HTTP request to 127.0.0.1 port 3500 (and not to 209.85.227.99 port 3500):
+
+~~~
+HEAD / HTTP/1.1
+Host: bar.com
+Connection: close
+~~~
+
+Similarly, for example 2, Passenger will send the following HTTP request to 127.0.0.1 port 80:
+
+~~~
+HEAD /store HTTP/1.1
+Host: myblog.com
+Connection: close
+~~~
+
+#### Do I need to edit /etc/hosts and point the domain in the URL to 127.0.0.1?
+
+No. See previous subsection.
+
+#### My web application consists of multiple web servers. What URL do I need to specify, and in which web server's Apache config file?
+
+Put the web application's virtual host's `ServerName` value and the virtual host's port in the URL, and put `PassengerPreStart` on all machines that you want to pre-start the web application on. The simulated web request is always sent to 127.0.0.1, with the domain name in the URL as value for the `Host` HTTP header, so you don't need to worry about the request ending up at a different web server in the cluster.
+
+#### Does PassengerPreStart support https:// URLs?
+
+Yes. And it does not perform any certificate validation.
+
+
+### PassengerHighPerformance
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerHighPerformance <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerHighPerformance off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>2.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+By default, Passenger is compatible with `mod_rewrite` and most other Apache modules. However, a lot of effort is required in order to be compatible. If you turn `PassengerHighPerformance` on, then Passenger will be a little faster, in return for reduced compatibility with other Apache modules.
+
+In places where `PassengerHighPerformance` is turned on, `mod_rewrite` rules will likely not work. `mod_autoindex` (the module which displays a directory index) will also not work. Other Apache modules may or may not work, depending on what
+they exactly do. We recommend you to find out how other modules behave in high performance mode via testing.
+
+This option is *not* an all-or-nothing global option: you can enable high performance mode for certain virtual hosts or certain URLs only.
+
+#### When to enable high performance mode?
+
+If you do not use `mod_rewrite` or other Apache modules then it might make sense to enable high performance mode.
+
+It's likely that some of your applications depend on `mod_rewrite` or other Apache modules, while some do not. In that case you can enable high performance for only those applications that don't use other Apache modules. For example:
+
+~~~
+<VirtualHost *:80>
+    ServerName www.foo.com
+    DocumentRoot /apps/foo/public
+    .... mod_rewrite rules or options for other Apache modules here ...
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName www.bar.com
+    DocumentRoot /apps/bar/public
+    PassengerHighPerformance on
+</VirtualHost>
+~~~
+
+In the above example, high performance mode is only enabled for www.bar.com. It is disabled for everything else.
+
+If your application generally depends on `mod_rewrite` or other Apache modules, but a certain URL that's accessed often doesn't depend on those other modules, then you can enable high performance mode for a certain URL only. For example:
+
+~~~
+<VirtualHost *:80>
+    ServerName www.foo.com
+    DocumentRoot /apps/foo/public
+    .... mod_rewrite rules or options for other Apache modules here ...
+
+    <Location /chatroom/ajax_update_poll>
+        PassengerHighPerformance on
+    </Location>
+</VirtualHost>
+~~~
+
+This enables high performance mode for http://www.foo.com/chatroom/ajax_update_poll only.
+
+
+### PassengerResponseBufferHighWatermark
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerResponseBufferHighWatermark <em>bytes</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerResponseBufferHighWatermark 134217728 <em>(128 MB)</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+As explained in [PassengerBufferResponse](#passengerbufferresponse), Passenger has two response buffering mechanisms. This option configures the maximum size of the real-time disk-backed response buffering system. If the buffer is full, the application will be blocked until the client has fully read the buffer.
+
+This buffering system has a default size of *128 MB* (134217728 bytes). This default value is large enough to prevent most applications from blocking on slow clients, but small enough to prevent broken applications from filling up the hard disk.
+
+You can't disable real-time disk-backed response buffering, but you can set the buffer size to a small value, which is effectively the same as disabling it.
+
+Most of the time, you won't need to tweak this value. But there is one good use case where you may want set this option to a low value: if you are streaming a large response, but want to detect client disconnections as soon as possible. If the buffer size is larger than your response size, then Phusion Passenger will read and buffer the response as fast as it can, offloading the application as soon as it can, thereby preventing the application from detecting client disconnects. But if the buffer size is sufficiently small (say, 64 KB), then your application will effectively output response data at the same speed as the client reads it, allowing you to detect client disconnects almost immediately. This is also a down side, because many slow clients blocking your application can result in a denial of service, so use this option with care.
+
+If your application outputs responses larger than 128 MB and you are not interested in detecting client disconnects as soon as possible, then you should raise this value, or set it to 0.
+
+A value of 0 means that the buffer size is unlimited.
+
+
+### PassengerMaxRequestQueueSize
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxRequestQueueSize <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxRequestQueueSize 100</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.15</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum size for that queue. If the queue is already at this specified limit, then Passenger will immediately send a "503 Service Unavailable" error to any incoming requests.
+
+A value of 0 means that the queue is unbounded.
+
+[This article on StackOverflow](http://stackoverflow.com/questions/20402801/what-is-optimal-value-for-phusion-passenger-passengermaxrequestqueuesize) explains how the request queue works, what it means for the queue to grow or become full, why that is bad, and what you can do about it.
+
+You may combine this option with [PassengerErrorOverride](#passengererroroverride) and [ErrorDocument](http://httpd.apache.org/docs/2.4/mod/core.html#errordocument) to set a custom error page whenever the queue is full. In the following example, Apache will serve /error503.html whenever the queue is full:
+
+~~~
+PassengerErrorOverride on
+ErrorDocument 503 /error503.html
+~~~
+
+
+### PassengerMaxRequestQueueTime
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxRequestQueueTime <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxRequestQueueTime 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.12</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+When all application processes are already handling their maximum number of concurrent requests, Passenger will queue all incoming requests. This option specifies the maximum time a request may spend in that queue. If a request in the queue reaches this specified limit, then Passenger will send a "504 Gateway Timeout" error for that request. For performance reasons it might take up to 0.5 × `PassengerMaxRequestQueueTime` after a request timed out before a 504 response is sent (when all application processes are stuck).
+
+A value of 0 means that the queue time is unbounded.
+
+[This blog article](https://blog.phusion.nl/2017/12/14/how-waiting-in-line-got-nicer/) explains how to use this option to optimize the user experience during rush hour, when queueing starts happening.
+
+You may combine this option with [PassengerErrorOverride](#passengererroroverride) and [ErrorDocument](http://httpd.apache.org/docs/2.4/mod/core.html#errordocument) to set a custom error page whenever a request in the queue times out. In the following example, Apache will serve /error504.html whenever the queue is full:
+
+~~~
+PassengerErrorOverride on
+ErrorDocument 504 /error504.html
+~~~
+
+### PassengerSocketBacklog
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerSocketBacklog <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>
+      PassengerSocketBacklog 1024 (&lt; 5.0.25)<br>
+      PassengerSocketBacklog 2048 (&gt;= 5.0.26)
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.24</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The socket backlog is a queue of incoming connections (from Apache) not yet acknowledged by Passenger. This option can be raised if Apache manages to overflow the backlog queue, for example because Passenger is receiving insufficient server resources to accept connections into its internal queue.
+
+
+## Security
+
+### PassengerUserSwitching
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerUserSwitching <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerUserSwitching on</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+Whether to attempt to enable [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>), also known as user switching.
+
+<div class="note">
+  This option has no effect when you are using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
+</div>
+
+<div class="warning">
+  If you're on Red Hat or CentOS, be sure to read <a href="<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#red-hat-and-centos-caveats">the Red Hat and CentOS user account sandboxing caveats</a>.
+</div>
+
+
+### PassengerUser
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerUser <em>username</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See the <a href="<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>">user account sandboxing rules</a></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory</td>
+  </tr>
+</table>
+
+If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the owner of the application's startup file](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#how-it-works). `PassengerUser` allows you to override that behavior and explicitly set a user to run the web application as, regardless of the ownership of the startup file.
+
+
+### PassengerGroup
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerGroup <em>groupname</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See the <a href="<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>">user account sandboxing rules</a></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory</td>
+  </tr>
+</table>
+
+If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the primary group of the owner of the application's startup file](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#how-it-works). `PassengetGroup` allows you to override that behavior and explicitly set a group to run the web application as, regardless of the ownership of the startup file.
+
+The value may also be set to the special value `!STARTUP_FILE!`, in which case the web application's group will be set to the startup file's group.
+
+
+### PassengerDefaultUser
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDefaultUser <em>username</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerDefaultUser <em>nobody</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+Passenger enables [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) by default. This configuration option allows you to specify the user that applications must
+run as, if user switching fails or is disabled.
+
+<div class="note">
+  This option has no effect when you are using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
+</div>
+
+
+### PassengerDefaultGroup
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDefaultGroup <em>username</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+Passenger enables [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) by default. This configuration option allows you to specify the group that applications must
+run as, if user switching fails or is disabled.
+
+The default value is the primary group of the user specifified by [PassengerDefaultUser](#passengerdefaultuser). So the default value on most systems is `nobody` or `nogroup`.
+
+<div class="note">
+  This option has no effect when you are using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
+</div>
+
+
+### PassengerShowVersionInHeader
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerShowVersionInHeader <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerShowVersionInHeader on</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>server config</td>
+  </tr>
+</table>
+
+When turned on, Passenger will output its version number in the `X-Powered-By` header in all Passenger-served requests:
+
+~~~
+X-Powered-By: Phusion Passenger 5.0.13
+~~~
+
+When turned off, the version number will be hidden:
+
+~~~
+X-Powered-By: Phusion Passenger
+~~~
+
+<div class="note">
+  This option has no effect on the <code>Server</code> header. You can control the content of that header with Apache's <code>ServerTokens</code> option.
+</div>
+
+### PassengerFriendlyErrorPages
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerFriendlyErrorPages <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default (as of 5.0.28)</th>
+    <td>
+      <p>
+        <em>When <a href="#passengerappenv">PassengerAppEnv</a> is <code>development</code>:</em><br>
+        PassengerFriendlyErrorPages on
+      </p>
+      <p>
+        <em>Otherwise:</em><br>
+        PassengerFriendlyErrorPages off
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.42</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+Passenger can display friendly error pages whenever an application fails to start. This friendly error page presents the startup error message, some suggestions for solving the problem, a backtrace and a dump of the environment variables.
+
+This feature is very useful during application development and useful for less experienced system administrators, but the page might reveal potentially sensitive information, depending on the application. For this reason, friendly error pages are disabled by default, unless [PassengerAppEnv](#passengerappenv) (or its aliases such as `RailsEnv` and `RackEnv`) is set to `development`. You can use this option to explicitly enable or disable this feature.
+
+
+### PassengerDisableSecurityUpdateCheck
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDisableSecurityUpdateCheck <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>
+      PassengerDisableSecurityUpdateCheck off
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for
+important security updates that might be available.
+
+
+### PassengerSecurityUpdateCheckProxy
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerSecurityUpdateCheckProxy <em>scheme://user:password@proxy_host:proxy_port</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.1.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>).
+The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
+<em>http, socks5, socks5h, socks4, socks4a</em>
+
+
+### PassengerDataBufferDir
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDataBufferDir <em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>See description</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+By default, Passenger buffers the following things to disk:
+
+ * Large HTTP client request bodies. This prevents [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) from blocking web applications by sending request bodies very slowly. Read [PassengerBufferUpload](#passengerbufferupload) to learn more.
+ * Large web application responses. This prevents slow HTTP clients from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
+
+By default, such buffers are stored in the directory given by the `$TMPDIR` environment variable, or (if `$TMPDIR` is not set) the `/tmp` directory. This configuration directive allows you to specify a different directory.
+
+Changing this option is especially useful in the following cases:
+
+ * If Apache is not allowed to write to the system's temporary directory. This is the case on some systems with strict SELinux policies.
+ * If the partition that the default directory lives on doesn't have enough disk space.
+
+If you've specified such a directory (as opposed to using Passenger's default) then you **must** ensure that this directory exists.
+
+You can disable client request body buffering by turning [PassengerBufferUpload](#passengerbufferupload) off. It is not possible to turn off real-time disk-backed response buffering.
+
+This option may be specified once, in the global server configuration.
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--data-buffer-dir")) %>
+
+
+### PassengerBufferUpload
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerBufferUpload <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerBufferUpload on</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.26</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+When turned on, HTTP client request bodies [will be buffered](#passengerdatabufferdir) before they are sent to the application. This buffering protects the application from [slow clients](<%= url_for "/indepth/slow_clients.html" %>), but also prevents the ability to track upload progress.
+
+If you want to allow your application to track upload progress, it is recommended that you disable upload buffering for specific URIs only. For example:
+
+~~~
+# Disable upload buffering for /upload_video only.
+<Location /upload_video>
+    PassengerBufferUpload off
+</Location>
+~~~
+
+### PassengerBufferResponse
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerBufferResponse <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerBufferResponse off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+When turned on, application-generated responses are buffered by Apache. Buffering will happen in memory.
+
+Before we proceed with explaining this configuration option, we want to state the following to avoid confusion. If you use  Passenger for Apache, there are in fact two response buffering systems active:
+
+ 1. The Apache response buffering system. `PassengerBufferResponse` turns this on or off.
+ 2. The Passenger response buffering system, a.k.a. "real-time disk-backed response buffering". This buffering system is always on, regardless of the value of `PassengerBufferResponse`, but its behavior can be tweaked with [PassengerResponseBufferHighWatermark](#passengerresponsebufferhighwatermark).
+
+Response buffering is useful because it protects against [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) that do not read responses immediately or quickly enough. Buffering prevents such slow clients from blocking web applications that have limited concurrency. Because Passenger's response buffering is always turned on, you are always protected. Therefore, `PassengerBufferResponse` is off by default, and you never should have to turn it on.
+
+If for whatever reason you want to turn Apache-level response buffering on, you can do so with this option.
+
+Apache's response buffering works differently from Passenger's. Apache's buffering system buffers the entire response before attempting to send it to the client, while Passenger's attempts to send the data to the client immediately. Therefore, if you turn on `PassengerBufferResponse`, you may interfere with applications that want to stream responses to the client.
+Apache's version also buffers to memory only, making it problematic for large responses. Passenger's version buffers to disk when the response exceeds a certain threshold.
+
+So keep in mind that enabling `PassengerBufferResponse` will make streaming responses impossible. Consider for example this piece of Ruby on Rails code:
+
+~~~ruby
+render :text => lambda { |response, output|
+  10.times do |i|
+    output.write("entry #{i}\n")
+    output.flush
+    sleep 1
+  end
+}
+~~~
+
+...or this piece of Ruby Rack code:
+
+~~~ruby
+class Response
+  def each
+    10.times do |i|
+      yield("entry #{i}\n")
+      sleep 1
+    end
+  end
+end
+
+app = lambda do |env|
+  [200, { "Content-Type" => "text/plain" }, Response.new]
+end
+~~~
+
+When `PassengerBufferResponse` is turned on, Apache will wait until the application is done sending the entire response before forwarding it to the client. The client will not receive anything for 10 seconds, after which it receives the entire response at once. When `PassengerBufferResponse` is turned off, it works as expected: the client receives an "entry X" message every second for 10 seconds.
+
+### PassengerAllowEncodedSlashes
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAllowEncodedSlashes <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerAllowEncodedSlashes off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+By default, Apache doesn't support URLs with encoded slashes (%2f), e.g. URLs like this: `/users/fujikura%2fyuu`. If you access such an URL then Apache will return a 404 Not Found error. This can be solved by turning on `PassengerAllowEncodedSlashes` as well as Apache's [AllowEncodedSlashes](http://httpd.apache.org/docs/2.4/mod/core.html#allowencodedslashes).
+
+Is it important that you turn on both `AllowEncodedSlashes` *and* `PassengerAllowEncodedSlashes`, otherwise this feature will not work properly.
+
+Please note however that turning on support for encoded slashes will break support for `mod_rewrite` passthrough rules. Because of bugs/limitations in Apache, Passenger can support either encoded slashes or `mod_rewrite` passthrough rules, but not both at the same time. Luckily this option can be specified anywhere, so you can enable it only for virtual hosts or URLs that need it:
+
+<div>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.example.com
+    DocumentRoot /webapps/example/public
+    AllowEncodedSlashes on
+    RewriteEngine on
+
+    <span class="c"># Check for maintenance file and redirect all requests</span>
+    RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+    RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+    RewriteRule ^.*$ /system/maintenance.html [L]
+
+    <span class="c"># Make /about an alias for /info/about.</span>
+    RewriteRule ^/about$ /info/about [PT,L]
+
+    &lt;Location ~ "^/users/"&gt;
+        <span class="c"># In a location block so that it doesn't interfere with the
+        # above /about mod_rewrite rule.</span>
+        PassengerAllowEncodedSlashes on
+    &lt;/Location&gt;
+&lt;/VirtualHost&gt;</pre>
+</div>
+
+With this, `http://www.example.com/users/fujikura%2fyuu` will work properly, and accessing `http://www.example.com/about` will properly display the result of `http://www.example.com/info/about`. Notice that `PassengerAllowEncodedSlashes` only interferes with passthrough rules, not with any other `mod_rewrite` rules. The rules for displaying maintenance.html will work fine even for URLs starting with "/users".
+
+### PassengerLveMinUid
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerLveMinUid <em>number</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerLveMinUid 500</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.28</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host</td>
+  </tr>
+</table>
+
+When using Passenger on a LVE-enabled kernel, a security check (enter) is run for spawning application processes. This options tells the check to only allow
+processes with UIDs equal to, or higher than, the specified value.
+
+
+## Request / response customization
+
+### PassengerBaseURI
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerBaseURI <em>uri</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+</table>
+
+<!-- TODO: write guide for sub-URI deployments -->
+Used to specify that the given URI is an distinct application that should be served by Passenger. Please see [the deployment guide](<%= url_for "/deploy/apache/index.html" %>) for more information.
+
+
+### PassengerErrorOverride
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerErrorOverride <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerErrorOverride off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.24</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+Decides whether Apache will intercept and handle responses with HTTP status codes of 400 and higher. This option is useful where you want to have a common look and feel on the error pages seen by the end user. This also allows for included files (via `mod_include`'s SSI) to get the error code and act accordingly (default behavior would display the error page of the proxied server, turning this on shows the SSI Error message).
+
+This option does not affect the processing of informational (1xx), normal success (2xx), or redirect (3xx) responses.
+
+By default, all responses are sent as-is from the application or from the Passenger core. If you turn this option on then Apache will be able to handle such responses using the Apache [ErrorDocument](http://httpd.apache.org/docs/2.4/mod/core.html#errordocument) option.
+
+### PassengerStickySessions
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerStickySessions <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerStickySessions off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.45</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+When sticky sessions are enabled, all requests that a client sends will be routed to the same originating application process, whenever possible. When sticky sessions are disabled, requests may be distributed over multiple processes, and may not necessarily be routed to the originating process, in order to balance traffic over multiple CPU cores. Because of this, sticky sessions should only be enabled in specific circumstances.
+
+For applications that store important state inside the process's own memory -- that is, as opposed to storing state in a distributed data store, such as the database or Redis -- sticky sessions *should* be enabled. This is because otherwise, some requests could be routed to a different process, which stores different state data. Because processes don't share memory with each other, there's no way for one process to know about the state in another process, and then things can go wrong.
+
+One prominent example is the popular [SockJS library](http://sockjs.org/), which is capable of emulating WebSockets through long polling. This is implemented through two HTTP endpoints, `/SESSION_ID/xhr_stream` (a long polling end point which sends data from the server to the client), and `/SESSION_ID/xhr_send` (a normal POST endpoint which is used for sending data from the client to the server). SockJS correlates the two requests with each other through a session identifier. At the same time, in its default configuration, it stores all known session identifiers in an in-memory data structure. It is therefore important that a particular `/SESSION_ID/xhr_send` request is sent to the same process where the corresponding `/SESSION_ID/xhr_stream` request originates from; otherwise, SockJS cannot correlate the two requests, and an error occurs.
+
+So prominent examples where sticky sessions should (or even *must*) be enabled, include:
+
+ * Applications that use the SockJS library (unless configured with a distributed data store)
+ * Applications that use the Socket.io library (unless configured with a distributed data store)
+ * Applications that use the faye-websocket gem (unless configured with a distributed data store)
+ * Meteor JS applications (because Meteor uses SockJS)
+
+Sticky sessions work through the use of a special cookie, whose name can be customized with [PassengerStickySessionsCookieName](#passengerstickysessionscookiename). Passenger puts an identifier in this cookie, which tells Passenger what the originating process is. Next time the client sends a request, Passenger reads this cookie and uses the value in the cookie to route the request back to the originating process. If the originating process no longer exists (e.g. because it has crashed or restarted) then Passenger will route the request to some other process, and reset the cookie.
+
+If you have a load balancer in front end of Passenger + Apache, then you must configure sticky sessions on that load balancer too. Otherwise, the load balancer could route the request to a different server.
+
+
+### PassengerStickySessionsCookieName
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerStickySessionsCookieName <em>name</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerStickySessionsCookieName _passenger_route</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>4.0.45</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+Sets the name of the [sticky sessions](#passengerstickysessions) cookie.
+
+
+## Logging & troubleshooting
+
+### PassengerLogLevel
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerLogLevel <em>number</em></td>
+  </tr>
+  <tr>
+    <th>Default (as of 5.0.0)</th>
+    <td>PassengerLogLevel 3</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+This option allows one to specify how much information Passenger should log to its log file. A higher log level value means that more information will be logged.
+
+Possible values are:
+
+ * `0` (crit): Show only critical errors which would cause Passenger to abort.
+ * `1` (error): Also show non-critical errors -- errors that do not cause Passenger to abort.
+ * `2` (warn): Also show warnings. These are not errors, and Passenger continues to operate correctly, but they might be an indication that something is wrong with the system.
+ * `3` (notice): Also show important informational messages. These give you a high-level overview of what Passenger is doing.
+ * `4` (info): Also show less important informational messages. These messages show more details about what Passenger is doing. They're high-level enough to be readable by users.
+ * `5` (debug): Also show the most important debugging information. Reading this information requires some system or programming knowledge, but the information shown is typically high-level enough to be understood by experienced system administrators.
+ * `6` (debug2): Show more debugging information. This is typically only useful for developers.
+ * `7` (debug3): Show even more debugging information.
+
+
+### PassengerLogFile
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerLogFile <em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerLogFile <em>path-to-apache-global-error-log</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.5</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+By default Passenger log messages are written to the Apache global error log. With this option, you can have those messages logged to a different file instead.
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--log-file")) %>
+
+
+### PassengerAppLogFile
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAppLogFile <em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerAppLogFile <em>path-to-passenger-log-file</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.3.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>virtual host</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+By default Passenger log messages are all written to the Passenger log file. With this option, you can have the app specific messages logged to a different file in addition.
+
+
+### PassengerFileDescriptorLogFile
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerFileDescriptorLogFile <em>filename</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerFileDescriptorLogFile <em>path-to-apache-global-error-log</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.5</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+Log file descriptor debug tracing messages to the given file.
+
+Passenger has the ability to log all file descriptors that it opens and closes. These logs are useful to the Passenger developers for the purpose of analyzing file descriptor leaks.
+
+File descriptor activity is logged as follows:
+
+ * If `PassengerFileDescriptorLogFile` is not set, then file descriptor activity is logged to the [main log file](#passengerlogfile), but only if the [log level](#passengerloglevel) is 5 (debug) or higher.
+ * If `PassengerFileDescriptorLogFile` is set, then file descriptor activity is logged to the specified file, regardless of the log level.
+
+<%= render_partial("/config/reference/alternative_for_flying_passenger", locals: locals.merge(option: "--file-descriptor-log-file")) %>
+
+
+### PassengerDebugger
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDebugger <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerDebugger off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Options</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/admin/#{integration_mode_type}/debugging_console/ruby/index.html" %>) guide for more information.
+
+
+### PassengerAdminPanelUrl
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAdminPanelUrl <em>uri</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.2.2</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The URI to connect to the <a href="https://www.phusionpassenger.com/fuse-panel">Fuse Panel</a> with. Information is sent to enable monitoring, administering, analysis and troubleshooting of this Passenger instance and apps running on it. The feature is disabled if this option is not specified. See \"Connect Passengers\" in the Fuse Panel for further instructions.
+
+
+### PassengerAdminPanelAuthType
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAdminPanelAuthType <em>type</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerAdminPanelAuthType basic</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.2.2</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The authentication method Passenger should use when connecting to the Fuse Panel. Currently only basic authentication is supported. See \"Connect Passengers\" in the Fuse Panel for further instructions.
+
+
+### PassengerAdminPanelUsername
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAdminPanelUsername <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.2.2</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The username that Passenger should use when connecting to the Fuse Panel with basic authentication. See \"Connect Passengers\" in the Fuse Panel for further instructions.
+
+
+### PassengerAdminPanelPassword
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAdminPanelPassword <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.2.2</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The password that Passenger should use when connecting to the Fuse Panel with basic authentication. See \"Connect Passengers\" in the Fuse Panel for further instructions.
+
+
+### PassengerDumpConfigManifest
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDumpConfigManifest <em>filename</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerDebugger off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.2.2</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+If specified, Passenger will dump a representation of its own configuration to the given file, in JSON format. This option is usually only interesting to Passenger developers for the purpose of developing configuration-related features.
+
+### PassengerMaxRequests
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxRequests <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxRequests 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+</table>
+
+The maximum number of requests an application process will process. After serving that many requests, the application process will be shut down and Passenger will restart it. A value of 0 means that there is no maximum. The application process might also be shut down if its [idle timeout](#passengerpoolidletime) is reached.
+
+This option is useful if your application is leaking memory. By shutting it down after a certain number of requests, all of its memory is guaranteed to be freed by the operating system. An alternative (and better) mechanism for dealing with memory leaks is [PassengerMemoryLimit](#passengermemorylimit).
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
+</div>
+
+
+### PassengerMaxRequestTime
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMaxRequestTime <em>seconds</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMaxRequestTime 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+The maximum amount of time, in seconds, that an application process may take to process a request. If the request takes longer than this amount of time, then the application process will be forcefully shut down, and possibly restarted upon the next request. A value of 0 means that there is no time limit.
+
+This option is useful for preventing your application from getting stuck for an indefinite period of time.
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid stuck applications.
+</div>
+
+#### Example
+
+Suppose that most of your requests are known to finish within 2 seconds. However, there is one URI, `/expensive_computation`, which is known to take up to 10 seconds. You can then configure Passenger as follows:
+
+~~~
+<VirtualHost *:80>
+    ServerName www.example.com
+    DocumentRoot /webapps/my_app/public
+
+    PassengerMaxRequestTime 2
+    <Location /expensive_computation>
+        PassengerMaxRequestTime 10
+    </Location>
+</VirtualHost>
+~~~
+
+If a request to '/expensive_computation' takes more than 10 seconds, or if a request to any other URI takes more than 2 seconds, then the corresponding application process will be forced to shutdown.
+
+
+### PassengerMemoryLimit
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerMemoryLimit <em>megabytes</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerMemoryLimit 0</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Override">Override</a></th>
+    <td>Limits</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+The maximum amount of memory that an application process may use, in megabytes. Once an application process has surpassed its memory limit, Passenger allow it to finish processing all of its current requests, then shut the process down. A value of 0 means that there is no maximum: the application's memory usage will not be checked.
+
+This option is useful if your application is leaking memory. By shutting it down, all of its memory is guaranteed to be freed by the operating system.
+
+<div class="info">
+  <h3 class="notoc">A word about permissions</h3>
+  <p>
+    This option uses the <code>ps</code> command to query memory usage information. On Linux, it further queries <code>/proc</code> to obtain additional memory usage information that's not obtainable through <code>ps</code>. You should ensure that the <code>ps</code> works correctly and that the <code>/proc</code> filesystem is accessible by the <code>Passenger core</code> process.
+  </p>
+</div>
+
+<div class="note">
+  This option should be considered as a workaround for misbehaving applications. It is advised that you fix the problem in your application rather than relying on this option as a measure to avoid memory leaks.
+</div>
+
+
+
+## Deprecated or removed options
+
+The following options have been deprecated or removed. Some are still supported for backwards compatibility reasons.
+
+### RailsRuby
+
+Deprecated in 3.0.0 in favor of [PassengerRuby](#passengerruby).
+
+### RailsBaseURI, RackBaseURI
+
+Deprecated in 3.0.0 in favor of [PassengerBaseURI](#passengerbaseuri).
+
+### RailsUserSwitching
+
+Deprecated in 3.0.0 in favor of [PassengerUserSwitching](#passengeruserswitching).
+
+### RailsDefaultUser
+
+Deprecated in 3.0.0 in favor of [PassengerDefaultUser](#passengerdefaultuser).
+
+### RailsAllowModRewrite
+
+This option doesn't do anything anymore in since version 4.0.0.
+
+### RailsSpawnMethod
+
+Deprecated in 3.0.0 in favor of [PassengerSpawnMethod](#passengerspawnmethod).
+
+### RailsAutoDetect, RackAutoDetect and WsgiAutoDetect
+
+These options have been removed in version 4.0.0 as part of an optimization. You should use [PassengerEnabled](#passengerenabled) instead.
+
+### RailsAppSpawnerIdleTime
+
+This option has been removed in version 4.0.0, and replaced with [PassengerMaxPreloaderIdleTime](#passengermaxpreloaderidletime).
+
+### RailsFrameworkSpawnerIdleTime
+
+This option is no longer available in version 4.0.0. There is no alternative because framework spawning has been removed altogether. You should use smart spawning instead.
+
+### PassengerDebugLogFile
+
+This option has been renamed in version 5.0.5 to [PassengerLogFile](#passengerlogfile).
+
+### PassengerResolveSymlinksInDocumentRoot
+
+This option is no longer available in version 5.2.0. Switch to PassengerAppRoot if you are setting the application root via a document root containing symlinks.

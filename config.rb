@@ -159,6 +159,10 @@ ignore "/install/migrating/migrating_from_p4_to_p5.html"
 INTEGRATION_MODES.each do |integration_mode_spec|
   integration_mode_type = integration_mode_spec[:integration_mode_type]
 
+  # proxy "/references/config_reference/#{integration_mode_type}/index.html",
+  #   "/references/config_reference/index.html",
+  #   locals: integration_mode_spec
+
   proxy "/config/#{integration_mode_type}/index.html",
     "/config/index2.html",
     locals: integration_mode_spec

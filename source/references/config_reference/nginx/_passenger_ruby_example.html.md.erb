@@ -1,0 +1,49 @@
+~~~nginx
+http {
+    passenger_root ...;
+
+    # Use Ruby 2.1 by default.
+    passenger_ruby /usr/bin/ruby2.1;
+    # Use Python 2.6 by default.
+    passenger_python /usr/bin/python2.6;
+    # Use /usr/bin/node by default.
+    passenger_nodejs /usr/bin/node;
+
+    server {
+        # This Rails web app will use Ruby 2.1
+        listen 80;
+        server_name www.foo.com;
+        root /webapps/foo/public;
+    }
+
+    server {
+        # This Rails web app will use Ruby 2.2.1, as installed by RVM
+        passenger_ruby /usr/local/rvm/wrappers/ruby-2.2.1/ruby;
+
+        listen 80;
+        server_name www.bar.com;
+        root /webapps/bar/public;
+
+        # If you have a web app deployed in a sub-URI, customize
+        # passenger_ruby/passenger_python inside a `location` block.
+        # The web app under www.bar.com/blog will use JRuby 1.7.1
+        location ~ ^/blog(/.*|$) {
+            alias /websites/blog/public$1;
+            passenger_base_uri /blog;
+            passenger_app_root /websites/blog;
+            passenger_document_root /websites/blog/public;
+            passenger_enabled on;
+            passenger_ruby /usr/local/rvm/wrappers/jruby-1.7.1/ruby;
+        }
+    }
+
+    server {
+        # This Flask web app will use Python 3.0
+        passenger_python /usr/bin/python3.0;
+
+        listen 80;
+        server_name www.baz.com;
+        root /webapps/baz/public;
+    }
+}
+~~~
