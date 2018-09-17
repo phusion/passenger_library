@@ -1,5 +1,5 @@
 #right-content-toc {
-  margin: 10px 0 25px 50px;
+  margin: 35px 0 25px 50px;
   padding-left: 0;
   top: 50px;
   position: fixed;
@@ -10,11 +10,13 @@
 
 #right-content-toc ol {
   font-size: 14px;
+  margin-top: 0;
 }
 
 #right-content-toc p {
   font-weight: 800;
   margin-bottom: 10px;
+  font-size: 14px;
 }
 
 #right-content-toc li {

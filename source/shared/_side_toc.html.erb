@@ -1,0 +1,16 @@
+<div id="right-content-toc">
+  <p>Table of contents</p>
+  <ol id="table-of-contents" class="toc-container"></ol>
+  <img src="<%= url_for "/images/feedback_placeholder.svg" %>" alt="feedback"/>
+  <a href="#" class="light-button">Up</a>
+</div>
+
+<script>
+  var upBtn = document.querySelector('#right-content-doc a');
+
+  function handleClick() {
+    window.scrollTo(0, 0);
+  }
+
+  upBtn.addEventListener('click', handleClick);
+</script>
