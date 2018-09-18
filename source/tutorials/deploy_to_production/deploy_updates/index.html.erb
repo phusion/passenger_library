@@ -1,0 +1,215 @@
+---
+title: Deploying to Production - Deploying application updates
+section: deploy_walkthrough
+comments: false
+---
+
+<div class="radio-choices hidden">
+  <input value="os" data-label="Edition">
+  <input value="enterprise" data-label="Edition">
+  <input value="aws" data-label="Platform">
+  <input value="digital_ocean" data-label="Platform">
+  <input value="cloud66" data-label="Platform">
+  <input value="heroku" data-label="Platform">
+  <input value="ownserver" data-label="Platform">
+</div>
+
+<h1>Deploying application updates</h1>
+
+<p>In the <a href="deploy_app_main.html">previous step</a>, you deployed an application to your production server for the first time. But what do you do when you have updated your app, and need to deploy updates? You will learn that on this page.</p>
+
+<h2><%= render_partial("./step") %> Transferring latest code</h2>
+
+<div data-meteor_only>
+
+  <h3><%= render_partial("./step") %>.<%= render_partial("./substep") %> Build and upload new package</h3>
+
+  <p>
+    In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker.html") %>
+  </p>
+  <p>
+    Inside your application's code directory, on your local computer, use the <code class="meteor v13">meteor bundle</code><code class="meteor v14 v16">meteor build</code> command to create a Meteor package tarball of the latest application code.
+  </p>
+
+  <pre class="highlight meteor v13"><span class="prompt">local-computer$ </span>meteor bundle package.tar.gz</pre>
+  <pre class="highlight meteor v14 v16"><span class="prompt">local-computer$ </span>meteor build --server-only ../new_package && mv ../new_package/*.tar.gz ./package.tar.gz</pre>
+
+
+  <p>
+    Copy the package to your production server, for example using <code>scp</code>:
+  </p>
+
+  <div>
+    <div data-aws_only >
+      <pre class="highlight"><span class="prompt">local-computer$ </span>scp -i <span class="o">your_ec2_key.pem</span> package.tar.gz <span class="o">myappuser</span>@yourserver.com:</pre>
+    </div>
+    <div data-heroku_only data-ownserver_only data-cloud66_only data-digital_ocean_only>
+      <pre class="highlight"><span class="prompt">local-computer$ </span>scp package.tar.gz <span class="o">myappuser</span>@yourserver.com:</pre>
+    </div>
+  </div>
+
+  <p>
+    Replace <code>myappuser</code> with name of the application's OS user account.
+  </p>
+</div>
+
+
+<h3><%= render_partial("./step") %>.<%= render_partial("./substep") %> Login to the server as the application's user</h3>
+
+<div data-cloud66_only >
+  <p>On Cloud 66, the firewall is closed by default for your security. To ssh into your server, you must first open a temporary connection:</p>
+  <figure>
+    <img src="<%= url_for '/walkthroughs/deploy/cloud66_temp_ssh.png' %>" width="400" class="img-thumbnail">
+    <figcaption>Temporary SSH connection</figcaption>
+  </figure>
+</div>
+<p>Login to your server with SSH:</p>
+
+<div data-aws_only >
+  <pre class="highlight"><span class="prompt">local-computer$ </span>ssh -i <span class="o">your_ec2_key.pem</span> <span class="o">myappuser</span>@yourserver.com</pre>
+</div>
+<div data-heroku_only data-ownserver_only data-cloud66_only data-digital_ocean_only>
+  <pre class="highlight"><span class="prompt">local-computer$ </span>ssh <span class="o">myappuser</span>@yourserver.com</pre>
+</div>
+
+<p>
+  Replace <code>myappuser</code> with name of the application's OS user account.
+</p>
+
+<div class="alert alert-info">Starting from this point, unless stated otherwise, all commands that we instruct you to run should be run on the server, not on your local computer!</div>
+
+<div data-meteor_only>
+
+  <h3><%= render_partial("./step") %>.<%= render_partial("./substep") %> Extract package</h3>
+
+  <p>
+    Extract the package to a temporary location, for example <code>/var/www/yourapp/tmp</code>.
+  </p>
+
+  <pre class="highlight"><span class="prompt">$ </span>mkdir -p /var/www/<span class="o">myapp</span>/tmp
+<span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/tmp
+<span class="prompt">$ </span>tar xzf ~/package.tar.gz</pre>
+
+  <p>
+    Replace <code>myapp</code> and <code>myappuser</code> with your app's name and your app user account's name.
+  </p>
+
+  <p>
+    The extracted package is now located in <code>/var/www/myapp/tmp/bundle</code>.
+  </p>
+
+  <div data-standalone_only >
+
+    <h3><%= render_partial("./step") %>.<%= render_partial("./substep") %> Copy over Passengerfile.json</h3>
+
+    <p>
+      The Passengerfile.json that you created for the app is not inside the extracted package, so copy it over.
+    </p>
+    <pre class="highlight"><span class="prompt">$ </span>cp /var/www/<span class="o">myapp</span>/bundle/Passengerfile.json /var/www/<span class="o">myapp</span>/tmp/bundle/</pre>
+  </div>
+</div>
+<div data-ruby_only data-node_only data-python_only>
+  <h3><%= render_partial("./step") %>.<%= render_partial("./substep") %> Pull latest code from Git</h3>
+
+  <p>
+    Go to your application's code directory on the server, then use Git to pull the latest code:
+  </p>
+
+  <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
+    <span class="prompt">$ </span>git pull</pre>
+</div>
+
+<h2><%= render_partial("./step") %> Prepare application</h2>
+
+<div data-ruby_only>
+
+  <h3><%= render_partial("./step") %>.<%= render_partial("./substep") %> Switch to the appropriate Ruby interpreter</h3>
+
+  <p>
+    If you have multiple Ruby interpreters on your system, then you must ensure that your shell has activated the same Ruby interpreter that you used when you first deployed your app.
+  </p>
+  <p>
+    For example, if you are using RVM to manage Ruby interpreters, run the following (assuming your app is supposed to use Ruby <%= LATEST_RUBY_VERSION %>).
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span>rvm use ruby-<%= LATEST_RUBY_VERSION %></pre>
+</div>
+
+
+<h3><%= render_partial("./step") %>.<%= render_partial("./substep") %> Install app dependencies</h3>
+
+<div data-ruby_only>
+  <p>
+    Your application's gem dependencies may have changed, so we should install any updated gem dependencies. Run:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span>bundle install --deployment --without development test</pre>
+</div>
+<div data-node_only>
+  <p>
+    Your application's npm dependencies may have changed, so we should install any updated npm dependencies while removing any now-extraneous dependencies. Run:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span>npm install --production
+    <span class="prompt">$ </span>npm prune --production</pre>
+</div>
+<div data-meteor_only>
+    <p>
+      Your application's npm dependencies may have changed, so we should install any updated npm dependencies while removing any now-extraneous dependencies. Run:
+    </p>
+    <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/tmp/bundle/programs/server
+<span class="prompt">$ </span>npm install --production
+<span class="prompt">$ </span>npm prune --production</pre>
+</div>
+<div data-python_only data-meteor_only data-node_only>
+      <p>
+        Your application's dependencies may have changed. Please install them now. How to do that depends on your application, so any instructions are outside the scope of this document.
+      </p>
+</div>
+
+<div data-ruby_only>
+
+  <h3><%= render_partial("./step") %>.<%= render_partial("./substep") %> Compile Rails assets and run database migrations</h3>
+
+  <p>
+    If your app is a Rails app, then you need to compile the latest Rails assets and run any database migrations. If your app is not a Rails app, please skip to the next step.
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span>bundle exec rake assets:precompile db:migrate RAILS_ENV=production</pre>
+</div>
+
+
+<div data-meteor_only>
+
+  <h2><%= render_partial("./step") %> Activate application updates</h2>
+
+  <p>
+    Passenger may still be serving an old instance of your application. Now that all application updates have been prepared, it is time to activate the newly uploaded application package.
+  </p>
+
+  <p>
+    Rename the old application directory to something different, and move the new application directory to where the old application directory was:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span>mv /var/www/<span class="o">myapp</span>/bundle /var/www/<span class="o">myapp</span>/bundle.old
+<span class="prompt">$ </span>mv /var/www/<span class="o">myapp</span>/tmp/bundle /var/www/<span class="o">myapp</span>/bundle</pre>
+
+  <p>
+    Tell Passenger to restart the application so that the updates take effect.
+  </p>
+
+  <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config restart-app /var/www/<span class="o">myapp</span>/bundle</pre>
+
+  <p>
+    Wait a few seconds (for Passenger to do its job), then remove the old application directory:
+  </p>
+
+  <pre class="highlight"><span class="prompt">$ </span>rm -rf /var/www/<span class="o">myapp</span>/bundle.old</pre>
+</div>
+<div data-ruby_only data-node_only data-python_only>
+  <h2><%= render_partial("./step") %> Restart application</h2>
+  <p>
+    Passenger may still be serving an old instance of your application. Now that all application updates have been prepared, tell Passenger to restart your application so that the updates take effect.
+  </p>
+
+  <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config restart-app $(pwd)</pre>
+</div>
+
+<div id="next-step" class="hidden">
+  <a href=""></a>
+</div>

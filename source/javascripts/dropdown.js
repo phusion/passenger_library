@@ -13,7 +13,7 @@ function makeDropdown(dropdown_type, dropdown_items) {
       }
 
       // change logo if this's value doesn't change the content
-      self.style.backgroundImage = `url("../../../images/${value}.svg")`;
+      self.style.backgroundImage = `url("/images/${value}.svg")`;
 
       array.forEach(needle => {
         document.querySelectorAll(`a[href*="${needle}"]`).forEach(a=>{a.href=a.href.replace(needle, value)});
@@ -24,12 +24,13 @@ function makeDropdown(dropdown_type, dropdown_items) {
       // save selection in localStorage
       localStorage.setItem(self.name, self.value);
     });
+    window.reindex();
   }
 
   element.addEventListener('change', changeHandler.bind(element));
 
   const location = window.location.href;
-  let urlValue = array.find(item => location.includes(item));
+  let urlValue = array.find(item => location.includes(`/${item}/`));
 
   if (!urlValue && !localStorage.getItem(element.name)) {
     urlValue = array[0];
