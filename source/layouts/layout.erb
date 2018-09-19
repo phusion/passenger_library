@@ -78,10 +78,9 @@ end
       <div>
         <ul>
           <a href="https://phusionpassenger.com/"><img src="<%= url_for "/images/passenger_logo.svg" %>" alt="home" /></a>
-          <li><a href='/tutorials/what_is_passenger/'>Tutorials</a></li>
-          <li><a href='/advanced_guides/'>Advanced guides</a></li>
-          <li><a href="/references/config_reference/">References</a></li>
-          <li><a href="https://www.phusionpassenger.com/library/">Old docs</a></li>
+          <li><%= nav_link('Tutorials', '/tutorials/what_is_passenger/', options: 'header') %></li>
+          <li><%= nav_link('Advanced Guides', '/advanced_guides/install_and_upgrade/', options: 'header') %></li>
+          <li><%= nav_link('References', '/references/config_reference/', options: 'header') %></li>
         </ul>
         <img class="small-screen-search" src="<%= url_for "/images/search_icon.svg" %>"  alt="search docs.." />
         <input id="search-bar" type="search" placeholder="search docs.." />
@@ -111,26 +110,25 @@ end
 
             <ul>
               <span>About Passenger</span>
-              <li><a href="/tutorials/what_is_passenger/">What is Passenger?</a></li>
-              <li><a href="/tutorials/fundamental_concepts/ruby/">Fundamental concepts</a></li>
+              <li><%= nav_link('What is Passenger?', '/tutorials/what_is_passenger/') %></li>
+              <li><%= nav_link('Fundamental concepts?', '/tutorials/fundamental_concepts/') %></li>
             </ul>
 
             <ul>
               <span>Getting started</span>
-              <li><a href="/tutorials/quickstart/ruby/">Quickstart</a></li>
-              <li><a href="/tutorials/installation/ruby/">Installation</a></li>
-              <li><a href="/tutorials/the_passenger_command/ruby/">The ‘passenger’ command</a></li>
-              <li><a href="/tutorials/process_management/ruby/">Process management</a></li>
-              <li><a href="/tutorials/reloading_code/ruby/">Reloading code</a></li>
-              <li><a href="/tutorials/the_help_option/ruby/">The --help option</a></li>
+              <li><%= nav_link('Quickstart', '/tutorials/quickstart/') %></li>
+              <li><%= nav_link('Installation', '/tutorials/installation/') %></li>
+              <li><%= nav_link('The ‘passenger’ command', '/tutorials/the_passenger_command/') %></li>
+              <li><%= nav_link('Process management', '/tutorials/process_management/') %></li>
+              <li><%= nav_link('Reloading code', '/tutorials/reloading_code/') %></li>
+              <li><%= nav_link('The --help option', '/tutorials/the_help_option/') %></li>
             </ul>
 
             <ul>
               <span>Deployment</span>
-              <li><a href="#">Deploy to production</a></li>
-              <li><a href="#">Deploying updates</a></li>
+              <li><%= nav_link('Deploy to production', '/tutorials/deploy_to_production/') %></li>
+              <li><%= nav_link('Deploying updates', '/tutorials/deploying_updates/') %></li>
             </ul>
-
           </div>
         </div>
       <% end %>

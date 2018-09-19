@@ -40,6 +40,17 @@ module CustomHelpers
     current_page.data.title || @page_title
   end
 
+  def nav_link(link_text, url, options = {})
+    options[:class] ||= ""
+    if options[:options] == 'header'
+      options[:class] << " active" if url.include? current_page.url.split('/')[1]
+    else
+      url_extended = current_page.url if current_page.url.include? url
+      options[:class] << " active" if url_extended == current_page.url
+    end
+    link_to(link_text, url, options)
+  end
+
   def navbar_section(id)
     if current_page.data.section == id.to_s
       concat("<li class=\"active\">")
