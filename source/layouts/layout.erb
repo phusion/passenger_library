@@ -33,7 +33,7 @@ end
     <% end %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css"
 />
-    <link rel="stylesheet" href="<%= maybe_absolute_url_for "/packs/bundle.css" %>" type="text/css">
+    <%= stylesheet_link_tag 'bundle' %>
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Open+Sans:400,600" rel="stylesheet" type="text/css">
     <% if current_page.data.skip_search || @skip_search %>
       <meta name="st:robots" content="noindex">
@@ -163,7 +163,7 @@ end
 
     <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
     <% if !current_page.data.skip_default_javascript %>
-      <script src="<%= maybe_absolute_url_for "/packs/bundle.js" %>"></script>
+    <%= javascript_include_tag 'bundle' %>
     <% end %>
 
     <%= globals[:layout_body_trailer] || "" %>

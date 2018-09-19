@@ -9,7 +9,7 @@ module.exports = {
 
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'source/packs')
+    path: path.resolve(__dirname, 'tmp/webpack')
   },
   module: {
     rules: [
