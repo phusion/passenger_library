@@ -7,8 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "babel": "babel --presets es2015 source/javascripts/main.js -o source/packs/bundle.js",
-    "start": "webpack --watch --progress --bail -p && npm run babel"
+    "watch": "webpack --watch --progress --bail",
+    "build": "webpack --bail -p"
   },
   "repository": {
     "type": "git",

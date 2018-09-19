@@ -18,7 +18,7 @@ module.exports = {
         exclude: /node_modules|\.tmp|vendor/,
         loader: 'babel-loader',
         query: {
-           presets: ['es2015']
+          presets: ['es2015']
         }
       },
 

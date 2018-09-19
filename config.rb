@@ -484,6 +484,6 @@ end
 # external pipeline/webpack
 activate :external_pipeline,
    name: :webpack,
-   command: build? ? 'npm run build' : 'npm run start',
+   command: build? ? 'npm run build' : 'npm run watch',
    source: 'source/packs',
    latency: 1
