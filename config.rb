@@ -470,12 +470,6 @@ activate :relative_assets
 configure :development do
   set :url_root, DEVELOPMENT_URL_ROOT
   set :hiring_banner, true
-
-  # CSS prefixer
-  activate :autoprefixer
-
-  # For example, change the Compass output style for deployment
-  activate :minify_css
 end
 
 # Build-specific configuration
@@ -483,18 +477,6 @@ configure :build do
   set :url_root, PRODUCTION_URL_ROOT
   set :google_analytics, true
   set :hiring_banner, true
-
-  # CSS prefixer
-  activate :autoprefixer
-
-  # For example, change the Compass output style for deployment
-  activate :minify_css
-
-  # Minify Javascript on build
-  activate :minify_javascript
-
-  # Enable cache buster
-  activate :asset_hash
 
   activate :search_engine_sitemap
 end

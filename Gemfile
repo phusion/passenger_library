@@ -21,5 +21,3 @@ gem "middleman-syntax"
 gem "middleman-search_engine_sitemap"
 
 gem "uuidtools"
-
-gem 'middleman-autoprefixer'
