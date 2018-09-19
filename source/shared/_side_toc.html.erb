@@ -1,16 +1,15 @@
 <div id="right-content-toc">
   <p>Table of contents</p>
-  <ol id="table-of-contents" class="toc-container"></ol>
+  <ol id="table-of-contents" class="side-toc-container"></ol>
   <img src="<%= url_for "/images/feedback_placeholder.svg" %>" alt="feedback"/>
   <a href="#" class="light-button">Up</a>
 </div>
 
 <script>
-  var upBtn = document.querySelector('#right-content-doc a');
+  var headers = document.querySelectorAll('#main-content h2');
+  var sideToc = document.querySelector('.side-toc-container');
 
-  function handleClick() {
-    window.scrollTo(0, 0);
-  }
-
-  upBtn.addEventListener('click', handleClick);
+  headers.forEach(function(h) {
+    sideToc.insertAdjacentHTML('beforeend', '<li><a href="#' + h.id + '">' + h.innerText + '</a></li>');
+  });
 </script>

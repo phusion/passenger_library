@@ -1,14 +1,27 @@
-#table-of-contents {
+.toc-container ol {
+  margin-top: -10px;
+}
+
+.toc-container ul {
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.toc-container li a {
+  line-height: 26px
+}
+
+.side-toc-container {
   margin: 25px 0;
   padding-left: 0;
 }
 
-#table-of-contents p {
+.side-toc-container p {
   font-weight: 800;
   margin-bottom: 10px;
 }
 
-#table-of-contents li {
+.side-toc-container li {
   margin-left: 40px;
   margin-top: 3px;
 }
