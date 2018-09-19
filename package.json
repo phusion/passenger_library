@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "babel-core": "^6.26.3",
-    "css-loader": "^1.0.0"
+    "css-loader": "^1.0.0",
+    "jquery": "^3.3.1"
   }
 }
