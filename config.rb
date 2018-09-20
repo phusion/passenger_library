@@ -27,6 +27,9 @@ include DeploymentWalkthroughHelpers
 # proxy "/this-page-has-no-template.html", "/template-file.html", :locals => {
 #  :which_fake_page => "Rendering a fake page with a local variable" }
 
+proxy "/tutorials/deploy_to_production/launch_server/enterprise/digital_ocean/index.html",
+      "/tutorials/deploy_to_production/launch_server/os/digital_ocean/index.html"
+
 ###### Deployment walkthrough ######
 
 define_deployment_walkthrough_pages do |*proxy_args|
