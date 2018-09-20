@@ -19,7 +19,7 @@ comments: false
   <div>
     <% available_infrastructures(locals.merge(language_type: :ruby)).each do |infra_spec| %>
       <div <% if [:heroku, :cloud66].include? infra_spec[:infrastructure_type] %> data-ruby_only <% end %>>
-        <input type="radio" id="radio-<%= infra_spec[:infrastructure_type] %>" value="<%= infra_spec[:infrastructure_type] %>" data-label="Platform">
+        <input type="radio" id="radio-<%= infra_spec[:infrastructure_type] %>" value="<%= infra_spec[:infrastructure_type].to_s.titleize.gsub(/\A.{1,3}\Z/){|s| s.upcase} %>" data-label="Platform" name="Platform">
         <label for="radio-<%= infra_spec[:infrastructure_type] %>">
           <% if infra_spec[:infrastructure_type] == :ownserver %>
             <h3>(other)<br>Linux/Unix</h3>
@@ -38,13 +38,13 @@ comments: false
 <div class="radio-choices">
   <div>
     <div>
-      <input type="radio" id="radio-os" value="os" data-label="Edition">
-      <label for="radio-os"><img src="<%= url_for("/images/passenger_logo.svg") %>" alt="open-source">
+      <input type="radio" id="radio-oss" value="OSS" data-label="Edition" name="Edition">
+      <label for="radio-oss"><img src="<%= url_for("/images/passenger_logo.svg") %>" alt="open-source">
         <span>Passenger open source</span>
       </label>
     </div>
     <div>
-      <input type="radio" id="radio-enterprise" value="enterprise" data-label="Edition">
+      <input type="radio" id="radio-enterprise" value="Enterprise" data-label="Edition" name="Edition">
       <label for="radio-enterprise">
         <img src="<%= url_for("/images/passenger_logo.svg") %>" alt="enterprise">
         <span>Passenger Enterprise</span>
@@ -55,5 +55,5 @@ comments: false
 
 <div id="next-step">
   <h2>Next step: Deployment installations</h2>
-  <a class="dark-button" href="/tutorials/deploy_to_production/launch_server/os/aws/">Continue</a>
+  <a class="dark-button first-step" href="/tutorials/deploy_to_production/launch_server/oss/aws/">Continue</a>
 </div>

@@ -1,8 +1,7 @@
-import reindex from './install_to_production';
-window.reindex = reindex;
-
 import makeDropdown from './dropdown';
 window.makeDropdown = makeDropdown;
+
+import './install_to_production';
 
 import redirect_to_lang from './redirect_to_lang';
 window.redirect_to_lang = redirect_to_lang;

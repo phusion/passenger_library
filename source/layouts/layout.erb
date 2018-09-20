@@ -108,6 +108,18 @@ end
               dropdown_items: ['Nginx', 'Apache', 'Standalone']
             )) %>
 
+            <% if current_page.metadata[:page][:section] == "deploy_walkthrough" %>
+              <%= render_partial("/shared/dropdown", locals: locals.merge(
+                dropdown_type: "Edition",
+                dropdown_items: ['OSS', 'Enterprise']
+                )) %>
+
+              <%= render_partial("/shared/dropdown", locals: locals.merge(
+                dropdown_type: "Platform",
+                dropdown_items: ['AWS', 'Heroku', 'Digital Ocean', 'Cloud66', 'Ownserver']
+                )) %>
+            <% end %>
+
             <% if current_page.data.references %>
               <%= partial "/shared/references_nav" %>
             <% elsif current_page.data.advanced_guides %>

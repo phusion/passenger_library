@@ -8,69 +8,44 @@ function apply(fn) {
 
 function applySelection(label, value) {
   const map = {
-    "heroku":"deploying_your_app",
-    "cloud66":"deploying_your_app",
-    "aws":"launch_server",
-    "ownserver":"installations",
-    "digital_ocean":"launch_server",
+    "Heroku":"deploying_your_app",
+    "Cloud66":"deploying_your_app",
+    "AWS":"launch_server",
+    "Ownserver":"installations",
+    "Digital Ocean":"launch_server",
   };
-  const gem = {
-    "os":"passenger",
-    "enterprise":"passenger-enterprise-server"
-  };
-  const button = document.querySelector('#next-step a');
-  const values = Object.keys( label == 'Edition' ? gem : map );
-  let url = button.href.replace(new RegExp(`/(${values.join('|')})/`), `/${value}/`);
-  if (Object.keys(map).includes(value)) {
-    url = url.replace(new RegExp('/deploy_to_production/[^/]+'),'/deploy_to_production/'+map[value]);
+
+  const button = document.querySelector('#next-step a.first_step');
+  const prefix = '/deploy_to_production/';
+  if (button && Object.keys(map).includes(value)) {
+    button.href = button.href.replace(new RegExp(prefix+'[^/]+'), prefix+map[value]);
   }
-  button.href = url;
-
-  window.localStorage.setItem(label, value);
-
-  values.forEach(needle=> document.querySelectorAll(`[data-${needle}_only]`).forEach(e=>e.style.display = (value == needle ? "inherit" : "none")));
-  document.querySelectorAll(`[data-${label.toLowerCase()}_placeholder]`).forEach(e=>{e.innerText=gem[value]});
-
   apply(e=>{if(e.dataset.label == label){e.checked=(e.value == value)}});
 }
 
 function handleChange(event) {
   const label = event.target.dataset.label;
   const value = event.target.value;
-
-  applySelection(label, value);
-}
-
-function reindex() {
-  let step = 0;
-  let substep = 0;
-  Array.from(document.querySelectorAll('[data-step_placeholder], [data-substep_placeholder]')).filter(e=>e.offsetParent !== null).forEach((e,i,a)=>{
-    if ('step_placeholder' in e.dataset) {
-      if (e.parentElement.tagName !== "H3") {
-        step += 1;
-        substep = 0;
-      }
-      e.innerText = step;
-    } else {
-      substep += 1;
-      e.innerText = substep;
-    }
-  });
+  //trigger dropdown onchange, which calls applySelection(label, value);
+  const element = document.querySelector(`.${label.toLowerCase()} select`);
+  element.value = value;
+  var evt = document.createEvent("HTMLEvents");
+  evt.initEvent("change", false, true);
+  element.dispatchEvent(evt);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  inputs().map(e=>e.dataset.label).filter((e,i,a)=>a.indexOf(e) == i).forEach(l=>{
-    const location = window.location.href;
-    let v = inputs().filter(i=>i.dataset.label == l).map(i=>i.value).find(i=>location.includes(`/${i}/`));
-    if (v) {
-      window.localStorage.setItem(l, v);
-    } else {
-      v = window.localStorage.getItem(l);
-    }
-    if (v) { applySelection(l, v) }
-  });
-  reindex();
+  inputs()
+    .map(e=>e.dataset.label) // get labels
+    .filter((e,i,a)=>a.indexOf(e) == i) // uniq
+    .forEach(l=>{
+      const v = window.localStorage.getItem(l);
+      if (v) { apply(e=>{
+        if(e.dataset.label == l){e.checked=(e.value == v)}
+      }) }
+    });
+
   apply(e=>e.addEventListener('change', handleChange));
 });
 
-export default reindex;
+export default applySelection;

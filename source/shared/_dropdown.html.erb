@@ -2,7 +2,13 @@
   <span>Current <%= dropdown_type %></span>
   <select name="<%= dropdown_type %>" style="background-image: url(<%= url_for "/images/#{dropdown_items[0].downcase}.svg" %>)">
     <% dropdown_items.each do |item| %>
-      <option value="<%= item %>"><%= item %></option>
+      <option value="<%= item %>" <% if ['Heroku', 'Cloud66'].include? item %> data-ruby_only <% end %>>
+        <% if item == 'Ownserver' %>
+          (other) Linux/Unix
+        <% else %>
+          <%= item %>
+        <% end %>
+      </option>
     <% end %>
   </select>
   <span class="arrow-down"></span>

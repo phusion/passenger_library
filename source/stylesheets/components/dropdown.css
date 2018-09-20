@@ -1,3 +1,6 @@
 [data-language_placeholder] {
   text-transform: capitalize;
 }
+.dropdown select[style*='ownserver'] {
+  text-indent: 0px;
+}
