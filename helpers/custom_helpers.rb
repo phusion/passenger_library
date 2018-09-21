@@ -40,13 +40,22 @@ module CustomHelpers
     current_page.data.title || @page_title
   end
 
+  def string_cutter(str, arr)
+    arr.each do |item|
+      str.slice!(item)
+    end
+  end
+
   def nav_link(link_text, url, options = {})
     options[:class] ||= ""
     if options[:options] == 'header'
       options[:class] << " active" if url.include? current_page.url.split('/')[1]
     else
-      url_extended = current_page.url if current_page.url.include? url
-      options[:class] << " active" if url_extended == current_page.url
+      arr = ['ruby/', 'python/', 'node/', 'meteor/', 'nginx/', 'apache/', 'standalone/']
+      current_url = current_page.url
+      string_cutter(url, arr)
+      string_cutter(current_url, arr)
+      options[:class] << " active" if url == current_url
     end
     link_to(link_text, url, options)
   end
