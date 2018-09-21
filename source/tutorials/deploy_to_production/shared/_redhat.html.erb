@@ -49,8 +49,8 @@
       <td>
         Passenger requires <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>.
         <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y epel-release yum-utils
-          <span class="prompt">$ </span>sudo yum-config-manager --enable epel
-          <span class="prompt">$ </span>sudo yum clean all && sudo yum update -y</pre>
+<span class="prompt">$ </span>sudo yum-config-manager --enable epel
+<span class="prompt">$ </span>sudo yum clean all && sudo yum update -y</pre>
       </td>
     </tr>
 
@@ -63,9 +63,9 @@
         Enable the <em>optional</em> repository (<em>rhel-<span data-rhel_version></span>-server-optional-rpms</em>). This can be done by enabling the RHEL optional <a href="https://access.redhat.com/kb/docs/DOC-11313">subchannel</a> for RHN-Classic. For certificate-based subscriptions see <a href="https://access.redhat.com/site/documentation/en-US/Red_Hat_Subscription_Management/1/html/RHSM/entitlements-and-yum.html#supplementary-repos">Red Hat Subscription Management Guide</a>.
         The following commands may be helpful, but are not thoroughly tested.
         <pre class="highlight"><span class="prompt">$ </span>sudo subscription-manager register --username $RHN_USERNAME --password $RHN_PASSWORD
-          <span class="prompt">$ </span>POOL=`sudo subscription-manager list --available --all | sed '/^Pool ID:/!d;s/^.*: *//'`
-          <span class="prompt">$ </span>sudo subscription-manager attach --pool="$POOL"
-          <span class="prompt">$ </span>sudo subscription-manager repos --enable rhel-<span data-rhel_version></span>-server-optional-rpms</pre>
+<span class="prompt">$ </span>POOL=`sudo subscription-manager list --available --all | sed '/^Pool ID:/!d;s/^.*: *//'`
+<span class="prompt">$ </span>sudo subscription-manager attach --pool="$POOL"
+<span class="prompt">$ </span>sudo subscription-manager repos --enable rhel-<span data-rhel_version></span>-server-optional-rpms</pre>
       </td>
     </tr>
   </tbody>

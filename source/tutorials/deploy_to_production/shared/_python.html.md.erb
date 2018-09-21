@@ -1,0 +1,42 @@
+<% @page_title = "Installing Python - #{deployment_walkthrough_page_title(locals)}" %>
+<h1>Installing Python</h1>
+
+Before you can deploy your app on the production server, you need to install Python. Here's how you can do that:
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <td>
+      Debian, Ubuntu
+    </td>
+    <td>
+      <pre class="highlight">sudo apt-get update
+sudo apt-get install -y python</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
+    </td>
+    <td>
+      <pre class="highlight">sudo yum -y install python python-pip</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      macOS
+    </td>
+    <td>
+      You don't have to do anything. Python is already installed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Other operating systems
+    </td>
+    <td>
+      Please install Python from <a href="http://www.python.org/">www.python.org</a>.
+    </td>
+  </tr>
+</table>
+
+When you are done, continue to the next step.

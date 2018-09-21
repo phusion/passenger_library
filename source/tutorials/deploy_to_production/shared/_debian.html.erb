@@ -78,14 +78,14 @@ sudo apt-get install -y <span data-packages></span></code></pre>
   <% step += 1 %>
   <h2>Step <%= step %>: enable the Passenger Apache module and restart Apache</h2>
   <pre class="highlight shell"><span class="prompt">$ </span>sudo a2enmod passenger
-    <span class="prompt">$ </span>sudo apache2ctl restart</pre>
+<span class="prompt">$ </span>sudo apache2ctl restart</pre>
 <% elsif integration_mode_type == :nginx %>
     <% step += 1 %>
     <h2>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h2>
     <div class="dynamic_nginx_package">
       <p>Ensure the config files are in-place:</p>
       <pre class="highlight shell"><span class="prompt">$ </span>if [ ! -f /etc/nginx/modules-enabled/50-mod-http-passenger.conf ]; then sudo ln -s /usr/share/nginx/modules-available/mod-http-passenger.load /etc/nginx/modules-enabled/50-mod-http-passenger.conf ; fi
-        <span class="prompt">$ </span>sudo ls /etc/nginx/conf.d/mod-http-passenger.conf</pre>
+<span class="prompt">$ </span>sudo ls /etc/nginx/conf.d/mod-http-passenger.conf</pre>
       <div class="note">
         <p>If you don't see a file at <code>/etc/nginx/conf.d/mod-http-passenger.conf</code>; then you need to create it yourself and set the <code>passenger_ruby</code> and <code>passenger_root</code> config options. For example:</p>
         <pre class="highlight">
