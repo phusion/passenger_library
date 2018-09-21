@@ -5,6 +5,12 @@ import './install_to_production';
 
 import redirect_to_lang from './redirect_to_lang';
 window.redirect_to_lang = redirect_to_lang;
+import redirect_to_integration from './redirect_to_integration';
+window.redirect_to_integration = redirect_to_integration;
+import redirect_to_edition from './redirect_to_edition';
+window.redirect_to_edition = redirect_to_edition;
+import redirect_to_platform from './redirect_to_platform';
+window.redirect_to_platform = redirect_to_platform;
 
 import './algolia-docsearch';
 import './automenu';
