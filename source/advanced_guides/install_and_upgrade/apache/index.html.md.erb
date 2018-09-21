@@ -1,0 +1,16 @@
+---
+title: Installation, upgrade and uninstallation
+comments: false
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(INTEGRATION_MODE_APACHE)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+<h1>Installation, upgrade and uninstallation</h1>
+
+<div class="info">If you are not familiar with Passenger, it's best to follow the <a href="<%= url_for "/walkthroughs/deploy/index.html" %>">deployment tutorial</a> first.</div>
+
+<%= render_partial("../shared/_tasks_and_info", locals: locals) %>
