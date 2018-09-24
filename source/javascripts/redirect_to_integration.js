@@ -5,3 +5,4 @@ function redirect_to_integration() {
   }
   window.location = window.location.href.replace(/\/?$/, "/"+value.toLowerCase()+"/");
 }
+export default redirect_to_integration;
