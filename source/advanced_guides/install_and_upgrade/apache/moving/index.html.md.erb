@@ -1,0 +1,13 @@
+---
+title: Moving Passenger to a different directory
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(INTEGRATION_MODE_APACHE)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+# Moving Passenger to a different directory
+
+<%= render_partial("../../shared/_moving", locals: locals) %>
