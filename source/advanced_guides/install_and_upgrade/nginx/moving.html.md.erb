@@ -4,10 +4,10 @@ advanced_guides: true
 ---
 
 <%
-  locals = locals.merge(INTEGRATION_MODE_APACHE)
+  locals = locals.merge(INTEGRATION_MODE_NGINX)
   integration_mode_type = locals[:integration_mode_type]
 %>
 
 # Moving Passenger to a different directory
 
-<%= render_partial("../../shared/_moving", locals: locals) %>
+<%= render_partial("../shared/_moving", locals: locals) %>
