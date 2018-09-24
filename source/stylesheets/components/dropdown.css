@@ -4,3 +4,7 @@
 .dropdown select[style*='ownserver'] {
   text-indent: 0px;
 }
+.dropdown.edition,
+.dropdown.platform {
+  display:none;
+}
