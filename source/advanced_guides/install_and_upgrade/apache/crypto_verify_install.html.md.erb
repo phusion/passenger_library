@@ -1,0 +1,13 @@
+---
+title: Cryptographic verification of installation files
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(INTEGRATION_MODE_APACHE)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+# Cryptographic verification of installation files
+
+<%= render_partial("../shared/_crypto_verify_install", locals: locals) %>
