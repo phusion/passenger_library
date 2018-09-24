@@ -1,0 +1,13 @@
+---
+title: Customizing the compilation process
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(INTEGRATION_MODE_STANDALONE)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+# Customizing the compilation process
+
+<%= render_partial("../shared/_customizing_compilation_process", locals: locals) %>
