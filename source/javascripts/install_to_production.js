@@ -15,7 +15,7 @@ function applySelection(label, value) {
     "Digital Ocean":"launch_server",
   };
 
-  const button = document.querySelector('#next-step a.first_step');
+  const button = document.querySelector('#next-step a.first-step');
   const prefix = '/deploy_to_production/';
   if (button && Object.keys(map).includes(value)) {
     button.href = button.href.replace(new RegExp(prefix+'[^/]+'), prefix+map[value]);

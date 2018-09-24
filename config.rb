@@ -30,6 +30,18 @@ include DeploymentWalkthroughHelpers
 proxy "/tutorials/deploy_to_production/launch_server/enterprise/digital_ocean/index.html",
       "/tutorials/deploy_to_production/launch_server/oss/digital_ocean/index.html"
 
+[:oss, :enterprise].each do |edition|
+  [:digital_ocean,:ownserver,:aws].each do |platform|
+    [:meteor,:ruby,:node,:python].each do |lang|
+#     [:apache,:nginx, :standalone].each do |integration|
+      [:apache,:nginx].each do |integration|
+        proxy "/tutorials/deploy_to_production/installations/#{edition}/#{platform}/#{lang}/#{integration}/index.html",
+              "/tutorials/deploy_to_production/installations/#{edition}/shared/#{lang}/#{integration}/index.html"
+      end
+    end
+  end
+end
+
 ###### Deployment walkthrough ######
 
 define_deployment_walkthrough_pages do |*proxy_args|

@@ -1,0 +1,39 @@
+---
+title: Installing Passenger Enterprise
+section: deploy_walkthrough
+comments: false
+---
+
+<h1>Deployment: installations</h1>
+
+<p>Before deploying your app you have to make sure that Node.js and Passenger Enterprise are installed.</p>
+
+<h2>Did you already install Node?</h2>
+<div id="yes-no-radio">
+  <input type="radio" id="yes" value="yes"><label for="yes"><span class="radio">Yes</span></label>
+  <input type="radio" id="no" value="no"><label for="no"><span class="radio">No</span></label>
+</div>
+<%= render_partial('/tutorials/deploy_to_production/shared/nodejs', locals: {language_type: :nodejs}) %>
+
+<h2>Installing Passenger Enterprise + <%= render_partial('/tutorials/deploy_to_production/shared/integration') %> on a <%= render_partial('/tutorials/deploy_to_production/shared/platform') %> production server</h2>
+
+<p>
+  Now it is time to install Passenger Enterprise. Please start by selecting the operating system that your server is running on, or an installation method that you prefer.
+</p>
+
+<%= render_partial("/tutorials/deploy_to_production/shared/os_selector") %>
+
+<div class="install_os install_os_osx">
+  <%= render_partial('/tutorials/deploy_to_production/shared/osx', locals: {edition_type: :enterprise, integration_mode_type: :apache}) %>
+</div>
+<div class="install_os install_os_debian">
+  <%= render_partial('/tutorials/deploy_to_production/shared/debian', locals: {integration_mode_type: :apache, edition_type: :enterprise, web_server_name: 'Apache'}) %>
+</div>
+<div class="install_os install_os_redhat">
+  <%= render_partial('/tutorials/deploy_to_production/shared/redhat', locals: {edition_type: :enterprise, integration_mode_type: :apache, web_server_name: 'Apache'}) %>
+</div>
+
+<div id="next-step">
+  <h2>Next step: Deploying your app</h2>
+  <a class="dark-button" href="/tutorials/deploy_to_production/deploying_your_app/">Continue</a>
+</div>
