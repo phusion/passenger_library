@@ -56,16 +56,17 @@ myappuser$ ...</span>
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Edit Nginx configuration file") %>
 
-<% if os_config_class == :debian || os_config_class == :redhat %>
+<div class="supported_redhat_instructions supported_debian_instructions">
   <p>
     We need to create an Nginx configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Nginx (and Passenger) where your app is located.
   </p>
   <div>
-    <% if os_config_class == :debian %>
+    <div class="supported_debian_instructions">
       <pre class="highlight"><span class="prompt">$ </span>sudo nano /etc/nginx/sites-enabled/<span class="o">myapp</span>.conf</pre>
-    <% else %>
+    </div>
+    <div class="unsupported_debian_instructions">
       <pre class="highlight"><span class="prompt">$ </span>sudo nano /etc/nginx/conf.d/<span class="o">myapp</span>.conf</pre>
-    <% end %>
+    </div>
   </div>
   <p>
     Replace <code>myapp</code> with your app's name.
@@ -73,7 +74,8 @@ myappuser$ ...</span>
   <p>
     Put this inside the file:
   </p>
-<% else %>
+</div>
+<div class="unsupported_redhat_instructions unsupported_debian_instructions">
   <p>
     We need to edit your Nginx configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Nginx (and Passenger) where your app is located.
   </p>
@@ -84,7 +86,7 @@ myappuser$ ...</span>
   <p>
     Let us add a virtual host entry at the end of that file. At the end of the file, insert:
   </p>
-<% end %>
+</div>
 
 <% if language_type == :ruby %>
   <pre class="highlight">server {
@@ -156,13 +158,14 @@ myappuser$ ...</span>
 
 When you are done, restart Nginx:
 
-<% if os_config_class == :debian || os_config_class == :redhat %>
+<div class="supported_debian_instructions supported_redhat_instructions">
   <pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart</pre>
-<% else %>
+</div>
+<div class="unsupported_debian_instructions unsupported_redhat_instructions">
   <pre class="highlight"><span class="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
 <span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
   <p>(<a href="install_passenger.html#restarting_nginx">Learn more about restarting Nginx</a>)</p>
-<% end %>
+</div>
 
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Test drive") %>

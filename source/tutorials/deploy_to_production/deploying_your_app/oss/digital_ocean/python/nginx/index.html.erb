@@ -1,0 +1,18 @@
+---
+title: Deploying a Python app
+section: deploy_walkthrough
+comments: false
+---
+
+<h1>Deploying a Python app on Digital Ocean production server</h1>
+
+<% locals = {language_type: :python, integration_mode_type: :nginx, edition_type: :oss, infrastructure_type: :digital_ocean} %>
+
+<%= render_partial("/walkthroughs/deploy/deploy_app/intro", locals: locals) %>
+<%= render_partial("/tutorials/deploy_to_production/shared/os_selector") %>
+<%= render_partial("/walkthroughs/deploy/deploy_app/nginx", locals: locals) %>
+
+<div id="next-step">
+  <h2>Next step: Deploying updates</h2>
+  <a class="dark-button" href="/tutorials/deploy_to_production/deploy_updates/">Continue</a>
+</div>
