@@ -1,0 +1,114 @@
+This page documents the operating systems, architectures, programming languages and frameworks that Passenger supports as of version 5.0.0.
+
+## Supported operating systems
+
+Passenger works on almost any POSIX-compliant operating system. In other words: practically any operating system on earth, except Microsoft Windows.
+
+The following operating systems are supported.
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>OS</th>
+    <th>Minimum version</th>
+  </tr>
+  <tr>
+    <td>Ubuntu</td>
+    <td>14.04</td>
+  </tr>
+  <tr>
+    <td>Debian</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <td>Red Hat, CentOS</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <td>Amazon Linux</td>
+    <td>All versions supported</td>
+  </tr>
+  <tr>
+    <td>macOS</td>
+    <td>10.11 El Capitan</td>
+  </tr>
+  <tr>
+    <td>FreeBSD</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <td>OpenBSD</td>
+    <td>5.2</td>
+  </tr>
+  <tr>
+    <td>Other Unix</td>
+    <td>-</td>
+  </tr>
+</table>
+
+### Best effort
+
+"Other Unix" is supported on a "best-effort" basis. We do not regularly check whether Passenger still works on other Unices, but if users report issues then we'll try to address them.
+
+## Supported architectures
+
+The following architectures are supported.
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>Architecture</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td>x86 (32-bit)</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>x86_64 (64-bit)</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Other</td>
+    <td>Supported on a <a href="#best-effort">"best-effort"</a> basis.</td>
+  </tr>
+</table>
+
+## Supported languages and frameworks
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>Language/framework</th>
+    <th>Minimum version</th>
+  </tr>
+  <tr>
+    <td>Ruby (MRI)</td>
+    <td>1.8.7</td>
+  </tr>
+  <tr>
+    <td>JRuby</td>
+    <td>1.7.0</td>
+  </tr>
+  <tr>
+    <td>Rubinius</td>
+    <td>2.2.0</td>
+  </tr>
+  <tr>
+    <td>Ruby on Rails</td>
+    <td>2.3</td>
+  </tr>
+  <tr>
+    <td>Python</td>
+    <td>2.6</td>
+  </tr>
+  <tr>
+    <td>Node.js</td>
+    <td>0.10</td>
+  </tr>
+  <tr>
+    <td>Meteor</td>
+    <td>1.0</td>
+  </tr>
+</table>
+
+## Run into any problems?
+
+If you have trouble with running Passenger together with an operating system, architecture or language/framework that we support, please [report a bug](https://github.com/phusion/passenger/issues), [join our discussion forum](http://groups.google.com/group/phusion-passenger) or [consult one of the support resources](<%= SUPPORT_URL %>).
