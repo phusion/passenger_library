@@ -1,0 +1,58 @@
+---
+title: Working with the Apache configuration file
+advanced_guides: true
+---
+
+# Working with the Apache configuration file
+
+If you want to [install Passenger in its Apache integration mode](<%= url_for "/install/apache/install/index.html" %>) then you will reach a point where you have to edit Apache the configuration file. This page provides information for those who are not familiar with how the Apache configuration file and its related directories are organized.
+
+## The location of the Apache configuration file
+
+On most systems if you installed Apache with a package manager, or it came preinstalled, the Apache configuration file is located in one of these locations:
+
+ * `/etc/apache2/httpd.conf`
+ * `/etc/apache2/apache2.conf`
+ * `/etc/httpd/httpd.conf`
+ * `/etc/httpd/conf/httpd.conf`
+
+If you installed Apache from source it is likely located in `/usr/local` or `/opt`, though the config files may have been moved to `/etc` as usual. Check your build script for more details.
+
+Furthermore On macOS Server >= 10.8 Mountain Lion, the location of the Apache configuration file varies. Some paths are listed below, please refer to the macOS Server documentation for complete information.
+<table class="table table-bordered table-striped">
+  <tr>
+    <td>Not using websites/webservices</td>
+    <td>default (/etc/apache2/httpd.conf)</td>
+  </tr>
+  <tr>
+    <td>macOS Server 4 webservices</td>
+    <td>/Library/Server/Web/Config/apache2/httpd_server_app.conf</td>
+  </tr>
+  <tr>
+    <td>macOS Server 5 websites</td>
+    <td>/Library/Server/Web/Config/apache2/server-httpd.conf</td>
+  </tr>
+</table>
+
+## mods-enabled and sites-enabled
+
+To allow better organization, many operating systems and Apache distributions also read configuration files in the `conf.d`, `mods-enabled` and `sites-enabled` subdirectories.
+
+`mods-enabled` contains symlinks to files in `mods-available`. This latter subdirectory contains config files for all available modules, while `mods-enabled` contains only a subset, namely the modules that should actually be enabled. The symlinks are created using the `a2enmod` tool. `*.load` files contain `LoadModule` directives, while `*.conf` files contain all other configuration directives.
+
+## Storing Passenger configuration snippets
+
+If you can, you should use `mods-enabled`/`mods-available` to store Passenger configuration. Assuming that your Apache configuration directory is `/etc/apache2`:
+
+ * Create `/etc/apache2/mods-available/passenger.load` and paste the `LoadModule ...` directive that `passenger-install-apache2-module` outputs.
+ * Create `/etc/apache2/mods-available/passenger.conf` and paste the `PassengerRoot` and other Passenger options.
+ * Enable by running `sudo a2enmod passenger`.
+
+If the `mods-enabled` mechanism is not available then you can paste configuration snippets into `httpd.conf` or `apache2.conf` directly.
+
+## See also
+
+ * [Deployment tutorial](<%= url_for '/walkthroughs/deploy/index.html' %>)
+ * [Integration modes](<%= url_for '/indepth/integration_modes.html' %>)
+ * [Unixmen.com: How to enable and disable Apache modules](http://www.unixmen.com/how-to-enable-and-disable-apache-modules/)
+ * [Ubuntu manual page for 'a2enmod'](http://manpages.ubuntu.com/manpages/trusty/man8/a2enmod.8.html)
