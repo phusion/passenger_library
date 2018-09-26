@@ -1,0 +1,12 @@
+---
+title: Deploying a Meteor application
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(LANG_METEOR)
+  locals = locals.merge(INTEGRATION_MODE_STANDALONE)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+<%= render_partial("../../../shared/_deploy.html.md.erb", locals: locals) %>

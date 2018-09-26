@@ -1,0 +1,566 @@
+<h1>Deploying <%= language_name_with_determiner %> application</h1>
+
+This guide teaches you how you can deploy your app to a server. This guide assumes that you have already done the following, and that you know how to do them:
+
+<ul>
+<% if integration_mode_type == :nginx || integration_mode_type == :apache %>
+  <li>Passenger and <%= integration_mode_name %> are already installed on the server.</li>
+<% elsif integration_mode_type == :standalone %>
+  <% if language_type != :ruby %>
+    <li>Passenger is already installed on the server.</li>
+  <% end %>
+<% end %>
+  <li>You have already transferred the application's code to the server.</li>
+  <li>You have already installed <%= language_runtime_name %>.</li>
+  <li>You have already installed all necessary dependencies that your application needs.</li>
+</ul>
+
+If you miss one of these prerequisites or don't know how to perform it, then we recommend you to follow the [Deployment tutorial](<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>). The deployment tutorial is end-to-end guide and teaches you how to install every component.
+
+<% if integration_mode_type == :nginx %>
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+<% if language_type == :ruby %>
+  <h2 id="determine_ruby_command">Determine the Ruby command that Passenger should use</h2>
+
+  <p>
+    Before you begin, you need to tell Passenger which Ruby command it should use to run your app, just in case there are <a href="<%= url_for "/indepth/ruby/multiple_rubies.html" %>">multiple Ruby interpreters on your system</a>. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
+<span class="output">passenger-config was invoked through the following Ruby interpreter:
+  Command: /usr/local/rvm/gems/ruby-<%= LATEST_RUBY_VERSION %>/wrappers/ruby
+  Version: ruby <%= LATEST_RUBY_VERSION %>p85 (2015-02-26 revision 49769) [x86_64-linux]
+  ...</span></pre>
+
+  Please take note of the path after "Command" (in this example, `/usr/local/rvm/gems/ruby-<%= LATEST_RUBY_VERSION %>/wrappers/ruby`). You will need it in one of the next steps.
+<% end %>
+
+
+## Deploying an app to a virtual host's root
+
+To deploy an app to an Nginx virtual host's root path, the following steps must be taken:
+
+ * Add a virtual host entry (`server` block) to your Nginx configuration file.
+ * The `server` block's root must point to your application's `public` subdirectory.
+ * You must also set `passenger_enabled on` in the `server` block.
+
+Here is an example:
+
+<% if language_type == :ruby %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/path-to-app</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+    passenger_ruby <span class="o">/path-to-ruby</span>;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name, and replace `/path-to-app` with your application's code directory path. However, make sure that Nginx is configured to point to the `public` subdirectory inside it!
+
+  Replace `/path-to-ruby` with the Ruby command that you obtained in [Determine the Ruby command that Passenger should use](#determine_ruby_command).
+<% elsif language_type == :nodejs %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/path-to-app</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+    <span class="c"># Tell Passenger that your app is a Node.js app</span>
+    passenger_app_type node;
+    passenger_startup_file <span class="o">app.js</span>;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name, replace `/path-to-app` with your application's code directory path and replace `app.js` with your app's entry point file.
+<% elsif language_type == :meteor %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/path-to-app-package</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+    <span class="c"># Tell Passenger that your app is a Meteor app</span>
+    passenger_app_type node;
+    passenger_startup_file main.js;
+
+    <span class="c"># Tell your app where MongoDB is</span>
+    passenger_env_var MONGO_URL mongodb://localhost:27017/<span class="o">myappdb</span>;
+    <span class="c"># Tell your app what its root URL is</span>
+    passenger_env_var ROOT_URL <span class="o">http://yourserver.com</span>;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name and replace `/path-to-app-package` with your application's package directory path. Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
+<% else %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/path-to-app</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name, and replace `/path-to-app` with your application's code directory path. However, make sure that Nginx is configured to point to the `public` subdirectory inside it!
+<% end %>
+
+When you are done, restart Nginx. If you installed Nginx via our Debian or RPM packages:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart</pre>
+
+Otherwise, if you installed Nginx from source and don't have an init script:
+
+  <pre class="highlight"><span class="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
+<span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
+
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/nginx/troubleshooting/index.html" %>).
+
+
+## Deploying an app to a sub-URI or subdirectory
+
+<% if language_type == :nodejs %>
+<div class="note">
+Sub-URI deployments in Node.js require framework-specific adjustments in the application. For example, in Express 4.0+, you should <a href="http://expressjs.com/api#app.mountpath">use a router</a>.
+An alternative is to use url rewriting to avoid the need for sub-URIs altogether.
+</div>
+<% end %>
+You can also deploy an app to a sub-URI instead of the root URI. For example, suppose that you already have a virtual host for the application `/websites/phusion`:
+
+~~~nginx
+http {
+    ...
+
+    server {
+        listen 80;
+        server_name www.phusion.nl;
+        root /websites/phusion/public;
+        passenger_enabled on;
+    }
+}
+~~~
+
+And you want your application, located in `/websites/secondapp`, to be accessible from the URL `http://www.phusion.nl/subpath`. To do this, you need to perform the following:
+
+ * Create a location with parameter `~ ^/<SUBURI>(/.*|$)`. This is a regular expression that says: "match everything that is exactly <SUBURI>, or starts with <SUBDURI>/".
+ * Inside the location block, set `alias <PATH TO YOUR APPLICATION PUBLIC SUBDIRECTORY>$1`.
+ * Inside the location block, set `passenger_base_uri <SUBURI>`.
+ * Inside the location block, set `passenger_app_root <PATH TO YOUR APPLICATION ROOT>`.
+ * Inside the location block, set `passenger_document_root <PATH TO YOUR APPLICATIOS PUBLIC SUBDIRECTORY>`.
+ * Inside the location block, set `app_type` and `startup_file` accordingly.
+
+Here is an example:
+
+~~~nginx
+http {
+    ...
+
+    server {
+        listen 80;
+        server_name www.phusion.nl;
+        root /websites/phusion/public;
+        passenger_enabled on;
+
+        # This block has been added.
+        location ~ ^/subpath(/.*|$) {
+            alias /websites/secondapp/public$1;  # <-- be sure to point to 'public'!
+            passenger_base_uri /subpath;
+            passenger_app_root /websites/secondapp;
+            passenger_document_root /websites/secondapp/public;
+            passenger_enabled on;
+
+            <% if language_type == :python %>
+            passenger_app_type wsgi;
+            passenger_startup_file passenger_wsgi.py;
+            <% elsif language_type == :nodejs %>
+            passenger_app_type node;
+            passenger_startup_file app.js;
+            <% elsif language_type == :meteor %>
+            passenger_app_type node;
+            passenger_startup_file main.js;
+            <% end %>
+        }
+    }
+}
+~~~
+
+When you are done, restart Nginx. If you installed Nginx via our Debian or RPM packages:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart</pre>
+
+Otherwise, if you installed Nginx from source and don't have an init script:
+
+  <pre class="highlight"><span class="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
+<span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
+
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/nginx/troubleshooting/index.html" %>).
+
+<% end %>
+
+<% if integration_mode_type == :apache %>
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+<% if language_type == :ruby %>
+  <h2 id="determine_ruby_command">Determine the Ruby command that Passenger should use</h2>
+
+  <p>
+    We need to tell Passenger which Ruby command it should use to run your app, just in case there are <a href="<%= url_for "/indepth/ruby/multiple_rubies.html" %>">multiple Ruby interpreters on your system</a>. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
+  </p>
+  <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
+<span class="output">passenger-config was invoked through the following Ruby interpreter:
+  Command: /usr/local/rvm/gems/ruby-<%= LATEST_RUBY_VERSION %>/wrappers/ruby
+  Version: ruby <%= LATEST_RUBY_VERSION %>p85 (2015-02-26 revision 49769) [x86_64-linux]
+  ...</span></pre>
+
+  Please take note of the path after "Command" (in this example, `/usr/local/rvm/gems/ruby-<%= LATEST_RUBY_VERSION %>/wrappers/ruby`). You will need it in one of the next steps.
+<% end %>
+
+
+## Deploying an app to a virtual host's root
+
+To deploy an app to an Apache virtual host's root path, the following steps must be taken:
+
+ * Add a virtual host entry to your [Apache configuration file](<%= url_for "/install/apache/working_with_the_apache_config_file.html" %>).
+ * The virtual host's document root must point to your application's public subdirectory.
+ * The Apache per-directory permissions must allow access to this directory.
+ * MultiViews must be disabled for this directory.
+
+Here is an example:
+
+<% if language_type == :ruby %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's 'public' directory is</span>
+    DocumentRoot <span class="o">/path-to-your-app</span>/public
+
+    PassengerRuby <span class="o">/path-to-ruby</span>
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/path-to-your-app</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt; 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name, and replace `/path-to-your-app` with your application's code directory path. However, make sure that Apache is configured to point to the `public` subdirectory inside it!
+
+  Replace `/path-to-ruby` with the Ruby command that you obtained in [Determine the Ruby command that Passenger should use](#determine_ruby_command).
+<% elsif language_type == :python %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's code directory is</span>
+    DocumentRoot <span class="o">/path-to-your-app</span>/public
+    PassengerAppRoot <span class="o">/path-to-your-app</span>
+
+    <span class="c"># Tell Passenger that your app is a <%= language_name %> app</span>
+    PassengerAppType wsgi
+    PassengerStartupFile <span class="o">passenger_wsgi.py</span>
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/path-to-your-app</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name, replace `/path-to-your-app` with your application's code directory path and replace `passenger_wsgi.py` with your app's WSGI entry point file.
+<% elsif language_type == :nodejs %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's code directory is</span>
+    DocumentRoot <span class="o">/path-to-your-app</span>/public
+    PassengerAppRoot <span class="o">/path-to-your-app</span>
+
+    <span class="c"># Tell Passenger that your app is a <%= language_name %> app</span>
+    PassengerAppType node
+    PassengerStartupFile <span class="o">app.js</span>
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/path-to-your-app</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name, replace `/path-to-your-app` with your application's code directory path and replace `app.js` with your app's entry point file.
+<% elsif language_type == :meteor %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's code directory is</span>
+    DocumentRoot <span class="o">/path-to-your-app-package</span>/public
+    PassengerAppRoot <span class="o">/path-to-your-app-package</span>
+
+    <span class="c"># Tell Passenger that your app is a bundled Meteor app</span>
+    PassengerAppType node
+    PassengerStartupFile main.js
+
+    <span class="c"># Tell your app where MongoDB is</span>
+    SetEnv MONGO_URL mongodb://localhost:27017/<span class="o">myappdb</span>
+    <span class="c"># Tell your app what its root URL is</span>
+    SetEnv ROOT_URL <span class="o">http://yourserver.com</span>
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/path-to-your-app-package</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name and replace `/path-to-your-app-package` with your application's package directory path. Replace `myappdb` with an appropriate MongoDB database name. Also be sure to set `ROOT_URL` to an appropriate value.
+<% else %>
+  <pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName <span class="o">yourserver.com</span>
+
+    <span class="c"># Tell Apache and Passenger where your app's 'public' directory is</span>
+    DocumentRoot <span class="o">/var/www/myapp/code</span>/public
+
+    <span class="c"># Relax Apache security settings</span>
+    &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
+      Allow from all
+      Options -MultiViews
+      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c">#Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  Replace `yourserver.com` with your server's host name, and replace `/var/www/myapp/code` with your application's code directory path. However, make sure that Apache is configured to point to the `public` subdirectory inside it!
+<% end %>
+
+When you are done, restart Apache:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo apachectl restart</pre>
+
+(Depending on your operating system, the right command may be `apache2ctl` instead of `apachectl`.)
+
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/apache/troubleshooting/index.html" %>).
+
+
+## Deploying an app to a sub-URI or subdirectory
+
+<% if language_type == :nodejs %>
+<div class="note">
+Sub-URI deployments in Node.js require framework-specific adjustments in the application. For example, in Express 4.0+, you should <a href="http://expressjs.com/api#app.mountpath">use a router</a>.
+An alternative is to use url rewriting to avoid the need for sub-URIs altogether.
+</div>
+<% end %>
+You can also deploy an app to a sub-URI instead of the root URI. For example, suppose that you already have a virtual host for the application `/websites/phusion`:
+
+<pre class="highlight">&lt;VirtualHost *:80>
+    ServerName www.phusion.nl
+    DocumentRoot /websites/phusion/public
+    &lt;Directory /websites/phusion&gt;
+        Allow from all
+        Options -MultiViews
+        <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:
+        #Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+And you want your application, located in `/websites/secondapp`, to be accessible from the URL `http://www.phusion.nl/subpath`. To do this, you need to perform the following:
+
+ * Set `Alias {SUBURI} {PATH TO YOUR APPLICATION'S PUBLIC DIRECTORY}`.
+ * Create a `<Location /{SUBURI}> block`.
+ * Inside the Location block, set `PassengerBaseURI /{SUBURI}`.
+ * Inside the Location block, set `PassengerAppRoot {PATH TO YOUR APPLICATION ROOT}`.
+ * Create a `<Directory {PATH TO YOUR APPLICATION PUBLIC SUBDIRECTORY}>` block.
+ * Inside the Directory block, set `Allow from all`, and (if you’re on Apache >= 2.4) `Require all granted`.
+ * Inside the Directory block, disable MultiViews.
+
+Here is an example:
+
+<pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.phusion.nl
+    DocumentRoot /websites/phusion/public
+    &lt;Directory /websites/phusion&gt;
+        Allow from all
+        Options -MultiViews
+        <span class="c"># Uncomment this if you're on Apache >= 2.4:
+        #Require all granted</span>
+    &lt;/Directory&gt;
+
+    <span class="c"># These have been added:</span>
+    Alias <span class="o">/subapp</span> <span class="o">/websites/secondapp</span>/public
+    &lt;Location <span class="o">/subapp</span>&gt;
+        PassengerBaseURI <span class="o">/subapp</span>
+        PassengerAppRoot <span class="o">/websites/secondapp</span>
+
+        <% if language_type == :python %>
+        PassengerAppType wsgi
+        PassengerStartupFile <span class="o">passenger_wsgi.py</span>
+        <% elsif language_type == :nodejs %>
+        PassengerAppType node
+        PassengerStartupFile <span class="o">app.js</span>
+        <% elsif language_type == :meteor %>
+        PassengerAppType node
+        PassengerStartupFile <span class="o">main.js</span>
+        <% end %>
+    &lt;/Location&gt;
+    &lt;Directory <span class="o">/websites/secondapp</span>/public&gt;
+        Allow from all
+        Options -MultiViews
+        <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:
+        #Require all granted</span>
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+When you are done, restart Apache:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo apachectl restart</pre>
+
+(Depending on your operating system, the right command may be `apache2ctl` instead of `apachectl`.)
+
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/apache/troubleshooting/index.html" %>).
+
+<% end %>
+
+<% if integration_mode_type == :standalone %>
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+## Step 1: create a Passenger config file
+
+Since this is a production environment, we need to customize Passenger a little bit. Create a file named `Passengerfile.json` in your application's directory:
+
+<pre class="highlight javascript"><span class="p">{</span>
+<% if language_type == :python -%>
+  <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
+  <span class="c1">// Replace "passenger_wsgi.py" with your app's WSGI entry point file.</span>
+  <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"wsgi"</span><span class="p">,</span>
+  <span class="s2">"startup_file"</span><span class="p">:</span> <span class="o">"passenger_wsgi.py"</span><span class="p">,</span>
+<% elsif language_type == :nodejs -%>
+  <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
+  <span class="c1">// Replace "app.js" with your app's entry point file.</span>
+  <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
+  <span class="s2">"startup_file"</span><span class="p">:</span> <span class="o">"app.js"</span><span class="p">,</span>
+<% elsif language_type == :meteor -%>
+  <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
+  <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"node"</span><span class="p">,</span>
+  <span class="s2">"startup_file"</span><span class="p">:</span> <span class="s2">"main.js"</span><span class="p">,</span>
+  <span class="s2">"envvars"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="c1">// Tell your app where MongoDB is</span>
+    <span class="s2">"MONGO_URL"</span><span class="p">:</span> <span class="s2">"mongodb://localhost:27017/<span class="o">myappdb</span>"</span><span class="p">,</span>
+    <span class="c1">// Tell your app what its root URL is</span>
+    <span class="s2">"ROOT_URL"</span><span class="p">:</span> <span class="s2">"<span class="o">http://yourserver.com</span>"</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="c1">// Store log and PID file somewhere outside the package directory</span>
+  <span class="s2">"log_file"</span><span class="p">:</span> <span class="s2">"<span class="o">../passenger.log</span>"</span>,
+  <span class="s2">"pid_file"</span><span class="p">:</span> <span class="s2">"<span class="o">../passenger.pid</span>"</span>
+<% end -%>
+  <span class="c1">// Run the app in a production environment. The default value is "development".</span>
+  <span class="s2">"environment"</span><span class="p">:</span> <span class="s2">"production"</span><span class="p">,</span>
+  <span class="c1">// Run Passenger on the given port. In this example, we use port 80,</span>
+  <span class="c1">// the standard HTTP port.</span>
+  <span class="s2">"port"</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
+  <span class="c1">// Tell Passenger to daemonize into the background.</span>
+  <span class="s2">"daemonize"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="c1">// Tell Passenger to run the app as the given user. Only has effect</span>
+  <span class="c1">// if Passenger was started with root privileges.</span>
+  <span class="s2">"user"</span><span class="p">:</span> <span class="s2">"<span class="o">myappuser</span>"</span>
+<span class="p">}</span></pre>
+
+In the above configuration example, we instructed Passenger to run on port 80. If you don't already have a server running on port 80, then leave it at 80 so that Passenger listens on the default HTTP port directly (which is safe).
+
+But if you already have a web server running on port 80, then you may be interested in installing Passenger Standalone behind that web server through a reverse proxy. We'll cover that later. For now, specify a random unused port that is not 80.
+
+Also:
+
+ * Replace `myappuser` with the name of the user account that you wish to run your app under.
+<% if language_type == :meteor %>
+ * Replace `myappdb` with an appropriate MongoDB database name.
+ * Set `ROOT_URL` to an appropriate value.
+<% end %>
+
+When you are done with all this, commit this file to version control and transfer it to your server.
+
+
+## Step 2: start Passenger Standalone
+
+While in your application's code directory, start Passenger. As configured, Passenger will daemonize into the background.
+
+The reason why we prefix the command with `sudo` is because, in the Passengerfile.json example, we configured Passenger to listen on port 80. Only root privileged processes can listen on ports lower than 1024. If in the previous step you did not configure port 80, then you do not have to prefix the command with sudo.
+
+<% if language_type == :ruby %>
+  <pre class="highlight"><span class="prompt">$ </span>cd /path-to-your-app
+<span class="prompt">$ </span>sudo <%= passenger_command_prefix(locals) %>passenger start</pre>
+
+  <div class="note">
+    Using RVM? Then use <code>rvmsudo</code> instead of <code>sudo</code>.
+  </div>
+<% else %>
+  <pre class="highlight"><span class="prompt">$ </span>cd /path-to-your-app
+<span class="prompt">$ </span>sudo <%= passenger_command_prefix(locals) %>passenger start</pre>
+<% end %>
+
+
+## Step 3: install reverse proxy (if applicable)
+
+Did you configure Passenger on port 80 in step 1? If so, then you can skip to step 4.
+
+Did you choose to configure Passenger on another port? Then please read [Putting Passenger Standalone behind an Nginx or Apache reverse proxy](<%= url_for "/deploy/standalone/reverse_proxy.html" %>).
+
+
+## Step 4: make sure Passenger Standalone starts on system boot
+
+Passenger is now running and serving your app, but that only lasts until you reboot your server. So you must configure your server to start Passenger Standalone on system boot.
+
+<!-- NOTE: Making /etc/rc.local executable is necessary on Red Hat 7, where it is disabled by default because of the lack of executable bit. -->
+
+The easiest way to do that is to add it to the file `/etc/rc.local`. This script is called during system boot. Ensure that it's executable and open it in a text editor:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo chmod +x /etc/rc.local
+<span class="prompt">$ </span>sudo nano /etc/rc.local</pre>
+
+Here is an example of what you may want to add to `/etc/rc.local`. If there is an `exit` command in rc.local, make sure you add these before the exit command.
+
+<pre class="highlight">
+<span class="c">#!/bin/sh</span>
+<% if locals[:os_config_type] == :tarball %>
+<span class="c"># Since you installed Passenger from tarball, add its `bin` directory to PATH.</span>
+<span class="nb">export</span> <span class="nv">PATH</span>=<span class="o">/path-to-passenger</span>/bin:<span class="nv">$PATH</span>
+
+<% end -%>
+<span class="c"># Change working directory to your webapp.</span>
+<span class="nb">cd</span> /path-to-your-app
+
+<span class="c"># Start Passenger Standalone in daemonized mode. Passenger will be started as
+# root when run from this file, but Passengerfile.json tells it to drop its
+# privileges to a normal user.</span>
+<% if language_type == :ruby -%>
+<%= passenger_command_prefix(locals) %>passenger start</span>
+
+<span class="c"># Or, if you are using RVM, use something like this.
+# Replace '<%= LATEST_RUBY_VERSION %>' with the Ruby version you want your app to run under.
+#/usr/local/rvm/bin/rvm-exec ruby-<%= LATEST_RUBY_VERSION %> \
+#  <%= passenger_command_prefix(locals) %>passenger start</span>
+<% else -%>
+<%= passenger_command_prefix(locals) %>passenger start
+<% end -%>
+</pre>
+
+<% end %>
