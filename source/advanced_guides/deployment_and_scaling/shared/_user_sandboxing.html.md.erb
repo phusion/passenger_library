@@ -1,0 +1,192 @@
+<%
+case integration_mode_type
+when :nginx
+  ref_url = url_for("/config/nginx/reference/index.html")
+  passenger_user_switching = "passenger_user_switching"
+  passenger_user_switching_doc = "#{ref_url}#passenger_user_switching"
+  passenger_default_user = "passenger_default_user"
+  passenger_default_user_doc = "#{ref_url}#passenger_default_user"
+  passenger_default_group = "passenger_default_group"
+  passenger_default_group_doc = "#{ref_url}#passenger_default_group"
+  passenger_user = "passenger_user"
+  passenger_user_doc = "#{ref_url}#passenger_user"
+  passenger_group = "passenger_group"
+  passenger_group_doc = "#{ref_url}#passenger_group"
+  passenger_startup_file_doc = "#{ref_url}#passenger_startup_file"
+  passenger_instance_registry_dir_doc = "#{ref_url}#passenger_instance_registry_dir"
+  passenger_friendly_error_pages = "passenger_friendly_error_pages"
+  passenger_friendly_error_pages_doc = "#{ref_url}#passenger_friendly_error_pages"
+when :apache
+  ref_url = url_for("/config/apache/reference/index.html")
+  passenger_user_switching = "PassengerUserSwitching"
+  passenger_user_switching_doc = "#{ref_url}#passengeruserswitching"
+  passenger_default_user = "PassengerDefaultUser"
+  passenger_default_user_doc = "#{ref_url}#passengerdefaultuser"
+  passenger_default_group = "PassengerDefaultGroup"
+  passenger_default_group_doc = "#{ref_url}#passengerdefaultgroup"
+  passenger_user = "PassengerUser"
+  passenger_user_doc = "#{ref_url}#passengeruser"
+  passenger_group = "PassengerGroup"
+  passenger_group_doc = "#{ref_url}#passengergroup"
+  passenger_startup_file_doc = "#{ref_url}#passengerstartupfile"
+  passenger_instance_registry_dir_doc = "#{ref_url}#passengerinstanceregistrydir"
+  passenger_friendly_error_pages = "PassengerFriendlyErrorPages"
+  passenger_friendly_error_pages_doc = "#{ref_url}#passengerfriendlyerrorpages"
+end
+%>
+
+<h1>Sandboxing apps with Unix user accounts (user switching)</h1>
+
+When running web applications with Passenger, we recommend that you make use of the *user account sandboxing* feature, also known as *user switching*. This means (if you run multiple applications on a server) running each application under its own operating system user account, instead of running them all as the same user. Doing so improves the overall security of the system.
+
+To better understand the problem, let us consider the situation with PHP. There is a problem that plagues most PHP web hosts, namely the fact that all PHP applications are run in the same user context as the web server. So for example, Joe's PHP application will be able to read Jane's PHP application's passwords. This is obviously undesirable on many servers.
+
+Passenger's user account sandboxing feature solves this problem. This feature makes it very easy to run each application as its own operating system user. Assuming that you have correctly secured your files with the right filesystem permissions, user account sandboxing stops or limits the impact of certain classes of vulnerabilities. Going back to our example, if Joe's application has been hijacked through a vulnerability (or is intentionally malicious), then it won't be able to access Jane's passwords, assuming that Jane has secured her password files with the right permissions.
+
+<% if integration_mode_type == :nginx || integration_mode_type == :apache  %>
+<!-- ****** Nginx, Apache ****** -->
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## How it works
+
+If the user account sandboxing feature is enabled, Passenger will need to know what user / group to run the application as. This is determined as follows:
+
+  1. Passenger tries to set the user and group name that you specify in [<%= passenger_user %>](<%= passenger_user_doc %>) and [<%= passenger_group %>](<%= passenger_group_doc %>).
+
+  2. If the options above are not specified, Passenger tries to autodetect by looking at the owner of the application's "[startup file](<%= passenger_startup_file_doc %>)".
+
+  3. If autodetection fails, or if the owner of the startup file is the `root` user, Passenger will set the user and group name specified in [<%= passenger_default_user %>](<%= passenger_default_user_doc %>) and [<%= passenger_default_group %>](<%= passenger_default_group_doc %>) instead (default: `nobody`).
+
+<div class="warning">
+Don't rely on autodetection if users are untrusted (e.g. shared hosting). If a user somehow manages to specify a startup file that is owned by another user, Passenger will launch the startup file as that other user (it cannot check whether this is an allowed user or not).
+</div>
+
+## When is user account sandboxing enabled?
+
+### Not using Flying Passenger
+
+In most installations user account sandboxing is already enabled. Assuming you are not using [the Flying Passenger mode](flying_passenger.html) (this is probably the case), the following table shows the exceptions:
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th><%= passenger_user_switching %> on (default)<br></th>
+      <th><%= passenger_user_switching %> off<br><br></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Web server has root privileges</th>
+      <td>User account sandboxing enabled.</td>
+      <td>User account sandboxing disabled. Apps are run as <a href="<%= passenger_default_user_doc %>"><%= passenger_default_user %></a> and <a href="<%= passenger_default_group_doc %>"><%= passenger_default_group %></a>.</td>
+    </tr>
+    <tr>
+      <th>Web server has no root privileges</th>
+      <td>User account sandboxing disabled. Apps are run as <%= integration_mode_name %>'s user.</td>
+      <td>User account sandboxing disabled. Apps are run as <%= integration_mode_name %>'s user.</td>
+    </tr>
+  </tbody>
+</table>
+
+### Using Flying Passenger
+
+When using Flying Passenger, the effect is as follows:
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>Daemon run with root privileges</th>
+    <td>User account sandboxing enabled.</td>
+  </tr>
+  <tr>
+    <th>Daemon run without root privileges</th>
+    <td>User account sandboxing disabled. Apps are run as the daemon's user.</td>
+  </tr>
+</table>
+
+## Caveats & troubleshooting
+
+If your application regularly encounters permission errors or fails to find certain files, then this is an indication that your application is started as a user that you did not intent it to be run as. Other symptoms include:
+
+ * The application fails to start because Bundler complains that it cannot find gems. This probably indicates that Bundler does not have read access to the directory that contains Bundler-installed gems.
+ * The application fails to start and its error message mentions the path `/nonexistent`. This probably indicates that your application is started as the `nobody` user. This is because on many systems, the `nobody` user's home directory is `/nonexistent`.
+
+To check whether it is indeed the case that your application is started as a different user than you intended to, see [Finding out what user an application is running as](#finding_out_app_user).
+
+The most likely reason why your application is started as `nobody` is probably because your startup file is owned by `root`, by `nobody` or by an unknown user. To fix this, change the owner of the startup file to the owner that you want to run the application as.
+
+Whatever user your application runs as, it must have read access to the application root, and read/write access to the application's `logs` directory.
+
+## Red Hat and CentOS caveats
+
+<div class="note">
+  This information only applies if you <a href="<%= url_for "/install/#{integration_mode_type}/yum_repo/index.html" %>">installed Passenger through the RPM packages provided by Phusion</a>. If you did not installed Passenger through the RPM packages provided by Phusion, then you can ignore this section.
+</div>
+
+If you installed Passenger through <a href="<%= url_for "/install/#{integration_mode_type}/yum_repo/index.html" %>">Phusion's YUM repository</a>, and you want to disable user account sandboxing, then you must also change [the location of the instance registry directory](<%= passenger_instance_registry_dir_doc %>).
+
+This is because our RPMs configure the default instance registry directory to `/var/run/passenger-instreg`, which is only writable by root. If you disable user switching, then the Passenger processes will run as [<%= passenger_default_user %>](<%= passenger_default_user_doc %>) which (as long as it's not root) won't be able to write to that directory.
+
+Note that any alternative instance registry directory must have the proper SELinux context, allowing the web server to read and write to it. We recommend that you create a directory `/var/lib/passenger-instreg` and give it the label `var_run_t`:
+
+<pre class="highlight"><span class="prompt">$ </span>sudo mkdir /var/lib/passenger-instreg
+<span class="prompt">$ </span>sudo chcon -t var_run_t /var/lib/passenger-instreg</pre>
+
+<% if integration_mode_type == :nginx %>
+  Then, in your Nginx config file:
+
+  <pre class="highlight">passenger_instance_registry_dir /var/lib/passenger-instreg;</pre>
+<% else %>
+  Then, in your Apache config file:
+
+  <pre class="highlight">PassengerInstanceRegistryDir /var/lib/passenger-instreg</pre>
+<% end %>
+
+<h2 id="finding_out_app_user">Finding out what user an application is running as</h2>
+
+To find our what user an application is started as, first access its URL in your browser so that Passenger starts the application. For example:
+
+<pre class="highlight"><span class="prompt">$ </span>curl http://www.example.local/</pre>
+
+The application will now either successfully start or fail to start. If it fails to start then you will see an error page that tells you what user the application was being started as. If you do not see the error page in the browser then set [<%= passenger_friendly_error_pages %>](<%= passenger_friendly_error_pages_doc %>) on.
+
+If the application successfully started, then run `passenger-status` to find the process's PID:
+
+~~~
+---------- General information -----------
+Max pool size : 6
+Processes     : 1
+Requests in top-level queue : 0
+
+---------- Application groups -----------
+/webapps/example.local#default:
+  App root: /webapps/example.local
+  Requests in queue: 0
+  * PID: 16915   Sessions: 0       Processed: 1       Uptime: 2s
+    CPU: 0%      Memory  : 9M      Last used: 2s ago
+~~~
+
+In the above example we see that the PID is 16915. Next, use 'ps' to find out the user that it is running as:
+
+<pre class="highlight"><span class="prompt">$ </span>ps -o pid,user,comm -p 16915
+<span class="output">  PID USER    COMM
+16915 phusion Passenger RackApp: /webapps/example.local</span></pre>
+
+As you can see, the application in this example is being run as user `phusion`.
+
+
+<% else %>
+<!-- ****** Standalone ****** -->
+
+## How it works
+
+Passenger Standalone runs the application as the current user by default. That means if you start Passenger Standalone while logged in as `root`, then Passenger will run your application as `root`.
+
+You can activate Passenger Standalone's user account sandboxing feature by passing `--user` to `passenger start`, or by setting the `user` option in [Passengerfile.json](<%= url_for "/config/standalone/intro.html" %>). Passenger will then run the application as that user.
+
+User account sandboxing is the reason why, in all official Passenger Library documentation, we recommend that you create a new user account for each application.
+
+<% end %>
