@@ -1,0 +1,11 @@
+---
+title: Integrating Action Cable with Passenger
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(INTEGRATION_MODE_NGINX)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+<%= render_partial("../shared/_action_cable_integration", locals: locals) %>
