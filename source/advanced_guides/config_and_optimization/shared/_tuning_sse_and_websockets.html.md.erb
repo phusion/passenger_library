@@ -1,0 +1,114 @@
+<h1>Tuning for Server Sent Events and WebSockets</h1>
+
+<% if integration_mode_type == :apache %>
+<div class="note">Although Passenger supports Server Sent Events (SSE) out of the box, the Apache integration mode has <a href="https://github.com/phusion/passenger/issues/1202">issues with Apache</a>.
+We recommend using either Passenger Standalone with Apache as a reverse proxy, or Passenger with the Nginx integration mode.</div>
+<% end %>
+
+Using SSE with WebSockets generally means that an application must handle multiple concurrent connections. Ruby applications usually can't do this and need a special
+configuration tweak.
+
+## Ruby concurrency tweak
+
+Passenger's highly optimized load balancer assumes that Ruby apps can handle 1 (or thread-limited amount of) concurrent connection(s). This is usually the case and results
+in optimal load-balancing. But endpoints that deal with SSE/Websockets can handle many more concurrent connections, so the assumption leads to degraded performance.
+
+<% if integration_mode_type == :nginx %>
+You can use the [force max concurrent requests per process](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#passenger_force_max_concurrent_requests_per_process)
+configuration option to override this. The example below shows how to set the concurrency to unlimited for /special_websocket_endpoint:
+
+<pre class="highlight">server {
+   listen 80;
+   server_name www.example.com;
+   root /webapps/my_app/public;
+   passenger_enabled on;
+
+   <span class="c"># Use default concurrency for the app. But for the endpoint
+   # /special_websocket_endpoint, force a different concurrency.</span>
+   location <span class="o">/special_websocket_endpoint</span> {
+       passenger_app_group_name <span class="o">foo_websocket</span>;
+       passenger_force_max_concurrent_requests_per_process <span class="o">0</span>;
+   }
+}</pre>
+
+<div class="note">
+In Passenger 5.0.21 and below the option above was not available yet. In those versions there is a workaround for Ruby apps. Enter code below into <code>config.ru</code> to set the concurrency (on the entire app).
+</div>
+~~~ruby
+if defined?(PhusionPassenger)
+  PhusionPassenger.advertised_concurrency_level = 0
+end
+~~~
+
+<% end %>
+
+<% if integration_mode_type == :apache %>
+You can use the [force max concurrent requests per process](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#passenger_force_max_concurrent_requests_per_process)
+configuration option to override this. The example below shows how to set the concurrency to unlimited for /special_websocket_endpoint:
+
+<pre class="highlight">&lt;VirtualHost *:80&gt;
+    ServerName www.example.com
+    DocumentRoot /webapps/my_app/public
+
+    <span class="c"># Use default concurrency for the app. But for the endpoint
+    # /special_websocket_endpoint, force a different concurrency.</span>
+    &lt;Location <span class="o">/special_websocket_endpoint</span>&gt;
+       PassengerAppGroupName <span class="o">foo_websocket</span>
+       PassengerForceMaxConcurrentRequestsPerProcess <span class="o">0</span>
+    &lt;/Location&gt;
+&lt;/VirtualHost&gt;</pre>
+
+<div class="note">
+In Passenger 5.0.21 and below the option above was not available yet. In those versions there is a workaround for Ruby apps. Enter code below into <code>config.ru</code> to set the concurrency (on the entire app).
+</div>
+~~~ruby
+if defined?(PhusionPassenger)
+  PhusionPassenger.advertised_concurrency_level = 0
+end
+~~~
+
+<% end %>
+
+<% if integration_mode_type == :standalone %>
+Starting from version 5.0.25, you can use the [unlimited_concurrency_paths](<%= url_for "/config/#{integration_mode_type}/reference/index.html" %>#--unlimited-concurrency-path-unlimited_concurrency_paths) option to override this. The example below shows how to set the concurrency to unlimited for the /special_websocket_endpoint:
+
+~~~json
+{
+  "unlimited_concurrency_paths": [
+    "/special_websocket_endpoint"
+  ]
+}
+~~~
+
+In version 5.0.22-5.0.24, you can use the [passenger_force_max_concurrent_requests_per_process](<%= url_for "/config/nginx/reference/index.html" %>#passenger_force_max_concurrent_requests_per_process)
+configuration option to override this. It needs to be set through the Nginx configuration template:
+
+<pre class="highlight"><span class="c"># (using Nginx template)</span>
+server {
+   root /webapps/my_app/public;
+
+   <span class="c"># Use default concurrency for the app. But for the endpoint
+   # /special_websocket_endpoint, force a different concurrency.</span>
+   location <span class="o">/special_websocket_endpoint</span> {
+       passenger_app_group_name <span class="o">foo_websocket</span>;
+       passenger_force_max_concurrent_requests_per_process <span class="o">0</span>;
+   }
+}</pre>
+
+In Passenger 5.0.21 and below, none of the above options were available yet. In those versions you had to work around it by entering code below into <code>config.ru</code> to set the concurrency (on the entire app):
+
+~~~ruby
+if defined?(PhusionPassenger)
+  PhusionPassenger.advertised_concurrency_level = 0
+end
+~~~
+
+<% end %>
+
+## Action Cable integration
+
+Are you using Ruby on Rails with Action Cable? Please refer to our [Action Cable integration guide](<%= url_for "/config/#{integration_mode_type}/action_cable_integration/index.html" %>).
+
+## Demo apps
+
+You can find Passenger SSE and WebSocket demo apps on [the Passenger documentation overview page](https://www.phusionpassenger.com/documentation_and_support), under section "Demos".
