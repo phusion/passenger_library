@@ -1,0 +1,12 @@
+---
+title: Dynamic scaling of application processes vs fixed process pool
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(LANG_METEOR)
+  locals = locals.merge(INTEGRATION_MODE_APACHE)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+<%= render_partial("../../../shared/_dynamic_scaling_vs_fixed_app_processes.html.md.erb", locals: locals) %>
