@@ -27,8 +27,12 @@ include DeploymentWalkthroughHelpers
 # proxy "/this-page-has-no-template.html", "/template-file.html", :locals => {
 #  :which_fake_page => "Rendering a fake page with a local variable" }
 
-proxy "/tutorials/deploy_to_production/launch_server/enterprise/digital_ocean/index.html",
-      "/tutorials/deploy_to_production/launch_server/oss/digital_ocean/index.html"
+[:oss, :enterprise].each do |edition|
+  [:digital_ocean,:aws].each do |platform|
+    proxy "/tutorials/deploy_to_production/launch_server/#{edition}/#{platform}/index.html",
+          "/tutorials/deploy_to_production/launch_server/shared/#{platform}/index.html"
+  end
+end
 
 [:oss, :enterprise].each do |edition|
   [:digital_ocean,:ownserver,:aws].each do |platform|
