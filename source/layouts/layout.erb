@@ -125,6 +125,8 @@ end
               <%= partial "/shared/references_nav" %>
             <% elsif current_page.data.advanced_guides %>
               <%= partial "/shared/advanced_guides_nav" %>
+            <% elsif current_page.data.deploy_walkthrough %>
+              <%= partial "/shared/deploy_walkthrough_nav" %>
             <% else %>
               <%= partial "/shared/tutorials_nav" %>
             <% end %>
