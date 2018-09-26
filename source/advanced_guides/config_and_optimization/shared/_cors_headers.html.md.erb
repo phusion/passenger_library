@@ -1,0 +1,81 @@
+<h1>CORS headers</h1>
+
+When using certain assets, for example web fonts, or making [ajax](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) or [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) requests browsers enforce the [same origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy). This means that the request must be to the same domain as the page that requested it. This is done for security and copyright reasons, however browser makers understand that there are situations where cross origin requests are desirable so they provide a mechanism for whitelisting domains which are allowed to access a resource on your server. This is the purpose of the CORS header, to specify to browsers that it is ok for them to make requests to a remote domain. You can read more on the topic on [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS).
+
+In this document we will be describing how to configure <%= integration_mode_web_server_name %> to allow cross origin requests to static assets, as headers for dynamic assets are controlled by your app.
+
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+## Conceptual overview
+
+The setup works as follows:
+
+ 1. <%= integration_mode_web_server_name %> is configured to serve static assets.
+ 2. <%= integration_mode_web_server_name %> is configured to add a header allowing specific domains when serving specific assets.
+ 3. The client browser receives a permissive header when requesting the assets.
+
+## Step 1: Configure <%= integration_mode_web_server_name %> to serve your static files:
+
+Ensure you have your web server configured to serve your static files.
+
+    <% if integration_mode_type == :nginx -%>
+    root /path/to/your/app/public;
+    <% elsif integration_mode_type == :apache -%>
+    DocumentRoot /path/to/your/app/public
+    <% else -%>
+In <%= integration_mode_name %> mode this is only nessesary if your static assets are not in a subdirectory named `public`.
+
+    --static-files-dir /path/to/your/app/static
+
+Then restart <%= integration_mode_web_server_name %>.
+    <% end -%>
+
+## Step 2: Configure <%= integration_mode_web_server_name %> to send CORS headers.
+
+You will need to know the domain from which the requests will be coming. If you have no way of knowing you can allow all domains by using `"*"` but this should be avoided if at all possible. What the example configuration below does is matches common font extensions and adds the CORS headers to only those requests. It is a best practice to limit CORS headers to only those requests for which they are needed.
+
+<% if integration_mode_type == :nginx -%>
+    if ($request_filename ~ "^.+(eot|svg|ttf|otf|woff2|woff)$") {
+        add_header "Access-Control-Allow-Origin" "https://other.domain.tld";
+        add_header "Access-Control-Allow-Methods" "POST, GET, OPTIONS";
+    }
+
+Then restart <%= integration_mode_web_server_name %>.
+<% elsif integration_mode_type == :apache -%>
+    <FilesMatch "^.+(eot|svg|ttf|otf|woff2|woff)$">
+        Header set "Access-Control-Allow-Origin" "https://other.domain.tld"
+        Header set "Access-Control-Allow-Methods" "POST, GET, OPTIONS"
+    </FilesMatch>
+
+Then restart <%= integration_mode_web_server_name %>.
+<% else -%>
+Make a copy of the Nginx template config file.
+
+`cp $(passenger-config about resourcesdir)/templates/standalone/config.erb ./nginx.conf.erb`
+
+Edit the Nginx template config file to set the headers.
+
+    ### BEGIN your own configuration options ###
+    # This is a good place to put your own config
+    # options. Note that your options must not
+    # conflict with the ones Passenger already sets.
+    # Learn more at:
+    # https://www.phusionpassenger.com/library/config/standalone/intro.html#nginx-configuration-template
+        if ($request_filename ~ "^.+(eot|svg|ttf|otf|woff2|woff)$") {
+            add_header "Access-Control-Allow-Origin" "https://other.domain.tld";
+            add_header "Access-Control-Allow-Methods" "POST, GET, OPTIONS";
+        }
+    ### END your own configuration options ###
+
+Then start <%= integration_mode_web_server_name %>.
+
+`passenger start --nginx-config-template ./nginx.conf.erb`
+<% end -%>
+
+## Step 3: testing
+
+You should now be able to run something like the following command, using a url valid to your site to confirm the header is set.
+
+`curl -s -I https://original.domain.tld/fonts/myFont.woff | fgrep Access`
