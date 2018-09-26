@@ -1,0 +1,39 @@
+---
+title: Installing Passenger Enterprise
+section: deploy_walkthrough
+comments: false
+---
+
+<h1>Deployment: installations</h1>
+
+<p>Before deploying your app you have to make sure that Python and Passenger Enterprise are installed.</p>
+
+<h2>Did you already install Python?</h2>
+<div id="yes-no-radio">
+  <input type="radio" id="yes" value="yes"><label for="yes"><span class="radio">Yes</span></label>
+  <input type="radio" id="no" value="no"><label for="no"><span class="radio">No</span></label>
+</div>
+<%= render_partial('/tutorials/deploy_to_production/shared/python', locals: {language_type: :python}) %>
+
+<h2>Installing Passenger Enterprise + <%= render_partial('/shared/integration') %> on a <%= render_partial('/tutorials/deploy_to_production/shared/platform') %> production server</h2>
+
+<p>
+  Now it is time to install Passenger Enterprise. Please start by selecting the operating system that your server is running on, or an installation method that you prefer.
+</p>
+
+<%= render_partial("/tutorials/deploy_to_production/shared/os_selector") %>
+
+<div class="install_os install_os_osx">
+  <%= render_partial('/tutorials/deploy_to_production/shared/osx', locals: {edition_type: :enterprise, integration_mode_type: :standalone}) %>
+</div>
+<div class="install_os install_os_debian">
+  <%= render_partial('/tutorials/deploy_to_production/shared/debian', locals: {integration_mode_type: :standalone, edition_type: :enterprise, web_server_name: 'Passenger Standalone'}) %>
+</div>
+<div class="install_os install_os_redhat">
+  <%= render_partial('/tutorials/deploy_to_production/shared/redhat', locals: {edition_type: :enterprise, integration_mode_type: :standalone, web_server_name: 'Passenger Standalone'}) %>
+</div>
+
+<div id="next-step">
+  <h2>Next step: Deploying your app</h2>
+  <a class="dark-button" href="/tutorials/deploy_to_production/deploying_your_app/enterprise/heroku/python/standalone/">Continue</a>
+</div>
