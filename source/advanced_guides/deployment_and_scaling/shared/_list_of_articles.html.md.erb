@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-md-6">
+    <h3>Basic deployment</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="deploy/">Deploying an application</a></li>
+      <li><a href="user_sandboxing.html">Sandboxing apps with Unix user accounts (user switching)</a></li>
+      <li><a href="prod_ssl.html">Using SSL with Passenger in production</a></li>
+      <li><a href="<%= url_for "/deploy/standalone/proxy_ssl.html" %>">Using an SSL terminating reverse proxy with Passenger Standalone</a></li>
+    </ul>
+  </div>
+
+  <div class="col-md-6">
+    <h3>Advanced deployment</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="automating_app_updates/">Automating deployments of application updates</a></li>
+      <li><a href="zero_downtime_redeployments/">Zero-downtime app updates and restarts</a></li>
+      <% if integration_mode_type != :standalone %>
+        <li><a href="flying_passenger.html">Zero-downtime web server restarts with Flying Passenger Enterprise</a></li>
+      <% end %>
+      <li><a href="deployment_error_resistance.html">Deployment error resistance</a></li>
+      <% if integration_mode_type == :standalone %>
+        <li><a href="mass_deployment.html">Mass deployment</a></li>
+        <li><a href="reverse_proxy.html">Putting Passenger Standalone behind an Nginx or Apache reverse proxy</a></li>
+      <% end %>
+      <li><a href="<%= url_for "/deploy/docker.html" %>">Docker support</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h3>Scaling and high availability</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="../scaling_ha_overview.html">Overview</a></li>
+    </ul>
+  </div>
+
+  <div class="col-md-6">
+    <h3>Tips</h3>
+
+    <ul class="list-unstyled list-links">
+      <li><a href="../config_ru.html">Sample config.ru for various Ruby web frameworks</a></li>
+      <li><a href="../wsgi_spec.html">Sample passenger_wsgi.py for Django</a></li>
+    </ul>
+  </div>
+
+</div>
