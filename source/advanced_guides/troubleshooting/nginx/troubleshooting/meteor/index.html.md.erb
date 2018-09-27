@@ -1,0 +1,12 @@
+---
+title: Troubleshooting
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(LANG_METEOR)
+  locals = locals.merge(INTEGRATION_MODE_NGINX)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+<%= render_partial("../../../shared/_troubleshooting", locals: locals) %>
