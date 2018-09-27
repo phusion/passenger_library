@@ -1,0 +1,59 @@
+<h1>Sending HTTP requests to individual application processes</h1>
+
+<div class="note">
+  This feature is currently available for Ruby apps only.
+</div>
+
+<% if integration_mode_type == :nginx || integration_mode_type == :apache -%>
+When a request is sent to <%= integration_mode_name %>,
+<% else -%>
+When a request is sent to Passenger,
+<% end -%>
+Passenger will automatically forward the request to the most suitable application process as part of its [load balancing mechanism](<%= url_for "/indepth/request_load_balancing/index.html" %>). But sometimes it is desirable to be able to directly access the individual application processes. Use cases include, but are not limited to:
+
+ * You want to debug a memory leak or memory bloat problem that only seems to appear on certain URIs. One can send a request to a specific process to see whether that request causes the process's memory usage to rise.
+ * You want to perform a health check on all application processes.
+ * The application caches data in local memory, and you want to tell a specific application process to clear that local data.
+ * Other debugging use cases.
+
+All individual application processes are accessible via HTTP over a per-process, private, localhost-only address. You can use standard HTTP tools like `curl` to access them. The exact addresses can be obtained with the command `passenger-status --verbose`.
+
+These sockets are all bound to 127.0.0.1, but the port number is dynamically assigned. As a security measure, the sockets are also protected with a process-specific random password, which you can see in the `passenger-status --verbose` output. This password must be sent through the `X-Passenger-Connect-Password` HTTP header.
+
+Example:
+
+<pre class="highlight"><span class="prompt"># </span>passenger-status --verbose
+<span class="output">Version : 5.0.13
+Date    : 2015-07-07 13:02:48 +0200
+Instance: jyAJC5iv (nginx/1.8.0 Phusion_Passenger/5.0.13)
+
+----------- General information -----------
+Max pool size : 9
+App groups    : 7
+Processes     : 6
+Requests in top-level queue : 0
+
+----------- Application groups -----------
+/var/www/passenger_status_service/current/public:
+  App root: /var/www/passenger_status_service/current
+  Requests in queue: 0
+  * PID: 20387   Sessions: 0       Processed: 68369   Uptime: 6h 37m 40s
+    CPU: 3%      Memory  : 110M    Last used: 0s ago
+    URL     : http://127.0.0.1:41823
+    Password: bsWLW5KjthaYwQyd
+  * PID: 20394   Sessions: 0       Processed: 38432   Uptime: 6h 37m 30s
+    CPU: 3%      Memory  : 109M    Last used: 4s ago
+    URL     : http://127.0.0.1:41825
+    Password: sjewUSwksSAdoUeP</span>
+
+...</span></pre>
+
+Here we see that the web application 'phusion_blog' has two processes.
+
+ * Process 20387 is accessible via http://127.0.0.1:41823/.
+ * process 20394 is accessible via http://127.0.0.1:41825/.
+
+To access 20387 we must send its password, `bsWLW5KjthaYwQyd`, through the `X-Passenger-Connect-Password` HTTP header, like this:
+
+<pre class="highlight"><span class="prompt">$ </span>curl -H "X-Passenger-Connect-Password: bsWLW5KjthaYwQyd" http://127.0.0.1:41823/
+<span class="output">...</span></pre>

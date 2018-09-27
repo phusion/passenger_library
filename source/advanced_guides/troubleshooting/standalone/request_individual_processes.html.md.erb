@@ -1,0 +1,11 @@
+---
+title: Sending HTTP requests to individual application processes
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(INTEGRATION_MODE_STANDALONE)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+<%= render_partial("../shared/_request_individual_processes", locals: locals) %>
