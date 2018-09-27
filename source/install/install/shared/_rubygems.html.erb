@@ -27,7 +27,7 @@
 
   <div class="note">
     Did <code>gem install</code> abort with a "permission denied" error? Then re-run it with
-    <% if os_config_type == :rubygems_rvm %>
+    <% if rvm %>
       <code>rvmsudo</code>.
 
       <p>
@@ -48,7 +48,7 @@
 
   <div class="note">
     Did any of the previous commands abort with a "permission denied" error? Then re-run that command with
-    <% if os_config_type == :rubygems_rvm %>
+    <% if rvm %>
       <code>rvmsudo</code>.
 
       <p>
@@ -91,7 +91,7 @@
 <h3>Step <%= step %>: validate installation</h3>
 <%= render_partial("/install/install/shared/postinstall_check",
       locals: locals.merge(apache_process_name: "apache2",
-      sudo: os_config_type == :rubygems_rvm ? "rvmsudo" : "sudo")) %>
+      sudo: rvm ? "rvmsudo" : "sudo")) %>
 
 <% if integration_mode_type == :nginx %>
   <h2 id="using_nginx">Using Nginx</h2>
@@ -99,7 +99,7 @@
 <% end %>
 
 <h2>FAQ</h2>
-<% if os_config_type == :rubygems_rvm %>
+<% if rvm %>
   <h3>I have multiple Ruby versions or gemsets. Does it matter which one I use to install Passenger with?</h3>
   <p>
     Not really. Passenger doesn't care which Ruby you used to install it; it can still serve Ruby apps with any Ruby version, as long as you tell Passenger which Ruby interpreter you want to use.

@@ -22,17 +22,8 @@ deploy_walkthrough:
   Now it is time to install Passenger. Please start by selecting the operating system that your server is running on, or an installation method that you prefer.
 </p>
 
-<%= render_partial("/tutorials/deploy_to_production/shared/os_selector") %>
-
-<div class="install_os install_os_osx">
-  <%= render_partial('/tutorials/deploy_to_production/shared/osx', locals: {edition_type: :oss, integration_mode_type: :standalone}) %>
-</div>
-<div class="install_os install_os_debian">
-  <%= render_partial('/tutorials/deploy_to_production/shared/debian', locals: {integration_mode_type: :standalone, edition_type: :oss, web_server_name: 'Passenger Standalone'}) %>
-</div>
-<div class="install_os install_os_redhat">
-  <%= render_partial('/tutorials/deploy_to_production/shared/redhat', locals: {edition_type: :oss, integration_mode_type: :standalone, web_server_name: 'Passenger Standalone'}) %>
-</div>
+<% locals = {integration_mode_type: :standalone, edition_type: :oss, web_server_name: 'Passenger Standalone'} %>
+<%= render_partial("/tutorials/deploy_to_production/shared/install", locals: locals) %>
 
 <div id="next-step">
   <h2>Next step: Deploying your app</h2>

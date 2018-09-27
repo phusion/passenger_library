@@ -1,0 +1,22 @@
+<%= render_partial("/tutorials/deploy_to_production/shared/os_selector") %>
+
+<div class="install_os install_os_osx">
+  <%= render_partial('/tutorials/deploy_to_production/shared/osx', locals: locals) %>
+</div>
+<div class="install_os install_os_debian">
+  <%= render_partial('/tutorials/deploy_to_production/shared/debian', locals: locals) %>
+</div>
+<div class="install_os install_os_redhat">
+  <%= render_partial('/tutorials/deploy_to_production/shared/redhat', locals: locals) %>
+</div>
+<div class="install_os install_os_other">
+  <div class="generic_install generic_install_rubygems_rvm">
+    <%= render_partial("/install/install/shared/_rubygems", locals: locals.merge(id_prefix: "rubygems_rvm_", class_suffix: "_rvm", rvm: true)) %>
+  </div>
+  <div class="generic_install generic_install_rubygems_norvm">
+    <%= render_partial("/install/install/shared/_rubygems", locals: locals.merge(id_prefix: "rubygems_norvm_", class_suffix: "_norvm", rvm: false)) %>
+  </div>
+  <div class="generic_install generic_install_tarball">
+    <%= render_partial("/install/install/shared/_tarball", locals: locals.merge(id_prefix: "tarball_")) %>
+  </div>
+</div>
