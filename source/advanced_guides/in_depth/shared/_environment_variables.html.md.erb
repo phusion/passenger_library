@@ -1,0 +1,259 @@
+# About environment variables
+
+Environment variables are named values that affect how the system works. For example they tell the system where to look for commands (the `PATH` variable) or where to look for libraries (`LD_LIBRARY_PATH`). Their names are often in all-uppercase. Sometimes people refer to an environment variable with a dollar sign `$` in front, but that's the same thing: when people say "the $PATH environment variable" they mean "the PATH environment variable". This is because the dollar sign `$` is a shell syntax for refering to an environment variable, as you will learn later.
+
+Environment variables are set on a **per-process** basis, but they are **inherited** by child processes. This means that if you set environment variables in process A, another already running process B will not see these new environment variables. But if A spawns a child process C, then C will have all environment variables that A had. If you once again change the environment variables in A, then C will not see the changes.
+
+The per-process nature of environment variables some implications. When you set environment variables in your `bashrc` or other bash startup files...
+
+ * ...only newly spawned bash shells see them.
+ * ...the web server usually does not see them, because the web server tends to be started from init scripts, not from bash.
+ * ...cron jobs do not see them, because cron jobs' environment variables are entirely dictated by their crontabs.
+
+<div class="note">
+  Because this chapter is meant for beginners, it assumes that the reader uses the bash shell. This chapter does not describe instructions for zsh, csh or other shells. We assume that users of other shells are familiar with the Bourne shell syntax, and know how to apply the instructions in this chapter in their shells' native syntaxes.
+</div>
+
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+## Working with environment variables
+
+You can see all environment variables in your shell by running the following command:
+
+<pre class="highlight"><span class="prompt">$ </span>env</pre>
+
+You can set an environment variable with the syntax `export <NAME>=<VALUE>`. For example, to set the `APXS2` variable to the value `/usr/sbin/apxs2`:
+
+<pre class="highlight"><span class="prompt">$ </span>export APXS2=/usr/sbin/apxs2</pre>
+
+Any process that you run from your shell from that point on will have said environment variable:
+
+<pre class="highlight"><span class="prompt">$ </span>export APXS2=/usr/sbin/apxs2
+<span class="prompt">$ </span>ruby -e <span class="s">'p ENV["APXS2"]'</span>
+<span class="output">/usr/sbin/apxs2</span></pre>
+
+<div class="note">
+  <h3 class="notoc">The "export" keyword is important</h3>
+
+  <p>
+    You <strong>must</strong> set the <code>export</code> keyword. If you omit the <code>export</code> keyword then the environment variable will not be visible to other processes:
+  </p>
+
+  <pre class="highlight"><span class="prompt">$ </span>APXS2=/usr/sbin/apxs2
+<span class="prompt">$ </span>ruby -e <span class="s">'p ENV["APXS2"]'</span>
+<span class="output">nil</span></pre>
+</div>
+
+You can reference an environment variable in your shell by typing the <code>$</code> sign followed by the environment variable's name. For example, to see the value of the <code>PATH</code> variable:
+
+<pre class="highlight"><span class="prompt">$ </span>echo $PATH</pre>
+
+You can also use this trick to extend the value of an environment variable:
+
+<pre class="highlight"><span class="prompt">$ </span>export PATH=/usr/bin
+
+<span class="c"># Prepends '/opt/local/bin', so that it becomes /opt/local/bin:/usr/bin</span>
+<span class="prompt">$ </span>export PATH=/opt/local/bin:$PATH
+<span class="c"># Appends '/usr/local/bin', so that it becomes /opt/local/bin:/usr/bin:/usr/local/bin</span>
+<span class="prompt">$ </span>export PATH=$PATH:/usr/local/bin
+</pre>
+
+## The PATH environment variable
+
+The `PATH` environment variable dictates where the system looks for command. It is a colon-separated list of directories. If you get a "command not found" error while you know that the command is installed, then setting `PATH` will help. For example suppose that the command `frobnicator` is in `/opt/local/bin`:
+
+<pre class="highlight"><span class="prompt">user@localhost bash$ </span>frobnicator
+<span class="output">bash: frobnicator: command not found</span></pre>
+
+We verify that `/opt/local/bin` is not in `PATH`:
+
+<pre class="highlight"><span class="prompt">user@localhost bash$ </span>echo $PATH
+<span class="output">/bin:/usr/bin:/usr/local/bin</span></pre>
+
+We can run `frobnicator` through it's full path...
+
+<pre class="highlight"><span class="prompt">user@localhost bash$ </span>/opt/local/bin/frobnicator
+<span class="output">=&gt; success!</span></pre>
+
+...or we can add `/opt/local/bin` to `PATH`.
+
+<pre class="highlight"><span class="prompt">user@localhost bash$ </span>export PATH=$PATH:/opt/local/bin
+<span class="prompt">user@localhost bash$ </span>frobnicator
+<span class="output">=&gt; success!</span></pre>
+
+### Adding Passenger's administration tools to PATH
+
+If you get a "command not found" error when invoking one of the Passenger administration tools (e.g. `passenger-status` or `passenger-memory-stats` then that means the tools are not in `PATH`, so you need to add them.
+
+ * If you installed Passenger with RubyGems, then the tools are in your RubyGems executable path. You can view the gem path using the command `gem env`:
+
+   <pre class="highlight"><span class="output">$ </span>gem env
+<span class="output">RubyGems Environment:
+     - RUBYGEMS VERSION: 2.2.1
+     - RUBY VERSION: 1.9.3 (2014-05-14 patchlevel 547) [x86_64-darwin13.4.0]
+     - INSTALLATION DIRECTORY: /Users/hongli/.rvm/gems/ruby-1.9.3-p547
+     - RUBY EXECUTABLE: /Users/hongli/.rvm/rubies/ruby-1.9.3-p547/bin/ruby
+     - EXECUTABLE DIRECTORY: /Users/hongli/.rvm/gems/ruby-1.9.3-p547/bin  <span class="label label-warn">!!</span>
+     - RUBYGEMS PLATFORMS:
+       - ruby
+       - x86-darwin-10
+     - GEM PATHS:
+        - /opt/ruby-enterprise-1.8.7-2010.01/lib/ruby/gems/1.8
+        - /Users/hongli/.gem/ruby/1.8
+     - GEM CONFIGURATION:
+        - :update_sources => true
+        - :verbose => true
+        - :benchmark => false
+        - :backtrace => false
+        - :bulk_threshold => 1000
+        - "gem" => "--no-ri --no-rdoc"
+     - REMOTE SOURCES:
+        - http://rubygems.org/</span></pre>
+
+   As you can see, the RubyGems executable path in the example happens to be `/opt/ruby-enterprise-1.8.7-2010.01/bin`. So that directory must be added to `PATH`.
+
+ * If you installed Passenger using the tarball, then the tools are in the `bin` subdirectory of the Passenger tarball directory that you extracted. For example, if you extracted `passenger-5.0.0.tar.gz` inside `/opt`, then the tools are located in `/opt/passenger-5.0.0/bin`. In that case, you need to add `/opt/passenger-5.0.0/bin` to your `PATH`.
+ * If you installed Passenger through [APT](<%= url_for "/install/apt_repo/index.html" %>) or [YUM](<%= url_for "/install/yum_repo/index.html" %>), then some Passenger administration tools are in `/usr/bin`, while others are in `/usr/sbin`. If you are not logged in as root, then `/usr/sbin` may not be in `PATH`, which would explain why you get a "command not found" when trying to invoke some of the tools. You should add `/usr/sbin` to `PATH`.
+ * If you are unsure where your Passenger directory is then you can use the `find` command to look them up. Go to the root directory and invoke `find` with `sudo`:
+
+   <pre class="highlight"><span class="prompt">$ </span>cd /
+<span class="prompt">$ </span>sudo find . -name passenger-status
+<span class="output">/usr/local/passenger/bin/passenger-status</span></pre>
+
+   In this example, the administration tools happen to be in `/usr/local/passenger/bin`, so you must add that to `PATH`.
+
+<div class="note">
+  You may still get a "command not found" when invoking the tools through sudo, even after you've added the relevant directory to <code>PATH</code>. Please read <a href="#environment-variables-and-sudo">Environment variables and sudo</a> to learn more.
+</div>
+
+## Making environment variables permanent
+
+When you exit your shell, the environment variable changes are lost. There is no standard method to set environment variables system-wide, so you have to set them in different configuration files for different services.
+
+### bash
+
+To make environment variables permanent for future bash sessions **for the current user**, add them to your `~/.bashrc`:
+
+<pre class="highlight"><span class="prompt">$ </span>echo 'export FOO=bar' >> ~/.bashrc
+<span class="prompt">$ </span>echo 'export PATH=/usr/local/bin:$PATH' >> ~/.bashrc</pre>
+
+To make them permanent for future bash sessions **for all users**, add them to `/etc/bashrc`.
+
+<div class="note">
+  Depending on the system, the bashrc file may have a different filename. On Debian and Ubuntu, it's <code>/etc/bash.bashrc</code>.
+</div>
+
+<div class="note">
+  Make sure your <code>~/.bashrc</code> is actually included by your <code>~/.profile</code>, which might not be the case if you created the user with <code>useradd</code> instead of <code>adduser</code> for example
+</div>
+
+### Apache
+
+<div class="note">
+  This subsection describes how to set environment variables on Apache itself, not on apps served through Passenger for Apache. The environment variables you set here will be passed to all apps, but you cannot customize them on a per-app basis. See also <a href="#passenger-served-apps">Setting environment variables on Passenger-served apps</a>.
+</div>
+
+On Debian and Ubuntu, with an Apache installed through apt, Apache environment variables are defined in the file `/etc/apache2/envvars`. This is a shell script so environment variables must be specified with the shell syntax.
+
+On Red Hat, Fedora, CentOS and ScientificLinux, with an Apache installed through YUM, Apache environment variables are defined in `/etc/sysconfig/httpd`.
+
+On macOS they are defined in `/usr/sbin/envvars` and `/System/Library/LaunchDaemons/org.apache.httpd.plist`, as explained [here on Stack Overflow](http://stackoverflow.com/questions/6833939/path-environment-variable-for-apache2-on-mac). As of macOS 10.11 you must temporarily disable SIP to edit these files as explained [here on Stack Overflow](http://stackoverflow.com/questions/30768087/restricted-folder-files-in-os-x-el-capitan).
+
+On other systems, or if you did not install Apache through the system's package manager, the configuration file for environment variables is specific to the vendor that supplied Apache. There may not even be such a configuration file. You should contact the vendor for support.
+
+### Nginx
+
+<div class="note">
+  This subsection describes how to set environment variables on Nginx itself, not on apps served through Passenger for Nginx. The environment variables you set here will be passed to all apps, but you cannot customize them on a per-app basis. See also <a href="#passenger-served-apps">Setting environment variables on Passenger-served apps</a>.
+</div>
+
+If you installed Nginx through [the Debian or Ubuntu packages](<%= url_for "/install/apt_repo/index.html" %>), then you can define environment variables in `/etc/default/nginx`. This is a shell script so you must use the `export FOO=bar` syntax.
+
+Otherwise, environment variables are best set through the script which starts Nginx. For example, if you installed Nginx from source and you used [the Nginx init script described here](<%= url_for "/install/nginx/nginx_init_script.html" %>) then you should edit that script to define the environment variables. Those init scripts are regular shell scripts, so use the `export FOO=bar` syntax. Just make sure your set your environment variables before the script starts Nginx.
+<div class="note">
+  Setting environment variables on Nginx has no effect on <a href="<%= url_for "/deploy/nginx/flying_passenger.html" %>">the Flying Passenger daemon</a> because the daemon is started seperately. You should set the environment variables in the shell right before starting the daemon.
+</div>
+
+### cron
+
+To make environment variables permanent for cron jobs, add those variables to the relevant crontab. But note that inside crontabs you cannot refer to existing environment variables with the `$` syntax because crontabs are not shell scripts. You have to specify the entire value.
+
+~~~bash
+# Environment variable definitions
+FOO=bar
+APXS2=/usr/sbin/apxs2
+
+# **WRONG!** You cannot refer to existing variables with the `$` syntax!
+PATH=/usr/bin:$PATH
+# **WRONG!** You cannot use the 'export' keyword!
+export PATH=/usr/bin:/usr/local/bin
+# Correct:
+PATH=/usr/bin:/usr/local/bin
+
+# Jobs:
+# m h  dom mon dow   command
+  * *  *   *   *     frobnicator
+~~~
+
+### Passenger-served apps
+
+You can pass environment variables to Passenger-served apps through various methods:
+
+ * When using Passenger + Apache, use the `PassEnv` and `SetEnv` options of [mod_env](http://httpd.apache.org/docs/2.4/mod/mod_env.html). This is supported starting from Passenger 4.0.
+ * When using Passenger + Nginx, use the [passenger_env_var](<%= url_for("/config/nginx/reference/index.html") %>#passenger_env_var) option.
+ * When using Passenger Standalone, use the [`--envvar` / "envvars"](<%= url_for("/config/standalone/reference/index.html") %>#--envvar-envvars) option.
+ * Through your `bashrc`. Starting from version 4.0, Passenger 4.0 spawns applications through bash and inherit all bash environment variables. Passenger Standalone tends to be started from the shell and thus inherits all environment variables set by the shell.
+ * Through Apache and Nginx, as described earlier in this chapter. Any environment variables that you set on Apache and Nginx itself are inherited by Passenger, and thus by Passenger-served apps as well.
+ * Through the application itself. Most programming languages provide APIs for setting environment variables. For example in Ruby you can write:
+
+   ~~~ruby
+   ENV['FOO'] = 'bar'
+   ~~~
+
+   In Python you can write:
+
+   ~~~python
+   import os
+   os.environ['FOO'] = 'bar'
+   ~~~
+
+## Environment variables and sudo
+
+<div class="note">
+  RVM users should always use the <code>rvmsudo</code> command instead of <code>sudo</code>. However all information in this section applies to <code>rvmsudo</code> as well.
+</div>
+
+The `sudo` command resets all environment variables before running the specified command. This is done for security reasons. This means that if you set environment variables before running `sudo passenger-install-xxx-module`, `sudo passenger-status` or any other commands, then the environment variables are not correctly passed to the command.
+
+Here is an example which demonstrates the problem. As you can see, the `sh` command which we run through sudo does not see the environment variable.
+
+<pre class="highlight"><span class="prompt">user@localhost bash$ </span>export MY_VAR=my_value
+<span class="prompt">user@localhost bash$ </span>sudo sh -c 'echo MY_VAR is: $MY_VAR'
+<span class="output">MY_VAR is:</span></pre>
+
+You can solve this problem by running sudo with `-E`. This tells sudo to preserve environment variables (except for `PATH`; read on to learn more). Here are two example usages:
+
+<pre class="highlight"><span class="c"># Example 1</span>
+<span class="prompt">user@localhost bash$ </span>export MY_VAR=my_value
+<span class="prompt">user@localhost bash$ </span>sudo -E sh -c 'echo MY_VAR is: $MY_VAR'
+<span class="output">MY_VAR is: my_value</span>
+
+<span class="c"># Example 2</span>
+<span class="prompt">user@localhost bash$ </span>export APXS2=/usr/sbin/apxs2
+<span class="prompt">user@localhost bash$ </span>sudo -E passenger-install-apache2-module</pre>
+
+Alternatively, you can obtain a root prompt with sudo first, and *then* set the environment variables, before running any further commands:
+
+<pre class="highlight"><span class="prompt">$ </span>user@localhost bash$ sudo -s
+<span class="output">Password: ...</span>
+<span class="prompt">root@localhost bash# </span>export APXS2=/usr/sbin/apxs2
+<span class="prompt">root@localhost bash# </span>passenger-install-apache2-module</pre>
+
+Note that for security reasons, `sudo` **always resets the `PATH` environment variable**, even if you pass `-E`! You can get around this problem by obtaining a root prompt first, and then set the environment variables:
+
+<pre class="highlight"><span class="prompt">user@localhost bash$ </span>sudo -s
+<span class="output">Password: ...</span>
+<span class="prompt">root@localhost bash# </span>export PATH=$PATH:/opt/myruby/bin
+<span class="prompt">root@localhost bash# </span>passenger-install-apache2-module</pre>

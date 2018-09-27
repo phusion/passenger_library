@@ -1,0 +1,11 @@
+---
+title: Environment variables
+comments: false
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(LANG_METEOR)
+%>
+
+<%= render_partial("../shared/_environment_variables", locals: locals) %>
