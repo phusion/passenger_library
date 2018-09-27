@@ -1,0 +1,22 @@
+# Lightweight Ruby dependency
+
+<p class="lead">Passenger has a lightweight dependency on Ruby. This page explains what we mean by "lightweight" and how we ensure this Ruby dependency doesn't impact resource usage.</p>
+
+Passenger's core is written in C++ for performance and memory efficiency. Passenger also requires Ruby, though its usage of Ruby is minimal. Passenger does not use Ruby in parts where performance and memory usage matter; Ruby is only used in parts where they do not matter.
+
+The following parts of Passenger utilize Ruby:
+
+ * Passenger's installer, build system and command line administration tools are written in Ruby.
+ * Certain internally used tools, such as the crash handler (which generates a backtrace in case Passenger crash) and the [prespawn script](<%= url_for "/config/nginx/reference/index.html" %>#passenger_pre_start) are written in Ruby as well. These tools are only invoked in a one-off manner, and do not run persistently in the background.
+ * Ruby web application support is implemented in Ruby.
+ * If you use [Flying Passenger](<%= url_for "/deploy/nginx/flying_passenger.html" %>), then the Flying Passenger daemon is written in Ruby. The daemon is a small (less than 500 lines of code) and offloads most tasks to the C++ core.
+ * If you use [Passenger Standalone](<%= url_for "/indepth/integration_modes.html" %>), then the frontend (the `passenger` command) is written in Ruby. The frontend is small (less than 1500 lines of code) and offloads most tasks to the C++ core.
+
+Other than the aforementioned parts, Passenger does not use Ruby during normal operation. For example, if you run Node.js web applications on Passenger, then there will be (almost) no Ruby code running on the system.
+
+The reason why Passenger has a Ruby dependency at all is twofold:
+
+ 1. Historical. Passenger started out as a Ruby-only application server.
+ 2. Because we, the Passenger authors, are proficient in Ruby.
+
+There is no particular reason why the non-performance-critical parts should be written in Ruby. They may as well be written in Python, or Javascript, or C++. But doing so would require us to rewrite a lot of code, for not much gain.
