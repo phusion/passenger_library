@@ -34,6 +34,11 @@ function handleChange(event) {
   element.dispatchEvent(evt);
 }
 
+function toggleLang(event) {
+  const installed = event.target.value == "yes";
+  document.querySelector('#yes-no-target').style.display = (installed ? "none" : "inherit");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   inputs()
     .map(e=>e.dataset.label) // get labels
@@ -46,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   apply(e=>e.addEventListener('change', handleChange));
+  document.querySelectorAll('#yes-no-radio input').forEach(e=>e.addEventListener('change', toggleLang));
+  toggleLang({target:{value:"yes"}});
 });
 
 export default applySelection;
