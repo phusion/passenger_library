@@ -1,0 +1,163 @@
+# Reverse port binding in Node.js
+
+<!-- TODO: edit http://stackoverflow.com/questions/20645231/phusion-passenger-error-http-server-listen-was-called-more-than-once/20645549 -->
+
+As explained in the Node.js [quickstart](<%= url_for '/walkthroughs/start/nodejs.html' %>) and [fundamental concepts](<%= url_for '/walkthroughs/basics/nodejs/fundamental_concepts.html#the-application-server-concept' %>) pages, Passenger reverses control on the port binding. This means that your app does not control which port it listens on for HTTP requests. Instead, Passenger controls that.
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## How it works
+
+Normally, a Node.js app binds a server socket on a certain port by calling `listen()` on an `http.Server` object. But when run in Passenger, this control is inversed:
+
+ * The user tells Passenger which port to listen on (e.g. through the `--port` command line option in Passenger Standalone).
+ * Passenger makes the Node.js app listen a random Unix domain socket, even when the app requested to listen on a specific TCP port. A Unix domain socket is a special kind of socket that is optimized for communication on local host, and does not conflict with TCP ports.
+ * Passenger forwards requests to the Node.js app. This is what allows Passenger to load balance between multiple Node.js processes.
+
+Passenger implements this on the Node.js side by hooking into the first `http.Server` object in your app that calls `listen()`. That `http.Server` object will be selected as the server object to receive requests.
+
+When run in Passenger, the port number that you pass to `listen()` is irrelevant and has no effect. Passenger always makes the app listen on a random Unix domain socket.
+
+This mechanism means that most Node.js applications will work out of the box on Passenger, even if they are already configured to run on a specific port.
+
+## Spawn timeout: what happens if the app doesn't call `listen()`
+
+When Passenger spawns your application, Passenger waits until the app calls `listen()` on an `http.Server` object. If your app never calls `listen()`, then Passenger will eventually time out with an error.
+
+To fix this problem, you must ensure that `listen()` is called. Note that this may also mean that you have specified the wrong `startup-file` and the listen() code isn't being reached. For example, when using the Express application generator, listen() is called from `bin/www` and not from `app.js`, so the `startup-file` should be `bin/www`.
+
+## Caveat: multiple http.Server objects ("Error: http.Server.listen() was called more than once")
+
+This mechanism only works if your app only creates a single HTTP server. If the app tries to create multiple HTTP servers, then Passenger doesn't know which http.Server object to apply the port binding on. This will cause Passenger to throw the following error:
+
+> "Error: http.Server.listen() was called more than once, which is not allowed because Phusion Passenger is in auto-install mode. This means that the first http.Server object for which listen() is called, is automatically installed as the Phusion Passenger request handler. If you want to create and listen on multiple http.Server object then you should disable auto-install mode."
+
+### Example problem
+
+Here is a simple program that uses [node-http-proxy](https://github.com/nodejitsu/node-http-proxy). This program's intention is to create a proxy server on port 8000, which forwards to the server on port 9000.
+
+~~~javascript
+var http = require('http'),
+var httpProxy = require('http-proxy');
+
+// Create proxy server
+httpProxy.createServer(9000, 'localhost').listen(8000);
+
+// Create target server
+http.createServer(function (req, res) {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.write("request successfully proxied!\n" +
+      JSON.stringify(req.headers, true, 2));
+    res.end();
+}).listen(9000);
+~~~
+
+Passenger throws an error here because node-http-proxy tries to create an http.Server object, while the main program itself also tries to do that.
+
+### Solution
+
+To solve this problem, you need to tell Passenger "I want to specify explicitly which http.Server to use for receiving requests". This is done in two steps. First, you must call the following code as early as possible in your program:
+
+~~~javascript
+if (typeof(PhusionPassenger) !== 'undefined') {
+    PhusionPassenger.configure({ autoInstall: false });
+}
+~~~
+
+Next, you need to modify one (**and only one**) invocation of http.Server.listen(), and make it pass 'passenger' as argument:
+
+~~~javascript
+server.listen('passenger');
+~~~
+
+If Passenger notices that you have multiple `listen('passenger')` calls, it will complain. You can only have one.
+
+Since Passenger 4.0.52 you can also pass `'/passenger'` as argument. This is intended for Hapi.js support (see below).
+
+### node-http-proxy solution example
+
+Here is a full example demonstrating how to fix the aforementioned node-http-proxy example program. In this case, the intention is to have Passenger serve the proxy server (not the target server). So we modify the proxy server to call `listen('passenger')`.
+
+~~~javascript
+// ADDED!!!
+if (typeof(PhusionPassenger) !== 'undefined') {
+    PhusionPassenger.configure({ autoInstall: false });
+}
+
+var http = require('http'),
+var httpProxy = require('http-proxy');
+
+// Create proxy server
+// MODIFIED!!!
+var proxyServer = httpProxy.createServer(9000, 'localhost');
+if (typeof(PhusionPassenger) !== 'undefined') {
+    proxyServer.listen('passenger');
+} else {
+    proxyServer.listen(3000);
+}
+
+// Create target server
+http.createServer(function (req, res) {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.write("request successfully proxied!\n" +
+      JSON.stringify(req.headers, true, 2));
+    res.end();
+}).listen(9000);
+~~~
+
+### Express.js solution example
+
+Here is a full solution example utilizing the Express framework. You must pass `'passenger'` to Express's `listen()` call.
+
+~~~javascript
+if (typeof(PhusionPassenger) !== 'undefined') {
+    PhusionPassenger.configure({ autoInstall: false });
+}
+
+var express = require('express');
+var app = express();
+app.get('/', function(req, res) {
+    var body = 'Hello World';
+    res.setHeader('Content-Type', 'text/plain');
+    res.setHeader('Content-Length', body.length);
+    res.end(body);
+});
+
+if (typeof(PhusionPassenger) !== 'undefined') {
+    app.listen('passenger');
+} else {
+    app.listen(3000);
+}
+~~~
+
+### Hapi.js solution example
+
+When using Hapi.js, you must pass `'/passenger'` (not `'passenger'`) to Hapi's server creation function. This will cause Hapi try to listen on a Unix domain socket, which allows Passenger's overrides to kick in. If you do not pass that initial slash, then Hapi will try to treat the argument as a TCP/IP domain name, and Hapi will fail with an error.
+
+~~~javascript
+if (typeof(PhusionPassenger) !== 'undefined') {
+    PhusionPassenger.configure({ autoInstall: false });
+}
+
+var Hapi = require('hapi');
+var server;
+
+if (typeof(PhusionPassenger) !== 'undefined') {
+    // Requires Passenger >= 4.0.52!
+    server = new Hapi.Server('/passenger');
+} else {
+    server = new Hapi.Server('localhost', 3000);
+}
+
+server.route({
+    method: 'GET',
+    path: '/hello',
+    handler: function (request, reply) {
+        reply('hello world');
+    }
+});
+
+server.start();
+~~~
