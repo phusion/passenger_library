@@ -50,7 +50,7 @@ myappuser$ ...</span>
 <% substep += 1 %>
 <%= h3(id_prefix, "#{header_step}.#{substep} Edit Apache configuration file") %>
 
-<% if os_config_class == :debian %>
+<div class="supported_debian_instructions">
   <p>
     We need to create an Apache configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Apache (and Passenger) where your app is located.
   </p>
@@ -61,7 +61,8 @@ myappuser$ ...</span>
   <p>
     Put this inside the file:
   </p>
-<% elsif os_config_class == :redhat %>
+</div>
+<div class="supported_redhat_instructions">
   <p>
     We need to create an Apache configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Apache (and Passenger) where your app is located.
   </p>
@@ -72,7 +73,8 @@ myappuser$ ...</span>
   <p>
     Put this inside the file:
   </p>
-<% else %>
+</div>
+<div class="unsupported_redhat_instructions unsupported_debian_instructions">
   <p>
     We need to edit your Apache configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Apache (and Passenger) where your app is located.
   </p>
@@ -86,7 +88,7 @@ myappuser$ ...</span>
   <p>
     Let us add a virtual host entry at the end of that file. At the end of the file, insert:
   </p>
-<% end %>
+</div>
 
 <% if language_type == :ruby %>
   <pre class="highlight">&lt;VirtualHost *:80&gt;
@@ -202,15 +204,17 @@ myappuser$ ...</span>
 When you are done, restart Apache:
 
 <div>
-  <% if os_config_class == :debian %>
+  <div class="supported_debian_instructions">
     <pre class="highlight"><span class="prompt">$ </span>sudo apache2ctl restart</pre>
-  <% elsif os_config_class == :redhat %>
+  </div>
+  <div class="supported_redhat_instructions">
     <pre class="highlight"><span class="prompt">$ </span>sudo apachectl restart</pre>
-  <% else %>
+  </div>
+  <div class="unsupported_redhat_instructions unsupported_debian_instructions">
     <pre class="highlight"><span class="prompt">$ </span>sudo apachectl restart</pre>
 
     <p>(Depending on your operating system, the right command may be <code>apache2ctl</code> instead of <code>apachectl</code>.)</p>
-  <% end %>
+  </div>
 </div>
 
 <% substep += 1 %>

@@ -36,7 +36,10 @@ function handleChange(event) {
 
 function toggleLang(event) {
   const installed = event.target.value == "yes";
-  document.querySelector('#yes-no-target').style.display = (installed ? "none" : "inherit");
+  const target = document.querySelector('#yes-no-target')
+  if (target) {
+    target.style.display = (installed ? "none" : "inherit");
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
