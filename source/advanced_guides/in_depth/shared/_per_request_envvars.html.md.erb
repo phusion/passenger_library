@@ -1,0 +1,161 @@
+# <%= language_name %> and Apache per-request environment variables
+
+If you are using Passenger in its [Apache integration mode](../integration_modes.html), then you may be aware of the fact that Apache supports [per-request environment variables](https://httpd.apache.org/docs/2.4/env.html). This page explains how Passenger passes per-request environment variables to the application.
+
+<div class="note">
+  <h3 class="notoc">This page is not talking about system environment variables!</h3>
+  <p>
+    There is a difference between operating system-level environment variables (which are controlled by the OS) and per-request environment variables (which are controlled by Apache). This page is only talking about the latter. If you are looking for information about OS-level environment variables, please refer to <a href="../environment_variables.html">About environment variables</a>. Refer to <a href="https://httpd.apache.org/docs/2.4/env.html">the Apache documentation</a> to understand the differences.
+  </p>
+</div>
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Examples of per-request environment variables
+
+Per-request environment variables are set by various Apache features and Apache modules. Here are some examples:
+
+ * Values set by [Shibboleth](https://shibboleth.net/), the identity federation Apache module.
+ * Values set by the [RewriteRule](https://httpd.apache.org/docs/2.4/mod/mod_rewrite.html) `E` flag (provided by `mod_rewrite`).
+ * Values set by the [SSLOptions StdEnvVars](https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#envvars) configuration option (provided by `mod_ssl`).
+ * Values set by the Apache [SetEnv](https://httpd.apache.org/docs/2.4/mod/mod_env.html#setenv) directive (provided by `mod_env`). These values are static (hardcoded into the configuration file) and do not change on a per-request basis.
+
+Please refer to [Apache's documentation](https://httpd.apache.org/docs/2.4/env.html#setting) to learn more.
+
+## How <%= language_name %> apps can access per-request environment variables
+
+<% if language_type == :ruby %>
+### The Rack environment object
+
+Per-request environment variables can be accessed through [the Rack environment object](https://quickleft.com/blog/understanding-rack-apps-and-middleware/). This object contains all information about the request, including per-request environment variables.
+
+Pretty much all Ruby web frameworks are built in top of Rack. If you are using a web framework, then please refer to your framework's documentation to find out how to access the Rack environment object. Rails applications can access the Rack environment object from a controller through `request.env`.
+
+Suppose that your site is using SSL, and that you that `SSLOptions StdEnvVars` enabled. You can access the `SSL_SESSION_ID` environment variable as follows:
+
+~~~ruby
+# From a Rails controller:
+request.env['SSL_SESSION_ID']   # => ...session ID value...
+
+# From a non-Rails app:
+env = framework_specific_code_to_obtain_the_rack_object
+env['SSL_SESSION_ID']   # => ...session ID value...
+~~~
+
+### The ENV object
+
+When Passenger handles a request and decides to spawn a new application process, Passenger will store the values of any per-request environment variables into OS-level environment variables. This is only done once per application process, and only when the application process is spawned.
+
+This is primarily useful for ensuring that the `SetEnv` directive works as expected. For example, suppose that you have this in your Apache configuration file:
+
+~~~apache
+SetEnv APP_NAME mydemoapp
+~~~
+
+You can then access `APP_NAME` using the `ENV` top-level constant, which is a mechanism in Ruby for accessing OS-level environment variables:
+
+~~~ruby
+ENV['APP_NAME']   # => "mydemoapp"
+~~~
+
+There are three important caveats to be aware of:
+
+ 1. `ENV` should not be confused with the Rack environment object, which is often called `env`. The Rack environment object is something totally different, and is for accessing per-request information. `ENV` is for accessing OS-level environment variables.
+ 2. `ENV` does not change, so it must not be used for accessing per-request environment variables whose values may change on a per-request basis. For example, do not call `ENV['SSL_SESSION_ID']` because `SSL_SESSION_ID` changes on a per-client basis.
+ 3. If Passenger spawns an application process, but not as part of handling a request, then that application process will not have per-request environment variables stored inside OS-level environment variables.
+
+<% elsif language_type == :python %>
+### The WSGI environment dict
+
+Per-request environment variables can be accessed through [the WSGI environment dict](http://wsgi.tutorial.codepoint.net/environment-dictionary). This dict contains all information about the request, including per-request environment variables.
+
+Pretty much all Python web frameworks are built in top of WSGI. If you are using a web framework, then please refer to your framework's documentation to find out how to access the WSGI environment dict.
+
+Suppose that your site is using SSL, and that you that `SSLOptions StdEnvVars` enabled. You can access the `SSL_SESSION_ID` environment variable as follows:
+
+~~~ruby
+env = framework_specific_code_to_obtain_the_wsgi_dict()
+env['SSL_SESSION_ID']   # => ...session ID value...
+~~~
+
+### The `os.environ` object
+
+When Passenger handles a request and decides to spawn a new application process, Passenger will store the values of any per-request environment variables into OS-level environment variables. This is only done once per application process, and only when the application process is spawned.
+
+This is primarily useful for ensuring that the `SetEnv` directive works as expected. For example, suppose that you have this in your Apache configuration file:
+
+~~~apache
+SetEnv APP_NAME mydemoapp
+~~~
+
+You can then access `APP_NAME` using `os.environ`, which is a mechanism in Python for accessing OS-level environment variables:
+
+~~~python
+os.environ['APP_NAME']   # => "mydemoapp"
+~~~
+
+There are three important caveats to be aware of:
+
+ 1. `os.environ` should not be confused with the WSGI environment object, which is often called `env`. The WSGI environment object is something totally different, and is for accessing per-request information. `os.environ` is for accessing OS-level environment variables.
+ 2. `os.environ` does not change, so it must not be used for accessing per-request environment variables whose values may change on a per-request basis. For example, do not call `os.environ['SSL_SESSION_ID']` because `SSL_SESSION_ID` changes on a per-client basis.
+ 3. If Passenger spawns an application process, but not as part of handling a request, then that application process will not have per-request environment variables stored inside OS-level environment variables.
+
+<% elsif language_type == :nodejs || language_type == :meteor %>
+### Secure HTTP header: `!~Passenger-Envvars`
+
+Since version 5.0.21, per-request environment variables can be accessed through the [secure HTTP header](secure_http_headers.html) named `!~Passenger-Envvars`. This header contains an encoded dump of per-request environment variables.
+
+The encoding is in the following format:
+
+    base64("key1\0value1\0key2\0value2\0")
+
+In other words, all keys and values are appended into a single string, with NULL separators. The entire result is then base64'ed.
+
+Suppose that your site is using SSL, and that you that `SSLOptions StdEnvVars` enabled. You can access the `SSL_SESSION_ID` environment variable as follows:
+
+~~~javascript
+function parseEnvvarDump(dump) {
+    var ary = dump.split("\0");
+    var result = {};
+    var i;
+
+    for (i = 0; i < ary.length - 1; i += 2) {
+        result[ary[i]] = ary[i + 1];
+    }
+
+    return result;
+}
+
+var envvarB64 = req.headers['!~passenger-envvars'];
+var envvarDump = new Buffer(envvarB64, 'base64').toString('binary');
+var env = parseEnvvarDump(envvarDump);
+
+console.log(env.SSL_SESSION_ID);   // Prints some session ID value
+~~~
+
+### The `process.env` object
+
+When Passenger handles a request and decides to spawn a new application process, Passenger will store the values of any per-request environment variables into OS-level environment variables. This is only done once per application process, and only when the application process is spawned.
+
+This is primarily useful for ensuring that the `SetEnv` directive works as expected. For example, suppose that you have this in your Apache configuration file:
+
+~~~apache
+SetEnv APP_NAME mydemoapp
+~~~
+
+You can then access `APP_NAME` using `process.env`, which is a mechanism in <%= language_runtime_name %> for accessing OS-level environment variables:
+
+~~~javascript
+console.log(process.env.APP_NAME);   // Prints: mydemoapp
+~~~
+
+There are two important caveats to be aware of:
+
+ 1. `process.env` does not change, so it must not be used for accessing per-request environment variables whose values may change on a per-request basis. For example, do not call `process.env.SSL_SESSION_ID` because `SSL_SESSION_ID` changes on a per-client basis.
+ 2. If Passenger spawns an application process, but not as part of handling a request, then that application process will not have per-request environment variables stored inside OS-level environment variables.
+
+<% else %>
+  <% raise "Unrecognized language #{language_type}" %>
+<% end %>
