@@ -1,0 +1,28 @@
+# Passenger and the application's stdin, stdout and stderr channels
+
+<p class="lead">Passenger uses the application's stdin, stdout and stderr channels to communicate with said application. This gives rise to a few caveats. Read on to learn what you can and can't do with stdin, stdout and stderr.</p>
+
+## Summary: do's and don'ts
+
+ * It is safe for you to log messages to stdout and stderr, but don't do things like closing them or redirecting them to a file. Doing so will make Passenger think your app froze during startup, because it never receives a message back.
+ * For similar reasons, don't close/redirect stdin. Don't read from stdin either.
+
+## How it works
+
+When spawning an application process, Passenger sets up a special communication channel with the application. This channel is used by Passenger application wrapper code to negotiate various information, such as details of spawning, spawning error information, etc.
+
+This communication channel is attached to the application's [stdin, stdout and stderr](http://stackoverflow.com/questions/3385201/confused-about-stdin-stdout-and-stderr). Stdin is a standard channel from which applications read input, while stdout and stderr are standard channels to which applications log output messages and error messages.
+
+Passenger communicates with the application wrapper code by writing to the application's stdin, while reading from the application's stdout and stderr. All Passenger communication messages are line-based, and are prepended by the text `!>`. All lines that don't start with `!>` are printed to Passenger's log file.
+
+This has the following implications:
+
+ * It is safe for you to log to stdout and stderr, but you must not print any lines that start with `!>`. Also don't close or redirect stdout and stderr.
+ * Passenger only ever writes communication information to the application's stdin. The Passenger application wrapper code already reads from stdin in order to process information from Passenger. So it is not safe for your application or for your application's library code to read from stdin. Don't ever read from stdin.
+
+If you do any of the things that we mentioned are not allowed, then you risk corrupting the communication channel, resulting in all sorts of errors.
+
+## Related information
+
+ * [Wikipedia: Standard streams (stdin, stdout and stderr)](https://en.wikipedia.org/wiki/Standard_streams)
+ * [StackOverflow: Confused about stdin, stdout and stderr?](http://stackoverflow.com/questions/3385201/confused-about-stdin-stdout-and-stderr)
