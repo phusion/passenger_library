@@ -1,0 +1,46 @@
+# Meteor and secure HTTP headers
+
+Passenger passes client-sent HTTP headers to the application. In addition to these client-sent HTTP headers, Passenger may pass additional request-specific information to the application, in the form of _secure HTTP headers_. Passenger guarantees that secure HTTP headers cannot be spoofed by the client. Any secure HTTP headers that reach the application are guaranteed to come from either Passenger, or from Nginx/Apache.
+
+Secure HTTP headers were introduced in Passenger 5.0.21.
+
+<div class="note">
+  <h3 class="notoc">Caveat</h3>
+  <p>
+    Meteor uses sockjs behind the scenes to transform requests into connection objects, and sockjs enforces a whitelist on headers, so using <code>connection.httpHeaders</code> won't work to access our secure headers from meteor.
+  </p>
+</div>
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Introduction and use case
+
+Sometimes it is useful for applications to know certain information about the request, such as the IP address of the client, whether the application is served over HTTPS, etc. However, Meteor applications do not talk to HTTP clients directly. Instead, Passenger sits in between the client and the application as a reverse proxy, so applications cannot obtain this information directly from the socket that they are listening on. They must obtain this information from Passenger.
+
+Passenger communicates with Meteor applications over HTTP, so the only way for Passenger to send this kind of information to the application is via HTTP headers. However, HTTP headers can be spoofed.
+
+## How it works
+
+An HTTP header is considered secure if it begins with `!~`. If the client-sent HTTP request contains any headers that begin with `!~`, then Passenger will reject that request. This prevents the client from spoofing any secure headers.
+
+Only Passenger may send secure headers to the application.
+
+## List of secure headers
+
+### `!~Passenger-Proto`
+
+This header is set to `https` if Passenger is serving an application over HTTPS.
+
+Note that Passenger also appends the `X-Forwarded-Proto: https` header. But since `X-Forwarded-Proto` can be spoofed by the client, you should prefer `!~Passenger-Proto` instead.
+
+### `!~Passenger-Client-Address`
+
+This header is set to the HTTP client's host name or IP address.
+
+Note that Passenger also appends the `X-Forwarded-For` header, which serves the same function. But since `X-Forwarded-For` can be spoofed by the client, you should prefer `!~Passenger-Client-Address` instead.
+
+### `!~Passenger-Envvars`
+
+This header contains [Apache per-request environment variables](apache_per_request_envvars.html).
