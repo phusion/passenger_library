@@ -1,0 +1,14 @@
+---
+title: How Passenger autodetects applications
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(LANG_NODEJS)
+  locals = locals.merge(INTEGRATION_MODE_NGINX)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+<h1>How Passenger + Nginx autodetects applications</h1>
+
+<%= render_partial("../../../shared/_app_autodetection", locals: locals) %>
