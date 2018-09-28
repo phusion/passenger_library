@@ -1,0 +1,192 @@
+# Request load balancing
+
+At its core, Passenger is a process manager and HTTP request router. In order to minimize response times, and to distribute load over multiple CPU cores for optimal performance, Passenger load balances requests over processes in a "least busy process first" manner. This article explains the implications and details of our request load balancing mechanism.
+
+**Table of contents**
+
+<ol class="toc-container"><li>Loading...</li></ol>
+
+## Introduction
+
+<% if language_type == :ruby || language_type == :python %>
+<% if language_type == :ruby %>
+  Ruby applications can normally handle only 1 request at the same time.
+<% else %>
+  <%= language_name %> applications can only handle 1 request at the same time.
+<% end %>
+With Passenger this is improved by running multiple processes of the application using pooled application groups. For each request from the incoming request queue, a non-busy (free) application process is selected to handle the request.
+
+<div><img src="../request_load_balancing/request_load_balancing.png"></div>
+
+<% if language_type == :ruby %>
+  For thread-safe Ruby apps it is also possible to enable [multithreading](<%= url_for_config_option(:concurrency_model, locals) %>), which allows the application processes to concurrently handle multiple requests at the same time -- up to the amount of threads configured. In this case, Passenger forwards the request to the instance that is currently handling the least number of requests.
+<% end %>
+
+If all application processes and threads are busy, Passenger spawns a new instance, up to the [process limit](<%= url_for_config_option(:max_instances, locals) %>) for the group. The amount of processes of the groups combined may also not exceed the limit for the application pool. If either limit is reached, the request remains in the queue (which has its own [limit](#request-queue-overflow)).
+
+<% elsif language_type == :nodejs || language_type == :meteor %>
+<%= language_name %> applications normally execute in a single thread/process, using a single CPU core. Passenger enables running multiple instances of the application (multiple processes) using pooled application groups, distributing requests to the process that is currently handling the least amount of requests.
+
+<div><img src="../request_load_balancing/request_load_balancing.png"></div>
+
+In this way, load can be distributed across multiple cores without using [the cluster module](https://nodejs.org/api/cluster.html). Assuming a properly written asynchronous app, incoming requests will be handled concurrently (i.e. the next request can already start being handled while the previous is still being handled), and the Passenger request queue will remain empty.
+
+<% else %>
+  <% raise "Unrecognized language #{language_type}" %>
+<% end %>
+
+### Maximum process concurrency
+
+A core concept in the load balancing algorithm is that of the **maximum process concurrency**. This is the maximum number of concurrent requests that a particular process can handle.
+
+<% if language_default_concurrency == 1 && language_max_concurrency == 0 %>
+  For <%= language_name %> applications, the maximum process concurrency is assumed to be 1. This means that Passenger assumes each process can handle 1 request at a time.
+
+  This can be changed by setting <%= link_to_config_option(:concurrency_model, locals) %> to `thread`, and by setting <%= link_to_config_option(:thread_count, locals) %>. If you do that, the assumed maximum process concurrency will equal the number of configured threads. This reflects the fact that each thread can handle 1 request at a time.
+<% elsif language_default_concurrency == 1 && language_max_concurrency == 1 %>
+  For <%= language_name %> applications, the maximum process concurrency is always 1.
+<% elsif language_default_concurrency == 0 %>
+  For <%= language_name %> applications, the maximum process concurrency is assumed to be *unlimited*. This is because <%= language_runtime_name %> uses <%= language_concurrency_model_name_plural %> for concurrency which is very lightweight, so it can handle a virtually unlimited number of requests concurrently.
+
+  <% if language_concurrency_model == :evented %>
+  Having said that, as a <%= language_runtime_name %> process handles more concurrent requests, it is normal for performance to degrade. The practical concurrency is not really unlimited, and the limit varies for every application and every workload.
+  <% end %>
+<% else %>
+  <% raise "Unknown concurrency scenario: language_default_concurrency=#{language_default_concurrency}, language_max_concurrency=#{language_max_concurrency}" %>
+<% end %>
+
+For this reason, load balancing requests between multiple processes is beneficial.
+
+## Least-busy-process-first routing
+
+### Algorithm summary
+
+Passenger keeps a list of application processes. For each application process, Passenger keeps track of how many requests it is currently handling. When a new request comes in, Passenger routes the request to the process that is handling the least number of requests (the one that is "least busy").
+
+<a name="algorithm_ordered"></a>
+
+### First available process in the list has highest priority
+
+If there are multiple processes that have the least busyness, then Passenger will pick the first one in the list. For example, suppose that there are 3 application processes:
+
+    Process A: handling 1 request
+    Process B: handling 0 requests
+    Process C: handling 0 requests
+
+On the next request, Passenger will always pick B, never C.
+
+This property is used by the [dynamic process scaling](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html" %>) algorithm. Dynamic process scaling works by shutting down processes that haven't received requests for a while (processes that are "idle"). By routing to the first process with least busyiness (instead of, say, a random one, using round-robin), Passenger gives other processes the chance to become idle and thus eligible for shutdown.
+
+Another advantage of picking the first process is that it improves application-level caching. Since the first process is the most likely candidate for load balancing, it will have the most chance to keep its cache warm. Examples of such caches include: in-memory hash tables, JIT caches, etc.
+
+### Traffic may appear unbalanced between processes
+
+Because Passenger [prefers to load balance to the first request](#algorithm_ordered), traffic may appear unbalanced between processes. Here is an example from `passenger-status`:
+
+~~~
+/var/www/phusion_blog/current/public:
+  App root: /var/www/phusion_blog/current
+  Requests in queue: 0
+  * PID: 18334   Sessions: 0       Processed: 4595    Uptime: 5h 53m 29s
+    CPU: 0%      Memory  : 99M     Last used: 4s ago
+  * PID: 18339   Sessions: 0       Processed: 2873    Uptime: 5h 53m 26s
+    CPU: 0%      Memory  : 96M     Last used: 29s ago
+  * PID: 18343   Sessions: 0       Processed: 33      Uptime: 5m 8s
+    CPU: 0%      Memory  : 96M     Last used: 1m 4s ago
+  * PID: 18347   Sessions: 0       Processed: 16      Uptime: 2m 16s
+    CPU: 0%      Memory  : 96M     Last used: 2m 9s ago
+~~~
+
+As you can see, there are 4 processes, but the "Processed" field doesn't look balanced at all. **This is completely normal**, it is supposed to look like this. Passenger does not use round-robin load balancing. The reasons are [explained in the above section](#algorithm_ordered). Despite not _looking_ balanced, Passenger is in fact balancing requests between processes just fine.
+
+<% if language_default_concurrency == 1 %>
+### No head-of-line blocking problem
+
+Many web servers and load balancers use independent queues, which causes the problem of head-of-line blocking, whereby HTTP requests to your app are queued behind slow or long-running requests. Passenger avoids this problem by using a single (per application group) shared queue.
+
+Imagine a supermarket with a number of (independent) checkout lanes and a queue in each of them. If someone in one of the queues has trouble with the checkout, everyone already in that queue will be delayed, which is especially unfair if the other queues keep moving fast.
+
+Instead, the Passenger implementation can be compared to using a single (shared) queue and sending only 1 person per checkout lane at a time, thereby preventing head-of-line blocking.
+<% end %>
+
+<% if language_min_concurrency == 1 %>
+### Example with maximum concurrency 1
+
+Suppose that you have 3 application processes, and each process's maximum concurrency is 1. When the application is idle, none of the processes are handling any requests:
+
+    Process A [ ]
+    Process B [ ]
+    Process C [ ]
+
+When a new request comes in (let's call this α), Passenger will decide to route the request to process A. A will then reach its maximum concurrency:
+
+    Process A [α]
+    Process B [ ]
+    Process C [ ]
+
+Suppose that, while α is still in progress, a new requests comes in (which we call β). That request will be load balanced to process B because it is the least busy one:
+
+    Process A [α]
+    Process B [β]
+    Process C [ ]
+
+Suppose α finishes. The situation will look like this:
+
+    Process A [ ]
+    Process B [β]
+    Process C [ ]
+
+If another request comes in (which we call ɣ), that request will be routed to A, not C:
+
+    Process A [ɣ]
+    Process B [β]
+    Process C [ ]
+
+<% end %>
+<% if language_max_concurrency != 1 %>
+### Example with maximum concurrency 4
+
+Suppose that you have 2 application processes,
+<% if language_concurrency_model == :thread -%>
+  and you configured the number of threads to 4, causing each process's maximum concurrency to be 4.
+<% else -%>
+  and the processes' maximum concurrency is configured to 4.
+<% end -%>
+When the application is idle, none of the processes are handling any requests:
+
+    Process A [    ]
+    Process B [    ]
+
+When a new request comes in (which we call α, Passenger will decide to route the request to process A.
+
+    Process A [α   ]
+    Process B [    ]
+
+Suppose that, while α is still in progress, 1 more request comes in (which we call β). That request will be load balanced to process B because it is the least busy one:
+
+    Process A [α   ]
+    Process B [β   ]
+
+Suppose that another request comes in (which we call ɣ). That will be load balanced to process A again, not to B:
+
+    Process A [αɣ  ]
+    Process B [β   ]
+
+<% end %>
+
+## Customized balancing through additional request queues
+
+By default, all requests for an application are balanced in a fair way. You may want to adjust this behavior; for example if your app consists of pages for visitors as well as some kind of web service, you probably want to make sure the visitor requests don't get stuck behind web service requests when under heavy load.
+
+This can be solved by configuring two application groups for your app: one for the web service URL and one for the visitor pages, each with their own request queue. The requests for the visitor pages will keep being handled even if there is an overload of requests for the web service. See the <%= link_to_config_option(:app_group_name, locals) %> option (Apache and Nginx only, not available on Standalone).
+
+The two application groups will still compete with each other for server resources. You can control how many instances are allowed per application group, for example allowing more instances to serve the visitor pages than the web service URL. See the <%= link_to_config_option(:max_instances, locals) %> option.
+
+## Request queue overflow
+
+If a request arrives for an application group, and all its processes are busy, and the application pool is full, the request remains in the Passenger request queue. If this keeps happening (e.g. due to a flood of requests) the queue will eventually overflow its limit (see: <%= link_to_config_option(:max_request_queue_size, locals) %>). Overflowing requests will no longer be balanced, but simply dropped (with a HTTP 503 error).
+
+## See also
+
+ * [Request queueing](<%= url_for "/indepth/request_queueing.html" %>)
+ * [Dynamic scaling of application processes](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html" %>)
