@@ -28,6 +28,8 @@ include DeploymentWalkthroughHelpers
 #  :which_fake_page => "Rendering a fake page with a local variable" }
 
 [:oss, :enterprise].each do |edition|
+  proxy "/tutorials/deploy_to_production/launch_server/#{edition}/index.html",
+        "/tutorials/deploy_to_production/launch_server/shared/index.html"
   [:digital_ocean,:aws].each do |platform|
     proxy "/tutorials/deploy_to_production/launch_server/#{edition}/#{platform}/index.html",
           "/tutorials/deploy_to_production/launch_server/shared/#{platform}/index.html"
