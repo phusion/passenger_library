@@ -52,6 +52,18 @@ end
   end
 end
 
+[:oss, :enterprise].each do |edition|
+  [:digital_ocean,:ownserver,:aws].each do |platform|
+    proxy "/tutorials/deploy_to_production/deploying_your_app/#{edition}/#{platform}/index.html",
+          "/tutorials/deploy_to_production/deploying_your_app/platform.html"
+    [:meteor,:ruby,:node,:python].each do |lang|
+      proxy "/tutorials/deploy_to_production/deploying_your_app/#{edition}/#{platform}/#{lang}/index.html",
+            "/tutorials/deploy_to_production/deploying_your_app/lang.html"
+    end
+  end
+end
+
+
 ###### Deployment walkthrough ######
 
 define_deployment_walkthrough_pages do |*proxy_args|
