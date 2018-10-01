@@ -159,7 +159,21 @@ end
           <%= partial "/shared/new_items" %>
         <% end %>
       </div>
+    </div>
 
+    <footer>
+      <div>
+        <img src="/images/passenger.svg" alt="Passenger">
+        <p>Documentation licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY SA 4.0</a>.</p>
+        <ul><li>Follow us on: <a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fwww.phusionpassenger.com%2Flibrary%2F&amp;ref_src=twsrc%5Etfw&amp;screen_name=phusion_nl&amp;tw_p=followbutton"><img src="/images/twitter.svg" alt="twitter"></a></li><li>Passenger: <a href="https://github.com/phusion/passenger"><img src="/images/github.svg" alt="Passenger Github"></a></li><li>Passenger docs: <a href=""><img src="/images/github.svg" alt="Passenger docs Github"></a></li></ul>
+        <div>
+          <p>Copyright © 2008-2018 Phusion Holding B.V. and contributors to the Passenger Library.</p>
+          <p>"Phusion", "Phusion Passenger", "Passenger" and the Phusion pinwheel logo are registered trademarks of Phusion Holding B.V.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div id="end_of_page_js">
     <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
     <% if !current_page.data.skip_default_javascript %>
     <%= javascript_include_tag 'bundle' %>
@@ -199,5 +213,6 @@ end
     <% end %>
 
     <%= render_partial('/layouts/swiftype_container') %>
+    </div>
   </body>
 </html>
