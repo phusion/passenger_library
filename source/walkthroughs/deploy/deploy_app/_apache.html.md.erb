@@ -2,25 +2,19 @@
 
 <hr>
 
-**Table of contents**
-
 <% if language_type == :ruby %>
   <div class="app_details app_details_rails" style="display: none">
     <%= render_partial("/walkthroughs/deploy/deploy_app/apache_instructions",
-          locals: locals.merge(id_prefix: "rails_", web_framework: "rails")) %>
+                       locals: locals.merge(id_prefix: "rails_", web_framework: "rails")) %>
   </div>
   <div class="app_details app_details_nonrails" style="display: none">
     <%= render_partial("/walkthroughs/deploy/deploy_app/apache_instructions",
-          locals: locals.merge(id_prefix: "nonrails_", web_framework: "nonrails")) %>
+                       locals: locals.merge(id_prefix: "nonrails_", web_framework: "nonrails")) %>
   </div>
   <div class="app_details">
     Loading...
   </div>
 <% else %>
   <%= render_partial("/walkthroughs/deploy/deploy_app/apache_instructions",
-        locals: locals.merge(id_prefix: "")) %>
+                     locals: locals.merge(id_prefix: "")) %>
 <% end %>
-
-## Next step
-
-Congratulations, you have successfully deployed your app!

@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 function appDetailsChanged() {
   var rails = !!$('input[name=app_details_rails]:checked', '.app_details_form').val();
   var rvm = !!$('input[name=app_details_rvm]:checked', '.app_details_form').val();

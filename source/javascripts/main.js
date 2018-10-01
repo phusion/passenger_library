@@ -17,3 +17,4 @@ import './automenu';
 import './copy_buttons';
 import './install_os_selection';
 import './picker';
+import './app_details_form';

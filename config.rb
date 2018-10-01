@@ -43,8 +43,7 @@ end
     [:meteor,:ruby,:node,:python].each do |lang|
       proxy "/tutorials/deploy_to_production/installations/#{edition}/#{platform}/#{lang}/index.html",
             "/tutorials/deploy_to_production/installations/#{edition}/lang.html"
-#     [:apache,:nginx, :standalone].each do |integration|
-      [:apache,:nginx].each do |integration|
+      [:apache,:nginx, :standalone].each do |integration|
         proxy "/tutorials/deploy_to_production/installations/#{edition}/#{platform}/#{lang}/#{integration}/index.html",
               "/tutorials/deploy_to_production/installations/#{edition}/shared/#{lang}/#{integration}/index.html"
       end
