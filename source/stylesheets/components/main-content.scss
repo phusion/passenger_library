@@ -1,14 +1,7 @@
 #main-content {
   width: 677px;
   color: #35373B;
-<<<<<<< HEAD
   margin-bottom: 50px;
-
-  height: calc(100vh - 40px - 55px);
-=======
-  height: 461px;
->>>>>>> Footer and floating sidebars
-  overflow-y: scroll;
 }
 
 #main-content h1 {
@@ -180,19 +173,17 @@
   content: 'info';
   color: #faf6e4;
   font-size: 12px;
-  padding: 7px 12px 4px 30px;
-  position: relative;
+  padding: 0px 20px 0px 25px;
+  position: absolute;
   margin-top: -42px;
   margin-left: -21px;
-  z-index: 10;
+  z-index: -20;
   border-radius: 3px;
   background: #35373B;
   background-image: url('/images/info.svg');
   background-repeat: no-repeat;
   background-size: 25px;
-  background-position: 0px 0px;
-  top: -18px;
-  left: 2px;
+  background-position: -6px -1px;
 }
 
 #main-content .info .heroku {
@@ -217,19 +208,17 @@
   content: 'note';
   color: #faf6e4;
   font-size: 12px;
-  padding: 7px 12px 4px 30px;
-  position: relative;
+  padding: 0px 20px 0px 25px;
+  position: absolute;
   margin-top: -42px;
   margin-left: -21px;
-  z-index: 10;
+  z-index: -20;
   border-radius: 3px;
   background: #35373B;
   background-image: url('/images/note.svg');
   background-repeat: no-repeat;
   background-size: 22px;
-  background-position: 0 0;
-  top: -18px;
-  left: 2px;
+  background-position: -4px 4px;
 }
 
 #main-content .warning {
