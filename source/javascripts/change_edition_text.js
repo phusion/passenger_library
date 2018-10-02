@@ -1,9 +1,13 @@
+var radioChoices = document.querySelectorAll('.adv-radio-choices input');
 var editionTitle = document.querySelectorAll('.edition_title');
 var gemName = document.querySelectorAll('.gem_name');
+// vars for the upgrade page
 var formulaName = document.querySelectorAll('.formula_name');
 var nginxFormula = document.querySelectorAll('.nginx_formula');
 var moduleName = document.querySelectorAll('.module_name');
-var radioChoices = document.querySelectorAll('.adv-radio-choices input');
+// vars for the uninstall page
+var packagesDebian = document.querySelectorAll('.packages_debian');
+var packagesRpm = document.querySelectorAll('.packages_rpm');
 
 function textConverter(varArr, newText) {
   varArr.forEach(function(variable, index) {
@@ -29,12 +33,12 @@ function sendLocalStorageItem() {
 
 function changeEditionText(edition) {
   if (edition === 'OSS') {
-    var varArr = [editionTitle, gemName, formulaName, nginxFormula, moduleName];
-    var textArr = ['Passenger', 'passenger', 'passenger', 'nginx --with-passenger', 'libnginx-mod-http-passenger'];
+    var varArr = [editionTitle, gemName, formulaName, nginxFormula, moduleName, packagesDebian, packagesRpm];
+    var textArr = ['Passenger', 'passenger', 'passenger', 'nginx --with-passenger', 'libnginx-mod-http-passenger', 'passenger', 'passenger'];
     textConverter(varArr, textArr);
   } else {
-    var varArr = [editionTitle, gemName, formulaName, nginxFormula, moduleName];
-    var textArr = ['Passenger Enterprise', 'passenger-enterprise-server', 'passenger-enterprise', 'nginx-passenger-enterprise', 'libnginx-mod-http-passenger-enterprise'];
+    var varArr = [editionTitle, gemName, formulaName, nginxFormula, moduleName, packagesDebian, packagesRpm];
+    var textArr = ['Passenger Enterprise', 'passenger-enterprise-server', 'passenger-enterprise', 'nginx-passenger-enterprise', 'libnginx-mod-http-passenger-enterprise', 'passenger-enterprise', 'passenger-enterprise'];
     textConverter(varArr, textArr);
   }
 }

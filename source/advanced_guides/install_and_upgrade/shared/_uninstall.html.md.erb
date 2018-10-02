@@ -1,0 +1,91 @@
+<%
+case integration_mode_type
+when :nginx
+  passenger_root = "passenger_root"
+when :apache
+  passenger_root = "PassengerRoot"
+end
+%>
+
+# Uninstalling <span class="edition_title">Passenger</span>
+
+Uninstalling <span class="edition_title">Passenger</span> involves two steps. The first step is to remove the Passenger files. The second step is to remove any Passenger configuration from your system.
+
+<h2>Please select the relevant Passenger edition</h2>
+
+<div class="adv-radio-choices">
+  <div>
+    <div>
+      <input type="radio" id="radio-oss" value="OSS" data-label="Edition" name="Edition" checked>
+      <label for="radio-oss"><img src="<%= url_for("/images/passenger_logo.svg") %>" alt="open-source">
+        <span>Passenger open source</span>
+      </label>
+    </div>
+    <div>
+      <input type="radio" id="radio-enterprise" value="Enterprise" data-label="Edition" name="Edition">
+      <label for="radio-enterprise">
+        <img src="<%= url_for("/images/passenger_logo.svg") %>" alt="enterprise">
+        <span>Passenger Enterprise</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+## Step 1: remove the Passenger files
+
+Removing the Passenger files depends on how you installed Passenger.
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th style="vertical-align: middle">If&nbsp;Passenger&nbsp;is&nbsp;installed as follows...</th>
+      <th style="vertical-align: middle">...then do this</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Phusion's <a href="../../apt_repo/">APT repository</a> for Debian/Ubuntu</td>
+      <td><pre class="highlight">sudo apt-get remove -y <span class="packages_debian">passenger</span></pre></td>
+    </tr>
+    <tr>
+      <td>Phusion's <a href="../../yum_repo/">YUM repository</a> for Red Hat/CentOS</td>
+      <td><pre class="highlight">sudo yum remove -y <span class="packages_rpm">passenger</span></pre></td>
+    </tr>
+    <tr>
+      <td>macOS + Homebrew</td>
+      <td><pre class="highlight">brew uninstall passenger</pre></td>
+    </tr>
+    <tr>
+      <td>Ruby gem</td>
+      <td><pre class="highlight">gem uninstall <span class="gem_name">passenger</span></pre></td>
+    </tr>
+    <tr>
+      <td>Source tarball</td>
+      <td>
+        Remove the directory in which you placed the extracted Passenger files.
+        <% if passenger_root %>
+          This directory is the same as the one pointed to by the <code><%= passenger_root %></code> configuration directive.
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Step 2: remove Passenger configuration from system
+
+<% if integration_mode_type != :standalone %>
+  Inspect all your <%= integration_mode_name %> configuration files, and remove any Passenger-related configuration options.
+<% end %>
+
+If you installed Passenger via a source tarball, then edit your shell startup file (e.g. /etc/bashrc) and ensure the Passenger bin directory is no longer in PATH.
+
+<% if integration_mode_type == :nginx %>
+  <div class="info">
+    <h3 class="notoc">Tip: Nginx does not need to be recompiled</h3>
+    <p>
+      Nginx does not have to be recompiled after uninstalling Passenger. Altough Nginx will contain the Passenger Nginx module, the module will not do anything when all Passenger configuration directives are removed.
+    </p>
+  </div>
+<% end %>
+
+<%= javascript_include_tag 'change_edition_text' %>
