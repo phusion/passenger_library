@@ -1,0 +1,11 @@
+---
+title: Upgrading Passenger with Apache
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(INTEGRATION_MODE_APACHE)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+<%= render_partial("../shared/_upgrade.html.md.erb", locals: locals) %>

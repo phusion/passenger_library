@@ -1,0 +1,147 @@
+<h1>Upgrading <span class="edition_title">Passenger</span> <%= integration_mode_name_as_passenger_suffix %></h1>
+
+<p class="lead">How to upgrade <span class="edition_title">Passenger</span> <%= integration_mode_name_as_passenger_suffix %> depends on how <span class="edition_title">Passenger</span> was installed. Please select the option most relevant to you.</p>
+
+
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+<h2>Open source or Enterprise?</h2>
+<p>Please select the Passenger edition that you are using.</p>
+
+<div class="adv-radio-choices">
+  <div>
+    <div>
+      <input type="radio" id="radio-oss" value="OSS" data-label="Edition" name="Edition" checked>
+      <label for="radio-oss"><img src="<%= url_for("/images/passenger_logo.svg") %>" alt="open-source">
+        <span>Passenger open source</span>
+      </label>
+    </div>
+    <div>
+      <input type="radio" id="radio-enterprise" value="Enterprise" data-label="Edition" name="Edition">
+      <label for="radio-enterprise">
+        <img src="<%= url_for("/images/passenger_logo.svg") %>" alt="enterprise">
+        <span>Passenger Enterprise</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<% if integration_mode_type == :standalone %>
+  <div class="note">Are you using Ruby, and do you have "passenger" or "passenger-enterprise-server" in your Gemfile? Then take a look at the <a href="#gemfile">Gemfile upgrade instructions</a>.</div>
+<% end %>
+
+<h2 id="osx">macOS (Homebrew)</h2>
+<div>
+  <p>If <span class="edition_title">Passenger</span> was installed on macOS through Homebrew, then you can upgrade <span class="edition_title">Passenger</span> as follows:</p>
+
+  <% if integration_mode_type == :apache %>
+    <pre class="highlight">brew update
+brew upgrade <span class="formula_name">passenger</span></pre>
+    <p>When done, read the Homebrew formula caveats and follow any Apache-specific instructions you see:</p>
+
+    <pre class="highlight">brew info <span class="formula_name">passenger</span></pre>
+  <% elsif integration_mode_type == :nginx %>
+    <pre class="highlight">brew upgrade <span class="formula_name">passenger</span> <span class="nginx_formula">nginx --with-passenger</span></pre>
+
+    <p>If Passenger has been updated, but no new Nginx version has been released, then you must also reinstall Nginx against the latest version of Passenger:</p>
+
+    <pre class="highlight">brew reinstall <span class="nginx_formula">nginx --with-passenger</span></pre>
+  <% else %>
+    <pre class="highlight">brew upgrade <span class="formula_name">passenger</span></pre>
+  <% end %>
+</div>
+
+<h2 id="debian_ubuntu">Debian packages (Debian, Ubuntu)</h2>
+<% if integration_mode_type == :nginx %>
+  <div class="info">In July 2017, the Ubuntu 17.04 Zesty packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please remove it and install the new package with the system Nginx:<br>
+    <ul>
+      <li>sudo apt-get remove nginx-extras (if that fails, use: sudo dpkg --remove --force-remove-reinstreq nginx-extras)</li>
+      <li>sudo apt-get update && sudo apt-get install -y <span class="module_name">libnginx-mod-http-passenger</span> nginx</li>
+    </ul>
+  </div>
+<% end %>
+
+If <span class="edition_title">Passenger</span> was installed through the Phusion Passenger [APT repository](<%= url_for "/install/#{integration_mode_type}/apt_repo/index.html" %>), then you can upgrade <span class="edition_title">Passenger</span>
+<% if integration_mode_type != :standalone -%>
+  along with <%= integration_mode_name %>
+<% end -%>
+through APT using the following command:
+
+    sudo apt-get update
+    sudo apt-get upgrade
+
+<h3 class="notoc">Don't see any updates?</h3>
+
+If you don't see any updates, then there are two possible reasons:
+
+ 1. Our Debian packages haven't been released yet. When we release a new version of <span class="edition_title">Passenger</span>, it typically takes 1-2 hours for our server to build Debian packages.
+ 2. If you are using a non-Long Term Support version of Ubuntu, then it is possible that we have [dropped support for that Ubuntu version](<%= url_for "/install/#{integration_mode_type}/apt_repo/index.html" %>#limited-package-support-for-non-lts-ubuntu-versions).
+
+<h2 id="redhat_centos">RPM packages (Red Hat, CentOS)</h2>
+
+If <span class="edition_title">Passenger</span> was installed through the Phusion Passenger [YUM repository](<%= url_for "/install/#{integration_mode_type}/yum_repo/index.html" %>), then you can upgrade <span class="edition_title">Passenger</span>
+<% if integration_mode_type != :standalone -%>
+  along with <%= integration_mode_name %>
+<% end -%>
+through YUM using the following command:
+
+    sudo yum update
+
+<h3 class="notoc">Don't see any updates?</h3>
+
+If you don't see any updates, then maybe our RPM packages haven't been released yet. When we release a new version of <span class="edition_title">Passenger</span>, it typically takes 2-3 hours for our server to build RPM packages.
+
+<h2 id="heroku">Heroku</h2>
+
+If you are using <span class="edition_title">Passenger</span> on Heroku, then update the <code class="gem_name">passenger</code> gem by running:
+<pre class="highlight">bundle update <span class="gem_name">passenger</span></pre>
+
+Then commit and push to Heroku:
+
+<pre class="highlight">git commit -a -m "Upgrade <span class="edition_title">Passenger</span> to latest version"
+git push heroku master</pre>
+
+<h2 id="docker">Docker</h2>
+
+Please refer to [the passenger-docker website](https://github.com/phusion/passenger-docker#upgrading_passenger) for upgrade instructions.
+
+<h2 id="source_tarball">Source tarball</h2>
+
+If <span class="edition_title">Passenger</span> was installed through a source tarball, then please follow the [source tarball upgrade guide](tarball_upgrade.html).
+
+<% if integration_mode_type == :standalone %>
+  <!-- ****** Ruby gemfile ****** -->
+  <h2 id="gemfile">Ruby Gemfile</h2>
+
+  <div class="note">Are you using Heroku? Please read the <a href="#heroku">Heroku upgrade instructions instead.</a></div>
+
+  <p>If you are using <span class="edition_title">Passenger</span> Standalone, and at the same time you have <span class="gem_name">passenger</span> as an entry in your Gemfile, then you can upgrade <span class="edition_title">Passenger</span> by running:</p>
+
+  <pre class="highlight">bundle update <span class="gem_name"s>passenger</span></pre>
+<% end %>
+
+<h2 id="rubygems">RubyGems<%= " (but not through Gemfile)" if integration_mode_type == :standalone %></h2>
+
+<% if integration_mode_type == :standalone -%>
+If Passenger was installed through RubyGems (but not through [Gemfile](#gemfile)),
+<% else -%>
+If Passenger was installed through RubyGems,
+<% end -%>
+then upgrading Passenger involves going through the normal installation process again. Please follow the installation guide that is most relevant to you:
+
+ * [Installation guide with RVM](<%= url_for "/install/#{integration_mode_type}/install/oss/rubygems_rvm/index.html" %>)
+ * [Installation guide without RVM](<%= url_for "/install/#{integration_mode_type}/install/oss/rubygems_norvm/index.html" %>)
+
+Please *ignore the warning* there that tells you that the guide is not for updates.
+
+<% if integration_mode_type == :apache %>
+  When done, please don't forget to update the Apache configuration snippet that the installer tells you about at the end.
+<% elsif integration_mode_type == :nginx %>
+  Be sure to install Nginx into the same prefix that you previously installed Nginx to.
+
+  When done, please don't forget to update the Nginx configuration snippet that the installer tells you about at the end.
+<% end %>
+
+<%= javascript_include_tag 'change_edition_text' %>
