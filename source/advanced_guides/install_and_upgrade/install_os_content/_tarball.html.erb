@@ -1,3 +1,5 @@
+<% os_config_description = "source tarball" %>
+
 <%
 if edition_type == :oss
   tarball_basename = "passenger"
@@ -6,6 +8,18 @@ else
 end
 step = 0
 %>
+
+<h1>Installing <%= edition_title %><br>
+<small><%= os_config_description %></small></h1>
+
+<div class="info">
+  This page describes the installation of Passenger through the following operating system or installation method: <strong style="font-size: 120%"><%= os_config_description %></strong>. Not the configuration you are looking for? <a href="../#select_os">Go back to the operating system / installation method selection menu.</a>
+</div>
+
+<div>
+  <p><strong>Table of contents</strong></p>
+  <ul class="toc-container"><li>Loading...</li></ul>
+</div>
 
 <% if integration_mode_type == :nginx %>
   <h2 id="note_about_nginx">Before you begin: a note about Nginx</h2>
