@@ -1,0 +1,70 @@
+<%
+sudo = locals[:sudo] || "sudo"
+passenger_bindir = locals[:passenger_bindir] ? locals[:passenger_bindir] + "/" : nil
+passenger_sbindir = locals[:passenger_sbindir] ? locals[:passenger_sbindir] + "/" : nil
+%>
+<p>After installation, please validate the install by running <code><%= sudo %> <%= passenger_bindir %>passenger-config validate-install</code>. For example:</p>
+<pre class="highlight shell"><span class="prompt">$ </span><%= sudo %> <%= passenger_bindir %>passenger-config validate-install
+<span class="output"> * Checking whether this Phusion Passenger install is in PATH... ✓
+ * Checking whether there are no other Phusion Passenger installations... ✓</span></pre>
+<p>
+  All checks should pass. If any of the checks do not pass, please follow the suggestions on screen.
+</p>
+
+
+<% if integration_mode_type == :apache %>
+<!-- ******** Apache ******** -->
+<p>
+  Finally, check whether Apache has started the Passenger core processes. Run <code><%= sudo %> <%= passenger_sbindir %>passenger-memory-stats</code>. You should see Apache processes as well as Passenger processes. For example:
+</p>
+<pre class="highlight shell"><span class="prompt">$ </span><%= sudo %> <%= passenger_sbindir %>passenger-memory-stats
+<span class="output">Version: 5.0.8
+Date   : 2015-05-28 08:46:20 +0200
+
+---------- Apache processes ----------
+PID    PPID   VMSize    Private  Name
+--------------------------------------
+3918   1      190.1 MB  0.1 MB   /usr/sbin/<%= apache_process_name %>
+...
+
+----- Passenger processes ------
+PID    VMSize    Private   Name
+--------------------------------
+12517  83.2 MB   0.6 MB    Passenger watchdog
+12520  266.0 MB  3.4 MB    Passenger core
+12531  149.5 MB  1.4 MB    Passenger ust-router
+...</span></pre>
+<p>
+  If you do not see any Apache processes or Passenger processes, then you probably have some kind of installation problem or configuration problem. Please refer to the <a href="<%= url_for "/admin/apache/troubleshooting/index.html" %>">troubleshooting guide</a>.
+</p>
+
+
+<% elsif integration_mode_type == :nginx %>
+<!-- ******** Nginx ******** -->
+<p>
+  Finally, check whether Nginx has started the Passenger core processes. Run <code><%= sudo %> <%= passenger_sbindir %>passenger-memory-stats</code>. You should see Nginx processes as well as Passenger processes. For example:
+</p>
+<pre class="highlight shell"><span class="prompt">$ </span><%= sudo %> <%= passenger_sbindir %>passenger-memory-stats
+<span class="output">Version: 5.0.8
+Date   : 2015-05-28 08:46:20 +0200
+...
+
+---------- Nginx processes ----------
+PID    PPID   VMSize   Private  Name
+-------------------------------------
+12443  4814   60.8 MB  0.2 MB   nginx: master process /usr/sbin/nginx
+12538  12443  64.9 MB  5.0 MB   nginx: worker process
+### Processes: 3
+### Total private dirty RSS: 5.56 MB
+
+----- Passenger processes ------
+PID    VMSize    Private   Name
+--------------------------------
+12517  83.2 MB   0.6 MB    PassengerAgent watchdog
+12520  266.0 MB  3.4 MB    PassengerAgent server
+12531  149.5 MB  1.4 MB    PassengerAgent logger
+...</span></pre>
+<p>
+  If you do not see any Nginx processes or Passenger processes, then you probably have some kind of installation problem or configuration problem. Please refer to the <a href="<%= url_for "/admin/nginx/troubleshooting/index.html" %>">troubleshooting guide</a>.
+</p>
+<% end %>

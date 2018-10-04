@@ -1,0 +1,40 @@
+<p>
+  As explained earlier in <a href="#note_about_nginx">the introductory notes</a>, you can't use an init script like <code>/etc/init.d/nginx</code> or <code>service nginx restart</code>. This section teaches you how to control and how to work with the Nginx you installed.
+</p>
+<p>
+  Remember that at some point, <code>passenger-install-nginx-module</code> asked you where to install Nginx to, and asked you for a "prefix", right? The prefix is the directory in which this new Nginx is installed. By default, the installer picks the directory <code>/opt/nginx</code>. In this section we will assume that you installed to the default prefix directory. If you specified a different prefix, simply substitute /opt/nginx with the actual directory.
+</p>
+
+<h3>File locations</h3>
+<p>
+  Nginx's configuration files are then located in <code>/opt/nginx/conf</code>. Its log files are located in <code>/opt/nginx/logs</code>.
+</p>
+
+<h3>Starting Nginx</h3>
+<p>
+  You can start Nginx by running:
+</p>
+<pre class="highlight"><span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
+
+<h3>Shutting down Nginx</h3>
+<p>
+  You can shut down Nginx by killing its PID with the <code>kill</code> command. To find out what Nginx's PID is, use the <code>ps</code> command. For example:
+</p>
+<pre class="highlight"><span class="prompt">$</span> ps auxw | grep nginx
+<span class="output">root     25817  0.0  0.1  43248  1172 ?        S    Jan01   0:00 nginx: master process /opt/nginx/sbin/nginx
+www-data 25818  0.0  0.3  44240  3484 ?        S    Jan01   0:02 nginx: worker process</span></pre>
+<p>
+  Here we see that the Nginx master process has PID 25817 (you can ignore the worker process), so we run:
+</p>
+<pre class="highlight"><span class="prompt">$ </span>sudo kill 25817</pre>
+<p>
+  Having to perform two steps is a bit cumbersome. Luckily, there is an easier way to do this. By default, Nginx creates a PID file in <code>/opt/nginx/logs/nginx.pid</code>. This PID file contains Nginx's current PID. So we can use a single command to shutdown Nginx:
+</p>
+<pre class="highlight"><span class="prompt">$ </span>sudo kill $(cat /opt/nginx/logs/nginx.pid)</pre>
+
+<h3 id="restarting_nginx">Restarting Nginx</h3>
+<p>
+  Restarting Nginx is the same as shutting down Nginx, and starting it again. For example:
+</p>
+<pre class="highlight"><span class="prompt">$ </span>sudo kill $(cat /opt/nginx/logs/nginx.pid)
+<span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>

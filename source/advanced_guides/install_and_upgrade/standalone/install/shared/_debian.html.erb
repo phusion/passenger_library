@@ -1,0 +1,184 @@
+<%
+case integration_mode_type
+when :apache
+  if edition_type == :oss
+    packages = "libapache2-mod-passenger"
+    packages_title = "Passenger + Apache module"
+  else
+    packages = "libapache2-mod-passenger-enterprise"
+    packages_title = "Passenger Enterprise + Apache module"
+  end
+when :nginx
+  if dynamic_nginx_module_available?(os_config_type.to_s)
+    if edition_type == :oss
+      packages = "libnginx-mod-http-passenger"
+      packages_title = "Passenger + Nginx module"
+    else
+      packages = "libnginx-mod-http-passenger-enterprise"
+      packages_title = "Passenger Enterprise + Nginx module"
+    end
+  else
+    if edition_type == :oss
+      packages = "nginx-extras passenger"
+      packages_title = "Passenger + Nginx"
+    else
+      packages = "nginx-extras passenger-enterprise"
+      packages_title = "Passenger Enterprise + Nginx"
+    end
+  end
+else
+  if edition_type == :oss
+    packages = "passenger"
+    packages_title = "Passenger"
+  else
+    packages = "passenger-enterprise"
+    packages_title = "Passenger Enterprise"
+  end
+end
+
+step = 0
+%>
+
+<% if os_config_name =~ /ubuntu/i && os_config_name !~ /lts/i %>
+  <h2>Heads up: limited package support for non-LTS Ubuntu versions</h2>
+  <p>
+    Before we continue, you should know that the Ubuntu version you selected is a non-LTS (Long Term Support) version. This means that Canonical &mdash; the company that created Ubuntu &mdash; only supports this particular Ubuntu version for 1 year.
+  </p>
+  <p>Because of this short support cycle by Canonical, we only provide Passenger package updates for this Ubuntu version for 6 months. That's when the next Ubuntu version comes out.</p>
+  <p>
+    So when the next Ubuntu version is released, you must upgrade your system to that new Ubuntu version. Otherwise you won't receive Passenger updates in the form of .deb packages from us anymore.
+  </p>
+  <p>
+    If you don't like having to upgrade your Ubuntu system every 6 months, then you should use an LTS version of Ubuntu. Canonical supports LTS versions for 5 years, and we provide Passenger package updates for LTS versions for 5 years too.
+  </p>
+  <p>
+    Now that you know this, let's move on.
+  </p>
+<% end %>
+
+<% if edition_type == :enterprise %>
+  <%=
+  result = {}
+  output = render_partial("/install/install/shared/enterprise_preamble", locals: locals.merge(result: result))
+  step = result[:step]
+  output
+  %>
+  <div class="alert alert-info" role="alert" style="margin: 4em 0">From this point on, all commands that you run are supposed to be run on the production server, not on your local computer.</div>
+<% end %>
+
+<% step += 1 %>
+<h2>Step <%= step %>: install Passenger packages</h2>
+
+<% if integration_mode_type == :nginx && os_config_type == :zesty %>
+  <div class="info">In July 2017, the Ubuntu 17.04 Zesty packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please uninstall it first:<br>
+    <ul>
+      <li>sudo apt-get remove nginx-extras (if that fails, use: sudo dpkg --remove --force-remove-reinstreq nginx-extras)</li>
+    </ul>
+  </div>
+<% end %>
+<p>
+  These commands will install <%= packages_title %> through Phusion's APT repository.
+  <% if integration_mode_type == :nginx %>
+    <% if dynamic_nginx_module_available?(os_config_type.to_s) %>
+      At this point we assume that you already have Nginx installed from your system repository. If not, you should do that first before continuing.
+    <% else %>
+      If you already had Nginx installed, then these commands will upgrade Nginx to Phusion's version (with Passenger compiled in).
+    <% end %>
+  <% end %>
+  <% if edition_type == :enterprise %>
+    Replace <code>YOUR_DOWNLOAD_TOKEN</code> with the download token you obtained in the last step.
+  <% end %>
+</p>
+
+<pre class="highlight shell"><code><span class="c unselectable"># Install our PGP key and add HTTPS support for APT</span>
+sudo apt-get install -y dirmngr gnupg
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
+sudo apt-get install -y apt-transport-https ca-certificates
+
+<span class="c unselectable"># Add our APT repository</span>
+<% if edition_type == :oss -%>
+sudo sh -c <span class="s1">'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger <span class="debian_codename si"><%= os_config_type %></span> main &gt; /etc/apt/sources.list.d/passenger.list'</span>
+<% else -%>
+unset HISTFILE
+sudo sh -c <span class="s1">'echo machine www.phusionpassenger.com/enterprise_apt login download password <span class="si">YOUR_DOWNLOAD_TOKEN</span> &gt;&gt; /etc/apt/auth.conf'</span>
+sudo sh -c <span class="s1">'echo deb https://www.phusionpassenger.com/enterprise_apt <span class="debian_codename si"><%= os_config_type %></span> main &gt; /etc/apt/sources.list.d/passenger.list'</span>
+sudo chown root: /etc/apt/sources.list.d/passenger.list
+sudo chmod 644 /etc/apt/sources.list.d/passenger.list
+sudo chown root: /etc/apt/auth.conf
+sudo chmod 600 /etc/apt/auth.conf
+<% end -%>
+sudo apt-get update
+
+<span class="c unselectable"># Install <%= packages_title %></span>
+sudo apt-get install -y <%= packages %></code></pre>
+
+<% if integration_mode_type == :apache %>
+  <% step += 1 %>
+  <h2>Step <%= step %>: enable the Passenger Apache module and restart Apache</h2>
+  <pre class="highlight shell"><span class="prompt">$ </span>sudo a2enmod passenger
+<span class="prompt">$ </span>sudo apache2ctl restart</pre>
+<% elsif integration_mode_type == :nginx %>
+  <% step += 1 %>
+  <h2>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h2>
+  <% if dynamic_nginx_module_available?(os_config_type.to_s) %>
+    <p>Ensure the config files are in-place:</p>
+    <pre class="highlight shell"><span class="prompt">$ </span>if [ ! -f /etc/nginx/modules-enabled/50-mod-http-passenger.conf ]; then sudo ln -s /usr/share/nginx/modules-available/mod-http-passenger.load /etc/nginx/modules-enabled/50-mod-http-passenger.conf ; fi
+<span class="prompt">$ </span>sudo ls /etc/nginx/conf.d/mod-http-passenger.conf</pre>
+<div class="note">
+      <p>If you don't see a file at <code>/etc/nginx/conf.d/mod-http-passenger.conf</code>; then you need to create it yourself and set the <code>passenger_ruby</code> and <code>passenger_root</code> config options. For example:</p>
+     <pre class="highlight">
+<span class="nf">passenger_root</span> /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
+<span class="nf">passenger_ruby</span> /usr/bin/passenger_free_ruby;
+</pre>
+  </div>
+  <% else %>
+    <p>Edit <code>/etc/nginx/nginx.conf</code> and uncomment <code>include /etc/nginx/passenger.conf;</code>. For example, you may see this:</p>
+    <pre class="highlight"># include /etc/nginx/passenger.conf;</pre>
+    <p>Remove the '#' characters, like this:</p>
+    <pre class="highlight">include /etc/nginx/passenger.conf;</pre>
+
+    <div class="note">
+      <p>If you don't see a commented version of <code>include /etc/nginx/passenger.conf;</code> inside nginx.conf, then you need to insert it yourself. Insert it into /etc/nginx/nginx.conf inside the <code>http</code> block. For example:</p>
+     <pre class="highlight">...
+
+http {
+    <span class="nf">include /etc/nginx/passenger.conf;</span>
+    ...
+}</pre>
+  </div>
+  <% end %>
+    <p>
+      When you are finished with this step, restart Nginx:
+    </p>
+    <pre class="highlight"><span class="prompt">$ </span>sudo service nginx restart</pre>
+
+<% end %>
+
+
+<% step += 1 %>
+<h2>Step <%= step %>: check installation</h2>
+<%= render_partial("/install/install/shared/postinstall_check",
+      locals: locals.merge(
+        apache_process_name: "apache2",
+        passenger_bindir: "/usr/bin",
+        passenger_sbindir: "/usr/sbin")) %>
+
+<% step += 1 %>
+<h2>Step <%= step %>: update regularly</h2>
+<p>
+  <% if integration_mode_type != :standalone %>
+    <%= web_server_name %> updates,
+  <% end %>
+  Passenger updates and system updates are delivered through the APT package manager regularly. You should run the following command regularly to keep them up to date:
+</p>
+<pre class="highlight"><span class="prompt">$ </span>sudo apt-get update
+<span class="prompt">$ </span>sudo apt-get upgrade</pre>
+<% if integration_mode_type != :standalone %>
+  <p>
+    You do not need to restart <%= web_server_name %> or Passenger after an update, and you also do not need to modify any configuration files after an update. That is all taken care of automatically for you by APT.
+  </p>
+<% else %>
+  <p>
+    After an update, you should restart all your Passenger instances so that the updates take effect.
+  </p>
+<% end %>

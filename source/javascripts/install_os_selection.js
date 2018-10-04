@@ -103,12 +103,10 @@ function genericInstallationMethodChanged() {
 }
 
 function updateOsSelectionContinueButton(target) {
-  var button = $('.install_os_continue');
-  var url = location.href.replace(/#.*/, "").replace(/(.+)\/.*/, function() {
-    return arguments[1] + "/";
-  });
-  url += target + "/" + button.data('next-page');
-  button.attr('href', url);
+  var btn = document.querySelector('.install_os_continue');
+  if (btn) {
+    btn.href = btn.href.replace(/[^/]+$/, target + '.html');
+  }
 }
 
 function showGenericInstallationInstructions() {

@@ -32,13 +32,13 @@ function sendLocalStorageItem() {
 }
 
 function changeEditionText(edition) {
+  var varArr = [editionTitle, gemName, formulaName, nginxFormula, moduleName, packagesDebian, packagesRpm];
   if (edition === 'OSS') {
-    var varArr = [editionTitle, gemName, formulaName, nginxFormula, moduleName, packagesDebian, packagesRpm];
     var textArr = ['Passenger', 'passenger', 'passenger', 'nginx --with-passenger', 'libnginx-mod-http-passenger', 'passenger', 'passenger'];
     textConverter(varArr, textArr);
   } else {
-    var varArr = [editionTitle, gemName, formulaName, nginxFormula, moduleName, packagesDebian, packagesRpm];
-    var textArr = ['Passenger Enterprise', 'passenger-enterprise-server', 'passenger-enterprise', 'nginx-passenger-enterprise', 'libnginx-mod-http-passenger-enterprise', 'passenger-enterprise', 'passenger-enterprise'];
+    var textArr = [
+    'Passenger Enterprise', 'passenger-enterprise-server', 'passenger-enterprise', 'nginx-passenger-enterprise', 'libnginx-mod-http-passenger-enterprise', 'passenger-enterprise', 'passenger-enterprise'];
     textConverter(varArr, textArr);
   }
 }

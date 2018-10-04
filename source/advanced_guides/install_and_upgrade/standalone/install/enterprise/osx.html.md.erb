@@ -1,0 +1,13 @@
+---
+title: Installing Passenger
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(INTEGRATION_MODE_STANDALONE)
+  locals = locals.merge(PASSENGER_ENTERPRISE_EDITION)
+  integration_mode_type = locals[:integration_mode_type]
+  edition_type = locals[:edition_type]
+%>
+
+<%= render_partial("../../../install_os_content/_osx", locals: locals) %>

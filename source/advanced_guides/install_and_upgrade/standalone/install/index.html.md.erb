@@ -1,0 +1,44 @@
+---
+title: Installing Passenger
+advanced_guides: true
+---
+
+# Installing Passenger
+
+### Introduction
+
+Passenger can be installed through a variety of installation methods. We recommend using an operating system-specific installation method because it has better OS integration, but you can also choose a more generic installation method.
+
+<div class="info">
+  Are you looking to install Passenger on Heroku? Please follow <a href="https://github.com/phusion/passenger-ruby-heroku-demo">the Heroku guide</a>.
+</div>
+
+<h2>Open source or Enterprise?</h2>
+<p>Please select the Passenger edition that you are using.</p>
+
+<div class="adv-radio-choices">
+  <div>
+    <div>
+      <input type="radio" id="radio-oss" value="OSS" data-label="Edition" name="Edition">
+      <label for="radio-oss"><img src="<%= url_for("/images/passenger_logo.svg") %>" alt="open-source">
+        <span>Passenger open source</span>
+      </label>
+    </div>
+    <div>
+      <input type="radio" id="radio-enterprise" value="Enterprise" data-label="Edition" name="Edition">
+      <label for="radio-enterprise">
+        <img src="<%= url_for("/images/passenger_logo.svg") %>" alt="enterprise">
+        <span>Passenger Enterprise</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<h2 id="select_os">Select operating system / installation method</h2>
+
+To continue, please select an operating system or installation method.
+
+<%= render_partial("shared/os_selector",
+      locals: locals.merge(context: :install_passenger, next_page: "")) %>
+
+<%= javascript_include_tag 'change_edition_link' %>
