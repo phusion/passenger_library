@@ -49,8 +49,7 @@ function addAnchors(selector) {
 
 (function () {
   'use strict';
-  addAnchors('.bs-docs-section h1:not(.noanchor), ' +
-    '.bs-docs-section h2:not(.noanchor), ' +
+  addAnchors('.bs-docs-section h2:not(.noanchor), ' +
     '.bs-docs-section h3:not(.noanchor), ' +
     '.bs-docs-section h4:not(.noanchor), ' +
     '.bs-docs-section h5:not(.noanchor)');
