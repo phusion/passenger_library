@@ -18,3 +18,13 @@
 #fuse-panel img:last-of-type {
   margin-top: 30px;
 }
+
+.editlink {
+    position: relative;
+    z-index: 1;
+    margin-top: 15px;
+    margin-left: 69px;
+    a {
+        color: #4EA0FF;
+    }
+}
