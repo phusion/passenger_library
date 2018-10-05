@@ -18,7 +18,7 @@ function sendLocalStorageItem() {
 }
 
 function changeLink(edition) {
-  if (edition === 'OSS') {
+  if (edition === 'OSS' || edition === null) {
     btn.href = btn.href.replace('enterprise', 'oss');
   } else {
     btn.href = btn.href.replace('oss', 'enterprise');
