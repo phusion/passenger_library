@@ -40,4 +40,8 @@ To continue, please select an operating system or installation method.
 <%= render_partial("shared/os_selector",
       locals: locals.merge(context: :install_passenger, next_page: "")) %>
 
+<div class="back-button">
+  <a class="light-button" href="/advanced_guides/install_and_upgrade/">Back</a>
+</div>
+
 <%= javascript_include_tag 'change_edition_link' %>

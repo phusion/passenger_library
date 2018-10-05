@@ -248,3 +248,7 @@ Smart spawning can be disabled as follows:
 It depends. Passenger automatically reestablishes the ActiveRecord primary database connection. The vast majority of Rails only uses ActiveRecord (not any other database libraries), and only with a single database connection.
 
 If your application uses any database libraries besides ActiveRecord, OR you use ActiveRecord with more than one database connection, then you are responsible for reestablishing all connections after forking. Use the [smart spawning hooks](#smart-spawning-hooks).
+
+<div class="back-button">
+  <a class="dark-button" href="/advanced_guides/in_depth/">Back</a>
+</div>

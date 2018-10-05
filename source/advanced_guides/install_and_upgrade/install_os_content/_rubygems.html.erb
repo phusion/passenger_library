@@ -129,11 +129,11 @@ end
   </p>
   <!-- TODO: fix link -->
   <% if integration_mode_type == :apache %>
-    <p>You tell Passenger which Ruby interpreter to use for a specific app, by using the <a href="<%= url_for "/config/apache/reference/index.html" %>#passengerruby">PassengerRuby</a> directive. This can be customized on a per-application basis.</p>
+    You tell Passenger which Ruby interpreter to use for a specific app, by using the <a href="<%= url_for "/config/apache/reference/index.html" %>#passengerruby">PassengerRuby</a> directive. This can be customized on a per-application basis.
   <% elsif integration_mode_type == :nginx %>
-    <p>You tell Passenger which Ruby interpreter to use for a specific app, by using the <a href="<%= url_for "/config/nginx/reference/index.html" %>#passenger_ruby">passenger_ruby</a> directive. This can be customized on a per-application basis.</p>
+    You tell Passenger which Ruby interpreter to use for a specific app, by using the <a href="<%= url_for "/config/nginx/reference/index.html" %>#passenger_ruby">passenger_ruby</a> directive. This can be customized on a per-application basis.
   <% else %>
-    <p>You tell Passenger which Ruby interpreter to use by using the <code>--ruby</code> command line option.</p>
+    You tell Passenger which Ruby interpreter to use by using the <code>--ruby</code> command line option.
   <% end %>
   <p>
     Please also read <a href="<%= url_for '/indepth/ruby/multiple_rubies.html' %>">How having multiple Ruby interpreters affects Passenger</a>. In particular, read the RVM-related caveats.
@@ -143,3 +143,7 @@ end
   <%= render_partial("/advanced_guides/install_and_upgrade/install_os_content/nginx_faq", locals: locals) %>
 <% end %>
 <%= render_partial("/advanced_guides/install_and_upgrade/install_os_content/source_compilation_faq", locals: locals) %>
+
+<div class="back-button">
+  <a class="dark-button" href="/advanced_guides/install_and_upgrade/">Back</a>
+</div>

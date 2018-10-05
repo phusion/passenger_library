@@ -45,3 +45,7 @@ Finally, there is also the the _PSS_ (Proportional Set Size) metric. This is lik
 At first glance, this may sound like the perfect metric (with the exception that swap still isn't taken into account), so why don't we use it? It's because the PSS has one counter-intuitive property: if one of the processes exit, then the PSS of the remaining processes suddenly become higher, because the shared memory is now shared between fewer processes. This may lead you to believe that they suddenly allocated more memory.
 
 For the sake of making the reported memory usage as intuitively correct as possible, Passenger does not use the PSS metric.
+
+<div class="back-button">
+  <a class="dark-button" href="/advanced_guides/in_depth/">Back</a>
+</div>
