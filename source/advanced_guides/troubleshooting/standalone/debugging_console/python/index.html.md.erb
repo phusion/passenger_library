@@ -1,0 +1,12 @@
+---
+title: Debugging console
+advanced_guides: true
+---
+
+<%
+  locals = locals.merge(LANG_PYTHON)
+  locals = locals.merge(INTEGRATION_MODE_STANDALONE)
+  integration_mode_type = locals[:integration_mode_type]
+%>
+
+<%= render_partial("../../../shared/_debugging_console", locals: locals) %>
