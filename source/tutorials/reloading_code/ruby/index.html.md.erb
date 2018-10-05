@@ -15,7 +15,7 @@ comments: false
 
 ## Introduction
 
-Some frameworks -- most notably Rails -- provide built-in code reloading mechanisms. They usually work by installing a hook so that whenever a non-existant class is referenced, the hook code attempts to locate and load the file associated to that class. For example, when code is executed that references the `User` class, Rails will infer that a `user.rb` file should be loaded from one of its load paths. After every request, Rails removes all user-defined classes from memory so that fresh code can be loaded on the next request.
+Some frameworks -- most notably Rails -- provide built-in code reloading mechanisms. They usually work by installing a hook so that whenever a non-existent class is referenced, the hook code attempts to locate and load the file associated to that class. For example, when code is executed that references the `User` class, Rails will infer that a `user.rb` file should be loaded from one of its load paths. After every request, Rails removes all user-defined classes from memory so that fresh code can be loaded on the next request.
 
 Such mechanisms are much faster than restarting the server. Restarting the server may take a few seconds, but builtin reloading take a few miliseconds. But they have a drawback too: not all code can be reloaded, especially initialization-related code. For example, Rails cannot reload code in `config/application.rb` without a server restart.
 
