@@ -147,6 +147,14 @@ end
       <!-- Right sidebar
       =========================================== -->
       <div id="right-content">
+        <% if current_page.data.comments != false %>
+          <div style="position: relative; z-index: 1">
+            <div class="editlink">
+              <a href="<%=h current_page_github_url %>"><img src="/images/edit.svg" alt="edit">Edit page</a>
+            </div>
+          </div>
+        <% end %>
+
         <% if current_page.data.side_toc === true %>
           <%= partial "/shared/side_toc" %>
         <% else %>

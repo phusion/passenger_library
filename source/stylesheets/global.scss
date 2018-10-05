@@ -81,6 +81,21 @@ body {
   }
 }
 
+.editlink {
+  margin-left: 65px;
+  margin-bottom: 25px;
+  font-size: 13px;
+
+  a {
+    margin-left: 20px;
+    img {
+      position: absolute;
+      margin-left: -19px;
+    }
+    color: #35373B;
+  }
+}
+
 .hidden {
     display: none;
 }
