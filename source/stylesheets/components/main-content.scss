@@ -90,6 +90,7 @@
  
 #main-content img {
   margin-top: 25px;
+  max-width: 677px;
 }
 
 #main-content table {
@@ -102,6 +103,25 @@
   padding: 8px;
   display: table-cell;
   vertical-align: top;
+}
+
+#main-content {
+  dl, dt {
+    list-style: disc;
+    line-height: 24px;
+  }
+
+  dt {
+    display: list-item;
+  }
+
+  dt, dd {
+    margin-left: 2.5em;
+  }
+
+  dd {
+    margin-bottom: 1em;
+  }
 }
 
 #main-content td:first-of-type {
