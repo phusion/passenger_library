@@ -31,7 +31,17 @@
   color: #4EA0FF;
 }
 
-#right-content-toc img {
+#right-content-toc .editlink {
+  margin: 15px 0 15px;
+
+  a {
+    img {
+      margin-top: 0;
+    }
+  }
+}
+
+#right-content-toc img:last-of-type {
   margin-top: 10px;
 }
 

@@ -154,15 +154,14 @@ end
       <!-- Right sidebar
       =========================================== -->
       <div id="right-content">
-        <div>
-          <div class="editlink">
-            <a href="<%=h current_page_github_url %>"><img src="/images/edit.svg" alt="edit">Edit page</a>
-          </div>
-        </div>
-
         <% if current_page.data.side_toc === true %>
           <%= partial "/shared/side_toc" %>
         <% else %>
+          <div>
+            <div class="editlink">
+              <a href="<%=h current_page_github_url %>"><img src="/images/edit.svg" alt="edit">Edit page</a>
+            </div>
+          </div>
           <%= partial "/shared/new_items" %>
         <% end %>
       </div>
