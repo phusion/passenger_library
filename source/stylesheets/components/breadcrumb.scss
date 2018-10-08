@@ -1,4 +1,6 @@
 #breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
   font-size: 14px;
   margin-top: 0;
   margin-bottom: 20px;
@@ -6,6 +8,8 @@
   padding-left: 0;
   display: flex;
   font-weight: 500;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #efefef;
 }
 
 #breadcrumb li:not(:last-child)::after {

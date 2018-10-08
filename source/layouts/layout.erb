@@ -138,6 +138,13 @@ end
       =========================================== -->
       <div id="main-content">
         <div>
+          <% if current_page.data.breadcrumb == true %>
+            <ul id="breadcrumb">
+              <li><a href="<%= current_page.parent.url %>"><%= current_page.parent.data.title %></a></li>
+              <li><a href="<%= current_page.url %>"><%= current_page.data.title %></a></li>
+            </ul>
+          <% end %>
+
           <%= '<section class="bs-docs-section">' if !current_page.data.multisection %>
             <%= yield %>
           <%= '</section>' if !current_page.data.multisection %>
@@ -147,22 +154,17 @@ end
       <!-- Right sidebar
       =========================================== -->
       <div id="right-content">
-        <% if current_page.data.comments != false %>
-          <div style="position: relative; z-index: 1">
-            <div class="editlink">
-              <a href="<%=h current_page_github_url %>"><img src="/images/edit.svg" alt="edit">Edit page</a>
-            </div>
+        <div>
+          <div class="editlink">
+            <a href="<%=h current_page_github_url %>"><img src="/images/edit.svg" alt="edit">Edit page</a>
           </div>
-        <% end %>
+        </div>
 
         <% if current_page.data.side_toc === true %>
           <%= partial "/shared/side_toc" %>
         <% else %>
           <%= partial "/shared/new_items" %>
         <% end %>
-        <div>
-          <div class="editlink"><a href="<%=h current_page_github_url %>">Edit page</a></div>
-        </div>
       </div>
     </div>
 

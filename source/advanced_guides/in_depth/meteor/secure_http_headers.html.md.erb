@@ -1,3 +1,9 @@
+---
+title: Meteor and secure HTTP headers
+advanced_guides: true
+breadcrumb: true
+---
+
 # Meteor and secure HTTP headers
 
 Passenger passes client-sent HTTP headers to the application. In addition to these client-sent HTTP headers, Passenger may pass additional request-specific information to the application, in the form of _secure HTTP headers_. Passenger guarantees that secure HTTP headers cannot be spoofed by the client. Any secure HTTP headers that reach the application are guaranteed to come from either Passenger, or from Nginx/Apache.
