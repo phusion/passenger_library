@@ -122,6 +122,19 @@
   background: #f9f9f9;
 }
 
+#main-content figure figcaption {
+  font-size: 12px;
+  line-height: 16px;
+  font-style: italic;
+  margin-top: 20px;
+  margin-bottom: 60px;
+}
+
+#main-content .img-thumbnail+figcaption {
+  margin-top: -15px;
+  margin-bottom: 0;
+}
+
 #main-content .sub-text {
   font-size: 12px;
   line-height: 16px;
