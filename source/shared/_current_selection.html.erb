@@ -1,0 +1,14 @@
+<% disabled_selections ||= [] %>
+<div id="current-selection">
+  <p>Current selection: </p>
+  <div>
+    <% if !disabled_selections.include? :lang %>
+      <img src="/images/ruby.svg" alt="Ruby">
+      <%= render_partial('/shared/lang') %>
+    <% end %>
+    <% if !disabled_selections.include? :integration %>
+      <img src="/images/nginx.svg" alt="Nginx">
+      <%= render_partial('/shared/integration') %>
+    <% end %>
+  </div>
+</div>
