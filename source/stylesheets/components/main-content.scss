@@ -33,14 +33,14 @@
 
 #main-content h3 {
   margin-top: 30px;
-  margin-bottom: 6px;
+  margin-bottom: 3px;
   font-size: 20px;
 }
 
 #main-content p {
   margin-top: 0;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 26px;
 }
 
 #main-content a {
@@ -96,6 +96,7 @@
 #main-content table {
   width: 100%;
   table-layout: fixed;
+  margin-bottom: 20px;
 }
 
 #main-content td {
@@ -103,12 +104,13 @@
   padding: 8px;
   display: table-cell;
   vertical-align: top;
+  line-height: 26px;
 }
 
 #main-content {
   dl, dt {
     list-style: disc;
-    line-height: 24px;
+    line-height: 26px;
   }
 
   dt {
@@ -203,7 +205,7 @@
   padding: 20px 20px 20px;
   border-radius: 3px;
   margin: 30px 0;
-  line-height: 24px;
+  line-height: 26px;
   border: 1px solid #35373B;
   margin: 60px 0 40px;
   border-top-left-radius: 0;
@@ -236,7 +238,7 @@
 #main-content .note {
   background: #fffbdd;
   padding: 20px 20px 20px;
-  line-height: 24px;
+  line-height: 26px;
   border-radius: 3px;
   margin: 30px 0;
   border: 1px solid #35373B;
@@ -264,7 +266,7 @@
 #main-content .warning {
   background: #f9d9d8;
   padding: 20px 20px 20px;
-  line-height: 24px;
+  line-height: 26px;
   border-radius: 3px;
   margin: 60px 0 40px;
   border: 1px solid #35373B;
