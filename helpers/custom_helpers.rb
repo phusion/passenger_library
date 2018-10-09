@@ -50,12 +50,12 @@ module CustomHelpers
     options[:class] ||= ""
     if options[:options] == 'header'
       options[:class] << " active" if url.include? current_page.url.split('/')[1]
+    elsif options[:options] == 'deploy'
+      if current_page.url.split('/')[3]
+        options[:class] << " active" if url.include? current_page.url.split('/')[3]
+      end
     else
-      arr = ['ruby/', 'python/', 'node/', 'meteor/', 'nginx/', 'apache/', 'standalone/']
-      current_url = current_page.url
-      string_cutter(url, arr)
-      string_cutter(current_url, arr)
-      options[:class] << " active" if url == current_url
+      options[:class] << " active" if url.include? current_page.url.split('/')[2]
     end
     link_to(link_text, url, options)
   end

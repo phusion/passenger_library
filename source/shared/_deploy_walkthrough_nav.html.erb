@@ -3,10 +3,10 @@
 <% index = dw.find_index{|s|s.to_s==page} %>
 <ul>
   <span>Deployment</span>
-  <li><%= nav_link('Deploy to production', '/tutorials/deploy_to_production/') %></li>
-  <% if dw.include? :launch_server %><li data-aws_only data-digital_ocean_only><%= nav_link('Launch server', '/tutorials/deploy_to_production/launch_server/') %></li><% end %>
-  <% if dw.include? :installations %><li><%= nav_link('Installations', '/tutorials/deploy_to_production/installations/') %></li><% end %>
-  <% if dw.include? :deploying_your_app %><li><%= nav_link('Deploying your app', '/tutorials/deploy_to_production/deploying_your_app/') %></li><% end %>
-  <% if dw.include? :deploy_updates %><li><%= nav_link('Deploy updates', '/tutorials/deploy_to_production/deploy_updates/') %></li><% end %>
+  <li><%= nav_link('Deploy to production', '/tutorials/deploy_to_production/', options: 'deploy') %></li>
+  <% if dw.include? :launch_server %><li data-aws_only data-digital_ocean_only><%= nav_link('Launch server', '/tutorials/deploy_to_production/launch_server/', options: 'deploy') %></li><% end %>
+  <% if dw.include? :installations %><li><%= nav_link('Installations', '/tutorials/deploy_to_production/installations/', options: 'deploy') %></li><% end %>
+  <% if dw.include? :deploying_your_app %><li><%= nav_link('Deploying your app', '/tutorials/deploy_to_production/deploying_your_app/', options: 'deploy') %></li><% end %>
+  <% if dw.include? :deploy_updates %><li><%= nav_link('Deploy updates', '/tutorials/deploy_to_production/deploy_updates/', options: 'deploy') %></li><% end %>
   <li class="back-btn"><a class="light-button" href="/tutorials/deploy_to_production/<%= index == 0 ? "" : dw[index-1] %>">Back</a></li>
 </ul>
