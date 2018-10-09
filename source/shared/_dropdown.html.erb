@@ -1,8 +1,12 @@
+<% disabled_items ||= [] %>
 <div class="dropdown <%= dropdown_type.downcase %>">
   <span>Current <%= dropdown_type %></span>
   <select name="<%= dropdown_type %>" style="background-image: url(<%= url_for "/images/#{dropdown_items[0].downcase}.svg" %>)">
     <% dropdown_items.each do |item| %>
-      <option value="<%= item %>" <% if ['Heroku', 'Cloud66'].include? item %> data-ruby_only <% end %>>
+      <option value="<%= item %>"
+        <% if ['Heroku', 'Cloud66'].include? item %> data-ruby_only <% end %>
+        <% if disabled_items.include?(item.downcase.to_sym) %> disabled <% end %>
+      >
         <% if item == 'Ownserver' %>
           (other) Linux/Unix
         <% else %>

@@ -8,3 +8,6 @@
 .dropdown.platform {
   display:none;
 }
+.dropdown select option[disabled] {
+  color: grey;
+}

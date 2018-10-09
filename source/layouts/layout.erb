@@ -101,7 +101,8 @@ end
 
             <%= render_partial("/shared/dropdown", locals: locals.merge(
               dropdown_type: "Language",
-              dropdown_items: ['Ruby', 'Python', 'Node', 'Meteor'].reject{|e| (current_page.data.disabled_langs && current_page.data.disabled_langs.include?(e.downcase.to_sym)) }
+              dropdown_items: ['Ruby', 'Python', 'Node', 'Meteor'],
+              disabled_items: current_page.data.disabled_langs
             )) %>
 
             <%= render_partial("/shared/dropdown", locals: locals.merge(
