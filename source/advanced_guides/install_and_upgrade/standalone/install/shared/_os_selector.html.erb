@@ -56,21 +56,27 @@ end
 
 <p class="os_install_loading_indicator">Loading...</p>
 
-<p><select id="os_install_select" style="display: none">
-  <option value="none" selected>Please select an operating system / installation method</option>
-  <option value="debian">Debian, Ubuntu (with APT)</option>
-  <option value="redhat">Red Hat, CentOS (with RPM)</option>
-  <% if [:ownserver, nil].include? locals[:infrastructure_type] %><option value="osx">macOS</option><% end %>
-  <option value="other">Other / OS independent (generic installation method)</option>
-</select></p>
+<div>
+  <select id="os_install_select" style="display: none">
+    <option value="none" selected>Please select an operating system / installation method</option>
+    <option value="debian">Debian, Ubuntu (with APT)</option>
+    <option value="redhat">Red Hat, CentOS (with RPM)</option>
+    <% if [:ownserver, nil].include? locals[:infrastructure_type] %><option value="osx">macOS</option><% end %>
+    <option value="other">Other / OS independent (generic installation method)</option>
+  </select>
+  <span class="arrow-down"></span>
+</div>
 
 <div class="install_os install_os_debian" style="display: none">
-  <p><select id="debian_version_select">
-    <%= debian_version_selection_options %>
-    <% if context == :install_passenger %>
-      <option value="other">Other</option>
-    <% end %>
-  </select></p>
+  <div>
+    <select id="debian_version_select">
+      <%= debian_version_selection_options %>
+      <% if context == :install_passenger %>
+        <option value="other">Other</option>
+      <% end %>
+    </select>
+    <span class="arrow-down"></span>
+  </div>
 
   <div class="unsupported_debian_instructions">
     Is your Debian or Ubuntu version not listed? Then sorry, we do not provide packages for this version at the moment. Please <a href="javascript:void(showGenericInstallationInstructions())">select "Other / OS independent (generic installation method)"</a> in the installation method dropdown, then select an appropriate choice.
@@ -78,12 +84,15 @@ end
 </div>
 
 <div class="install_os install_os_redhat" style="display: none">
-  <p><select id="redhat_version_select">
-    <%= redhat_version_selection_options %>
-    <% if context == :install_passenger %>
-      <option value="other">Other</option>
-    <% end %>
-  </select></p>
+  <div>
+    <select id="redhat_version_select">
+      <%= redhat_version_selection_options %>
+      <% if context == :install_passenger %>
+        <option value="other">Other</option>
+      <% end %>
+    </select>
+    <span class="arrow-down"></span>
+  </div>
 
   <div class="unsupported_redhat_instructions">
     Is your Red Hat or CentOS version not listed? Then sorry, we do not provide packages for this version at the moment. Please <a href="javascript:void(showGenericInstallationInstructions())">select "Other / OS independent (generic installation method)"</a> in the installation method dropdown, then select an appropriate choice.
@@ -91,23 +100,26 @@ end
 </div>
 
 <div class="install_os install_os_other" style="display: none">
-  <p><select id="generic_install_method_select">
-    <% if context == :install_passenger %>
-      <option value="none" selected>Please select an installation method</option>
-      <option value="tarball">Source tarball</option>
-      <% if locals[:language_type].nil? || locals[:language_type] == :ruby %>
-        <option value="rubygems_rvm">RubyGems (with RVM)</option>
-        <option value="rubygems_norvm">RubyGems (without RVM)</option>
+  <div>
+    <select id="generic_install_method_select">
+      <% if context == :install_passenger %>
+        <option value="none" selected>Please select an installation method</option>
+        <option value="tarball">Source tarball</option>
+        <% if locals[:language_type].nil? || locals[:language_type] == :ruby %>
+          <option value="rubygems_rvm">RubyGems (with RVM)</option>
+          <option value="rubygems_norvm">RubyGems (without RVM)</option>
+        <% end %>
+      <% else %>
+        <option value="none" selected>Please specify how Passenger was installed</option>
+        <option value="tarball">Through source tarball</option>
+        <% if locals[:language_type].nil? || locals[:language_type] == :ruby %>
+          <option value="rubygems_rvm">Through RubyGems (with RVM)</option>
+          <option value="rubygems_norvm">Through RubyGems (without RVM)</option>
+        <% end %>
       <% end %>
-    <% else %>
-      <option value="none" selected>Please specify how Passenger was installed</option>
-      <option value="tarball">Through source tarball</option>
-      <% if locals[:language_type].nil? || locals[:language_type] == :ruby %>
-        <option value="rubygems_rvm">Through RubyGems (with RVM)</option>
-        <option value="rubygems_norvm">Through RubyGems (without RVM)</option>
-      <% end %>
-    <% end %>
-  </select></p>
+    </select>
+    <span class="arrow-down"></span>
+  </div>
 </div>
 
 <% if context == :install_passenger %>

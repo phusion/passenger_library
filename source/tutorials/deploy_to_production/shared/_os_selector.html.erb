@@ -1,12 +1,15 @@
 <p class="os_install_loading_indicator">Loading...</p>
 
-<p><select id="os_install_select" style="display: none">
-  <option value="none" selected>Please select an operating system / installation method</option>
-  <option value="debian">Debian, Ubuntu (with APT)</option>
-  <option value="redhat">Red Hat, CentOS (with RPM)</option>
-  <% if [:ownserver, nil].include? locals[:infrastructure_type] %><option value="osx">macOS</option><% end %>
-  <option value="other">Other / OS independent (generic installation method)</option>
-</select></p>
+<div>
+  <select id="os_install_select" style="display: none">
+    <option value="none" selected>Please select an operating system / installation method</option>
+    <option value="debian">Debian, Ubuntu (with APT)</option>
+    <option value="redhat">Red Hat, CentOS (with RPM)</option>
+    <% if [:ownserver, nil].include? locals[:infrastructure_type] %><option value="osx">macOS</option><% end %>
+    <option value="other">Other / OS independent (generic installation method)</option>
+  </select>
+  <span class="arrow-down"></span>
+</div>
 
 <div class="install_os install_os_debian" style="display: none">
   <p><select id="debian_version_select">

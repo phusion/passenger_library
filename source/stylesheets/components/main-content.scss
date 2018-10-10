@@ -393,7 +393,7 @@
   border-radius: 2px;
 }
 
-#main-content .arrow-down {
+#main-content select + .arrow-down {
   position: absolute;
   margin-top: 27px;
   margin-left: -20px;
@@ -410,6 +410,10 @@
 
 #main-content .language-installed {
   margin-bottom: 60px;
+}
+
+#main-content .install_os_any {
+  margin-top: 20px;
 }
 
 #main-content .img-thumbnail {
