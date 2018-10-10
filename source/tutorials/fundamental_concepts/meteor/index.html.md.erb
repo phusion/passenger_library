@@ -16,11 +16,11 @@ comments: false
 
 Meteor applications are normally responsible for their services from the ground-up. You literally ran the application, which would then import Meteor libraries, setting up a server socket for accepting HTTP requests, etc.
 
-<figure><img src="traditional_meteor.png"></figure>
+<figure><img src="/images/fundamental_concepts/app_server_concept.png" alt="app server concept"></figure>
 
 As an application server, Passenger reverses this relationship. The application server runs the application. Services are provided to the application "for free".
 
-<figure><img src="../node/app_server_concept.png"></figure>
+<figure><img src="/images/fundamental_concepts/reverse.png" alt="reversed relationship"></figure>
 
 ## How Passenger fits in the stack
 
@@ -31,7 +31,7 @@ This means that deploying a Meteor app to production is very similar to deployin
 In a typical production stack, one would use Nginx as the web server and Passenger as the application server. Passenger integrates with Nginx and manages the application and its resources.
 
 <figure>
-  <img src="../node/passenger_node_architecture.png">
+  <img src="/images/fundamental_concepts/resources.png" alt="passenger resources">
   <figcaption>Passenger integrates with Nginx and manages the app's processes and resources.</figcaption>
 </figure>
 

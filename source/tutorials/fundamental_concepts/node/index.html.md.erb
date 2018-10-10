@@ -16,11 +16,11 @@ comments: false
 
 Node.js applications are normally responsible for their services from the ground-up. You literally ran the application, which would for example import support libraries for handling HTTP requests, spawning subprocesses of itself, etc.
 
-<figure><img src="<%= url_for 'traditional_nodejs.png' %>"></figure>
+<figure><img src="/images/fundamental_concepts/app_server_concept.png" alt="app server concept"></figure>
 
 As an application server, Passenger reverses this relationship. The application server runs the application. Services are provided to the application "for free". [The reverse port binding mechanism](<%= url_for "/advanced_guides/in_depth/node/reverse_port_binding.html" %>) is an example of this reversed relationship at work.
 
-<figure><img src="<%= url_for 'app_server_concept.png' %>"></figure>
+<figure><img src="/images/fundamental_concepts/reverse.png" alt="reversed relationship"></figure>
 
 ## How Passenger fits in the stack
 
@@ -29,7 +29,7 @@ When you deploy your web app to production, there are all sorts of components in
 In a typical production stack, one would use Nginx as the web server and Passenger as the application server. Passenger integrates with Nginx and manages the application and its resources.
 
 <figure>
-  <img src="<%= url_for 'passenger_node_architecture.png' %>">
+  <img src="/images/fundamental_concepts/resources.png" alt="passenger resources">
   <figcaption>Passenger integrates with Nginx and manages the app's processes and resources.</figcaption>
 </figure>
 
