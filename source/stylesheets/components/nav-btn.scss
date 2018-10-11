@@ -8,22 +8,26 @@
   width: 60px;
   background: #fff;
   cursor: pointer;
-  z-index: 500;
+  z-index: 9999;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 4px 0px, rgba(0, 0, 0, 0.2) 0px 4px 8px 0px;
+  background-image: url('/images/menulines.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 30px;
 }
 
-#nav-btn img {
-  width: 14px;
-  margin-bottom: 20px;
-  margin-right: 30px;
-  background: #fff;
-}
-
-@media(min-width: 940px) {
+@media(min-width: 700px) {
   #nav-btn {
     display: none;
   }
+}
+
+.open-menu {
+  background-image: url('/images/menulines.svg');
+  background-size: 30px;
+}
+
+.close-menu {
+  background-image: url('/images/close.svg');
+  background-size: 20px;
 }

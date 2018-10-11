@@ -90,7 +90,7 @@
  
 #main-content img {
   margin-top: 25px;
-  max-width: 677px;
+  max-width: 100%;
 }
 
 #main-content table {
@@ -402,6 +402,11 @@
   display: inline-block;
   padding: 2px;
   transform: rotate(45deg);
+
+  // TODO fix arrow for smaller screens
+  @media(max-width: 900px) {
+    display: none;
+  }
 }
 
 #main-content .docker {
@@ -418,7 +423,6 @@
 
 #main-content .img-thumbnail {
   margin: 20px 0;
-  max-width: 500px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -433,14 +437,15 @@
 
 @media(max-width: 940px) {
   #main-content {
+    margin-top: 40px;
     padding: 0 20px;
-    width: auto;
+    width: 60vw;
   }
 }
 
-@media(max-width: 940px) {
+@media(max-width: 700px) {
   #main-content {
-    margin-top: 40px;
+    width: auto;
   }
 }
 

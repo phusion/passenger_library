@@ -75,12 +75,16 @@ body {
   background: #0076FF;
 }
 
-@media(max-width: 940px) {
+@media(max-width: 700px) {
   #content {
     display: block;
   }
 }
 
 .hidden {
-    display: none;
+  display: none !important;
+}
+
+.show {
+  display: block !important;
 }

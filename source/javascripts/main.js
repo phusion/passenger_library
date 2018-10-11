@@ -19,3 +19,4 @@ import './install_os_selection';
 import './picker';
 import './app_details_form';
 import './docs';
+import './mobile-nav';
