@@ -136,6 +136,7 @@
   #header ul {
     overflow-x: auto;
     overflow-y: hidden;
+    width: calc(100% - 80px);
   }
 
   #header ul li a {
@@ -145,5 +146,9 @@
 
   #header ul li {
     padding: 0 2%;
+
+    &:last-of-type {
+      padding-right: 20px;
+    }
   }
 }

@@ -4,5 +4,5 @@ docsearch({
   indexName: 'docsearch',
   // ---------------------
   inputSelector: '#search-bar',
-  debug: true
+  debug: false
 });
