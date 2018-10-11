@@ -56,6 +56,10 @@
 #header input:focus {
   border-right: 0px;
   width: 400px;
+
+  &::placeholder {
+    opacity: 1;
+  }
 }
 
 #header input:focus {
@@ -105,16 +109,15 @@
   #header {
     position: fixed;
     background: #fff;
-    opacity: .9;
     padding-left: 20px;
   }
 
   #header input {
-    display: none;
-  }
+    width: 70px;
 
-  #header .small-screen-search {
-    display: block;
+    &::placeholder {
+      opacity: 0;
+    }
   }
 }
 
@@ -123,19 +126,16 @@
     justify-content: flex-start;
   }
 
-  #header div {
-    width: 100%;
+  #header input {
+    &:focus,
+    &:hover {
+      width: calc(100vw + 10px);
+    }
   }
 
   #header ul {
     overflow-x: auto;
     overflow-y: hidden;
-    width: 80%;
-    border-right: 1px solid #EFEFEF;
-  }
-
-  #header .small-screen-search {
-    margin-left: 20px;
   }
 
   #header ul li a {
