@@ -49,13 +49,11 @@ module CustomHelpers
   def nav_link(link_text, url, options = {})
     options[:class] ||= ""
     if options[:options] == 'header'
-      options[:class] << " active" if url.include? current_page.url.split('/')[1]
-    elsif options[:options] == 'deploy'
-      if current_page.url.split('/')[3]
-        options[:class] << " active" if url.include? current_page.url.split('/')[3]
-      end
+      options[:class] << " active" if url.include?(current_page.url.split('/')[1])
+    elsif options[:options] == 'deploy' && current_page.url.split('/')[3]
+      options[:class] << " active" if url.include?(current_page.url.split('/')[3])
     else
-      options[:class] << " active" if url.include? current_page.url.split('/')[2]
+      options[:class] << " active" if url.include?(current_page.url.split('/')[2])
     end
     link_to(link_text, url, options)
   end
