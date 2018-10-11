@@ -427,6 +427,19 @@
   border-radius: 4px;
 }
 
+#main-content .list-of-articles {
+  h3 {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #EFEFEF;
+  }
+}
+
+#main-content .success {
+  max-width: 60%;
+  margin: -20px;
+  margin-bottom: -30px;
+}
+
 @media(max-width: 700px) {
   #main-content .video-player {
     /* override react player inline styles */
@@ -449,9 +462,3 @@
   }
 }
 
-#main-content .list-of-articles {
-  h3 {
-    padding-bottom: 15px;
-    border-bottom: 1px solid #EFEFEF;
-  }
-}

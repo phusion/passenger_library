@@ -135,6 +135,12 @@
     height: calc(100vh - 80px);
     position: fixed !important;
     padding-top: 80px !important;
+
+    ul {
+      &:last-of-type {
+        padding-bottom: 75px;
+      }
+    }
   }
 }
 
