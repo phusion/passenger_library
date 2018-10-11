@@ -14,10 +14,13 @@ There are two reasons why you may want to have this kind of reverse proxy:
  2. You have multiple Passenger Standalone instances, and you want all of them to be accessible on the same port, just with different host names.
 
 ### Which reverse proxy are you using?
-<select id="proxy_picker">
-  <option>Nginx</option>
-  <option>Apache</option>
-</select>
+<div>
+  <select id="proxy_picker">
+    <option>Nginx</option>
+    <option>Apache</option>
+  </select>
+  <span class="arrow-down"></span>
+</div>
 
 **Table of contents**
 
@@ -37,7 +40,7 @@ There are two reasons why you may want to have this kind of reverse proxy:
 
 Notice the fact that we pass `--address 127.0.0.1`, which tells Passenger Standalone to only listen for requests that originate from the local machine. This is because the reverse proxy, not Passenger Standalone, is supposed to be responsible for receiving external HTTP requests. In this guide, we are teaching you how to run the reverse proxy on the same machine only, so limiting Passenger Standalone in this manner improves security.
 
-## Step 2: install and configure <span class="nginx">Nginx</span><span class="hidden"> or </span><span class="apache">Apache</span>
+## Step 2: install and configure <span class="nginx">Nginx</span>
 
 The next step is to install <span class="nginx">Nginx</span><span class="hidden"> or </span><span class="apache">Apache</span> to do the following:
 

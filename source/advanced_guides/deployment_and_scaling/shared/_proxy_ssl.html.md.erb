@@ -3,10 +3,13 @@
 An SSL terminating reverse proxy is simply a web server that is configured to accept encrypted https requests from clients, and to forward them as unencrypted http requests to another backend process, and to relay the unencrypted results from the backend process back to the client via the encrypted channel. In our case the backend process will be Passenger Standalone running on the same host. Setting up an SSL terminating reverse proxy is super easy, and this article will walk you through how to do it.
 
 ### Which reverse proxy are you using?
-<select id="proxy_picker">
-  <option>Apache</option>
-  <option>Nginx</option>
-</select>
+<div>
+  <select id="proxy_picker">
+    <option>Apache</option>
+    <option>Nginx</option>
+  </select>
+  <span class="arrow-down"></span>
+</div>
 
 
 ## Prepare the system
