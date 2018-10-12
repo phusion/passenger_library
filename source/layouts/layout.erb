@@ -171,7 +171,7 @@ end
               <a href="<%=h current_page_github_url %>"><img src="/images/edit.svg" alt="edit">Edit page</a>
             </div>
           </div>
-          <%= partial "/shared/new_items" %>
+          <%= partial "/shared/new_items", locals: { item: :gls } %>
         <% end %>
       </div>
     </div>

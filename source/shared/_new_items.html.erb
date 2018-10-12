@@ -1,5 +1,24 @@
+<%
+if (defined?(item)).nil?
+  item = :enterprise
+end
+
+case item
+when :gls
+  item_class = 'gls'
+  item_image = url_for("/images/test.png")
+  item_text = 'Passenger 6.0'
+  item_link = 'https://www.phusionpassenger.com/passenger6'
+when :enterprise
+  item_class = 'fuse'
+  item_image = url_for("/images/fuse.png")
+  item_text = 'Try Enterprise'
+  item_link = 'https://www.phusionpassenger.com/install'
+end
+%>
+
 <div id="new-item">
-  <img class="fuse" src="<%= url_for "/images/fuse.png" %>" alt="Passenger Enterprise"/>
-  <a class="light-button" href="https://www.phusionpassenger.com/install">Try Enterprise</a>
+  <img class="<%= item_class %>" src="<%= item_image %>" alt="<%= item_text %>"/>
+  <a class="light-button" href="<%= item_link %>"><%= item_text %></a>
   <img src="<%= url_for "/images/feedback_placeholder.svg" %>" alt="feedback"/>
 </div>
