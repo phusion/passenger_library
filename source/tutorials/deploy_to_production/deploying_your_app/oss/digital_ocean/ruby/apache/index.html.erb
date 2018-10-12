@@ -12,7 +12,7 @@ deploy_walkthrough:
 <h1>Deploying a Ruby app on Digital Ocean production server</h1>
 <%= render_partial('/shared/current_selection') %>
 
-<% locals = {language_type: :ruby, integration_mode_type: :apache, edition_type: :oss, infrastructure_type: :digital_ocean} %>
+<% locals = {language_name: 'Ruby',language_type: :ruby, integration_mode_type: :apache, edition_type: :oss, infrastructure_type: :digital_ocean} %>
 
 <%= render_partial("/walkthroughs/deploy/deploy_app/intro", locals: locals) %>
 <%= render_partial("/tutorials/deploy_to_production/shared/os_selector") %>

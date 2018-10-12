@@ -12,7 +12,7 @@ deploy_walkthrough:
 <h1>Deploying a Python app on your own production server</h1>
 <%= render_partial('/shared/current_selection') %>
 
-<% locals = {language_type: :python, integration_mode_type: :standalone, edition_type: :oss, infrastructure_type: :ownserver} %>
+<% locals = {language_name: 'Python',language_type: :python, integration_mode_type: :standalone, edition_type: :oss, infrastructure_type: :ownserver} %>
 
 <%= render_partial("/walkthroughs/deploy/deploy_app/intro", locals: locals) %>
 <%= render_partial("/tutorials/deploy_to_production/shared/os_selector") %>

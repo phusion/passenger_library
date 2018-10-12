@@ -115,7 +115,7 @@ substep = 0
   </p>
 
   <p>
-    In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker") %>
+    In order to provide you appropriate instructions, please choose your Meteor version: <%= render_partial("/shared/meteor_picker.html") %>
   </p>
   <p>
     Inside your application's code directory, on your local computer, use the <code class="meteor v13">meteor bundle</code><code class="meteor v14 v16">meteor build</code> command to create a Meteor package tarball.
@@ -311,11 +311,12 @@ substep = 0
   <div>
     <p>
       You can install MongoDB from <a href="http://www.mongodb.org/" target="_blank">www.mongodb.org</a>.
-    <% if os_config_class == :debian %>
+    <div class="supported_debian_instructions">
       While you can also install MongoDB via a package manager (apt-get), please note that this might be an outdated or even unsupported version.
-    <% elsif os_config_class == :redhat %>
+    </div>
+    <div class="supported_redhat_instructions">
       While you can also install MongoDB via a package manager (yum), please note that this might be an outdated or even unsupported version.
-    <% end %>
+    </div>
     </p>
   </div>
   <div class="alert alert-info">

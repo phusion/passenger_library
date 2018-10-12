@@ -12,7 +12,7 @@ deploy_walkthrough:
 <h1>Deploying a Meteor app on Digital Ocean production server</h1>
 <%= render_partial('/shared/current_selection') %>
 
-<% locals = {language_type: :meteor, integration_mode_type: :apache, edition_type: :enterprise, infrastructure_type: :digital_ocean} %>
+<% locals = {language_name: 'Meteor',language_type: :meteor, integration_mode_type: :apache, edition_type: :enterprise, infrastructure_type: :digital_ocean} %>
 
 <%= render_partial("/walkthroughs/deploy/deploy_app/intro", locals: locals) %>
 <%= render_partial("/tutorials/deploy_to_production/shared/os_selector") %>
