@@ -3,6 +3,7 @@ function redirect_to_platform() {
   if (!(value = localStorage.getItem('Platform'))) {
     value = 'aws';
   }
-  window.location = window.location.href.replace(/\/?$/, "/"+value.toLowerCase()+"/");
+  const format = s => s.toLowerCase().replace(/[\s]/,'_');
+  window.location = window.location.href.replace(/\/?$/, "/"+format(value)+"/");
 }
 export default redirect_to_platform;
