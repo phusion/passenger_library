@@ -141,6 +141,12 @@ end
       =========================================== -->
       <div id="main-content">
         <div>
+          <noscript>
+            <div class="warning">
+              <p>It looks like your Javascript isn't working. This website requires you to have Javascript enabled. However we have an <a href="https://www.phusionpassenger.com/documentation/Design%20and%20Architecture.html">old documentation</a> where you might be able to find your answer.</p>
+            </div>
+          </noscript>
+
           <% if current_page.data.breadcrumb == true %>
             <ul id="breadcrumb">
               <li><a href="<%= current_page.parent.url %>"><%= current_page.parent.data.title %></a></li>
