@@ -1,0 +1,55 @@
+<%
+if locals[:language_type]
+  quickstart_url = url_for("/walkthroughs/start/#{language_type}.html")
+else
+  quickstart_url = url_for("/walkthroughs/start/index.html")
+end
+%>
+
+<% if context == :basics %>
+As you've read earlier, Passenger collaborates with other components. This is why Passenger supports multiple [integration modes](<%= url_for "/indepth/integration_modes.html" %>). Each integration mode is designed for easy collaboration with a different component.
+
+Throughout the rest of this basics tutorial, we will cover the Standalone mode only. The Nginx and Apache integration modes are covered in the [deployment tutorial](<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>). <!-- TODO: , as well as in the various [guides](<%= url_for '/guides/index.html' %>). -->
+<% end %>
+
+<figure>
+  <img src="<%= url_for '/images/fundamental_concepts/int_modes.png' %>">
+  <figcaption>Passenger's supported integration modes. In the Standalone modes, Passenger uses a builtin web server. In the Nginx/Apache integration modes, Passenger integrates with Nginx or Apache.</figcaption>
+</figure>
+
+The supported integration modes are:
+
+ * **Standalone mode**<br>
+   The Standalone mode is what you've experienced in the [Quickstart](<%= quickstart_url %>) tutorial. You start Passenger through the `passenger start` command.
+   <% if locals[:language_type] == :ruby -%>
+   In this mode, Passenger behaves somewhat like "rails server".
+   <% elsif locals[:language_type].nil? -%>
+   If you are a Ruby user, then in this mode Passenger behaves somewhat like "rails server".
+   <% end -%>
+
+   In this mode, Passenger doesn't automatically collaborate with other components, hence the name. Because of this, you do not need to setup any other components besides Passenger, which makes the Standalone mode the easiest mode to get started with. We recommend this mode for use during development. That said, this mode is also fit for production.
+
+   In the Nginx and Apache integration mode, Passenger takes care of glueing Nginx/Apache together with Passenger. In the Standalone mode, you are expected to do that yourself, e.g. using reverse proxies, init scripts, etc.
+
+ * **Nginx integration mode**<br>
+   The Nginx integration mode provides easy integration with Nginx. Passenger operates as an Nginx module. You operate Passenger mostly through Nginx and through Nginx configuration files. So instead of worrying about Passenger and Nginx seperately, you treat the both of them as a whole.
+
+   This mode is mainly meant for production use, not for development use.
+
+ * **Apache integration mode**<br>
+   The Apache integration mode provides easy integration with Apache. Passenger operates as an Apache module. You operate Passenger mostly through Apache and through Apache configuration files. So instead of worrying about Passenger and Apache seperately, you treat the both of them as a whole.
+
+   This mode is mainly meant for production use, not for development use.
+
+### Differences
+
+All modes provide roughly the same feature sets. The main differences lie in...
+
+ * ...performance. Standalone and Nginx are slightly faster than Apache.
+ * ...usability. Standalone is easier during development, but Nginx and Apache are easier during production.
+ * ...multitenancy. The Nginx and Apache integration modes can host multiple apps at the same time.
+ * ...flexibility and control. If your production cluster has an advanced architecture, or if you need deep control over every aspect of the system, then Standalone is the best choice during production.
+
+<% if context == :basics %>
+  Please refer to [the in-depth section](<%= url_for "/indepth/integration_modes.html" %>) if you wish to learn more about integration modes.
+<% end %>
