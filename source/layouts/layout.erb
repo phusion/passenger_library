@@ -147,9 +147,13 @@ end
             </div>
           </noscript>
 
-          <% if current_page.data.breadcrumb == true %>
+          <% if current_page.data.breadcrumb == true || current_page.data.breadcrumb_layered == true %>
             <ul id="breadcrumb">
+              <% if current_page.data.breadcrumb_layered %>
+              <li><a href="<%= current_page.parent.parent.parent.url %>"><%= current_page.parent.parent.parent.data.title %></a></li>
+              <% else %>
               <li><a href="<%= current_page.parent.url %>"><%= current_page.parent.data.title %></a></li>
+              <% end %>
               <li><a href="<%= current_page.url %>"><%= current_page.data.title %></a></li>
             </ul>
           <% end %>
