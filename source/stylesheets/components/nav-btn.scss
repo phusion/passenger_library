@@ -22,12 +22,13 @@
   }
 }
 
+// classes for the nav button script
 .open-menu {
-  background-image: url('/images/menulines.svg');
-  background-size: 30px;
+  background-image: url('/images/menulines.svg') !important;
+  background-size: 30px !important;
 }
 
 .close-menu {
-  background-image: url('/images/close.svg');
-  background-size: 20px;
+  background-image: url('/images/close.svg') !important;
+  background-size: 20px !important;
 }
