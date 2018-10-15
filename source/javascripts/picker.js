@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 function proxy_picker_callback(){
-  $("div[role='main'] .nginx,.apache").hide();
+  $(".nginx,.apache").hide();
   $("."+$('#proxy_picker').val().toLowerCase()).show();
 }
 $('#proxy_picker').change(proxy_picker_callback);
