@@ -35,10 +35,9 @@ function makeDropdown(dropdown_type, dropdown_items) {
         window.location = location.replace(item, value);
       }
 
-      // change logo if this's value doesn't change the content
-      self.style.backgroundImage = `url("/images/${value}.svg")`;
-
       array.forEach(needle => {
+        // change logo if this's value doesn't change the content
+        self.style.backgroundImage = self.style.backgroundImage.replace(needle,value);
         document.querySelectorAll(`a[href*="/${needle}/"]`).forEach(a=>{a.href=a.href.replace(`/${needle}/`, `/${value}/`)});
         document.querySelectorAll(`[data-${needle}_only]`).forEach(e=>e.style.display = (`${value}_only` in e.dataset ? (e.tagName == "SPAN" ? "inline" : "inherit") : "none"));
         document.querySelectorAll(`#current-selection img[src*="/images/${needle}.svg"]`).forEach(e=>{e.src = e.src.replace(needle,value);e.alt=value;});

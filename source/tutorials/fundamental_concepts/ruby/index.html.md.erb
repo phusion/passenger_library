@@ -27,7 +27,7 @@ When you deploy your web app to production, there are all sorts of components in
 In a typical production stack, one would use Nginx or Apache as the web server, Passenger as application server, and Capistrano as release automation tool. Passenger integrates with Nginx or Apache and manages the application and its resources.
 
 <figure>
-  <img src="/images/fundamental_concepts/stack.png" alt="stack">
+  <img src="<%= url_for "/images/fundamental_concepts/stack.png" %>" alt="stack">
   <figcaption>Passenger integrates with Nginx/Apache, allows the app to speak HTTP and manages the app's processes and resources. Capistrano automates releases.</figcaption>
 </figure>
 
@@ -57,4 +57,4 @@ Passenger's feature set is very different from those of Unicorn and Puma. In par
 
 ##Next step: Quickstart
 
-<a class="dark-button" href="/tutorials/quickstart/ruby/">Continue</a>
+<a class="dark-button" href="<%= url_for "/tutorials/quickstart/ruby/index.html" %>">Continue</a>

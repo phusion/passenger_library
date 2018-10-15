@@ -16,7 +16,7 @@ Ensure that you have prepared a sample application as described in [the previous
 
 ## Starting a server
 
-`passenger` is the most basic command, and is often used during development. If you have read [the 5 minute quickstart](/tutorials/quickstart/ruby/) then you have already encountered this command. Throughout this basics tutorial, we will encounter this command often.
+`passenger` is the most basic command, and is often used during development. If you have read [the 5 minute quickstart](<%= url_for '/tutorials/quickstart/ruby/index.html' %>) then you have already encountered this command. Throughout this basics tutorial, we will encounter this command often.
 
 You begin using Passenger Standalone by starting a Passenger Standalone server. This can be done with the `passenger start` command.
 
@@ -136,7 +136,7 @@ Server options:
 
 Command line options are great for temporarily changing a parameter, but if you want to persist a change, then it is best to store configuration in `Passengerfile.json`. Passenger Standalone automatically loads configuration from that file if it exists.
 
-The configuration file format is JSON. You can find more information about the configuration file (such as its precedence compared to environment variables and command line options) in the [Configuration introduction](<%= url_for '/references/config_reference/standalone/' %>).
+The configuration file format is JSON. You can find more information about the configuration file (such as its precedence compared to environment variables and command line options) in the [Configuration introduction](<%= url_for '/references/config_reference/standalone/index.html' %>).
 
 Here is an example Passengerfile.json which customizes the port, log file path and environment name:
 
@@ -154,4 +154,4 @@ All command line options have a configuration file equivalent. Just omit the ini
 
 ## Next step: Process management
 
-<a class="dark-button" href="/tutorials/process_management/ruby/">Continue</a>
+<a class="dark-button" href="<%= url_for "/tutorials/process_management/ruby/index.html" %>">Continue</a>

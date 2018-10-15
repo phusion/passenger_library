@@ -1,11 +1,11 @@
 <% if context == :basics %>
 As you've read earlier, Passenger collaborates with other components. This is why Passenger supports multiple [integration modes](<%= url_for "/advanced_guides/in_depth/node/integration_modes.html" %>). Each integration mode is designed for easy collaboration with a different component.
 
-Throughout the rest of this basics tutorial, we will cover the Standalone mode only. The Nginx and Apache integration modes are covered in the [deployment tutorial](<%= url_for "/tutorials/deploy_to_production/" %>).
+Throughout the rest of this basics tutorial, we will cover the Standalone mode only. The Nginx and Apache integration modes are covered in the [deployment tutorial](<%= url_for "/tutorials/deploy_to_production/index.html" %>).
 <% end %>
 
 <figure>
-  <img src="/images/fundamental_concepts/int_modes.png" alt="Multiple integration modes">
+  <img src="<%= url_for "/images/fundamental_concepts/int_modes.png" %>" alt="Multiple integration modes">
   <figcaption>Passenger's supported integration modes. In the Standalone modes, Passenger uses a builtin web server. In the Nginx/Apache integration modes, Passenger integrates with Nginx or Apache.</figcaption>
 </figure>
 

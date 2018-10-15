@@ -4,10 +4,10 @@ Passenger does many things, but some things are currently out of scope.
 
  * **Setting up a server with an operating system**
    Passenger assumes that you already have a server with a working operating system on it. Passenger is not a hosting service. It is software that is to be installed on a server.
-   However, the Passenger Library contains excellent [documentation on setting up a server](<%= url_for "/tutorials/deploy_to_production/" %>).
+   However, the Passenger Library contains excellent [documentation on setting up a server](<%= url_for "/tutorials/deploy_to_production/index.html" %>).
  * <strong>Installing <%= render_partial("/shared/lang") %></strong>
    To run <%= render_partial("/shared/lang") %> apps on Passenger, you must already have <%= render_partial("/shared/lang") %> installed. Passenger does not do that for you. Passenger does not care how you install <%= render_partial("/shared/lang") %> though; you sometimes just need to tell Passenger where <%= render_partial("/shared/lang") %> is.
-   However, the Passenger Library contains excellent [documentation on installing <%= render_partial("/shared/lang") %> during a production deployment](<%= url_for "/tutorials/deploy_to_production/" %>).
+   However, the Passenger Library contains excellent [documentation on installing <%= render_partial("/shared/lang") %> during a production deployment](<%= url_for "/tutorials/deploy_to_production/index.html" %>).
  * **Transferring the application code and files to the server**
    Passenger does not transfer the application code and files to the server for you. To do this, you should use tools like <%= deploy_tools %>. Passenger assumes that the application code and files are already on the server, and does not care which tool you use to make that so.
    The Passenger Library contains documentation on [automating releases using shell scripts](<%= url_for "/advanced_guides/install_and_upgrade/apache/noninteractive_install.html" %>).

@@ -42,7 +42,7 @@ To continue, please select an operating system or installation method.
       locals: locals.merge(context: :install_passenger, next_page: "")) %>
 
 <div class="back-button">
-  <a class="light-button" href="/advanced_guides/install_and_upgrade/">Back</a>
+  <a class="light-button" href="<%= url_for "/advanced_guides/install_and_upgrade/index.html" %>">Back</a>
 </div>
 
 <%= javascript_include_tag 'change_edition_link' %>
