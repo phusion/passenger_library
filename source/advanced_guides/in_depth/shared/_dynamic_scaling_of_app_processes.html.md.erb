@@ -1,4 +1,5 @@
 <h1>How dynamic scaling of <%= language_name %> application processes works</h1>
+<%= render_partial("/shared/current_selection") %>
 
 <p class="lead">Passenger <a href="<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html" %>">dynamically adjusts the number of application processes based on traffic</a>. Learn how Passenger decides when a process should be added or removed.</p>
 

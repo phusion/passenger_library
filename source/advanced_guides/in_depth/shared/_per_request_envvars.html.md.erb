@@ -1,4 +1,5 @@
 # <%= language_name %> and Apache per-request environment variables
+<%= render_partial("/shared/current_selection", locals: { disabled_selections: [:integration] }) %>
 
 If you are using Passenger in its [Apache integration mode](../integration_modes.html), then you may be aware of the fact that Apache supports [per-request environment variables](https://httpd.apache.org/docs/2.4/env.html). This page explains how Passenger passes per-request environment variables to the application.
 

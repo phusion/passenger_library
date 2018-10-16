@@ -2,9 +2,14 @@
 title: Spawn methods explained
 advanced_guides: true
 breadcrumb: true
+disabled_langs:
+- :python
+- :node
+- :meteor
 ---
 
 <h1>Spawn methods explained</h1>
+<%= render_partial("/shared/current_selection", locals: { disabled_selections: [:integration] }) %>
 
 At its core, Passenger is an HTTP proxy and process manager. It spawns application processes and forwards incoming HTTP request to one of them.
 

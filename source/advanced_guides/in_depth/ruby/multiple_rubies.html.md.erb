@@ -2,9 +2,14 @@
 title: How having multiple Ruby interpreters affects Passenger
 advanced_guides: true
 breadcrumb: true
+disabled_langs:
+- :python
+- :node
+- :meteor
 ---
 
 # How having multiple Ruby interpreters affects Passenger
+<%= render_partial("/shared/current_selection", locals: { disabled_selections: [:integration] }) %>
 
 Passenger may be installed with any Ruby interpreter. Once installed, you can run Passenger's Ruby parts under any Ruby interpreter you want, even if that Ruby interpreter was not the one you originally installed Passenger with.
 

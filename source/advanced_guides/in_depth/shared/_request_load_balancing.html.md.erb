@@ -1,4 +1,5 @@
 # Request load balancing
+<%= render_partial("/shared/current_selection", locals: { disabled_selections: [:integration] }) %>
 
 At its core, Passenger is a process manager and HTTP request router. In order to minimize response times, and to distribute load over multiple CPU cores for optimal performance, Passenger load balances requests over processes in a "least busy process first" manner. This article explains the implications and details of our request load balancing mechanism.
 
