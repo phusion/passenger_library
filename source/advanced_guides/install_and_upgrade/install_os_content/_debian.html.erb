@@ -154,7 +154,7 @@ sudo apt-get install -y <%= packages %></code></pre>
   <pre class="highlight shell"><span class="prompt">$ </span>if [ ! -f /etc/nginx/modules-enabled/50-mod-http-passenger.conf ]; then sudo ln -s /usr/share/nginx/modules-available/mod-http-passenger.load /etc/nginx/modules-enabled/50-mod-http-passenger.conf ; fi
 <span class="prompt">$ </span>sudo ls /etc/nginx/conf.d/mod-http-passenger.conf</pre>
 <div class="note">
-      <p>If you don't see a file at <code>/etc/nginx/conf.d/mod-http-passenger.conf</code>; then you need to create it yourself and set the <code>passenger_ruby</code> and <code>passenger_root</code> config options. For example:</p>
+      <p>If you don't see a file at <code>/etc/nginx/conf.d/mod-http-passenger.conf</code>; then you need to <b>create</b> it yourself and set the <code>passenger_ruby</code> and <code>passenger_root</code> config options. For example:</p>
      <pre class="highlight">
 <span class="nf">passenger_root</span> /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
 <span class="nf">passenger_ruby</span> /usr/bin/passenger_free_ruby;

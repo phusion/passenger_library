@@ -1,6 +1,7 @@
 #left-nav {
   width: 215px;
   margin-right: 16px;
+  position: relative;
 }
 
 #left-nav-content {
@@ -101,6 +102,12 @@
   width: 138px;
   padding-left: 10px;
   appearance: none;
+}
+
+// class for scroll nav script
+.stop-nav {
+  position: absolute !important;
+  bottom: 60px !important;
 }
 
 @-moz-document url-prefix() {
