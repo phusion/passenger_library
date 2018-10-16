@@ -27,10 +27,26 @@ include DeploymentWalkthroughHelpers
 # proxy "/this-page-has-no-template.html", "/template-file.html", :locals => {
 #  :which_fake_page => "Rendering a fake page with a local variable" }
 
-redirect "index.html", to: "/tutorials/what_is_passenger/index.html"
-redirect 'tutorials/index.html', to: '/tutorials/what_is_passenger/index.html'
-redirect 'advanced_guides/index.html', to: '/advanced_guides/install_and_upgrade/index.html'
-redirect 'references/index.html', to: '/references/config_reference/index.html'
+redir = Proc.new do |path, url|
+  prefix = URI(config[:url_root]).path
+  <<-END
+    <html>
+      <head>
+        <link rel="canonical" href="#{prefix}#{url}" />
+        <meta http-equiv=refresh content="0; url=#{prefix}#{url}" />
+        <meta name="robots" content="noindex,follow" />
+        <meta http-equiv="cache-control" content="no-cache" />
+      </head>
+      <body>
+      </body>
+    </html>
+  END
+end
+
+redirect("index.html", {to: "/tutorials/what_is_passenger/index.html"}, &redir)
+redirect('tutorials/index.html', {to: '/tutorials/what_is_passenger/index.html'}, &redir)
+redirect('advanced_guides/index.html', {to: '/advanced_guides/install_and_upgrade/index.html'}, &redir)
+redirect('references/index.html', {to: '/references/config_reference/index.html'}, &redir)
 
 [:oss, :enterprise].each do |edition|
   proxy "/tutorials/deploy_to_production/launch_server/#{edition}/index.html",
