@@ -4,7 +4,7 @@ comments: false
 ---
 
 # Fundamental concepts
-<%= render_partial('/shared/current_selection') %>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:integration] }) %>
 
 <p class="lead">We give you a basic understanding of what Passenger is. We also explain how Passenger fits in the stack and how it compares to other software that you may use.</p>
 

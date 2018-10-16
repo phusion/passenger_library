@@ -6,7 +6,7 @@ comments: false
 <% locals = locals.merge(language_type: :python, language_name: "Python") %>
 
 # Reloading code
-<%= render_partial('/shared/current_selection') %>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:integration] }) %>
 
 <p class="lead">When developing a web application, you will often want your code changes to take effect as soon as possible. In this section we will discuss code reloading mechanisms that Passenger makes available, and how they compare to code reloading mechanisms provided by Python web frameworks.</p>
 

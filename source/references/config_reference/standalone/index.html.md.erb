@@ -9,8 +9,8 @@ references: true
   integration_mode_type = locals[:integration_mode_type]
 %>
 
-<h1>Configuration reference<br>
-<small>for Passenger Standalone</small></h1>
+<h1>Configuration reference</h1>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 <p class="lead">This page lists all the configuration options available for Passenger Standalone, through either command line options or <code>Passengerfile.json</code> options.</p>
 
