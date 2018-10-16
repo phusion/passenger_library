@@ -1,0 +1,16 @@
+<%
+if (defined?(choice)).nil?
+  choice = 'choice'
+end
+
+case choice
+when :lang
+  choice = 'language'
+when :integration
+  choice = 'integration'
+end
+%>
+
+<div class="info">
+  It looks like this article doesn't exist for the current selected <%= choice %>. Please select another <%= choice %> in the dropdown or try using the search bar to find the article you need.
+</div>

@@ -17,6 +17,16 @@
 #left-nav-content ul {
   padding: 0;
   list-style: none;
+
+  .docker-support {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 20px;
+      margin-left: 5px;
+    }
+  }
 }
 
 #left-nav-content ul li {
