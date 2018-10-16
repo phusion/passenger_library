@@ -14,6 +14,7 @@ end
 %>
 
 <h1>Viewing overall server status report: passenger-status</h1>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 At its core, Passenger is an HTTP router and process manager that forwards requests and supervises application processes for you. Many things are taken care of for you, but sometimes you may want to see what Passenger is doing and what is going on, perhaps for troubleshooting reasons. The main tool for doing that is `passenger-status`.
 

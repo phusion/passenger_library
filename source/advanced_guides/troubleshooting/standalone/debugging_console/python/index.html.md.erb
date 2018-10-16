@@ -2,6 +2,9 @@
 title: Debugging console
 advanced_guides: true
 breadcrumb_layered: true
+disabled_langs:
+- :python
+- :meteor
 ---
 
 <%
@@ -10,4 +13,4 @@ breadcrumb_layered: true
   integration_mode_type = locals[:integration_mode_type]
 %>
 
-<%= render_partial("../../../shared/_debugging_console", locals: locals) %>
+<%= render_partial("/shared/not_found", locals: { choice: :lang }) %>

@@ -19,6 +19,7 @@ end
 %>
 
 <h1>Restarting applications</h1>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 When you have deployed an application on Passenger, you will want to restart it from time to time. For example when you have deployed a new version of your application, the new version isn't activated until you restart the application. Or when you have modified a configuration file that belongs to the application, the application may not activate the configuration changes until you restart it.
 
