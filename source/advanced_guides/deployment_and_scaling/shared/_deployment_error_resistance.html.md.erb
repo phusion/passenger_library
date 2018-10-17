@@ -19,6 +19,7 @@ end
 %>
 
 <h1>Deployment error resistance</h1>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 [Passenger Enterprise](https://www.phusionpassenger.com/enterprise) provides a feature called "Deployment error resistance". This feature reduces the chance of visitors experiencing any errors in case the deployment of an application update failed.
 

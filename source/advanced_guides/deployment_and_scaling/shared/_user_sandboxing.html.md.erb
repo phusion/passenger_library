@@ -36,6 +36,7 @@ end
 %>
 
 <h1>Sandboxing apps with Unix user accounts (user switching)</h1>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 When running web applications with Passenger, we recommend that you make use of the *user account sandboxing* feature, also known as *user switching*. This means (if you run multiple applications on a server) running each application under its own operating system user account, instead of running them all as the same user. Doing so improves the overall security of the system.
 

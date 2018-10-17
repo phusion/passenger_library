@@ -1,4 +1,5 @@
 # Zero-downtime web server restarts with Flying Passenger Enterprise
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 Flying Passenger allows one to decouple Passenger's life time from the web server's life time, so that the web server can be independently restarted from Passenger, and from any of the application processes served by Passenger.
 

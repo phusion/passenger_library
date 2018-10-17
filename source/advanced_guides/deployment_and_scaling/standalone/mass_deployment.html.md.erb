@@ -2,9 +2,13 @@
 title: Mass deployment
 advanced_guides: true
 breadcrumb: true
+disabled_integrations:
+- :nginx
+- :apache
 ---
 
 # Mass deployment
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 _The mass deployment feature is only available in [Passenger Enterprise](https://www.phusionpassenger.com/enterprise)._
 

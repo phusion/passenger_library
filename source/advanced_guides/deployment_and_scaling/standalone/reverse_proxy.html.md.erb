@@ -2,9 +2,13 @@
 title: Putting Passenger Standalone behind an Nginx or Apache reverse proxy
 advanced_guides: true
 breadcrumb: true
+disabled_integrations:
+- :nginx
+- :apache
 ---
 
 # Putting Passenger Standalone behind an Nginx or Apache reverse proxy
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 In some cases, you may want to put Passenger Standalone behind a reverse proxy. The reverse proxy can for example be Nginx, Apache or HAProxy. The reverse proxy listens on port 80 (or any other port you want) and is responsible for accepting HTTP requests. The reverse proxy then determines which Passenger Standalone instance should handle the request, and forwards the request to that instance.
 

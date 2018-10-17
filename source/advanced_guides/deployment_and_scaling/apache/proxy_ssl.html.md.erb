@@ -2,6 +2,9 @@
 title: Using an SSL terminating reverse proxy with Passenger Standalone
 advanced_guides: true
 breadcrumb: true
+disabled_integrations:
+- :nginx
+- :apache
 ---
 
 <%
@@ -9,4 +12,4 @@ breadcrumb: true
   integration_mode_type = locals[:integration_mode_type]
 %>
 
-<%= render_partial("../shared/_proxy_ssl", locals: locals) %>
+<%= render_partial("/shared/not_found", locals: { choice: :integration }) %>

@@ -1,5 +1,6 @@
 <% if language_type == :ruby %>
 # Automating deployments of Ruby application updates through Capistrano
+<%= render_partial('/shared/current_selection') %>
 
 <figure><a href="http://capistranorb.com/"><img src="<%= url_for '/images/CapistranoLogo.png' %>" alt="Capistrano"></a></figure>
 
@@ -572,6 +573,7 @@ end
 %>
 
 # Automating deployments of <%= language_name %> application updates with shell scripts
+<%= render_partial('/shared/current_selection') %>
 
 If you have followed the [<%= language_name %> deployment tutorial](<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
 
