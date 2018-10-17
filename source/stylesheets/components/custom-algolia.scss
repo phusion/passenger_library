@@ -1,6 +1,7 @@
 .algolia-autocomplete {
   position: absolute !important;
   right: 0;
+  z-index: 9999;
 }
 
 .algolia-autocomplete .algolia-docsearch-suggestion--category-header {

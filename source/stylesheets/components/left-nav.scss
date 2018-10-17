@@ -104,6 +104,10 @@
   appearance: none;
 }
 
+.dropdown select::-ms-expand {
+  padding-left: 33px;
+}
+
 // class for scroll nav script
 .stop-nav {
   position: absolute !important;
