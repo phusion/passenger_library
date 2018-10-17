@@ -8,6 +8,7 @@ end
 %>
 
 # Uninstalling <span class="edition_title">Passenger</span>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 Uninstalling <span class="edition_title">Passenger</span> involves two steps. The first step is to remove the Passenger files. The second step is to remove any Passenger configuration from your system.
 

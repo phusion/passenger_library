@@ -2,9 +2,13 @@
 title: Creating an Nginx init script
 advanced_guides: true
 breadcrumb: true
+disabled_integrations:
+- :apache
+- :standalone
 ---
 
-# Creating an Nginx init script
+<h1>Creating an Nginx init script</h1>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 If you installed Nginx with one of the generic installation methods ([source tarball](install/oss/tarball/) or [RubyGems](install/oss/rubygems_rvm/)) then you [won't have an init script](install/oss/tarball/#note_about_nginx) to start, stop and restart Nginx with.
 

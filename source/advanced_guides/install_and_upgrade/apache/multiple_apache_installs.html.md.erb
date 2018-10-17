@@ -2,9 +2,13 @@
 title: Dealing with multiple Apache installations
 advanced_guides: true
 breadcrumb: true
+disabled_integrations:
+- :nginx
+- :standalone
 ---
 
 # Dealing with multiple Apache installations
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 Some systems have multiple Apache installations. Maybe you already know about that, and you installed multiple Apaches for a reason. Or maybe you did so in the past but then forgot about the other installs. Or maybe someone else -- or some other software -- installed another Apache for you without your knowledge.
 

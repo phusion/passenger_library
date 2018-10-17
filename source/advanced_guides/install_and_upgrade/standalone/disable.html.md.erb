@@ -2,6 +2,8 @@
 title: Disabling Passenger without uninstalling it
 advanced_guides: true
 breadcrumb: true
+disabled_integrations:
+- :standalone
 ---
 
 <%
@@ -9,4 +11,4 @@ breadcrumb: true
   integration_mode_type = locals[:integration_mode_type]
 %>
 
-<%= render_partial("../shared/_disable", locals: locals) %>
+<%= render_partial("/shared/not_found", locals: { choice: :integration }) %>

@@ -38,6 +38,7 @@ step = 0
 
 <h1>Installing <%= edition_title %><br>
 <small><%= os_config_description %></small></h1>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 <div class="info">
   This page describes the installation of Passenger through the following operating system or installation method: <strong style="font-size: 120%"><%= os_config_description %></strong>. Not the configuration you are looking for? <a href="../#select_os">Go back to the operating system / installation method selection menu.</a>
