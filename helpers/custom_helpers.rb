@@ -48,7 +48,9 @@ module CustomHelpers
 
   def nav_link(link_text, url, options = {})
     options[:class] ||= ""
-    if options[:options] == 'header'
+    if current_page.data.is_404
+      # do nothing
+    elsif options[:options] == 'header'
       options[:class] << " active" if url.include?(current_page.url.split('/')[1])
     elsif options[:options] == 'deploy' && current_page.url.split('/')[3]
       options[:class] << " active" if url.include?(current_page.url.split('/')[3])
