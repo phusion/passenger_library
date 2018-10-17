@@ -1,4 +1,5 @@
 <h1>CORS headers</h1>
+<%= render_partial('/shared/current_selection') %>
 
 When using certain assets, for example web fonts, or making [ajax](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) or [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) requests browsers enforce the [same origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy). This means that the request must be to the same domain as the page that requested it. This is done for security and copyright reasons, however browser makers understand that there are situations where cross origin requests are desirable so they provide a mechanism for whitelisting domains which are allowed to access a resource on your server. This is the purpose of the CORS header, to specify to browsers that it is ok for them to make requests to a remote domain. You can read more on the topic on [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS).
 

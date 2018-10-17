@@ -1,4 +1,5 @@
 <h1>Dynamic scaling of <%= language_name %> application processes vs fixed process pool</h1>
+<%= render_partial('/shared/current_selection') %>
 
 Generally speaking, the more application processes you run, the more concurrent traffic you can handle and the better your CPU core utilization becomes, until your hardware is saturated. But running more processes also means higher memory consumption. So when using Passenger, you can choose between two modes of application process handling, each optimized for different use cases:
 

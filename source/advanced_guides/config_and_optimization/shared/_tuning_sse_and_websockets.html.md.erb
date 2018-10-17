@@ -1,4 +1,5 @@
 <h1>Tuning for Server Sent Events and WebSockets</h1>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
 <% if integration_mode_type == :apache %>
 <div class="note">Although Passenger supports Server Sent Events (SSE) out of the box, the Apache integration mode has <a href="https://github.com/phusion/passenger/issues/1202">issues with Apache</a>.
