@@ -9,9 +9,8 @@ deploy_walkthrough:
 - :deploy_updates
 ---
 
-
 <h1>Deploying application updates</h1>
-<%= render_partial('/shared/current_selection') %>
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:integration] }) %>
 
 <p>In the <a href="<%= url_for "/tutorials/deploy_to_production/deploying_your_app/index.html" %>">previous step</a>, you deployed an application to your production server for the first time. But what do you do when you have updated your app, and need to deploy updates? You will learn that on this page.</p>
 

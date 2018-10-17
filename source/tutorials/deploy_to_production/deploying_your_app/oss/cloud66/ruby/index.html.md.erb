@@ -13,8 +13,8 @@ disabled_langs:
 - :meteor
 ---
 
-### Deploying your app with Passenger
-<%= render_partial('/shared/current_selection') %>
+# Deploying your app with Passenger
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:integration] }) %>
 
 Unless specified otherwise, Cloud 66 automatically installs Passenger with NGINX for any classic stack!
 
