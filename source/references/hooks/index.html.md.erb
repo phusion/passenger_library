@@ -26,7 +26,7 @@ Nginx
       passenger_ctl hook_<HOOK NAME> <COMMAND TO EXECUTE>;
 
 Standalone
-: You can define hooks using [`--ctl` / "ctls"]("/config/standalone/reference/index.html"#--ctl-ctls):
+: You can define hooks using [`--ctl` / "ctls"](/references/config_reference/standalone/index.html#--ctls-ctls):
 
       --ctl hook_<HOOK NAME>=<COMMAND TO EXECUTE>
 
@@ -250,7 +250,7 @@ Called when an application process could not be spawned. This could happen when:
   </tr>
 </table>
 
-Passenger [rejects new requests (default: HTTP 503) while the request queue is full](<%= url_for_config_option(:max_request_queue_size, locals) %>). This hook gets called for each rejection.
+Passenger [rejects new requests (default: HTTP 503) while the request queue is full](<%= url_for "/references/config_reference/standalone/#passenger_max_request_queue_size" %>). This hook gets called for each rejection.
 
 This hook does not block anything, because it's always run in an extra background thread.
 
@@ -284,7 +284,7 @@ Extra environment variables:
   </tr>
 </table>
 
-Called when a [max request time limit](<%= url_for("/config/nginx/reference/index.html") %>#passenger_max_request_time) has been reached. Please note that as soon as this hook has finished executing, the application process will be killed with SIGKILL. So if you want to perform any diagnostics on the process in question (e.g. with strace, gdb, etc), please do not exit your hook script until you've obtained all the diagnostics you want.
+Called when a [max request time limit](<%= url_for("/references/config_reference/standalone/#passenger_max_request_time") %>) has been reached. Please note that as soon as this hook has finished executing, the application process will be killed with SIGKILL. So if you want to perform any diagnostics on the process in question (e.g. with strace, gdb, etc), please do not exit your hook script until you've obtained all the diagnostics you want.
 
 At present, this hook blocks web request handling. This may be solved in a future version of Passenger.
 
