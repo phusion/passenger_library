@@ -27,6 +27,12 @@ function navScroll() {
   } else if (leftRect.y >= 100) {
     left.classList.remove('stop-nav');
   }
+
+  if (window.scrollY > 30 && window.innerHeight > 680) {
+    left.classList.add('repos-nav');
+  } else {
+    left.classList.remove('repos-nav');
+  }
 }
 
 mobileBtn.addEventListener('click', showMenu);

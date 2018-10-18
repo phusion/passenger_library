@@ -7,6 +7,7 @@
 #left-nav-content {
   margin-top: 5px;
   background: #fff;
+  transition: .6s transform;
 }
 
 #left-nav-content span {
@@ -109,9 +110,13 @@
 }
 
 // class for scroll nav script
-.stop-nav {
+body .stop-nav {
   position: absolute !important;
-  bottom: 60px !important;
+  bottom: -10px !important;
+}
+
+.repos-nav {
+  transform: translateY(-70px);
 }
 
 @-moz-document url-prefix() {
