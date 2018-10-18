@@ -22,10 +22,9 @@ function showMenu() {
 function navScroll() {
   let leftRect = left.getBoundingClientRect();
   let footerRect = footer.getBoundingClientRect();
-
   if (footerRect.y - leftRect.y - leftRect.height <= 120 && leftRect.y <= 100) {
     left.classList.add('stop-nav');
-  } else {
+  } else if (leftRect.y >= 100) {
     left.classList.remove('stop-nav');
   }
 }
