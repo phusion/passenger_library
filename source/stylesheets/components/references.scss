@@ -1,34 +1,36 @@
-.references table {
+.references_config_reference table {
   margin: 15px 0 20px;
 }
 
-.references h2 {
+.references_config_reference h2 {
   border: none;
   margin-bottom: -30px;
 }
 
-.references h3 {
-  margin-top: 40px;
-  margin-bottom: 10px;
+.references_hooks h3,
+.references_config_reference h3 {
+  // used important to overwrite on the hooks page
+  margin-top: 40px !important;
+  margin-bottom: 10px !important;
   padding-top: 20px;
 }
 
-.references .note h3 {
+.references_config_reference .note h3 {
   border-top: none;
   margin-top: 0;
   padding-top: 0;
 }
 
-.references h4 {
+.references_config_reference h4 {
   margin-top: 30px;
   margin-bottom: 3px;
 }
 
-.references .table-value th {
+.references_config_reference .table-value th {
   font-weight: 400;
 }
 
-.references .table-value tr:first-of-type th,
-.references .table-value tr:first-of-type td {
+.references_config_reference .table-value tr:first-of-type th,
+.references_config_reference .table-value tr:first-of-type td {
   font-weight: 700;
 }
