@@ -37,7 +37,7 @@ references: true
 
 Refers to the location to the Passenger root directory, or to a location configuration file. This configuration option is essential to Passenger, and allows Passenger to locate its own data files.
 
-You normally do not need to set this configuration option. If you used our [Debian](<%= url_for "/install/nginx/apt_repo/index.html" %>) or [RPM](<%= url_for "/install/nginx/yum_repo/index.html" %>) packages to [install Passenger](<%= url_for "/install/nginx/install/index.html" %>), then they automatically configure `passenger_root` for you with the right value. If you installed Passenger from Homebrew, tarball or RubyGems, then at some point during the installation process you are told what the correct value should be, and instructed to insert it into your Nginx configuration file.
+You normally do not need to set this configuration option. If you used our [Debian](<%= url_for "/advanced_guides/install_and_upgrade/nginx/apt_repo.html" %>) or [RPM](<%= url_for "/advanced_guides/install_and_upgrade/nginx/yum_repo.html" %>) packages to [install Passenger](<%= url_for "/advanced_guides/install_and_upgrade/nginx/install/" %>), then they automatically configure `passenger_root` for you with the right value. If you installed Passenger from Homebrew, tarball or RubyGems, then at some point during the installation process you are told what the correct value should be, and instructed to insert it into your Nginx configuration file.
 
 #### What happens if this option is not set, or set wrongly
 
@@ -47,7 +47,7 @@ If you set `passenger_root` to the wrong value, then Passenger will attempt to l
 
 #### How to fix passenger_root
 
-If you lost the `passenger_root` configuration value (e.g. because you accidentally removed the Nginx configuration file, and you are trying to reconstruct it), if you didn't follow the installation instructions correctly, or if you [moved Passenger to a different directory](<%= url_for "/install/nginx/moving.html" %>), then you can fix `passenger_root` as follows:
+If you lost the `passenger_root` configuration value (e.g. because you accidentally removed the Nginx configuration file, and you are trying to reconstruct it), if you didn't follow the installation instructions correctly, or if you [moved Passenger to a different directory](<%= url_for "/advanced_guides/install_and_upgrade/nginx/moving.html" %>), then you can fix `passenger_root` as follows:
 
  * If you installed Passenger through source tarball or by cloning it from the Passenger Github repository, then the value should be the path to the Passenger directory.
  * In all other cases, obtain the correct value by running the following command:
@@ -78,7 +78,7 @@ Once you have obtained the value, open your Nginx configuration file and insert 
   </tr>
 </table>
 
-This option enables or disables Passenger for that particular context. Passenger is disabled by default, so you must explicitly enable it for contexts where you want Passenger to serve your application. Please see [the deployment guide](<%= url_for "/deploy/nginx/index.html" %>) for full examples.
+This option enables or disables Passenger for that particular context. Passenger is disabled by default, so you must explicitly enable it for contexts where you want Passenger to serve your application. Please see [the deployment guide](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/" %>) for full examples.
 
 ~~~nginx
 server {
@@ -140,9 +140,9 @@ Specifies a timeout for the startup of application processes. If an application 
 
 The `passenger_ruby` option specifies the Ruby interpreter to use for serving Ruby web applications.
 
-In addition, the `passenger_ruby` option in the `http` context also specifies which Ruby interpreter to use for Passenger's internal Ruby helper tools, e.g. the one used by [passenger_pre_start](#passenger_pre_start). See [Lightweight Ruby dependency](<%= url_for "/indepth/lightweight_ruby_dependency.html" %>) for more information about the internal Ruby helper tools.
+In addition, the `passenger_ruby` option in the `http` context also specifies which Ruby interpreter to use for Passenger's internal Ruby helper tools, e.g. the one used by [passenger_pre_start](#passenger_pre_start). See [Lightweight Ruby dependency](<%= url_for "/advanced_guides/in_depth/ruby/lightweight_dependency.html" %>) for more information about the internal Ruby helper tools.
 
-If `passenger_ruby` is not specified, then it defaults to `ruby`, which means that the first `ruby` command found in [PATH](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable) will be used.
+If `passenger_ruby` is not specified, then it defaults to `ruby`, which means that the first `ruby` command found in [PATH](<%= url_for "/advanced_guides/in_depth/ruby/environment_variables.html" %>#the-path-environment-variable) will be used.
 
 Closely related to `passenger_ruby` is [passenger_python](#passenger_python), [passenger_nodejs](#passenger_nodejs), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
@@ -172,7 +172,7 @@ Closely related to `passenger_ruby` is [passenger_python](#passenger_python), [p
   </tr>
 </table>
 
-This option specifies the Python interpreter to use for serving Python web applications. If it is not specified, then it uses the first `python` command found in [PATH](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable).
+This option specifies the Python interpreter to use for serving Python web applications. If it is not specified, then it uses the first `python` command found in [PATH](<%= url_for "/advanced_guides/in_depth/ruby/environment_variables.html" %>#the-path-environment-variable).
 
 Closely related to this option is [passenger_ruby](#passenger_ruby), [passenger_nodejs](#passenger_nodejs), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
@@ -200,7 +200,7 @@ Closely related to this option is [passenger_ruby](#passenger_ruby), [passenger_
   </tr>
 </table>
 
-This option specifies the Node.js command to use for serving Node.js web applications. If it is not specified, then it uses the first `node` command found in [PATH](<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable).
+This option specifies the Node.js command to use for serving Node.js web applications. If it is not specified, then it uses the first `node` command found in [PATH](<%= url_for "/advanced_guides/in_depth/ruby/environment_variables.html" %>#the-path-environment-variable).
 
 Closely related to this option is [passenger_ruby](#passenger_ruby), [passenger_python](#passenger_python), etc. The following example illustrates how it works and how you can use these options to specify different interpreters for different web apps.
 
@@ -327,7 +327,7 @@ These are aliases for [passenger_app_env](#passenger_app_env).
 
 By default, Passenger assumes that the application's root directory is the parent directory of the virtual host's (`server` block's) root directory. This option allows one to the application's root independently from the virtual host root, which is useful if your application does not follow the conventions that Passenger assumes.
 
-See also [How Passenger + Nginx autodetects applications](<%= url_for "/indepth/app_autodetection/index.html" %>).
+See also [How Passenger + Nginx autodetects applications](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>).
 
 #### Example
 
@@ -368,7 +368,7 @@ Sets the name of the application group that the current application should belon
 
 Passenger stores and caches most application spawning settings -- such as environment variables, process limits, etc -- on a per-app-group-name basis. This means that if you want to start two versions of your application, with each version having different environment variables, then you must assign them under different application group names.
 
-The [request queue](<%= url_for "/indepth/request_queueing.html" %>) is also per-application group, so creating multiple application groups allow you to separate requests into different queues.
+The request queue is also per-application group, so creating multiple application groups allow you to separate requests into different queues.
 
 #### Example
 
@@ -451,7 +451,7 @@ server {
   </tr>
   <tr>
     <th>Default</th>
-    <td><a href="<%= url_for "/indepth/app_autodetection/index.html" %>">Autodetected</a></td>
+    <td><a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>">Autodetected</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -463,7 +463,7 @@ server {
   </tr>
 </table>
 
-By default, Passenger [autodetects](<%= url_for "/indepth/app_autodetection/index.html" %>) the type of the application, e.g. whether it's a Ruby, Python, Node.js or Meteor app. If it's unable to autodetect the type of the application (e.g. because you've specified a custom [passenger_startup_file](#passenger_startup_file)) then you can use this option to force Passenger to recognize the application as a specific type.
+By default, Passenger [autodetects](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>) the type of the application, e.g. whether it's a Ruby, Python, Node.js or Meteor app. If it's unable to autodetect the type of the application (e.g. because you've specified a custom [passenger_startup_file](#passenger_startup_file)) then you can use this option to force Passenger to recognize the application as a specific type.
 
 Allowed values are:
 
@@ -506,7 +506,7 @@ server {
   </tr>
   <tr>
     <th>Default</th>
-    <td><a href="<%= url_for "/indepth/app_autodetection/index.html" %>">Autodetected</a></td>
+    <td><a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>">Autodetected</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -518,7 +518,7 @@ server {
   </tr>
 </table>
 
-This option specifies the startup file that Passenger should use when loading the application. This path is relative to the [application root](#passenger_app_root).
+This option specifies the startup file that Passenger should use when loading the application. This path is relative to the <a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>">application root(#passenger_app_root).
 
 Every application has a *startup file* or *entry point file*: a file where the application begins execution. Some languages have widely accepted conventions about how such a file should be called (e.g. Ruby, with its `config.ru`). Other languages have somewhat-accepted conventions (e.g. Node.js, with its `app.js`). In these cases, Passenger follows these conventions, and executes applications through those files.
 
@@ -547,7 +547,7 @@ For other cases you will need to specify the `startup-file` manually. For exampl
 
 #### Notes
 
- * Customizing the startup file affects [user account sandboxing](<%= url_for "/deploy/nginx/user_sandboxing.html" %>). After all, if user account sandboxing is enabled, the application is executed as the user that owns the startup file.
+ * Customizing the startup file affects [user account sandboxing](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>). After all, if user account sandboxing is enabled, the application is executed as the user that owns the startup file.
  * If you set this option, you **must** also set [passenger_app_type](#passenger_app_type), otherwise Passenger doesn't know what kind of application it is.
 
 #### Example
@@ -586,7 +586,7 @@ server {
   </tr>
 </table>
 
-As described in [Restarting applications](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>), Passenger checks the file `tmp/restart.txt` in the [application root directory](#passenger_app_root) to determine whether it should restart the application. Sometimes it may be desirable for Passenger to look in a different directory instead, for example for security reasons (see below). This option allows you to customize the directory in which `restart.txt` is searched for.
+As described in [Restarting applications](<%= url_for "/advanced_guides/troubleshooting/nginx/restart_app.html" %>), Passenger checks the file `tmp/restart.txt` in the [application root directory](#passenger_app_root) to determine whether it should restart the application. Sometimes it may be desirable for Passenger to look in a different directory instead, for example for security reasons (see below). This option allows you to customize the directory in which `restart.txt` is searched for.
 
 You can either set it to an absolute directory, or to a directory relative to the application root.
 
@@ -625,7 +625,7 @@ server {
 
 #### Security reasons for wanting to customize PassengerRestartDir
 
-Touching restart.txt will [cause Passenger to restart the application](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>). So anybody who can touch restart.txt can effectively cause a Denial-of-Service attack by touching restart.txt over and over. If your web server or one of your web applications has the permission to touch restart.txt, and one of them has a security flaw which allows an attacker to touch restart.txt, then that will allow the attacker to cause a Denial-of-Service.
+Touching restart.txt will [cause Passenger to restart the application](<%= url_for "/advanced_guides/troubleshooting/nginx/restart_app.html" %>). So anybody who can touch restart.txt can effectively cause a Denial-of-Service attack by touching restart.txt over and over. If your web server or one of your web applications has the permission to touch restart.txt, and one of them has a security flaw which allows an attacker to touch restart.txt, then that will allow the attacker to cause a Denial-of-Service.
 
 You can prevent this from happening by pointing `passenger_restart_dir` to a directory that's readable by Nginx, but only writable by administrators.
 
@@ -654,7 +654,7 @@ You can prevent this from happening by pointing `passenger_restart_dir` to a dir
   </tr>
 </table>
 
-This option controls whether Passenger spawns applications directly, or using a prefork copy-on-write mechanism. The [spawn methods guide](<%= url_for "/indepth/spawn_methods/index.html" %>) explains this in detail.
+This option controls whether Passenger spawns applications directly, or using a prefork copy-on-write mechanism. The [spawn methods guide](<%= url_for "/advanced_guides/in_depth/ruby/spawn_methods.html" %>) explains this in detail.
 
 
 ### passenger_env_var
@@ -740,11 +740,11 @@ If this option is turned off, applications are loaded by running them directly f
   <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
-Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/nginx/zero_downtime_redeployments/index.html" %>) through `restart.txt`.
+Enables or disables support for [zero-downtime application restarts](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/zero_downtime_redeployments/ruby/" %>) through `restart.txt`.
 
 Please note that `passenger_rolling_restarts` is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
 
-NOTE: Are you looking to prevent applications from being restarted when you restart Nginx? That is handled by the [Flying Passenger mode](<%= url_for "/deploy/nginx/flying_passenger.html" %>), not by the rolling restarts feature.
+NOTE: Are you looking to prevent applications from being restarted when you restart Nginx? That is handled by the [Flying Passenger mode](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/flying_passenger.html" %>), not by the rolling restarts feature.
 
 
 ### passenger_resist_deployment_errors
@@ -769,15 +769,15 @@ NOTE: Are you looking to prevent applications from being restarted when you rest
   <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
-Enables or disables [resistance against deployment errors](<%= url_for "/deploy/nginx/deployment_error_resistance.html" %>).
+Enables or disables [resistance against deployment errors](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/deployment_error_resistance.html" %>).
 
 Suppose that you have upgraded your application and you have issued a command to restart it, but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
 
-By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file/index.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
+By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/advanced_guides/troubleshooting/nginx/log_file.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
 
-[Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/deploy/nginx/deployment_error_resistance.html" %>).
+[Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/deployment_error_resistance.html" %>).
 
-Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/admin/nginx/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-(rolling-restart)).
+Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/advanced_guides/troubleshooting/nginx/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-(rolling-restart)).
 
 ### passenger_instance_registry_dir
 
@@ -816,7 +816,7 @@ The instance directory is automatically removed when Nginx shuts down.
 
 The default value for this option is as follows:
 
- * If you are on Red Hat and CentOS, and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/install/nginx/yum_repo/index.html" %>), then the default value is `/var/run/passenger-instreg`.
+ * If you are on Red Hat and CentOS, and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/advanced_guides/install_and_upgrade/nginx/yum_repo.html" %>), then the default value is `/var/run/passenger-instreg`.
  * Otherwise, the default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
 
 #### Note regarding command line tools
@@ -859,7 +859,7 @@ Notes regarding the above example:
   <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
-Enables the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) mode, and configures Nginx to connect to the Flying Passenger daemon that's listening on the given socket filename.
+Enables the [Flying Passenger](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/flying_passenger.html" %>) mode, and configures Nginx to connect to the Flying Passenger daemon that's listening on the given socket filename.
 
 
 ## Performance tuning
@@ -950,7 +950,7 @@ The default file descriptor ulimit is inherited from the Passenger core process.
 The maximum number of application processes that may simultaneously exist. A larger number results in higher memory usage,
 but improves the ability to handle concurrent HTTP requests.
 
-The optimal value depends on your system's hardware and your workload. Please read the [optimization guide](<%= url_for "/config/#{integration_mode_type}/optimization/index.html" %>) to learn how to find out the optimal value.
+The optimal value depends on your system's hardware and your workload. Please read the [optimization guide](<%= url_for "/advanced_guides/config_and_optimization/nginx/optimization.html" %>) to learn how to find out the optimal value.
 
 This option behaves like a "safety switch" that prevents Passenger from overloading your system with too many processes. No matter how you configure [passenger_min_instances](#passenger_min_instances) and [passenger_max_instances](#passenger_max_instances), the total number of processes won't ever surpass the value set for this option. For example, if passenger_max_pool_size is set to 6, and you also deployed two applications on Passenger with each application's passenger_min_instances set to 4, then the maximum number processes that may simultaneously exist is 6, not 8.
 
@@ -1138,7 +1138,7 @@ Setting the value to 0 is recommended if you're on a non-shared host that's only
   </tr>
 </table>
 
-The preloader process (explained in [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#passenger_pool_idle_time). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
+The preloader process (explained in [Spawn methods](<%= url_for "/advanced_guides/in_depth/ruby/spawn_methods.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#passenger_pool_idle_time). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
 
 This option allows you to set the preloader's idle timeout, in seconds. A value of `0` means that it should never idle timeout.
 
@@ -1180,8 +1180,8 @@ Use this option to tell Passenger how many concurrent requests the application c
 
 There are two main use cases for this option:
 
- 1. To make [dynamic process scaling](<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
- 2. [To make SSE and WebSockets work well in Ruby applications.](<%= url_for "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html" %>) Set this option to 0.
+ 1. To make [dynamic process scaling](<%= url_for "/advanced_guides/config_and_optimization/nginx/dynamic_scaling_vs_fixed_app_processes/ruby/" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
+ 2. [To make SSE and WebSockets work well in Ruby applications.](<%= url_for "/advanced_guides/config_and_optimization/nginx/tuning_sse_and_websockets.html" %>) Set this option to 0.
 
 This option is a hint to Passenger and does not make the application *actually* able to handle that many concurrent requests per process. For example in Ruby applications, the amount of concurrency that your application process can handle usually depends on the number of [configured threads](#passenger_thread_count). If you set the number of threads, then Passenger will automatically infer that Ruby applications' max concurrency per process equals the number of threads. But in non-standard cases where this heuristic fails (e.g. in situations where a WebSocket library such as Faye spawns threads to handle WebSockets) then you can use this option to override Passenger's heuristic.
 
@@ -1279,8 +1279,8 @@ Specifies the number of threads that Passenger should spawn per Ruby application
 
 By default, Passenger performs several filesystem checks (or, in programmers jargon, "`stat()` calls") each time a request is processed:
 
- * It checks which the application [startup files](<%= url_for "/indepth/app_autodetection/index.html" %>) are present, in order to autodetect the application type.
- * It checks whether [restart.txt](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>) has changed or whether `always_restart.txt` exists, in order to determine whether the application should be restarted.
+ * It checks which the application [startup files](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>) are present, in order to autodetect the application type.
+ * It checks whether [restart.txt](<%= url_for "/advanced_guides/troubleshooting/nginx/restart_app.html" %>) has changed or whether `always_restart.txt` exists, in order to determine whether the application should be restarted.
 
 On some systems where disk I/O is expensive, e.g. systems where the harddisk is already being heavily loaded, or systems where applications are stored on NFS shares, these filesystem checks can incur a lot of overhead.
 
@@ -1314,7 +1314,7 @@ A few things to be careful of:
  * You will probably want to combine this option with [passenger_min_instances](#passenger_min_instances) because application processes started with `passenger_pre_start` are subject to the usual idle timeout rules. See the example below for an explanation.
 
 <div class="note">
-  This option is currently not available when using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>.
+  This option is currently not available when using <a href="<%= url_for "/advanced_guides/deployment_and_scaling/nginx/flying_passenger.html" %>">Flying Passenger</a>.
 </div>
 
 #### Example 1: basic usage
@@ -1609,14 +1609,14 @@ The socket backlog is a queue of incoming connections (from Nginx) not yet ackno
   </tr>
 </table>
 
-Whether to attempt to enable [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>), also known as user switching.
+Whether to attempt to enable [user account sandboxing](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>), also known as user switching.
 
 <div class="note">
-  This option has no effect when you are using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
+  This option has no effect when you are using <a href="<%= url_for "/advanced_guides/deployment_and_scaling/nginx/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
 </div>
 
 <div class="warning">
-  If you're on Red Hat or CentOS, be sure to read <a href="<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#red-hat-and-centos-caveats">the Red Hat and CentOS user account sandboxing caveats</a>.
+  If you're on Red Hat or CentOS, be sure to read <a href="<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>#red-hat-and-centos-caveats">the Red Hat and CentOS user account sandboxing caveats</a>.
 </div>
 
 
@@ -1629,7 +1629,7 @@ Whether to attempt to enable [user account sandboxing](<%= url_for "/deploy/#{in
   </tr>
   <tr>
     <th>Default</th>
-    <td>See the <a href="<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>">user account sandboxing rules</a></td>
+    <td>See the <a href="<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>">user account sandboxing rules</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -1641,7 +1641,7 @@ Whether to attempt to enable [user account sandboxing](<%= url_for "/deploy/#{in
   </tr>
 </table>
 
-If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the owner of the application's startup file](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#how-it-works). `passenger_user` allows you to override that behavior and explicitly set a user to run the web application as, regardless of the ownership of the startup file.
+If [user account sandboxing](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the owner of the application's startup file](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>#how-it-works). `passenger_user` allows you to override that behavior and explicitly set a user to run the web application as, regardless of the ownership of the startup file.
 
 
 ### passenger_group
@@ -1653,7 +1653,7 @@ If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_
   </tr>
   <tr>
     <th>Default</th>
-    <td>See the <a href="<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>">user account sandboxing rules</a></td>
+    <td>See the <a href="<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>">user account sandboxing rules</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -1665,7 +1665,7 @@ If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_
   </tr>
 </table>
 
-If [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the primary group of the owner of the application's startup file](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>#how-it-works). `passenger_group` allows you to override that behavior and explicitly set a group to run the web application as, regardless of the ownership of the startup file.
+If [user account sandboxing](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the primary group of the owner of the application's startup file](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>#how-it-works). `passenger_group` allows you to override that behavior and explicitly set a group to run the web application as, regardless of the ownership of the startup file.
 
 The value may also be set to the special value `!STARTUP_FILE!`, in which case the web application's group will be set to the startup file's group.
 
@@ -1691,11 +1691,11 @@ The value may also be set to the special value `!STARTUP_FILE!`, in which case t
   </tr>
 </table>
 
-Passenger enables [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) by default. This configuration option allows you to specify the user that applications must
+Passenger enables [user account sandboxing](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>) (also known as user switching) by default. This configuration option allows you to specify the user that applications must
 run as, if user switching fails or is disabled.
 
 <div class="note">
-  This option has no effect when you are using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
+  This option has no effect when you are using <a href="<%= url_for "/advanced_guides/deployment_and_scaling/nginx/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
 </div>
 
 
@@ -1720,13 +1720,13 @@ run as, if user switching fails or is disabled.
   </tr>
 </table>
 
-Passenger enables [user account sandboxing](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) (also known as user switching) by default. This configuration option allows you to specify the group that applications must
+Passenger enables [user account sandboxing](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>) (also known as user switching) by default. This configuration option allows you to specify the group that applications must
 run as, if user switching fails or is disabled.
 
 The default value is the primary group of the user specifified by [passenger_default_user](#passenger_default_user). So the default value on most systems is `nobody` or `nogroup`.
 
 <div class="note">
-  This option has no effect when you are using <a href="<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
+  This option has no effect when you are using <a href="<%= url_for "/advanced_guides/deployment_and_scaling/nginx/flying_passenger.html" %>">Flying Passenger</a>. You can disable user account sandboxing for Flying Passenger by starting the Flying Passenger daemon as a non-root user.
 </div>
 
 
@@ -1822,7 +1822,7 @@ This feature is very useful during application development and useful for less e
   </tr>
 </table>
 
-This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for
+This option allows disabling the [Passenger security update check](<%= url_for("/advanced_guides/in_depth/ruby/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for
 important security updates that might be available.
 
 
@@ -1843,7 +1843,7 @@ important security updates that might be available.
   </tr>
 </table>
 
-This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>).
+This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/advanced_guides/in_depth/ruby/security_update_check.html") %>).
 The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
@@ -1868,7 +1868,7 @@ The proxy client code uses libcurl, which supports the following values for <em>
   </tr>
 </table>
 
-By default, Passenger buffers large web application responses. This prevents [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
+By default, Passenger buffers large web application responses. This prevents slow HTTP clients from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
 
 By default, such buffers are stored in the directory given by the `$TMPDIR` environment variable, or (if `$TMPDIR` is not set) the `/tmp` directory. This configuration option allows you to specify a different directory.
 
@@ -1906,7 +1906,7 @@ Before we proceed with explaining this configuration option, we want to state th
  1. The Nginx response buffering system. `passenger_buffer_response` turns this on or off.
  2. The Passenger response buffering system, a.k.a. "real-time disk-backed response buffering". This buffering system is always on, regardless of the value of `passenger_buffer_response`, but its behavior can be tweaked with [passenger_response_buffer_high_watermark](#passenger_response_buffer_high_watermark).
 
-Response buffering is useful because it protects against [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) that do not read responses immediately or quickly enough. Buffering prevents such slow clients from blocking web applications that have limited concurrency. Because Passenger's response buffering is always turned on, you are always protected. Therefore, `passenger_buffer_response` is off by default, and you never should have to turn it on.
+Response buffering is useful because it protects against slow HTTP clients that do not read responses immediately or quickly enough. Buffering prevents such slow clients from blocking web applications that have limited concurrency. Because Passenger's response buffering is always turned on, you are always protected. Therefore, `passenger_buffer_response` is off by default, and you never should have to turn it on.
 
 If for whatever reason you want to turn Nginx-level response buffering on, you can do so with this option.
 
@@ -1965,7 +1965,7 @@ When `passenger_buffer_response` is turned on, Nginx will wait until the applica
 </table>
 
 <!-- TODO: fix link -->
-Used to specify that the given URI is an distinct application that should be served by Passenger. Please see [the deployment guide](<%= url_for "/deploy/nginx/index.html" %>) for more information.
+Used to specify that the given URI is an distinct application that should be served by Passenger. Please see [the deployment guide](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/" %>) for more information.
 
 It is allowed to specify this option multiple times. Do this to deploy multiple applications in different sub-URIs under the same virtual host.
 
@@ -1988,7 +1988,7 @@ It is allowed to specify this option multiple times. Do this to deploy multiple 
 </table>
 
 <!-- TODO: fix link -->
-Used in sub-URI deployment scenarios to tell Passenger where it should look for static files. Please see [the deployment guide](<%= url_for "/deploy/nginx/index.html" %>) for more information.
+Used in sub-URI deployment scenarios to tell Passenger where it should look for static files. Please see [the deployment guide](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/" %>) for more information.
 
 ### passenger_sticky_sessions
 
@@ -2496,7 +2496,7 @@ File descriptor activity is logged as follows:
   At this time, this feature is supported for Ruby applications only.
 </div>
 
-Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/admin/#{integration_mode_type}/debugging_console/ruby/index.html" %>) guide for more information.
+Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/advanced_guides/troubleshooting/nginx/debugging_console/ruby/" %>) guide for more information.
 
 
 ### passenger_admin_panel_url
