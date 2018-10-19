@@ -26,5 +26,5 @@ end
 <div id="new-item">
   <img class="<%= item_class %>" src="<%= item_image %>" alt="<%= item_text %>"/>
   <a class="light-button <%= smaller_font %>" href="<%= item_link %>"><%= item_text %></a>
-  <img src="<%= url_for "/images/feedback_placeholder.svg" %>" alt="feedback"/>
+  <%= partial "/shared/feedback" %>
 </div>

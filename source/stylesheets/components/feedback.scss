@@ -1,0 +1,65 @@
+#new-item, #right-content-toc {
+  #feedback {
+    .hide {
+      display: none;
+    }
+    margin-top: 20px;
+    p {
+      font-weight: 400;
+      font-size: 14px;
+    }
+    .buttons {
+      display: flex;
+      margin-top: 10px;
+      user-select: none;
+      &:not(.voted) {
+        span {
+          cursor: pointer;
+        }
+      }
+      &.voted {
+        span:not(.disabled):hover svg {
+          transform: none;
+        }
+      }
+      span {
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        &.yes {
+          margin-right: 20px;
+        }
+        &.disabled {
+          svg {
+            #Oval {
+              fill: #cdcdcd;
+            }
+          }
+        }
+        svg {
+          margin-right: 5px;
+          width: 18px;
+          height: 18px;
+          transition: transform .2s;
+        }
+        &:not(.disabled):hover {
+          svg {
+            transform: scale(1.2);
+          }
+        }
+      }
+    }
+    .reason {
+      textarea {
+        border: 1px solid #BABECD;
+        border-radius: 4px;
+        color: #35373B;
+        font-family: 'Inter UI', 'Helvetica', sans-serif;
+        margin-top: 10px;
+      }
+    }
+    .thank-you {
+      margin-top: 10px;
+    }
+  }
+}

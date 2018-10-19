@@ -20,3 +20,4 @@ import './picker';
 import './app_details_form';
 import './docs';
 import './left-nav';
+import './feedback';
