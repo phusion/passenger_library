@@ -1,5 +1,6 @@
+const axios = require('axios');
 const uuidv4 = require('uuid/v4');
-const feedbackBaseUrl = 'https://localhost:3000/'
+const feedbackBaseUrl = 'https://feedback.phusionpassenger.com'
 const feedbackApiVersion = 'v1'
 const feedbackUrl = `${feedbackBaseUrl}/api/${feedbackApiVersion}`
 
@@ -74,10 +75,20 @@ function handleVote(vote, elems) {
 
 function sendVote(page, vote) {
   let uuid = getUUID();
+  axios.post(`${feedbackUrl}/vote`, {
+    uuid: uuid,
+    url: page,
+    vote: vote
+  })
 }
 
 function sendReason(page, reason) {
   let uuid = getUUID();
+  axios.post(`${feedbackUrl}/vote`, {
+    uuid: uuid,
+    url: page,
+    reason: reason
+  })
 }
 
 function getUUID() {
