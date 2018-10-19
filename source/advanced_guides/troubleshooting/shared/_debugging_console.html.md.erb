@@ -12,7 +12,7 @@ If you use [Passenger Enterprise](https://www.phusionpassenger.com/enterprise) t
 
 You can attach an IRB console to any application process and inspect its state by executing arbitrary Ruby code. This works even in production environments. There is no flag to turn on. There is no performance impact, other than (obviously) the performance impact of any code you run inside the console.
 
-First, lookup the PID of the application you want to attach to, using [passenger-status](<%= url_for "/admin/#{integration_mode_type}/overall_status_report.html" %>).
+First, lookup the PID of the application you want to attach to, using [passenger-status](<%= url_for "/advanced_guides/troubleshooting/nginx/overall_status_report.html" %>).
 
 Next, attach an IRB console to the desired process by running the `passenger-irb` command with the process's PID as argument. For example:
 

@@ -11,7 +11,7 @@
 
 ### 1 Check the Passenger log file
 
-One of the first things you should do upon encountering a problem, is to check [the Passenger log file](<%= url_for "/admin/#{integration_mode_type}/log_file/index.html" %>). The log file is where Passenger prints to when it encounters a problem or when it wants to tell you something.
+One of the first things you should do upon encountering a problem, is to check [the Passenger log file](<%= url_for "/advanced_guides/troubleshooting/nginx/log_file.html" %>). The log file is where Passenger prints to when it encounters a problem or when it wants to tell you something.
 
 This log file contains:
 
@@ -23,7 +23,7 @@ This log file contains:
     The Passenger log file is the <strong>global</strong> Nginx error log file. This is one specified by the <code>error_log</code> directive in the main context (that is, <strong>not</strong> the one inside the <code>http</code> context). The file is typically located in <code>/var/log/nginx/error.log</code>.
   </p>
   <p>
-    Or, if you configured the <a href="<%= url_for "/config/nginx/reference/index.html" %>#passenger_log_file">passenger_log_file</a> directive, then the log file is in the referenced file.
+    Or, if you configured the <a href="<%= url_for "/references/config_reference/nginx/" %>#passenger_log_file">passenger_log_file</a> directive, then the log file is in the referenced file.
   </p>
 <% elsif integration_mode_type == :apache %>
   <p>
@@ -45,7 +45,7 @@ This log file contains:
 <% end %>
 
 <div class="note">
-  Not finding anything useful in the Passenger error log? Please read <a href="<%= url_for "/admin/#{integration_mode_type}/log_file/index.html" %>#troubleshooting-logging-problems">Troubleshooting logging problems.</a>
+  Not finding anything useful in the Passenger error log? Please read <a href="<%= url_for "/advanced_guides/troubleshooting/nginx/log_file.html" %>#troubleshooting-logging-problems">Troubleshooting logging problems.</a>
 </div>
 
 ### 2 Check the application log file
@@ -62,7 +62,7 @@ Note that Passenger runs applications in the "production" environment by default
 
 ### 3 Upgrade Passenger to the latest version
 
-Some problems are caused by bugs in Passenger. Passenger is under active maintenance and development, so there is a chance that -- assuming you really ran into a bug -- the bug is already fixed. Please [upgrade Passenger to the latest version](<%= url_for "/install/#{integration_mode_type}/upgrade/index.html" %>) and check whether the problem is still there.
+Some problems are caused by bugs in Passenger. Passenger is under active maintenance and development, so there is a chance that -- assuming you really ran into a bug -- the bug is already fixed. Please [upgrade Passenger to the latest version](<%= url_for "/advanced_guides/install_and_upgrade/standalone/upgrade.html" %>) and check whether the problem is still there.
 
 If you suspect that your problem is a bug in Passenger, and upgrading didn't fix it, please [report the bug to our Github issue tracker](https://github.com/phusion/passenger).
 
@@ -70,16 +70,11 @@ If upgrading Passenger didn't help, and you don't think your problem is caused b
 
 ### 4 Consult the in-depth topics
 
-Passenger takes care of a lot of things for you under the hood. If you don't know what Passenger does, then problems may seem opaque. Try [learning more about the activities that Passenger perform](<%= url_for "/indepth/index.html" %>); it may help you with understanding the problem and with troubleshooting.
+Passenger takes care of a lot of things for you under the hood. If you don't know what Passenger does, then problems may seem opaque. Try [learning more about the activities that Passenger perform](<%= url_for "/advanced_guides/in_depth/ruby/index.html" %>); it may help you with understanding the problem and with troubleshooting.
 
 ### 5 Out of ideas? Try the support resources
 
 If you are stuck with a problem, please do not hesitate to contact one of the support resources. Passenger has a friendly community of users who look out for each other. We -- Passenger's authors -- are also ready to help you whenever we can.
-
-<% if locals[:context] != :troubleshooting_guide -%>
-[Troubleshooting guide](<%= url_for "/admin/troubleshooting/index.html" %>)
-: Please check our troubleshooting guide, which not only teaches you how to analyze problems, but also lists solutions for common problems.
-<% end -%>
 
 [Stack Overflow](https://stackoverflow.com/questions/ask?tags=passenger)
 : Post a question on Stack Overflow if you are experiencing problems. Support on Stack Overflow is provided by the community, and our own developers also watch Stack Overflow on a regular basis. But support here is provided on a best-effort basis, so sometimes a bit of patience will help. Be sure to use the "passenger" tag.
@@ -115,9 +110,9 @@ Passenger starts your application the first time it is accessed, not during web 
 #### Solution
 
 <% if integration_mode_type == :nginx %>
-  Use the [passenger_pre_start](<%= url_for "/config/nginx/reference/index.html" %>#passenger_pre_start) configuration option.
+  Use the [passenger_pre_start](<%= url_for "/references/config_reference/nginx/" %>#passenger_pre_start) configuration option.
 <% else %>
-  [PassengerPreStart (Apache)](<%= url_for "/config/nginx/reference/index.html" %>#passengerprestart)
+  [PassengerPreStart (Apache)](<%= url_for "/references/config_reference/nginx/" %>#passengerprestart)
 <% end %>
 <% end %>
 
@@ -140,7 +135,7 @@ Passenger commands can be found as a normal user, but not when run through sudo:
 
 #### Cause
 
-The operating system looks up commands using [the PATH environment variable](<%= url_for "/indepth/environment_variables.html#the-path-environment-variable" %>). However, sudo resets all environment variables to a default value, dictated by sudo. If Passenger was installed to a location that is not in the default sudo PATH value, then sudo will not be able to find the Passenger commands.
+The operating system looks up commands using [the PATH environment variable](<%= url_for "/advanced_guides/in_depth/ruby/environment_variables.html#the-path-environment-variable" %>). However, sudo resets all environment variables to a default value, dictated by sudo. If Passenger was installed to a location that is not in the default sudo PATH value, then sudo will not be able to find the Passenger commands.
 
 In addition, if you installed Passenger using a Ruby interpreter that was installed through RVM, then you **must** use [rvmsudo](https://rvm.io/integration/sudo) instead of sudo. As a rule, when you're an RVM user, always use rvmsudo instead of sudo.
 
@@ -163,7 +158,7 @@ Next, run full path of the command using either sudo or rvmsudo:
 
 #### Recommended reading
 
-When using sudo, you will probably run into similar "command not found" issues in the future, with components other than Passenger. We **strongly recommend** you to [learn about environment variables](<%= url_for "/indepth/environment_variables.html" %>) so that you know what to do in the future.
+When using sudo, you will probably run into similar "command not found" issues in the future, with components other than Passenger. We **strongly recommend** you to [learn about environment variables](<%= url_for "/advanced_guides/in_depth/ruby/environment_variables.html" %>) so that you know what to do in the future.
 
 <% if integration_mode_type == :nginx %>
 ### Upon accessing the web app, Nginx reports a "404 Not Found" error instead of displaying my web app
@@ -182,26 +177,26 @@ There are several common causes for this problem.
 
 #### Cause and solution #1
 
-You did not enable Passenger in the corresponding `server` block with [passenger_enabled on](<%= url_for "/config/nginx/reference/index.html" %>#passenger_enabled).
+You did not enable Passenger in the corresponding `server` block with [passenger_enabled on](<%= url_for "/references/config_reference/nginx/" %>#passenger_enabled).
 
 To solve this problem, please specify `passenger_enabled on` in your Nginx configuration file, inside your app's `server` block.
 
 #### Cause and solution #2
 
-If you did enable Passenger with `passenger_enabled on`, then maybe the problem is that you did not configure Nginx to enable the Passenger module. Please check whether your Nginx configuration file contains the [passenger_root](<%= url_for "/config/nginx/reference/index.html" %>#passenger_root) option. If it doesn't, [please add it](<%= url_for "/config/nginx/reference/index.html" %>#how-to-fix-passenger_root).
+If you did enable Passenger with `passenger_enabled on`, then maybe the problem is that you did not configure Nginx to enable the Passenger module. Please check whether your Nginx configuration file contains the [passenger_root](<%= url_for "/references/config_reference/nginx/" %>#passenger_root) option. If it doesn't, [please add it](<%= url_for "/references/config_reference/nginx/" %>#how-to-fix-passenger_root).
 
 #### Cause and solution #3
 
 If you did enable Passenger with `passenger_enabled on`, and `passenger_root` is also specified in your Nginx config file, then it is likely that Passenger encountered an error during initialization. If Passenger was not able to initialize, then it will log the error, and then Nginx will behave as if Passenger was never installed in the first place. As a result, Nginx will try to serve static files in your web app's static files directory, fail to do so, then report a 404 Not Found error.
 
-To solve this problem, please open the [Passenger log file](<%= url_for "/admin/nginx/log_file/index.html" %>) and look for any error messages there. The error messages will tell you why Passenger failed to initialize. Please take action accordingly.
+To solve this problem, please open the [Passenger log file](<%= url_for "/advanced_guides/troubleshooting/nginx/log_file.html" %>) and look for any error messages there. The error messages will tell you why Passenger failed to initialize. Please take action accordingly.
 
 #### Cause and solution #4
 
-Make sure Passenger recognizes your application. If [autodetection](<%= url_for "/indepth/app_autodetection/index.html" %>) fails, for example because you are using non-standard filenames, you might have to specify additional options.
+Make sure Passenger recognizes your application. If [autodetection](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/index.html" %>) fails, for example because you are using non-standard filenames, you might have to specify additional options.
 
 <% if language_type == :ruby %>
-Note that if you are upgrading from a Passenger version below 5, autodetection requires a `config.ru` to be present, as specified in the [upgrade notes](<%= url_for "/install/migrating/index.html" %>).
+Note that if you are upgrading from a Passenger version below 5, autodetection requires a `config.ru` to be present, as specified in the [upgrade notes](<%= url_for "/advanced_guides/install_and_upgrade/standalone/migrating_from_p4_to_p5.html" %>).
 <% end %>
 
 ### Upon accessing the web app, Nginx reports a "Permission denied" error
@@ -409,25 +404,25 @@ The most common cause of this problem, is that your system has multiple Ruby int
 
 To solve this problem, you must explicitly tell Passenger what Ruby interpreter to use.
 <% if integration_mode_type == :nginx -%>
-  You can do this with the [passenger_ruby](<%= url_for "/config/nginx/reference/index.html" %>#passenger_ruby) configuration option.
+  You can do this with the [passenger_ruby](<%= url_for "/references/config_reference/nginx/" %>#passenger_ruby) configuration option.
 <% elsif integration_mode_type == :apache -%>
-  You can do this with the [PassengerRuby](<%= url_for "/config/apache/reference/index.html" %>#passengerruby) configuration option.
+  You can do this with the [PassengerRuby](<%= url_for "/references/config_reference/apache/" %>#passengerruby) configuration option.
 <% else -%>
-  You can do this with the [`--ruby` / "ruby"](<%= url_for "/config/standalone/reference/index.html" %>#--ruby-ruby).
+  You can do this with the [`--ruby` / "ruby"](<%= url_for "/references/config_reference/standalone/" %>#--ruby-ruby).
 <% end -%>
 
 The second most common cause of this problem, is that your application is being run under the wrong user. The `bundle install` command often installs gems into a user-specific directory. So if Passenger for some reason runs your app as a different user than the one that invoked `bundle install`, Bundler may not be able to find its gems.
 <% if integration_mode_type == :nginx || integration_mode_type == :apache -%>
-Read [Sandboxing apps with Unix user accounts](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>) to learn why Passenger may run your application as a different user.
+Read [Sandboxing apps with Unix user accounts](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/user_sandboxing.html" %>) to learn why Passenger may run your application as a different user.
 <% end -%>
 
 To solve this problem, you must explicit tell Passenger what user to run as
 <% if integration_mode_type == :nginx -%>
-  by using the [passenger_user](<%= url_for "/config/nginx/reference/index.html" %>#passenger_user) configuration option.
+  by using the [passenger_user](<%= url_for "/references/config_reference/nginx/" %>#passenger_user) configuration option.
 <% elsif integration_mode_type == :apache -%>
-  by using the [PassengerUser](<%= url_for "/config/apache/reference/index.html" %>#passengeruser) configuration option.
+  by using the [PassengerUser](<%= url_for "/references/config_reference/apache/" %>#passengeruser) configuration option.
 <% else -%>
-  by using the [`--user` / "user"](<%= url_for "/config/standalone/reference/index.html" %>#--user-user) option.
+  by using the [`--user` / "user"](<%= url_for "/references/config_reference/standalone/" %>#--user-user) option.
 <% end %>
 
 If this didn't solve your problem, try following the tips in the error message. Also be sure to double check the settings printed on the error page. Be sure to double check all environment variables, user IDs, etc and check whether they are what you expect.
@@ -442,13 +437,13 @@ The "About your application's environment" link only works if the application is
 
 Use the
 <% if integration_mode_type == :nginx %>
-[rails_env](<%= url_for "/config/nginx/reference/index.html" %>#passenger_app_env) configuration option
+[rails_env](<%= url_for "/references/config_reference/nginx/" %>#passenger_app_env) configuration option
 <% end %>
 <% if integration_mode_type == :apache %>
-[RailsEnv](<%= url_for "/config/apache/reference/index.html" %>#passenger_app_env) configuration option
+[RailsEnv](<%= url_for "/references/config_reference/apache/" %>#passenger_app_env) configuration option
 <% end %>
 <% if integration_mode_type == :standalone %>
-[`--environment` / "environment"](<%= url_for "/config/standalone/reference/index.html" %>#--environment-environment) option
+[`--environment` / "environment"](<%= url_for "/references/config_reference/standalone/" %>#--environment-environment) option
 <% end %>
 to change this.
 
@@ -456,17 +451,17 @@ to change this.
 
 Please check whether your Rails application's directory has the correct permissions. By default, Rails applications are started as the owner of the file `config.ru`, except if the file is owned by root. If the file is owned by root, then the Rails application will be started as 'nobody'
 <% if integration_mode_type == :nginx -%>
-(or as the user specified by [passenger_default_user](<%= url_for "/config/nginx/reference/index.html" %>#passenger_default_user)).
+(or as the user specified by [passenger_default_user](<%= url_for "/references/config_reference/nginx/" %>#passenger_default_user)).
 
-Please read [User account sandboxing](<%= url_for "/deploy/nginx/user_sandboxing.html" %>) for details.
+Please read [User account sandboxing](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/user_sandboxing.html" %>) for details.
 <% end -%>
 <% if integration_mode_type == :apache -%>
-(or as the user specified by [PassengerDefaultUser](<%= url_for "/config/nginx/reference/index.html" %>#passengerdefaultuser)).
+(or as the user specified by [PassengerDefaultUser](<%= url_for "/references/config_reference/apache/" %>#passengerdefaultuser)).
 
-Please read [User account sandboxing](<%= url_for "/deploy/apache/user_sandboxing.html" %>) for details.
+Please read [User account sandboxing](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/user_sandboxing.html" %>) for details.
 <% end -%>
 <% if integration_mode_type == :standalone -%>
-(or as the user specified by the [`--user` / "user"](<%= url_for "/config/standalone/reference/index.html" %>#--user-user) option).
+(or as the user specified by the [`--user` / "user"](<%= url_for "/references/config_reference/standalone/" %>#--user-user) option).
 <% end -%>
 
 ### The Rails application cannot find my database
@@ -478,7 +473,7 @@ If your Rails application cannot find your database, then you probably didn't co
 
 ### I get "Error: http.Server.listen() was called more than once"
 
-Please refer to [Reverse port binding in Node.js](<%= url_for "/indepth/nodejs/reverse_port_binding.html" %>).
+Please refer to [Reverse port binding in Node.js](<%= url_for "/advanced_guides/in_depth/ruby/nodejs/reverse_port_binding.html" %>).
 
 <% end %>
 
