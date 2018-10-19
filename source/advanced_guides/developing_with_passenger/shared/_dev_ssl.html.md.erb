@@ -20,7 +20,7 @@ This walkthrough will show you how to create, trust, and install a self signed c
 
 Assumptions: you are using the Bash shell, have admin rights to your computer, and are using Firefox, Chrome, or Safari. Ensure that OpenSSL, Passenger, Dnsmasq, and optionally Nginx or Apache are installed.
 
-Follow <%= link_to "these instructions", "/install/#{locals[:integration_mode_type]}/install/index.html" %> to install Passenger; you may have to adjust the settings to your desired config, for example using Passenger Enterprise or OSS.
+Follow <%= link_to "these instructions", "/advanced_guides/install_and_upgrade/standalone/install/" %> to install Passenger; you may have to adjust the settings to your desired config, for example using Passenger Enterprise or OSS.
 
 <table class="table table-bordered table-striped">
   <tr>
@@ -257,7 +257,7 @@ add the following on a new line under `keyUsage = nonRepudiation, digitalSignatu
 
 Using a separate top level domain (TLD) for development allows you to access the production site at the proper url, while having easy access to your development sites. This guide will use `.dev` and will go into more detail about how to set this up below in the [DNS section](#configure-dns).
 
-While no browser accepts wildcard certificates for entire top level domains, if you are developing a large number of micro services or sites that share a domain and have added a wildcard for the domain to the list of alt names in the certificate, then you can simply add more sites to your setup without changing your certificate and by using [mass deployment](<%= url_for "/deploy/standalone/mass_deployment.html" %>) you don't have to modify your web server or app server configs to spin up another site, simply create it in the correct directory.
+While no browser accepts wildcard certificates for entire top level domains, if you are developing a large number of micro services or sites that share a domain and have added a wildcard for the domain to the list of alt names in the certificate, then you can simply add more sites to your setup without changing your certificate and by using [mass deployment](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/mass_deployment.html" %>) you don't have to modify your web server or app server configs to spin up another site, simply create it in the correct directory.
 
 ### A working sample is provided below
 Replace occurrences of example.dev with your own domain:

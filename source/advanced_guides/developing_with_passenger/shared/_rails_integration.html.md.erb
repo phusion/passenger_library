@@ -87,7 +87,7 @@ Also note that this feature is not available if you use Passenger Standalone wit
 
 <a href="<%= url_for "/indepth/ruby/spawn_methods/index.html" %>"><%= image_tag '/dev/ruby/smart_spawning.png', class: 'img-responsive' %></a>
 
-Passenger's [smart spawning](<%= url_for "/indepth/ruby/spawn_methods/index.html" %>) feature -- which is on by default -- allows more efficient process management and lowers the application's memory usage. This feature comes with a few [caveats](<%= url_for "/indepth/ruby/spawn_methods/index.html" %>#smart-spawning-caveats), such as the need to reestablish socket connections and other file descriptors after spawning child processes. Fortunately, Passenger can sometimes do this automatically for you.
+Passenger's [smart spawning](<%= url_for "/advanced_guides/in_depth/ruby/spawn_methods.html" %>) feature -- which is on by default -- allows more efficient process management and lowers the application's memory usage. This feature comes with a few [caveats](<%= url_for "/advanced_guides/in_depth/ruby/spawn_methods.html" %>#smart-spawning-caveats), such as the need to reestablish socket connections and other file descriptors after spawning child processes. Fortunately, Passenger can sometimes do this automatically for you.
 
 ActiveRecord establishes a connection with the database, which is a socket connection. So this too needs to be reestablished after Passenger spawns a child process. Passenger is smart enough to reestablish the default ActiveRecord database connection for you automatically.
 
@@ -106,7 +106,7 @@ If your application, or any of the libraries you use, establish any other socket
 
 Passenger -- through its Standalone mode -- is able to integrate with the `rails server` command. This integration happens through the Gemfile:
 
- 1. The Gemfile must load the `passenger` gem (or for [Passenger Enterprise](<%= url_for "/indepth/open_source_vs_enterprise.html" %>) users, the `passenger-enterprise-server` gem).
+ 1. The Gemfile must load the `passenger` gem (or for [Passenger Enterprise](<%= url_for "/advanced_guides/in_depth/ruby/open_source_vs_enterprise.html" %>) users, the `passenger-enterprise-server` gem).
  2. The Passenger Gemfile entry must require `phusion_passenger/rack_handler`.
 
 Here is an example Gemfile entry (for Passenger open source):
@@ -126,12 +126,9 @@ This integration requires Passenger 5.0.25 or higher.
 
 <a href="https://github.com/rails/rails/tree/master/actioncable#readme"><%= image_tag '/config/action_cable_integration/action_cable.png', class: 'img-thumbnail img-responsive' %></a>
 
-Passenger >= 5.0.24 is fully compatible with [Action Cable](https://github.com/rails/rails/tree/master/actioncable#readme). Please choose a guide depending on your integration mode:
+Passenger >= 5.0.24 is fully compatible with [Action Cable](https://github.com/rails/rails/tree/master/actioncable#readme). Please choose a [guide](<%= url_for "/advanced_guides/config_and_optimization/nginx/action_cable_integration.html" %>) depending on your integration mode.
 
- * [Integrating Action Cable with Passenger Standalone](<%= url_for '/config/standalone/action_cable_integration/index.html' %>)
- * [Integrating Action Cable with Passenger + Nginx](<%= url_for '/config/nginx/action_cable_integration/index.html' %>)
-
-Action Cable is currently not supported on Passenger + Apache. Please use Passenger Standalone or Passenger + Nginx instead. If you cannot move away from Apache, please consider [putting Passenger Standalone behind an Apache reverse proxy](<%= url_for '/deploy/standalone/reverse_proxy.html' %>).
+Action Cable is currently not supported on Passenger + Apache. Please use Passenger Standalone or Passenger + Nginx instead. If you cannot move away from Apache, please consider [putting Passenger Standalone behind an Apache reverse proxy](<%= url_for '/advanced_guides/deployment_and_scaling/standalone/reverse_proxy.html' %>).
 
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/developing_with_passenger/index.html" %>">Back</a>
