@@ -45,19 +45,19 @@ references: true
     <td>5.0.0</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
 
-Sets the Passenger Standalone engine to use. [Learn more about Passenger Standalone engines.](<%= url_for "/indepth/standalone_engines.html" %>)
+Sets the Passenger Standalone engine to use. Learn more about Passenger Standalone engines.
 
 ### `--nginx-config-template` / "nginx_config_template"
 
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --nginx-config-template <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start --nginx-config-template <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -80,23 +80,23 @@ Sets the Passenger Standalone engine to use. [Learn more about Passenger Standal
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
 
-Instructs Passenger Standalone's [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>) to use a specific Nginx config template, instead of the default. Learn more about this in the [configuration introduction](<%= url_for "/config/standalone/intro.html" %>#nginx-configuration-template).
+Instructs Passenger Standalone's Nginx engine to use a specific Nginx config template, instead of the default. Learn more about this in the [configuration introduction](<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>#nginx-configuration-template).
 
-Please note that this option only works if Passenger Standalone is [configured](#--engine-engine) to use the [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>).
+Please note that this option only works if Passenger Standalone is [configured](#--engine-engine) to use the Nginx engine.
 
 <div class="warning">
   <h3 class="notoc">The Nginx config file must follow a specific format</h3>
-  <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone <strong>must</strong> be based on the one provided by Passenger Standalone. Learn more about this in the <a href="<%= url_for "/config/standalone/intro.html" %>#nginx-configuration-template">configuration introduction</a>.</p>
+  <p>You can't just use any arbitrary Nginx config file! The Nginx config file you pass to Passenger Standalone <strong>must</strong> be based on the one provided by Passenger Standalone. Learn more about this in the <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>#nginx-configuration-template">configuration introduction</a>.</p>
 </div>
 
 <div class="warning">
   <h3 class="notoc">Do not duplicate options set by Passenger Standalone</h3>
-  <p>Nginx only allows setting most configuration options once. This means that if you insert any configuration options already set by Passenger Standalone, then Nginx will abort with an error. Therefore, you should prefer using the configuration options provided by Passenger Standalone over setting them yourself in the Nginx configuration template. For example, do not set <a href="../../nginx/reference/#passenger_log_level">passenger_log_level</a> yourself; use the <a href="#--log-level-log_level"><code>--log-level</code> / <code>"log_level"</code></a> configuration option instead.</p>
+  <p>Nginx only allows setting most configuration options once. This means that if you insert any configuration options already set by Passenger Standalone, then Nginx will abort with an error. Therefore, you should prefer using the configuration options provided by Passenger Standalone over setting them yourself in the Nginx configuration template. For example, do not set <a href="/references/config_reference/nginx/#passenger_log_level">passenger_log_level</a> yourself; use the <a href="#--log-level-log_level"><code>--log-level</code> / <code>"log_level"</code></a> configuration option instead.</p>
 </div>
 
 <div class="note">
@@ -133,12 +133,12 @@ Please note that this option only works if Passenger Standalone is [configured](
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
 
-If Passenger Standalone is using the [Nginx engine](<%= url_for "/indepth/standalone_engines.html" %>), then this configuration option will cause Passenger Standalone to print the contents of the generated Nginx configuration file, after which it exits. This allows you to inspect the generated configuration file, e.g. to debug problems.
+If Passenger Standalone is using the Nginx engine, then this configuration option will cause Passenger Standalone to print the contents of the generated Nginx configuration file, after which it exits. This allows you to inspect the generated configuration file, e.g. to debug problems.
 
 
 ### `--address` / "address"
@@ -169,7 +169,7 @@ If Passenger Standalone is using the [Nginx engine](<%= url_for "/indepth/standa
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -178,7 +178,7 @@ Instructs Passenger to listen for requests on the given IP address. This means t
 
 The IP address may be an IPv4 address or an IPv6 address. If you want to listen on a Unix domain socket, use [`--socket` / "socket_file"](#--socket-socket_file).
 
-The default is to bind to 0.0.0.0, which means that Passenger can accept requests from any IPv4 address. If you use Passenger in a [reverse proxy setup](<%= url_for "/deploy/standalone/reverse_proxy.html" %>) then you should bind Passenger to 127.0.0.1, which means that only processes on the local host can access Passenger, not the public Internet.
+The default is to bind to 0.0.0.0, which means that Passenger can accept requests from any IPv4 address. If you use Passenger in a [reverse proxy setup](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/reverse_proxy.html" %>) then you should bind Passenger to 127.0.0.1, which means that only processes on the local host can access Passenger, not the public Internet.
 
 
 ### `--port` / "port"
@@ -209,7 +209,7 @@ The default is to bind to 0.0.0.0, which means that Passenger can accept request
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -222,7 +222,7 @@ Instructs Passenger to listen for requests on the given TCP port number. Only ha
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --socket <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start --socket <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -241,7 +241,7 @@ Instructs Passenger to listen for requests on the given TCP port number. Only ha
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -250,7 +250,7 @@ Instructs Passenger to listen for requests on a Unix domain socket, not on a TCP
 
 A Unix domain socket appears as a file on the filesystem.
 
-There are almost no web browsers and HTTP clients that support Unix domain sockets. Unix domain sockets are mainly useful if you plan on using Passenger in a [reverse proxy setup](<%= url_for "/deploy/standalone/reverse_proxy.html" %>), where you configure a reverse proxy like Nginx, running on the local machine, to forward requests to Passenger over a Unix domain socket.
+There are almost no web browsers and HTTP clients that support Unix domain sockets. Unix domain sockets are mainly useful if you plan on using Passenger in a [reverse proxy setup](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/reverse_proxy.html" %>), where you configure a reverse proxy like Nginx, running on the local machine, to forward requests to Passenger over a Unix domain socket.
 
 
 ### `--ssl` / "ssl"
@@ -281,7 +281,7 @@ There are almost no web browsers and HTTP clients that support Unix domain socke
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -298,7 +298,7 @@ If this option is set, you must also set [`--ssl-certificate` / "ssl_certificate
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start [...] --ssl-certificate <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start [...] --ssl-certificate <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -317,7 +317,7 @@ If this option is set, you must also set [`--ssl-certificate` / "ssl_certificate
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -332,7 +332,7 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start [...] --ssl-certificate-key <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start [...] --ssl-certificate-key <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -351,7 +351,7 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -385,7 +385,7 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -399,7 +399,7 @@ For example, if you run the following, the Passenger will listen for HTTP reques
 This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
 
 <div class="note">
-  When in <a href="<%= url_for "/deploy/standalone/mass_deployment.html" %>">Mass Deployment mode</a>, you will probably want to set a default <code>ssl_port</code> instead of leaving this option unspecified. This is because some of your apps may contain a Passengerfile.json that contains <code>"ssl": true</code>, while others do not. In such a situation, this means that some apps want to listen for HTTPS requests on the default port, while others want to listen for unencrypted HTTP requests, which is a contradiction and causes Passenger to abort.
+  When in <a href="<%= url_for "/advanced_guides/deployment_and_scaling/standalone/mass_deployment.html" %>">Mass Deployment mode</a>, you will probably want to set a default <code>ssl_port</code> instead of leaving this option unspecified. This is because some of your apps may contain a Passengerfile.json that contains <code>"ssl": true</code>, while others do not. In such a situation, this means that some apps want to listen for HTTPS requests on the default port, while others want to listen for unencrypted HTTP requests, which is a contradiction and causes Passenger to abort.
 </div>
 
 
@@ -431,7 +431,7 @@ This option only has effect if [`--ssl` / "ssl"](#--ssl-ssl) is set.
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -443,7 +443,7 @@ Instructs Passenger to daemonize into the background.
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --pid-file <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start --pid-file <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -466,7 +466,7 @@ Instructs Passenger to daemonize into the background.
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -513,7 +513,7 @@ If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default 
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -551,7 +551,7 @@ Some web frameworks, for example Rails and Connect.js, adjust their behavior acc
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -586,7 +586,7 @@ Sets arbitrary environment variables for the application.
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -613,7 +613,7 @@ Specifies the Ruby interpreter to use for serving Ruby web applications.
   </tr>
   <tr>
     <th>Default</th>
-    <td>The first "python" command in <a href="<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable">the $PATH environment variable</a></td>
+    <td>The first "python" command in <a href="<%= url_for "/advanced_guides/in_depth/ruby/environment_variables.html" %>#the-path-environment-variable">the $PATH environment variable</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -624,7 +624,7 @@ Specifies the Ruby interpreter to use for serving Ruby web applications.
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -649,7 +649,7 @@ Specifies the Python interpreter to use for serving Python web applications.
   </tr>
   <tr>
     <th>Default</th>
-    <td>The first "node" command in <a href="<%= url_for "/indepth/environment_variables.html" %>#the-path-environment-variable">the $PATH environment variable</a></td>
+    <td>The first "node" command in <a href="<%= url_for "/advanced_guides/in_depth/ruby/environment_variables.html" %>#the-path-environment-variable">the $PATH environment variable</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -660,7 +660,7 @@ Specifies the Python interpreter to use for serving Python web applications.
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -673,7 +673,7 @@ Specifies the Node.js command to use for serving Node.js web applications.
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --meteor-app-settings <a href="../intro.html#relative-path-handling"><em>PATH_TO_JSON_SETTINGS_FILE</em></a></td>
+    <td>passenger start --meteor-app-settings <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH_TO_JSON_SETTINGS_FILE</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -692,7 +692,7 @@ Specifies the Node.js command to use for serving Node.js web applications.
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -706,7 +706,7 @@ Note that this option is not intended to be used for bundled/packaged Meteor app
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --instance-registry-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start --instance-registry-dir <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -729,7 +729,7 @@ Note that this option is not intended to be used for bundled/packaged Meteor app
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -748,7 +748,7 @@ The instance directory is automatically removed when Passenger shuts down.
 
 The default value for this option is as follows:
 
- * If you are on Red Hat and CentOS, and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/install/standalone/yum_repo/index.html" %>), then the default value is `/var/run/passenger-instreg`.
+ * If you are on Red Hat and CentOS, and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/advanced_guides/install_and_upgrade/standalone/yum_repo.html" %>), then the default value is `/var/run/passenger-instreg`.
  * Otherwise, the default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
 
 #### Note regarding command line tools
@@ -773,7 +773,7 @@ Notes regarding the above example:
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --rackup <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start --rackup <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -784,7 +784,7 @@ Notes regarding the above example:
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -818,7 +818,7 @@ The corresponding Passengerfile.json looks as follows:
   </tr>
   <tr>
     <th>Default</th>
-    <td><a href="<%= url_for "/indepth/app_autodetection/index.html" %>">Autodetected</a></td>
+    <td><a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/index.html" %>">Autodetected</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -829,12 +829,12 @@ The corresponding Passengerfile.json looks as follows:
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
 
-By default, Passenger [autodetects](<%= url_for "/indepth/app_autodetection/index.html" %>) the type of the application, e.g. whether it's a Ruby, Python, Node.js or Meteor app. If it's unable to autodetect the type of the application (e.g. because you've specified a custom [`--startup-file` / "startup_file"](#--startup-file-startup_file)) then you can use this option to force Passenger to recognize the application as a specific type.
+By default, Passenger [autodetects](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/index.html" %>) the type of the application, e.g. whether it's a Ruby, Python, Node.js or Meteor app. If it's unable to autodetect the type of the application (e.g. because you've specified a custom [`--startup-file` / "startup_file"](#--startup-file-startup_file)) then you can use this option to force Passenger to recognize the application as a specific type.
 
 Allowed values are:
 
@@ -870,7 +870,7 @@ Use server.js as the startup file (entry point file) for your Node.js applicatio
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --startup-file <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start --startup-file <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -882,7 +882,7 @@ Use server.js as the startup file (entry point file) for your Node.js applicatio
   </tr>
   <tr>
     <th>Default</th>
-    <td><a href="<%= url_for "/indepth/app_autodetection/index.html" %>">Autodetected</a></td>
+    <td><a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/index.html" %>">Autodetected</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -893,7 +893,7 @@ Use server.js as the startup file (entry point file) for your Node.js applicatio
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="/advanced_guides/config_and_optimization/standalone/intro.html">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -970,12 +970,12 @@ For other cases you will need to specify the `startup-file` manually. For exampl
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
 
-This option controls whether Passenger spawns applications directly, or using a prefork copy-on-write mechanism. The [spawn methods guide](<%= url_for "/indepth/spawn_methods/index.html" %>) explains this in detail.
+This option controls whether Passenger spawns applications directly, or using a prefork copy-on-write mechanism. The [spawn methods guide](<%= url_for "/advanced_guides/in_depth/ruby/spawn_methods.html" %>) explains this in detail.
 
 
 ### `--restart-dir` / "restart_dir"
@@ -983,7 +983,7 @@ This option controls whether Passenger spawns applications directly, or using a 
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --restart-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start --restart-dir <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -1006,12 +1006,12 @@ This option controls whether Passenger spawns applications directly, or using a 
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
 
-As described in [Restarting applications](<%= url_for "/admin/#{integration_mode_type}/restart_app.html" %>), Passenger checks the file `tmp/restart.txt` in the application directory to determine whether it should restart the application. Sometimes it may be desirable for Passenger to look in a different directory instead. This option allows you to customize the directory in which `restart.txt` is searched for.
+As described in [Restarting applications](<%= url_for "/advanced_guides/troubleshooting/standalone/restart_app.html" %>), Passenger checks the file `tmp/restart.txt` in the application directory to determine whether it should restart the application. Sometimes it may be desirable for Passenger to look in a different directory instead. This option allows you to customize the directory in which `restart.txt` is searched for.
 
 #### Example 1: default behavior
 
@@ -1063,7 +1063,7 @@ A relative filename is given. Passenger will check for /apps/baz/restart_files/r
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -1101,7 +1101,7 @@ If this option is turned on, and the user's shell is `bash`, then applications a
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only") %>
@@ -1138,7 +1138,7 @@ Enables or disables support for delaying binding the tcp port until after the ap
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -1174,13 +1174,13 @@ Specifies a timeout for the startup of application processes. If an application 
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
-Enables or disables support for [zero-downtime application restarts](<%= url_for "/deploy/standalone/zero_downtime_redeployments/index.html" %>) through `restart.txt`.
+Enables or disables support for [zero-downtime application restarts](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/zero_downtime_redeployments/index.html" %>) through `restart.txt`.
 
 Please note that this option is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
 
@@ -1213,21 +1213,21 @@ Please note that this option is completely unrelated to the `passenger-config re
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
-Enables or disables [resistance against deployment errors](<%= url_for "/deploy/standalone/deployment_error_resistance.html" %>).
+Enables or disables [resistance against deployment errors](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/deployment_error_resistance.html" %>).
 
 Suppose that you have upgraded your application and you have issued a command to restart it, but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
 
-By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/admin/#{integration_mode_type}/log_file/index.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
+By enabling deployment error resistance, Passenger Enterprise would "freeze" the application's process list. Existing application processes (belonging to the previous version) will be kept around to serve requests. The error is [logged](<%= url_for "/advanced_guides/troubleshooting/standalone/log_file.html" %>), but visitors do not see any error messages. Passenger keeps the old processes around until an administrator has taken action. This way, visitors will suffer minimally from deployment errors.
 
-[Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/deploy/standalone/deployment_error_resistance.html" %>).
+[Learn more about this feature in Deployment Error Resistance guide](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/deployment_error_resistance.html" %>).
 
-Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/admin/standalone/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-(rolling-restart)).
+Note that enabling deployment error resistance only works if you perform a [rolling restart instead of a blocking restart](<%= url_for "/advanced_guides/troubleshooting/standalone/restart_app.html" %>#blocking-restart-vs-zero-down-time-restart-rolling-restart).
 
 
 
@@ -1264,7 +1264,7 @@ Note that enabling deployment error resistance only works if you perform a [roll
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -1310,7 +1310,7 @@ Note that application ulimits may also be affected by this setting because ulimi
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -1353,7 +1353,7 @@ The default file descriptor ulimit is inherited from the Passenger core process.
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -1392,14 +1392,14 @@ The socket backlog is a queue of incoming connections not yet acknowledged by Pa
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
 
 The maximum number of application processes that may simultaneously exist. Generally speaking, the more application processes you run, the more concurrent traffic you can handle and the better your CPU core utilization becomes, until your hardware is saturated. But running more processes also means higher memory consumption.
 
-The optimal value depends on your system's hardware and your workload. Please read the [optimization guide](<%= url_for "/config/#{integration_mode_type}/optimization/index.html" %>) to learn how to find out the optimal value.
+The optimal value depends on your system's hardware and your workload. Please read the [optimization guide](<%= url_for "/advanced_guides/config_and_optimization/standalone/optimization.html" %>) to learn how to find out the optimal value.
 
 This option behaves like a "safety switch" that prevents Passenger from overloading your system with too many processes. No matter how you configure [min_instances](#--min-instances-min_instances), the total number of processes won't ever surpass the value set for this option. For example, if max_pool_size is set to 6 and min_instances to 8, then the maximum number processes that may simultaneously exist is 6, not 8.
 
@@ -1434,7 +1434,7 @@ If you find that your server is running out of memory then you should lower this
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -1484,7 +1484,7 @@ When you start Passenger, it spawns 3 application processes. Suppose that there'
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -1528,12 +1528,12 @@ Setting the value to 0 is recommended if you favor resource savings more than pr
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
 
-The preloader process (explained in [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#--pool-idle-time-pool_idle_time). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
+The preloader process (explained in [Spawn methods](<%= url_for "/advanced_guides/in_depth/ruby/spawn_methods.html" %>)) has an idle timeout, [just like the application processes spawned by Passenger do](#--pool-idle-time-pool_idle_time). That is, it will automatically shutdown a preloader process if it hasn't done anything for a given period.
 
 This option allows you to set the preloader's idle timeout, in seconds. A value of `0` means that it should never idle timeout.
 
@@ -1570,7 +1570,7 @@ Setting a higher value will mean that the preloader is kept around longer, which
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -1589,8 +1589,8 @@ Use this option to tell Passenger how many concurrent requests the application c
 
 There are two main use cases for this option:
 
- 1. To make [dynamic process scaling](<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
- 2. [To make SSE and WebSockets work well in Ruby applications.](<%= url_for "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html" %>) Set this option to 0.
+ 1. To make [dynamic process scaling](<%= url_for "/advanced_guides/config_and_optimization/standalone/dynamic_scaling_vs_fixed_app_processes/ruby/" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
+ 2. [To make SSE and WebSockets work well in Ruby applications.](<%= url_for "/advanced_guides/config_and_optimization/standalone/tuning_sse_and_websockets.html" %>) Set this option to 0.
 
 This option is a hint to Passenger and does not make the application *actually* able to handle that many concurrent requests per process. For example in Ruby applications, the amount of concurrency that your application process can handle usually depends on the number of [configured threads](#--thread-count-thread_count). If you set the number of threads, then Passenger will automatically infer that Ruby applications' max concurrency per process equals the number of threads. But in non-standard cases where this heuristic fails (e.g. in situations where a WebSocket library such as Faye spawns threads to handle WebSockets) then you can use this option to override Passenger's heuristic.
 
@@ -1627,7 +1627,7 @@ It is recommended that you do not touch this configuration option unless you wan
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only") %>
@@ -1677,7 +1677,7 @@ Specifies the I/O concurrency model that should be used for Ruby application pro
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -1721,7 +1721,7 @@ Specifies the number of threads that Passenger should spawn per Ruby application
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -1734,10 +1734,10 @@ A value of 0 means that the queue is unbounded.
 
 #### Advanced configuration through Nginx config template
 
-If you customize the [Passenger Standalone Nginx config template](<%= url_for '/config/standalone/intro.html' %>#nginx-configuration-template) then you can further customize the behavior of request queue overflows.
+If you customize the [Passenger Standalone Nginx config template](<%= url_for '/advanced_guides/config_and_optimization/standalone/intro.html' %>#nginx-configuration-template) then you can further customize the behavior of request queue overflows.
 
- * You may use [passenger_request_queue_overflow_status_code](<%= url_for '/config/nginx/reference/index.html' %>#passenger_request_queue_overflow_status_code) to customize the response status, if you do not want the status to be 503.
- * You may use [passenger_intercept_errors](<%= url_for '/config/nginx/reference/index.html' %>#passenger_intercept_errors) and [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) to set a custom error page whenever the queue is overflown. In the following example, Nginx will serve /error503.html whenever the queue is full:
+ * You may use [passenger_request_queue_overflow_status_code](<%= url_for '/references/config_reference/nginx/' %>#passenger_request_queue_overflow_status_code) to customize the response status, if you do not want the status to be 503.
+ * You may use [passenger_intercept_errors](<%= url_for '/references/config_reference/nginx/' %>#passenger_intercept_errors) and [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) to set a custom error page whenever the queue is overflown. In the following example, Nginx will serve /error503.html whenever the queue is full:
 
    ~~~nginx
    passenger_intercept_errors on;
@@ -1773,7 +1773,7 @@ If you customize the [Passenger Standalone Nginx config template](<%= url_for '/
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only") %>
@@ -1787,10 +1787,10 @@ A value of 0 means that the queue time is unbounded.
 
 #### Advanced configuration through Nginx config template
 
-If you customize the [Passenger Standalone Nginx config template](<%= url_for '/config/standalone/intro.html' %>#nginx-configuration-template) then you can further customize the behavior of request queue overflows.
+If you customize the [Passenger Standalone Nginx config template](<%= url_for '/advanced_guides/config_and_optimization/standalone/intro.html' %>#nginx-configuration-template) then you can further customize the behavior of request queue overflows.
 
- * You may use [passenger_request_queue_timeout_status_code](<%= url_for '/config/nginx/reference/index.html' %>#passenger_request_queue_timeout_status_code) to customize the response status, if you do not want the status to be 504.
- * You may use [passenger_intercept_errors](<%= url_for '/config/nginx/reference/index.html' %>#passenger_intercept_errors) and [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) to set a custom error page whenever the queue is overflown. In the following example, Nginx will serve /error504.html whenever the queue is full:
+ * You may use [passenger_request_queue_timeout_status_code](<%= url_for '/references/config_reference/nginx/' %>#passenger_request_queue_timeout_status_code) to customize the response status, if you do not want the status to be 504.
+ * You may use [passenger_intercept_errors](<%= url_for '/references/config_reference/nginx/' %>#passenger_intercept_errors) and [error_page](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page) to set a custom error page whenever the queue is overflown. In the following example, Nginx will serve /error504.html whenever the queue is full:
 
    ~~~nginx
    passenger_intercept_errors on;
@@ -1825,12 +1825,12 @@ If you customize the [Passenger Standalone Nginx config template](<%= url_for '/
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
 
-Disables [turbocaching](<%= url_for "/dev/index.html" %>).
+Disables [turbocaching](<%= url_for "/advanced_guides/developing_with_passenger/ruby/" %>).
 
 
 ### `--unlimited-concurrency-path` / "unlimited_concurrency_paths"
@@ -1853,17 +1853,17 @@ Disables [turbocaching](<%= url_for "/dev/index.html" %>).
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
 
 Use this option to tell Passenger that the application supports unlimited concurrency at the specified URI paths. The main use cases for this option are:
 
- 1. To [SSE and WebSockets work well in Ruby applications.](<%= url_for "/config/#{integration_mode_type}/tuning_sse_and_websockets/index.html" %>)
- 2. To [integrate Ruby on Rails Action Cable with Passenger Standalone](<%= url_for "/config/#{integration_mode_type}/action_cable_integration/index.html" %>).
+ 1. To [SSE and WebSockets work well in Ruby applications.](<%= url_for "/advanced_guides/config_and_optimization/standalone/tuning_sse_and_websockets.html" %>)
+ 2. To [integrate Ruby on Rails Action Cable with Passenger Standalone](<%= url_for "/advanced_guides/config_and_optimization/standalone/action_cable_integration.html" %>).
 
-This option is functionally equivalent to setting <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> to 0, but only for the specify sub-URIs.
+This option is functionally equivalent to setting [--force-max-concurrent-requests-per-process / "force_max_concurrent_requests_per_process](<%= url_for "/references/config_reference/standalone/#--force-max-concurrent-requests-per-process-force_max_concurrent_requests_per_process" %>) to 0, but only for the specify sub-URIs.
 
 
 
@@ -1896,7 +1896,7 @@ This option is functionally equivalent to setting <%= link_to_config_option(:for
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -1911,7 +1911,7 @@ If this option is not given, then Passenger runs as the user that invoked it.
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --data-buffer-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start --data-buffer-dir <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -1934,12 +1934,12 @@ If this option is not given, then Passenger runs as the user that invoked it.
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
 
-By default, Passenger buffers large web application responses. This prevents [slow HTTP clients](<%= url_for "/indepth/slow_clients.html" %>) from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
+By default, Passenger buffers large web application responses. This prevents slow HTTP clients from blocking web applications by reading responses very slowly. This feature is also known as "real-time disk-backed response buffering".
 
 By default, such buffers are stored in the directory given by the `$TMPDIR` environment variable, or (if `$TMPDIR` is not set) the `/tmp` directory. This configuration option allows you to specify a different directory.
 
@@ -1973,7 +1973,7 @@ If you've specified such a directory (as opposed to using Passenger's default) t
   </tr>
 </table>
 
-This option allows disabling the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for
+This option allows disabling the [Passenger security update check](<%= url_for("/advanced_guides/in_depth/ruby/security_update_check.html") %>), a daily check with <em>https://securitycheck.phusionpassenger.com</em> for
 important security updates that might be available.
 
 
@@ -1998,7 +1998,7 @@ important security updates that might be available.
   </tr>
 </table>
 
-This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/indepth/security_update_check.html") %>).
+This option allows use of an intermediate proxy for the [Passenger security update check](<%= url_for("/advanced_guides/in_depth/ruby/security_update_check.html") %>).
 The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
@@ -2015,7 +2015,7 @@ The proxy client code uses libcurl, which supports the following values for <em>
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --static-files-dir <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start --static-files-dir <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -2038,7 +2038,7 @@ The proxy client code uses libcurl, which supports the following values for <em>
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -2074,7 +2074,7 @@ By default, Passenger automatically serves static files in the application's `pu
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -2125,7 +2125,7 @@ If you have a load balancer in front end of Passenger + Nginx, then you must con
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -2143,7 +2143,7 @@ Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cooki
 <table class="table table-bordered table-striped table-condensed">
   <tr>
     <th>Command line syntax</th>
-    <td>passenger start --log-file <a href="../intro.html#relative-path-handling"><em>PATH</em></a></td>
+    <td>passenger start --log-file <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a></td>
   </tr>
   <tr>
     <th>Config file syntax</th>
@@ -2166,7 +2166,7 @@ Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cooki
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -2210,7 +2210,7 @@ If [`--socket` / "socket_file"](#--socket-socket_file) is set, then the default 
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -2269,7 +2269,7 @@ Possible values are:
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -2309,7 +2309,7 @@ You can use this option to explicitly enable or disable this feature. `--friendl
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only") %>
@@ -2319,7 +2319,7 @@ You can use this option to explicitly enable or disable this feature. `--friendl
   At this time, this feature is supported for Ruby applications only.
 </div>
 
-Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/admin/#{integration_mode_type}/debugging_console/ruby/index.html" %>) guide for more information.
+Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/advanced_guides/troubleshooting/standalone/debugging_console/ruby/index.html" %>) guide for more information.
 
 
 
@@ -2351,7 +2351,7 @@ Turns support for Ruby application debugging on or off. Please read the [Ruby de
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -2393,7 +2393,7 @@ This option is useful if your application is leaking memory. By shutting it down
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only") %>
@@ -2442,7 +2442,7 @@ This option is useful if your application is leaking memory. By shutting it down
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
   <%= render_partial("/config/reference/enterprise_only") %>
@@ -2485,7 +2485,7 @@ This option is useful for preventing your application from getting stuck for an 
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>
@@ -2522,7 +2522,7 @@ If you want Passenger to _not_ abort WebSocket connections, then use this option
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -2558,7 +2558,7 @@ The URI to connect to the <a href="https://www.phusionpassenger.com/fuse-panel">
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -2590,7 +2590,7 @@ The URI to connect to the <a href="https://www.phusionpassenger.com/fuse-panel">
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -2622,7 +2622,7 @@ The URI to connect to the <a href="https://www.phusionpassenger.com/fuse-panel">
     <td>nginx</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
@@ -2653,7 +2653,7 @@ The URI to connect to the <a href="https://www.phusionpassenger.com/fuse-panel">
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="../intro.html#context-specific-configuration">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main</td>
   </tr>
 </table>
