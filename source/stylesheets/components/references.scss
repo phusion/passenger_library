@@ -6,8 +6,8 @@
   border: none;
 }
 
-.references_hooks h3,
-.references_config_reference h3 {
+.references_hooks:not(.note, .info, .warning) h3,
+.references_config_reference:not(.note, .info, .warning) h3 {
   // used important to overwrite on the hooks page
   margin-top: 40px !important;
   margin-bottom: 10px !important;
