@@ -22,7 +22,7 @@ At its core, Passenger is an HTTP router and process manager that forwards reque
 
  * Which applications Passenger is serving.
  * Which application processes Passenger is managing, and their status such as CPU and memory usage.
- * The status of the [request queues](<%= url_for "/indepth/request_queueing.html" %>).
+ * The status of the request queues.
  * Any currently active requests.
  * Various internal state.
 
@@ -68,14 +68,14 @@ Breakdown:
 
  1. The version number of the `passenger-status` tool. This is usually the same as, but not necessarily, the version number of the Passenger instance that is running.
  2. The current date and time when `passenger-status` was run.
- 3. The value of the <%= link_to_config_option(:max_pool_size, locals) %> configuration option.
+ 3. The value of the [passenger_max_pool_size](<%= url_for "/references/config_reference/nginx/#passenger_max_pool_size" %>) configuration option.
 <% if integration_mode_type == :standalone %>
- 4. The number of [application groups](<%= passenger_app_group_name_doc %>) that Passenger is serving. For Passenger Standalone, this is always 1, except when using [Mass Deployment](<%= url_for "/deploy/standalone/mass_deployment.html" %>).
+ 4. The number of [application groups](<%= passenger_app_group_name_doc %>) that Passenger is serving. For Passenger Standalone, this is always 1, except when using [Mass Deployment](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/mass_deployment.html" %>).
 <% else %>
- 4. The number of [application groups](<%= passenger_app_group_name_doc %>) that Passenger is serving.
+ 4. The number of [application groups](<%= url_for "/references/config_reference/nginx/#passenger_app_group_name" %>) that Passenger is serving.
 <% end %>
  5. The amount of requests in the top-level request queue. Due to the way Passenger is implemented, this value is supposed to be almost always zero. If it is non-zero for an extended period of time, then there is something very wrong, possibly a Passenger bug.
- 6. An application group entry and its processes. The [application group name](<%= passenger_app_group_name_doc %>) and the path to the application root are shown here.
+ 6. An application group entry and its processes. The [application group name](<%= url_for "/references/config_reference/nginx/#passenger_app_group_name" %>) and the path to the application root are shown here.
  7. The number of requests in the application-group-specific request queue. If this number is higher than 0, then it means that all application processes are busy handling requests, and that none of them can currently handle one more request. A request waits in this queue until one of the application processes is done handling a request.
  8. Various statistics about the processes belonging to this application group.
 
@@ -84,7 +84,7 @@ Breakdown:
     * `Processed` is the number of requests this application process has handled so far.
     * `Uptime` is the uptime of this application process.
     * `CPU` is the amount of CPU that this application process is currently using.
-    * `Memory` is the memory usage. This value here deserves [special explanation](<%= url_for "/indepth/accurately_measuring_memory_usage.html" %>).
+    * `Memory` is the memory usage. This value here deserves [special explanation](<%= url_for "/advanced_guides/in_depth/ruby/accurately_measuring_memory_usage.html" %>).
     * `Last used` is the time when a request was last routed to this application processes.
 
 ### Dealing with common process-related problems
@@ -93,7 +93,7 @@ There are several fields that you should pay attention to to detect common probl
 
 #### Requests in queue
 
-Is `Requests in queue` higher than ~2 for a long time? Then it indicates that the application is either stuck or not fast enough to handle the traffic. To deal with stuck applications, please read [Dealing with common request-related problems](#dealing-with-common-request-related-problems). To handle traffic more quickly, please read the [optimization guide](<%= "/config/#{integration_mode_type}/optimization/index.html" %>) or [scale your cluster](<%= url_for "/deploy/#{integration_mode_type}/index.html" %>).
+Is `Requests in queue` higher than ~2 for a long time? Then it indicates that the application is either stuck or not fast enough to handle the traffic. To deal with stuck applications, please read [Dealing with common request-related problems](#dealing-with-common-request-related-problems). To handle traffic more quickly, please read the [optimization guide](<%= url_for "/advanced_guides/config_and_optimization/standalone/optimization.html" %>) or [scale your cluster](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/index.html" %>).
 
 #### Sessions
 
@@ -104,7 +104,7 @@ Is `Sessions` non-zero for a long time? Then may mean that the process is stuck 
 Does `Memory` look much higher than the average memory usage of your other processes in the same application group? Or does it keep increasing over time, with no sign of stopping? Then you may have a memory leak. Here's what you can do about that:
 
  * Terminate the process with the command `kill <PID>`. This will allow the operating system to completely release that process's memory. The memory leak will come back eventually, but it will buy you some time.
- * Enable the configuration option <%= link_to_config_option(:memory_limit, locals) %>. This will allow Passenger to automatically terminate a process when its memory usage grows too high. It won't solve your memory leak, but will keep the server stable until you have solved the underlying cause.
+ * Enable the configuration option [passenger_memory_limit](<%= url_for "/references/config_reference/nginx/#passenger_memory_limit" %>). This will allow Passenger to automatically terminate a process when its memory usage grows too high. It won't solve your memory leak, but will keep the server stable until you have solved the underlying cause.
  * Read [Debugging memory leaks in Ruby](http://samsaffron.com/archive/2015/03/31/debugging-memory-leaks-in-ruby) by Sam Saffron.
  * Read [What I Learned About Hunting Memory Leaks in Ruby 2.1](http://blog.skylight.io/hunting-for-leaks-in-ruby/) by Peter Wagenet.
  * Use [the Rbkit memory profiler](http://rbkit.codemancers.com/).
@@ -241,9 +241,9 @@ Here is the breakdown of the most important fields:
 
 Pay special attention to the `started_at` field. If a request has been running for a long time (e.g. longer than 30 seconds) then it may be an indication that the application process is stuck on this request. There are several things you can do in response to this:
 
- * (Ruby) Send the SIGQUIT signal to the application process's PID. Everything will keep running as-is, and the application process will log its backtrace to the [Passenger log file](log_file/) for you to diagnose the underlying problem.
+ * (Ruby) Send the SIGQUIT signal to the application process's PID. Everything will keep running as-is, and the application process will log its backtrace to the [Passenger log file](<%= url_for "/advanced_guides/troubleshooting/nginx/log_file.html" %>) for you to diagnose the underlying problem.
  * Terminate the process with the command `kill <PID>`. Passenger will notice the terminated process, abort the request (HTTP 502), and spawn a new application process if needed.
- * Setup the feature <%= link_to_config_option(:max_request_time, locals) %>. This way, Passenger will automatically terminate the process when it gets stuck on a request.
+ * Setup the feature [passenger_max_request_time](<%= url_for "/references/config_reference/nginx/#passenger_max_request_time" %>). This way, Passenger will automatically terminate the process when it gets stuck on a request.
 
 ## Viewing the internal state; machine-readable output
 
@@ -284,7 +284,7 @@ The way Passenger tools report memory usage deserves special attention. You prob
 
 This is actually quite a hard question to answer. Intuitively, we think that the question of "how much memory does a process use?" is simple. But the reality is that memory management on modern operating systems is quite complicated, and the concepts behind them are quite complicated too. Because of this, there is not one single right answer to this question, nor is there a short answer.
 
-In the article [Accurately measuring memory usage](<%= url_for "/indepth/accurately_measuring_memory_usage.html" %>) we will explain why a naive reading of `ps` and `top` output can be misleading, and how Passenger more accurately reports memory usage than those tools.
+In the article [Accurately measuring memory usage](<%= url_for "/advanced_guides/in_depth/ruby/accurately_measuring_memory_usage.html" %>) we will explain why a naive reading of `ps` and `top` output can be misleading, and how Passenger more accurately reports memory usage than those tools.
 
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/troubleshooting/index.html" %>">Back</a>
