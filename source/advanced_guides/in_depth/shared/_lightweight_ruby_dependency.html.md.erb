@@ -7,10 +7,10 @@ Passenger's core is written in C++ for performance and memory efficiency. Passen
 The following parts of Passenger utilize Ruby:
 
  * Passenger's installer, build system and command line administration tools are written in Ruby.
- * Certain internally used tools, such as the crash handler (which generates a backtrace in case Passenger crash) and the [prespawn script](<%= url_for "/config/nginx/reference/index.html" %>#passenger_pre_start) are written in Ruby as well. These tools are only invoked in a one-off manner, and do not run persistently in the background.
+ * Certain internally used tools, such as the crash handler (which generates a backtrace in case Passenger crash) and the [prespawn script](<%= url_for "/advanced_guides/config_and_optimization/standalone/" %>#passenger_pre_start) are written in Ruby as well. These tools are only invoked in a one-off manner, and do not run persistently in the background.
  * Ruby web application support is implemented in Ruby.
- * If you use [Flying Passenger](<%= url_for "/deploy/nginx/flying_passenger.html" %>), then the Flying Passenger daemon is written in Ruby. The daemon is a small (less than 500 lines of code) and offloads most tasks to the C++ core.
- * If you use [Passenger Standalone](<%= url_for "/indepth/integration_modes.html" %>), then the frontend (the `passenger` command) is written in Ruby. The frontend is small (less than 1500 lines of code) and offloads most tasks to the C++ core.
+ * If you use [Flying Passenger](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/flying_passenger.html" %>), then the Flying Passenger daemon is written in Ruby. The daemon is a small (less than 500 lines of code) and offloads most tasks to the C++ core.
+ * If you use [Passenger Standalone](<%= url_for "/advanced_guides/in_depth/ruby/integration_modes.html" %>), then the frontend (the `passenger` command) is written in Ruby. The frontend is small (less than 1500 lines of code) and offloads most tasks to the C++ core.
 
 Other than the aforementioned parts, Passenger does not use Ruby during normal operation. For example, if you run Node.js web applications on Passenger, then there will be (almost) no Ruby code running on the system.
 

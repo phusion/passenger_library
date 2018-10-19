@@ -20,10 +20,10 @@ With Passenger this is improved by running multiple processes of the application
 <div><img src="<%= url_for "/images/request_load_balancing.png" %>" alt="request load balancing"></div>
 
 <% if language_type == :ruby %>
-  For thread-safe Ruby apps it is also possible to enable [multithreading](<%= url_for_config_option(:concurrency_model, locals) %>), which allows the application processes to concurrently handle multiple requests at the same time -- up to the amount of threads configured. In this case, Passenger forwards the request to the instance that is currently handling the least number of requests.
+  For thread-safe Ruby apps it is also possible to enable [multithreading](<%= url_for "/references/config_reference/nginx/#passenger_concurrency_model" %>), which allows the application processes to concurrently handle multiple requests at the same time -- up to the amount of threads configured. In this case, Passenger forwards the request to the instance that is currently handling the least number of requests.
 <% end %>
 
-If all application processes and threads are busy, Passenger spawns a new instance, up to the [process limit](<%= url_for_config_option(:max_instances, locals) %>) for the group. The amount of processes of the groups combined may also not exceed the limit for the application pool. If either limit is reached, the request remains in the queue (which has its own [limit](#request-queue-overflow)).
+If all application processes and threads are busy, Passenger spawns a new instance, up to the [process limit](<%= url_for "/references/config_reference/nginx/#passenger_concurrency_model" %>) for the group. The amount of processes of the groups combined may also not exceed the limit for the application pool. If either limit is reached, the request remains in the queue (which has its own [limit](#request-queue-overflow)).
 
 <% elsif language_type == :nodejs || language_type == :meteor %>
 <%= language_name %> applications normally execute in a single thread/process, using a single CPU core. Passenger enables running multiple instances of the application (multiple processes) using pooled application groups, distributing requests to the process that is currently handling the least amount of requests.
@@ -43,7 +43,7 @@ A core concept in the load balancing algorithm is that of the **maximum process 
 <% if language_default_concurrency == 1 && language_max_concurrency == 0 %>
   For <%= language_name %> applications, the maximum process concurrency is assumed to be 1. This means that Passenger assumes each process can handle 1 request at a time.
 
-  This can be changed by setting <%= link_to_config_option(:concurrency_model, locals) %> to `thread`, and by setting <%= link_to_config_option(:thread_count, locals) %>. If you do that, the assumed maximum process concurrency will equal the number of configured threads. This reflects the fact that each thread can handle 1 request at a time.
+  This can be changed by setting [concurrency model](<%= url_for "/references/config_reference/nginx/#passenger_concurrency_model" %>) to `thread`, and by setting [thread count](<%= url_for "/references/config_reference/nginx/#passenger_thread_count" %>). If you do that, the assumed maximum process concurrency will equal the number of configured threads. This reflects the fact that each thread can handle 1 request at a time.
 <% elsif language_default_concurrency == 1 && language_max_concurrency == 1 %>
   For <%= language_name %> applications, the maximum process concurrency is always 1.
 <% elsif language_default_concurrency == 0 %>
@@ -76,7 +76,7 @@ If there are multiple processes that have the least busyness, then Passenger wil
 
 On the next request, Passenger will always pick B, never C.
 
-This property is used by the [dynamic process scaling](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html" %>) algorithm. Dynamic process scaling works by shutting down processes that haven't received requests for a while (processes that are "idle"). By routing to the first process with least busyiness (instead of, say, a random one, using round-robin), Passenger gives other processes the chance to become idle and thus eligible for shutdown.
+This property is used by the [dynamic process scaling](<%= url_for "/advanced_guides/in_depth/ruby/dynamic_scaling_of_app_processes/index.html" %>) algorithm. Dynamic process scaling works by shutting down processes that haven't received requests for a while (processes that are "idle"). By routing to the first process with least busyiness (instead of, say, a random one, using round-robin), Passenger gives other processes the chance to become idle and thus eligible for shutdown.
 
 Another advantage of picking the first process is that it improves application-level caching. Since the first process is the most likely candidate for load balancing, it will have the most chance to keep its cache warm. Examples of such caches include: in-memory hash tables, JIT caches, etc.
 
@@ -179,18 +179,17 @@ Suppose that another request comes in (which we call ɣ). That will be load bala
 
 By default, all requests for an application are balanced in a fair way. You may want to adjust this behavior; for example if your app consists of pages for visitors as well as some kind of web service, you probably want to make sure the visitor requests don't get stuck behind web service requests when under heavy load.
 
-This can be solved by configuring two application groups for your app: one for the web service URL and one for the visitor pages, each with their own request queue. The requests for the visitor pages will keep being handled even if there is an overload of requests for the web service. See the <%= link_to_config_option(:app_group_name, locals) %> option (Apache and Nginx only, not available on Standalone).
+This can be solved by configuring two application groups for your app: one for the web service URL and one for the visitor pages, each with their own request queue. The requests for the visitor pages will keep being handled even if there is an overload of requests for the web service. See the [app group name](<%= url_for "/references/config_reference/nginx/#passenger_app_group_name" %>) option (Apache and Nginx only, not available on Standalone).
 
-The two application groups will still compete with each other for server resources. You can control how many instances are allowed per application group, for example allowing more instances to serve the visitor pages than the web service URL. See the <%= link_to_config_option(:max_instances, locals) %> option.
+The two application groups will still compete with each other for server resources. You can control how many instances are allowed per application group, for example allowing more instances to serve the visitor pages than the web service URL. See the [max instances](<%= url_for "/references/config_reference/nginx/#passenger_max_instances" %>) option.
 
 ## Request queue overflow
 
-If a request arrives for an application group, and all its processes are busy, and the application pool is full, the request remains in the Passenger request queue. If this keeps happening (e.g. due to a flood of requests) the queue will eventually overflow its limit (see: <%= link_to_config_option(:max_request_queue_size, locals) %>). Overflowing requests will no longer be balanced, but simply dropped (with a HTTP 503 error).
+If a request arrives for an application group, and all its processes are busy, and the application pool is full, the request remains in the Passenger request queue. If this keeps happening (e.g. due to a flood of requests) the queue will eventually overflow its limit [see: max request queue size](<%= url_for "/references/config_reference/nginx/#passenger_max_request_queue_size" %>). Overflowing requests will no longer be balanced, but simply dropped (with a HTTP 503 error).
 
 ## See also
 
- * [Request queueing](<%= url_for "/indepth/request_queueing.html" %>)
- * [Dynamic scaling of application processes](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/index.html" %>)
+ * [Dynamic scaling of application processes](<%= url_for "/advanced_guides/in_depth/ruby/dynamic_scaling_of_app_processes/index.html" %>)
 
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/in_depth/index.html" %>">Back</a>

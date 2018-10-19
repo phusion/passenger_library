@@ -1,12 +1,12 @@
 # <%= language_name %> and Apache per-request environment variables
 <%= render_partial("/shared/current_selection", locals: { disabled_selections: [:integration] }) %>
 
-If you are using Passenger in its [Apache integration mode](../integration_modes.html), then you may be aware of the fact that Apache supports [per-request environment variables](https://httpd.apache.org/docs/2.4/env.html). This page explains how Passenger passes per-request environment variables to the application.
+If you are using Passenger in its [Apache integration mode](<%= url_for "/advanced_guides/in_depth/ruby/integration_modes.html" %>), then you may be aware of the fact that Apache supports [per-request environment variables](https://httpd.apache.org/docs/2.4/env.html). This page explains how Passenger passes per-request environment variables to the application.
 
 <div class="note">
   <h3 class="notoc">This page is not talking about system environment variables!</h3>
   <p>
-    There is a difference between operating system-level environment variables (which are controlled by the OS) and per-request environment variables (which are controlled by Apache). This page is only talking about the latter. If you are looking for information about OS-level environment variables, please refer to <a href="../environment_variables.html">About environment variables</a>. Refer to <a href="https://httpd.apache.org/docs/2.4/env.html">the Apache documentation</a> to understand the differences.
+    There is a difference between operating system-level environment variables (which are controlled by the OS) and per-request environment variables (which are controlled by Apache). This page is only talking about the latter. If you are looking for information about OS-level environment variables, please refer to <a href="<%= url_for "/advanced_guides/in_depth/ruby/environment_variables.html" %>">About environment variables</a>. Refer to <a href="https://httpd.apache.org/docs/2.4/env.html">the Apache documentation</a> to understand the differences.
   </p>
 </div>
 

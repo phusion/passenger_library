@@ -6,12 +6,6 @@ else
 end
 %>
 
-<% if context == :basics %>
-As you've read earlier, Passenger collaborates with other components. This is why Passenger supports multiple [integration modes](<%= url_for "/indepth/integration_modes.html" %>). Each integration mode is designed for easy collaboration with a different component.
-
-Throughout the rest of this basics tutorial, we will cover the Standalone mode only. The Nginx and Apache integration modes are covered in the [deployment tutorial](<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>). <!-- TODO: , as well as in the various [guides](<%= url_for '/guides/index.html' %>). -->
-<% end %>
-
 <figure>
   <img src="<%= url_for '/images/fundamental_concepts/int_modes.png' %>">
   <figcaption>Passenger's supported integration modes. In the Standalone modes, Passenger uses a builtin web server. In the Nginx/Apache integration modes, Passenger integrates with Nginx or Apache.</figcaption>
@@ -20,7 +14,7 @@ Throughout the rest of this basics tutorial, we will cover the Standalone mode o
 The supported integration modes are:
 
  * **Standalone mode**<br>
-   The Standalone mode is what you've experienced in the [Quickstart](<%= quickstart_url %>) tutorial. You start Passenger through the `passenger start` command.
+   The Standalone mode is what you've experienced in the [Quickstart](<%= url_for "/tutorials/quickstart/ruby/" %>) tutorial. You start Passenger through the `passenger start` command.
    <% if locals[:language_type] == :ruby -%>
    In this mode, Passenger behaves somewhat like "rails server".
    <% elsif locals[:language_type].nil? -%>

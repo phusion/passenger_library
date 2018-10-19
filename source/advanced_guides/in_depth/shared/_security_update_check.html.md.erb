@@ -21,7 +21,7 @@ The update check works as follows:
 
 ## Security considerations
 
-The security update check does not require direct external access, it can also be [configured to use a web proxy](<%= url_for("/config/reference/index.html?a=passenger_security_update_check_proxy") %>).
+The security update check does not require direct external access, it can also be [configured to use a web proxy](<%= url_for("/references/config_reference/nginx/#passenger_security_update_check_proxy") %>).
 
 The check only sends a minimal set of data, which is similar to what is also publicly available by default through the `Server` HTTP response header.
 
@@ -38,9 +38,9 @@ The source code related to the security update check, including encryption seque
 
 ## Options
 
-The security update check can be [configured to use a web proxy](<%= url_for("/config/reference/index.html?a=passenger_security_update_check_proxy") %>).
+The security update check can be [configured to use a web proxy](<%= url_for("/references/config_reference/nginx/#passenger_security_update_check_proxy") %>).
 
-The check is on by default, but can also be [turned off](<%= url_for("/config/reference/index.html?a=passenger_disable_security_update_check") %>).
+The check is on by default, but can also be [turned off](<%= url_for("/references/config_reference/nginx/#passenger_disable_security_update_check") %>).
 
 ## Advanced alerting (Passenger Enterprise)
 
