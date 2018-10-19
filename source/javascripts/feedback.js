@@ -84,7 +84,7 @@ function sendVote(page, vote) {
 
 function sendReason(page, reason) {
   let uuid = getUUID();
-  axios.post(`${feedbackUrl}/vote`, {
+  axios.post(`${feedbackUrl}/reason`, {
     uuid: uuid,
     url: page,
     reason: reason
