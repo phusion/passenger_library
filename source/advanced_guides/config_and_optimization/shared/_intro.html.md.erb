@@ -6,11 +6,15 @@
 
 Passenger in its Nginx integration mode is to be configured via the Nginx configuration file. There is no configuration file that is specific to Passenger only.
 
-If you have used [Passenger Standalone](<%= url_for "/indepth/integration_modes.html" %>), then you may be familiar with [Passengerfile.json](<%= url_for "/config/standalone/intro.html" %>). Passenger for Nginx does not consult Passengerfile.json, only the Nginx configuration file.
+If you have used [Passenger Standalone](<%= url_for "/advanced_guides/in_depth/ruby/integration_modes.html" %>), then you may be familiar with [Passengerfile.json](<%= url_for "/advanced_guides/config_and_optimization/nginx/intro.html" %>). Passenger for Nginx does not consult Passengerfile.json, only the Nginx configuration file.
+
+<div class="info">
+  The articles mentioned above require you to select <code>standalone</code> as the selected integration mode.
+</div>
 
 Configuring Passenger for Nginx works as follows:
 
- 1. During the Passenger [installation process](<%= url_for "/install/nginx/install/index.html" %>), an Nginx binary with the Passenger module compiled in, is installed.
+ 1. During the Passenger [installation process](<%= url_for "/advanced_guides/install_and_upgrade/standalone/" %>), an Nginx binary with the Passenger module compiled in, is installed.
  2. The Passenger Nginx module registers Passenger-specific configuration options inside Nginx.
  3. You, the administrator, configure Passenger by adding Passenger-specific configuration options to the Nginx configuration file.
  4. Restart or reload Nginx to apply any configuration changes.
@@ -29,7 +33,7 @@ server {
 
 ## Essential configuration
 
-For Passenger to work, only two configuration options need to be setup in Nginx, namely [passenger_enabled](reference/#passenger_enabled) and [passenger_root](reference/#passenger_root). If you have already gone through the [installation process](<%= url_for "/install/nginx/install/index.html" %>), then it has already been set.
+For Passenger to work, only two configuration options need to be setup in Nginx, namely [passenger_enabled](<%= url_for "/references/config_reference/nginx/#passenger_enabled" %>) and [passenger_root](<%= url_for "/references/config_reference/nginx/#passenger_root" %>). If you have already gone through the [installation process](<%= url_for "/advanced_guides/install_and_upgrade/standalone/" %>), then it has already been set.
 
 ## Start configuring Passenger
 
@@ -38,13 +42,17 @@ Passenger provides a wide range of features and customization options. Some of t
 <% elsif integration_mode_type == :apache %>
 <!-- ****** Apache ****** -->
 
-Passenger in its Apache integration mode is to be configured via [the Apache configuration file](<%= url_for "/install/apache/working_with_the_apache_config_file.html" %>). There is no configuration file that is specific to Passenger only.
+Passenger in its Apache integration mode is to be configured via [the Apache configuration file](<%= url_for "/advanced_guides/install_and_upgrade/apache/working_with_the_apache_config_file.html" %>). There is no configuration file that is specific to Passenger only.
 
-If you have used [Passenger Standalone](<%= url_for "/indepth/integration_modes.html" %>), then you may be familiar with [Passengerfile.json](<%= url_for "/config/standalone/intro.html" %>). Passenger for Apache does not consult Passengerfile.json, only the Apache configuration file.
+If you have used [Passenger Standalone](<%= url_for "/advanced_guides/config_and_optimization/nginx/intro.html" %>), then you may be familiar with [Passengerfile.json](<%= url_for "/advanced_guides/config_and_optimization/nginx/intro.html" %>). Passenger for Apache does not consult Passengerfile.json, only the Apache configuration file.
+
+<div class="info">
+  The two articles mentioned above require you to select <code>standalone</code> as the selected integration mode.
+</div>
 
 Configuring Passenger for Apache works as follows:
 
- 1. During the Passenger [installation process](<%= url_for "/install/apache/install/index.html" %>), Apache is setup to load the Passenger Apache module.
+ 1. During the Passenger [installation process](<%= url_for "/advanced_guides/install_and_upgrade/standalone/" %>), Apache is setup to load the Passenger Apache module.
  2. The Passenger Apache module registers Passenger-specific configuration options inside Apache.
  3. You, the administrator, configure Passenger by adding Passenger-specific configuration options to the Apache configuration file.
  4. Restart or reload Apache to apply any configuration changes.
@@ -69,21 +77,21 @@ PassengerRuby /usr/bin/ruby2.0
 
 ## Essential configuration
 
-For Passenger to work, only a few configuration options need to be setup in Apache. If you have already gone through the [installation process](<%= url_for "/install/apache/install/index.html" %>), then these configuration options are already set.
+For Passenger to work, only a few configuration options need to be setup in Apache. If you have already gone through the [installation process](<%= url_for "/advanced_guides/install_and_upgrade/apache/" %>), then these configuration options are already set.
 
  1. The `LoadModule passenger_module ...` option must exist in the Apache configuration. This option tells Apache to load the Passenger module from the given filename. If this option does not exist, then Passenger is not loaded into Apache at all, and Apache will complain about syntax errors whenever it encounters Passenger configuration options.
- 2. The [PassengerRoot](reference/#passengerroot) option must exist in the Apache configuration. This option tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate.
- 3. The [PassengerDefaultRuby](reference/#passengerdefaultruby) option does not have to exist, but it is strongly recommended that you set it.
+ 2. The [PassengerRoot](<%= url_for "/references/config_reference/apache/#passengerroot" %>) option must exist in the Apache configuration. This option tells Passenger where to find its own resource files. Without this option, Passenger is still loaded, but will not be able to operate.
+ 3. The [PassengerDefaultRuby](<%= url_for "/references/config_reference/apache/#passengerdefaultruby" %>) option does not have to exist, but it is strongly recommended that you set it.
 
 ## Global, per-application, and per-request options
 
 When configuring Passenger it is important to realize that there are three different types of options that each make sense in different contexts:
 
- 1. **Global options**. These should be set only once (at the global level). For example, there is one Passenger instance per Apache, so it only makes sense to set the [PassengerRoot](reference/#passengerroot) once in the Apache configuration. Apache will show warnings if you try to declare global options at a lower level such as the `<VirtualHost>`, because the value will become ambiguous: the first `<VirtualHost>` section to receive a request would determine the final value.
+ 1. **Global options**. These should be set only once (at the global level). For example, there is one Passenger instance per Apache, so it only makes sense to set the [PassengerRoot](<%= url_for "/references/config_reference/apache/#passengerroot" %>) once in the Apache configuration. Apache will show warnings if you try to declare global options at a lower level such as the `<VirtualHost>`, because the value will become ambiguous: the first `<VirtualHost>` section to receive a request would determine the final value.
 
- 2. **Per-application options**. Options such as [PassengerRuby](reference/#passengeruby) may be different for each application in the Apache config, but not for each request, because the value is needed during application process spawning. Once the process is spawned, changing the value makes no real sense, so per-application options cannot be declared in sections like `<Files>`, `<FilesMatch>`, `<If>`, and files like `.htaccess`.
+ 2. **Per-application options**. Options such as [PassengerRuby](<%= url_for "/references/config_reference/apache/#passengerruby" %>) may be different for each application in the Apache config, but not for each request, because the value is needed during application process spawning. Once the process is spawned, changing the value makes no real sense, so per-application options cannot be declared in sections like `<Files>`, `<FilesMatch>`, `<If>`, and files like `.htaccess`.
 
- 3. **Per-request options**. This type of option can be set at any level, for any path. For example, Passenger can be enabled or disabled with [PassengerEnabled](reference/#passengerenabled) for any `<Location>`.
+ 3. **Per-request options**. This type of option can be set at any level, for any path. For example, Passenger can be enabled or disabled with [PassengerEnabled](<%= url_for "/references/config_reference/apache/#passengerenabled" %>) for any `<Location>`.
 
 Note: the warnings for global options and the concept of per-application options were introduced as part of the work in Passenger version 5.2.0 to make configuration more deterministic.
 
@@ -146,7 +154,7 @@ When configuring Passenger through environment variables, empty variables are ig
 
 `Passengerfile.json` must be located in the application directory. This allows you to configure Passenger differently on a per-application basis.
 
-However, if you are using the [Mass deployment](<%= url_for "/deploy/standalone/mass_deployment.html" %>) feature, then Passengerfile.json is handled [differently](#mass-deployment-configuration).
+However, if you are using the [Mass deployment](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/mass_deployment.html" %>) feature, then Passengerfile.json is handled [differently](#mass-deployment-configuration).
 
 ### Precedence
 
@@ -158,11 +166,11 @@ Configuration sources are respected in the following precedence (ordered from mo
  * Environment variables (only since 5.0.22).
  * Passengerfile.json.
 
-There is just one exception to this rule. In [Mass deployment mode](<%= url_for "/deploy/standalone/mass_deployment.html" %>), per-app configuration [overrides](#mass-deployment-configuration) both command line options and environment variables.
+There is just one exception to this rule. In [Mass deployment mode](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/mass_deployment.html" %>), per-app configuration [overrides](#mass-deployment-configuration) both command line options and environment variables.
 
 ### Mass deployment configuration
 
-If you are using the [Mass deployment](<%= url_for "/deploy/standalone/mass_deployment.html" %>) feature, then Passengerfile.json is handled differently than normal.
+If you are using the [Mass deployment](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/mass_deployment.html" %>) feature, then Passengerfile.json is handled differently than normal.
 
 #### Main vs per-application configuration
 
@@ -172,7 +180,7 @@ Each application may have its own Passengerfile.json, which we call the _per-app
 
 #### Context-specific configuration
 
-Some configuration options can only be specified in the main configuration. They will have no effect when specified in the per-app configuration file. Examples include [`--log-file` / "log_file"](reference/#--log-file-log_file) and [`--pid-file` / "pid_file"](reference/#--pid-file-pid_file).
+Some configuration options can only be specified in the main configuration. They will have no effect when specified in the per-app configuration file. Examples include [`--log-file` / "log_file"](<%= url_for "/references/config_reference/standalone/#--log-file-log_file" %>) and [`--pid-file` / "pid_file"](<%= url_for "/references/config_reference/standalone/#--pid-file-pid_file" %>).
 
 The [reference](reference/) documents whether a configuration option can only be specified in the main configuration file, or also in the per-app configuration file.
 
@@ -196,11 +204,11 @@ Relative path handling in earlier Passenger versions was inconsistent, so we rec
 
 ### Configuration reference
 
-To learn which command line and Passengerfile.json configuration options are available, please check the [configuration reference](reference/) and the [configuration section index page](.). Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc.
+To learn which command line and Passengerfile.json configuration options are available, please check the [configuration reference](<%= url_for "/references/config_reference/standalone/" %>) and the [configuration section index page](.). Passenger provides a wide range of features and customization options. Some of them are for improving or tweaking the application's performance characteristics, some of them influence application or connection handling behavior, etc.
 
 ## Nginx configuration template
 
-Passenger Standalone is built on the same technology that powers [Passenger for Nginx](<%= url_for "/indepth/integration_modes.html" %>), so any configuration option supported by Passenger for Nginx can be applied to Passenger Standalone as well. You can do this by direct editing the Nginx configuration template that is used by Passenger Standalone.
+Passenger Standalone is built on the same technology that powers [Passenger for Nginx](<%= url_for "/advanced_guides/in_depth/ruby/integration_modes.html" %>), so any configuration option supported by Passenger for Nginx can be applied to Passenger Standalone as well. You can do this by direct editing the Nginx configuration template that is used by Passenger Standalone.
 
 First, create a copy of the default Passenger Nginx configuration template file:
 
@@ -210,13 +218,13 @@ cp $(passenger-config about resourcesdir)/templates/standalone/config.erb nginx.
 
 Then open `nginx.conf.erb` and modify it as you see fit. The file is a normal Nginx configuration file, in the ERB template format.
 
-Every time you start Standalone, you must pass the [`--nginx-config-template`](reference/#--nginx-config-template-nginx_config_template) parameter, which tells Standalone to use your specific Nginx configuration template file. For example:
+Every time you start Standalone, you must pass the [`--nginx-config-template`](<%= url_for "/references/config_reference/standalone/#--nginx-config-template-nginx_config_template" %>) parameter, which tells Standalone to use your specific Nginx configuration template file. For example:
 
 ~~~bash
 passenger start --nginx-config-template nginx.conf.erb
 ~~~
 
-Alternatively, if you don't want to pass this parameter every time, you can also set the [nginx_config_template option in Passengerfile.json](reference/#--nginx-config-template-nginx_config_template).
+Alternatively, if you don't want to pass this parameter every time, you can also set the [nginx_config_template option in Passengerfile.json](<%= url_for "/references/config_reference/standalone/#--nginx-config-template-nginx_config_template" %>).
 
 <div class="warning">
   <h3 class="notoc">The Nginx config file must follow a specific format</h3>
@@ -225,7 +233,7 @@ Alternatively, if you don't want to pass this parameter every time, you can also
 
 <div class="warning">
   <h3 class="notoc">Do not duplicate options set by Passenger Standalone</h3>
-  <p>Nginx only allows setting most configuration options once. This means that if you insert any configuration options already set by Passenger Standalone, then Nginx will abort with an error. Therefore, you should prefer using the configuration options provided by Passenger Standalone over setting them yourself in the Nginx configuration template. For example, do not set <a href="../nginx/reference/#passenger_log_level">passenger_log_level</a> yourself; use the <a href="reference/#--log-level-log_level"><code>--log-level</code> / <code>"log_level"</code></a> configuration option instead.</p>
+  <p>Nginx only allows setting most configuration options once. This means that if you insert any configuration options already set by Passenger Standalone, then Nginx will abort with an error. Therefore, you should prefer using the configuration options provided by Passenger Standalone over setting them yourself in the Nginx configuration template. For example, do not set <a href="/references/config_reference/standalone/#passenger_log_level">passenger_log_level</a> yourself; use the <a href="/references/config_reference/standalone/#--log-level-log_level"><code>--log-level</code> / <code>"log_level"</code></a> configuration option instead.</p>
 </div>
 
 <div class="note">
@@ -237,7 +245,7 @@ Alternatively, if you don't want to pass this parameter every time, you can also
 
 ### Debugging configuration file problems
 
-If you run into any problems with your customized Nginx configuration template, then (starting from Passenger 5.0.22) you can debug this by passing the [`--debug-nginx-config`](reference/#--debug-nginx-config-debug_nginx_config) option to `passenger start`. This will cause it to print the generated Nginx configuration file, then exit.
+If you run into any problems with your customized Nginx configuration template, then (starting from Passenger 5.0.22) you can debug this by passing the [`--debug-nginx-config`](<%= url_for "/references/config_reference/standalone/#--debug-nginx-config-debug_nginx_config" %>) option to `passenger start`. This will cause it to print the generated Nginx configuration file, then exit.
 
 
 <% else %>

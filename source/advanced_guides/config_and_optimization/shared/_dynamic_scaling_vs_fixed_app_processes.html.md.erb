@@ -15,7 +15,7 @@ Generally speaking, the more application processes you run, the more concurrent 
 In this mode, Passenger will automatically spin up application processes when traffic is high. It will also automatically shut down application processes when traffic is low, allowing you to conserve resources. This mode is a great fit for the following use cases:
 
 <% if integration_mode_type == :standalone -%>
- * You have deployed multiple web applications on Passenger Standalone using [the Mass Deployment feature](<%= url_for "/deploy/standalone/mass_deployment.html" %>), and you want resources for each application to be automatically adjusted based on traffic.
+ * You have deployed multiple web applications on Passenger Standalone using [the Mass Deployment feature](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/mass_deployment.html" %>), and you want resources for each application to be automatically adjusted based on traffic.
 <% else -%>
  * You have deployed multiple web applications on Passenger, and you want resources for each application to be automatically adjusted based on traffic.
 <% end -%>
@@ -27,24 +27,28 @@ However, dynamic process scaling has a performance penalty. Spinning processes u
 
 ### How it works
 
-To learn how exactly Passenger decides when to spin up and spin down processes, read [How dynamic scaling of application processes works](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/#{integration_mode_type}/index.html" %>).
+To learn how exactly Passenger decides when to spin up and spin down processes, read [How dynamic scaling of application processes works](<%= url_for "/advanced_guides/in_depth/ruby/dynamic_scaling_of_app_processes/#{integration_mode_type}/index.html" %>).
 
 ### Configuration
 
 <% if language_default_concurrency == 0 %>
-First of all, you need to set <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> to approximately the number of concurrent requests at which the performance of a single process begins to degrade. **Dynamic process scaling does not work unless you configure this!** The reason behind this is explained in [How dynamic scaling of application processes works](<%= url_for "/indepth/#{language_type}/dynamic_scaling_of_app_processes/#{integration_mode_type}/index.html" %>).
+First of all, you need to set <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> to approximately the number of concurrent requests at which the performance of a single process begins to degrade. **Dynamic process scaling does not work unless you configure this!** The reason behind this is explained in [How dynamic scaling of application processes works](<%= url_for "/advanced_guides/in_depth/ruby/dynamic_scaling_of_app_processes/standalone/index.html" %>).
 
 Dynamic process scaling can be further tweaked through the following configuration options:
 <% else %>
 Dynamic process scaling can be tweaked through the following configuration options:
 <% end %>
 
- * <%= link_to_config_option(:min_instances, locals) %> -- Configures the minimum number of processes for a given application. Defaults to 1.
 <% if integration_mode_type != :standalone -%>
- * <%= link_to_config_option(:max_instances, locals) %> -- Configures the maximum number of processes for a given application. If you do not configure this, then Passenger may spin up as many processes as it wants, up to the max pool size.
-<% end -%>
- * <%= link_to_config_option(:pool_idle_time, locals) %> -- How many seconds a process should be idle before Passenger considers shutting it down.
- * <%= link_to_config_option(:max_pool_size, locals) %> -- Configures the maximum total number of application processes that may simultaneously exists, regardless of how many different applications you have deployed on Passenger. This is a "safety switch" that prevents Passenger from overloading your system with too many processes. Defaults to 6.
+   * [passenger_min_instances](<%= url_for "/references/config_reference/nginx/#passenger_min_instances" %>) -- Configures the minimum number of processes for a given application. Defaults to 1.
+   * [passenger_max_instances](<%= url_for "/references/config_reference/nginx/#passenger_max_instances" %>) -- Configures the maximum number of processes for a given application. If you do not configure this, then Passenger may spin up as many processes as it wants, up to the max pool size.
+   * [passenger_pool_idle_time](<%= url_for "/references/config_reference/nginx/#passenger_pool_idle_time" %>) -- How many seconds a process should be idle before Passenger considers shutting it down.
+   * [passenger_max_pool_size](<%= url_for "/references/config_reference/nginx/#passenger_max_pool_size" %>) -- Configures the maximum total number of application processes that may simultaneously exists, regardless of how many different applications you have deployed on Passenger. This is a "safety switch" that prevents Passenger from overloading your system with too many processes. Defaults to 6.
+<% else %>
+* [passenger_min_instances](<%= url_for "/references/config_reference/nginx/#--min-instances-min_instances" %>) -- Configures the minimum number of processes for a given application. Defaults to 1.
+* [passenger_pool_idle_time](<%= url_for "/references/config_reference/nginx/#--pool-idle-time-pool_idle_time" %>) -- How many seconds a process should be idle before Passenger considers shutting it down.
+* [passenger_max_pool_size](<%= url_for "/references/config_reference/nginx/#--max-pool-size-max_pool_size" %>) -- Configures the maximum total number of application processes that may simultaneously exists, regardless of how many different applications you have deployed on Passenger. This is a "safety switch" that prevents Passenger from overloading your system with too many processes. Defaults to 6.
+<% end %>
 
 ### Example 1
 
@@ -97,7 +101,7 @@ Passenger can also maintain a fixed number of application processes instead of a
   <pre class="highlight">passenger_min_instances N;</pre>
 
   <p>
-    You should also configure <a href="<%= url_for "/config/nginx/reference/index.html" %>#passenger_pre_start">passenger_pre_start</a> in the <code>http</code> block so that your app is started during web server launch:
+    You should also configure <a href="<%= url_for "/references/config_reference/nginx/" %>#passenger_pre_start">passenger_pre_start</a> in the <code>http</code> block so that your app is started during web server launch:
   </p>
 
   <pre class="highlight">passenger_pre_start http://your-website-url.com;</pre>
@@ -115,7 +119,7 @@ Passenger can also maintain a fixed number of application processes instead of a
   <pre class="highlight">PassengerMinInstances N</pre>
 
   <p>
-    You should also configure <a href="<%= url_for "/config/apache/reference/index.html" %>#passengerprestart">PassengerPreStart</a> in the global context so that your app is started during web server launch:
+    You should also configure <a href="<%= url_for "/references/config_reference/nginx/" %>#passengerprestart">PassengerPreStart</a> in the global context so that your app is started during web server launch:
   </p>
 
   <pre class="highlight">PassengerPreStart http://your-website-url.com</pre>
