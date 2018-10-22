@@ -55,11 +55,11 @@ Passenger's user account sandboxing feature solves this problem. This feature ma
 
 If the user account sandboxing feature is enabled, Passenger will need to know what user / group to run the application as. This is determined as follows:
 
-  1. Passenger tries to set the user and group name that you specify in [<%= passenger_user %>](<%= passenger_user_doc %>) and [<%= passenger_group %>](<%= passenger_group_doc %>).
+  1. Passenger tries to set the user and group name that you specify in [passenger_user](<%= url_for "/references/config_reference/nginx/#passenger_user" %>) and [passenger_group](<%= url_for "/references/config_reference/nginx/#passenger_group" %>).
 
-  2. If the options above are not specified, Passenger tries to autodetect by looking at the owner of the application's "[startup file](<%= passenger_startup_file_doc %>)".
+  2. If the options above are not specified, Passenger tries to autodetect by looking at the owner of the application's "[startup file](<%= url_for "/references/config_reference/nginx/#passenger_startup_file" %>)".
 
-  3. If autodetection fails, or if the owner of the startup file is the `root` user, Passenger will set the user and group name specified in [<%= passenger_default_user %>](<%= passenger_default_user_doc %>) and [<%= passenger_default_group %>](<%= passenger_default_group_doc %>) instead (default: `nobody`).
+  3. If autodetection fails, or if the owner of the startup file is the `root` user, Passenger will set the user and group name specified in [passenger_default_user](<%= url_for "/references/config_reference/nginx/#passenger_default_user" %>) and [passenger_default_group](<%= url_for "/references/config_reference/nginx/#passenger_default_group" %>) instead (default: `nobody`).
 
 <div class="warning">
 Don't rely on autodetection if users are untrusted (e.g. shared hosting). If a user somehow manages to specify a startup file that is owned by another user, Passenger will launch the startup file as that other user (it cannot check whether this is an allowed user or not).
@@ -69,7 +69,7 @@ Don't rely on autodetection if users are untrusted (e.g. shared hosting). If a u
 
 ### Not using Flying Passenger
 
-In most installations user account sandboxing is already enabled. Assuming you are not using [the Flying Passenger mode](flying_passenger.html) (this is probably the case), the following table shows the exceptions:
+In most installations user account sandboxing is already enabled. Assuming you are not using [the Flying Passenger mode](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/flying_passenger.html" %>) (this is probably the case), the following table shows the exceptions:
 
 <table class="table table-bordered table-striped">
   <thead>
@@ -83,7 +83,7 @@ In most installations user account sandboxing is already enabled. Assuming you a
     <tr>
       <th>Web server has root privileges</th>
       <td>User account sandboxing enabled.</td>
-      <td>User account sandboxing disabled. Apps are run as <a href="<%= passenger_default_user_doc %>"><%= passenger_default_user %></a> and <a href="<%= passenger_default_group_doc %>"><%= passenger_default_group %></a>.</td>
+      <td>User account sandboxing disabled. Apps are run as <a href="<%= url_for "/references/config_reference/nginx/#passenger_default_user" %>"><%= passenger_default_user %></a> and <a href="<%= url_for "/references/config_reference/nginx/#passenger_default_group" %>"><%= passenger_default_group %></a>.</td>
     </tr>
     <tr>
       <th>Web server has no root privileges</th>
@@ -124,12 +124,12 @@ Whatever user your application runs as, it must have read access to the applicat
 ## Red Hat and CentOS caveats
 
 <div class="note">
-  This information only applies if you <a href="<%= url_for "/install/#{integration_mode_type}/yum_repo/index.html" %>">installed Passenger through the RPM packages provided by Phusion</a>. If you did not installed Passenger through the RPM packages provided by Phusion, then you can ignore this section.
+  This information only applies if you <a href="<%= url_for "/advanced_guides/install_and_upgrade/standalone/yum_repo.html" %>">installed Passenger through the RPM packages provided by Phusion</a>. If you did not installed Passenger through the RPM packages provided by Phusion, then you can ignore this section.
 </div>
 
-If you installed Passenger through <a href="<%= url_for "/install/#{integration_mode_type}/yum_repo/index.html" %>">Phusion's YUM repository</a>, and you want to disable user account sandboxing, then you must also change [the location of the instance registry directory](<%= passenger_instance_registry_dir_doc %>).
+If you installed Passenger through <a href="<%= url_for "/advanced_guides/install_and_upgrade/standalone/yum_repo.html" %>">Phusion's YUM repository</a>, and you want to disable user account sandboxing, then you must also change [the location of the instance registry directory](<%= url_for "/references/config_reference/nginx/#passenger_instance_registry_dir" %>).
 
-This is because our RPMs configure the default instance registry directory to `/var/run/passenger-instreg`, which is only writable by root. If you disable user switching, then the Passenger processes will run as [<%= passenger_default_user %>](<%= passenger_default_user_doc %>) which (as long as it's not root) won't be able to write to that directory.
+This is because our RPMs configure the default instance registry directory to `/var/run/passenger-instreg`, which is only writable by root. If you disable user switching, then the Passenger processes will run as [passenger_default_user](<%= url_for "/references/config_reference/nginx/#passenger_default_user" %>) which (as long as it's not root) won't be able to write to that directory.
 
 Note that any alternative instance registry directory must have the proper SELinux context, allowing the web server to read and write to it. We recommend that you create a directory `/var/lib/passenger-instreg` and give it the label `var_run_t`:
 
@@ -152,7 +152,7 @@ To find our what user an application is started as, first access its URL in your
 
 <pre class="highlight"><span class="prompt">$ </span>curl http://www.example.local/</pre>
 
-The application will now either successfully start or fail to start. If it fails to start then you will see an error page that tells you what user the application was being started as. If you do not see the error page in the browser then set [<%= passenger_friendly_error_pages %>](<%= passenger_friendly_error_pages_doc %>) on.
+The application will now either successfully start or fail to start. If it fails to start then you will see an error page that tells you what user the application was being started as. If you do not see the error page in the browser then set [passenger_friendly_error_pages](<%= url_for "/references/config_reference/nginx/#passenger_friendly_error_pages" %>) on.
 
 If the application successfully started, then run `passenger-status` to find the process's PID:
 

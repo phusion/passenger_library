@@ -3,7 +3,7 @@
 
 Passenger has excellent support for zero-downtime application updates and restarts in its [Enterprise edition](https://www.phusionpassenger.com/enterprise).
 
-Normally, when you instruct Passenger to [restart an application](<%= url_for "/admin/nginx/restart_app.html" %>) after you have deployed an application update, Passenger performs a _blocking restart_. Passenger would shut down all processes for that application and spawn a new one. The spawning of a new application process could take a while, and any requests that come in during this time will be blocked until this first application process has spawned, which users may experience as "downtime".
+Normally, when you instruct Passenger to [restart an application](<%= url_for "/advanced_guides/troubleshooting/nginx/restart_app.html" %>) after you have deployed an application update, Passenger performs a _blocking restart_. Passenger would shut down all processes for that application and spawn a new one. The spawning of a new application process could take a while, and any requests that come in during this time will be blocked until this first application process has spawned, which users may experience as "downtime".
 
 If your organization follows an agile development methology then you will want to deploy application updates very often. For example, Github was reported to deploy updates six times per day at one point. Deploying updates quickly means that you receive feedback about them more quickly, which aids with the development process. The more often you deploy, the less desirable blocking restarts are.
 
@@ -38,7 +38,7 @@ Zero-downtime restarts have a few caveats that you should be aware of:
 
 ## Enabling zero-downtime restarts
 
-Passenger provides [several ways to restart your application](<%= url_for "/admin/nginx/restart_app.html" %>). Each way has its own mechanism for enabling zero-downtime restarts.
+Passenger provides [several ways to restart your application](<%= url_for "/advanced_guides/troubleshooting/nginx/restart_app.html" %>). Each way has its own mechanism for enabling zero-downtime restarts.
 
 passenger-config restart-app
 
@@ -48,11 +48,11 @@ restart.txt
 
 : If you use `restart.txt` to restart your application, then enable the
 <% if integration_mode_type == :nginx %>
-  [passenger_rolling_restarts on](<%= url_for "/config/nginx/reference/index.html" %>#passenger_rolling_restarts) configuration option.
+  [passenger_rolling_restarts on](<%= url_for "/references/config_reference/nginx/" %>#passenger_rolling_restarts) configuration option.
 <% elsif integration_mode_type == :apache %>
-  [PassengerRollingRestarts on](<%= url_for "/config/apache/reference/index.html" %>#passengerrollingrestarts) configuration option.
+  [PassengerRollingRestarts on](<%= url_for "/references/config_reference/apache/" %>#passengerrollingrestarts) configuration option.
 <% elsif integration_mode_type == :standalone %>
-  [`--rolling-restarts` / "rolling_restarts"](<%= url_for "/config/standalone/reference/index.html" %>#--rolling-restarts-rolling_restarts) configuration option.
+  [`--rolling-restarts` / "rolling_restarts"](<%= url_for "/references/config_reference/standalone/" %>#--rolling-restarts-rolling_restarts) configuration option.
 <% else %>
   <% raise "TODO" %>
 <% end %>
@@ -60,7 +60,7 @@ restart.txt
 <% if integration_mode_type == :nginx || integration_mode_type == :apache %>
 Restarting <%= integration_mode_name %>
 
-: Normally, Passenger restarts all your applications when you restart <%= integration_mode_name %>. If you want to prevent this from happening, please use the [Flying Passenger](<%= url_for "/deploy/#{integration_mode_type}/flying_passenger.html" %>) feature.
+: Normally, Passenger restarts all your applications when you restart <%= integration_mode_name %>. If you want to prevent this from happening, please use the [Flying Passenger](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/flying_passenger.html" %>) feature.
 <% end %>
 
 <div>
@@ -68,7 +68,7 @@ Restarting <%= integration_mode_name %>
   <h3 id="automation">Capistrano</h3>
 
   <p>
-    If you followed the <a href="<%= url_for "/deploy/#{integration_mode_type}/automating_app_updates/#{language_type}/index.html" %>">Automating deployments of application updates</a> guide, and you want to enable zero-downtime restarts in Capistrano, then here's how you can do that.
+    If you followed the <a href="<%= url_for "/advanced_guides/deployment_and_scaling/standalone/automating_app_updates/#{language_type}/index.html" %>">Automating deployments of application updates</a> guide, and you want to enable zero-downtime restarts in Capistrano, then here's how you can do that.
   </p>
 
   <p>
@@ -80,7 +80,7 @@ Restarting <%= integration_mode_name %>
   <h3 id="automation">Automation scripts</h3>
 
   <p>
-    If you followed the <a href="<%= url_for "/deploy/#{integration_mode_type}/automating_app_updates/#{language_type}/index.html" %>">Automating deployments of application updates</a> guide, and you want to enable zero-downtime restarts there, then here's how you can do that.
+    If you followed the <a href="<%= url_for "/advanced_guides/deployment_and_scaling/standalone/automating_app_updates/#{language_type}/index.html" %>">Automating deployments of application updates</a> guide, and you want to enable zero-downtime restarts there, then here's how you can do that.
   </p>
 
   <p>
@@ -96,7 +96,7 @@ Restarting <%= integration_mode_name %>
 
 ## Tracking rolling restart progress
 
-You can track the progress of rolling restarts using [passenger-status](<%= url_for "/admin/#{integration_mode_type}/overall_status_report.html" %>). That tool will tell you which processes are already rolling restarted, which processes haven't been rolling restarted, and which process is currently being rolling restarted.
+You can track the progress of rolling restarts using [passenger-status](<%= url_for "/advanced_guides/troubleshooting/nginx/overall_status_report.html" %>). That tool will tell you which processes are already rolling restarted, which processes haven't been rolling restarted, and which process is currently being rolling restarted.
 
 Here is an example:
 
@@ -133,18 +133,17 @@ Processes that have not yet been rolling restarted have a high uptime. Process 1
 
 ## Deployment error resistance
 
-A related feature is [deployment error resistance](<%= url_for "/deploy/#{integration_mode_type}/deployment_error_resistance.html" %>). This feature reduces the chance of visitors experiencing any errors in case the deployment of an application update failed. If you use zero-downtime restarts, then we.
+A related feature is [deployment error resistance](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/deployment_error_resistance.html" %>). This feature reduces the chance of visitors experiencing any errors in case the deployment of an application update failed. If you use zero-downtime restarts, then we.
 
 ## Error handling and troubleshooting
 
-If Passenger Enterprise could not rolling restart a process (let's call it 'A') because it is unable to spawn a new process (let's call it 'B'), then Passenger Enterprise will give up trying to rolling restart that particular process 'A'. What happens next depends on whether [deployment error resistance](<%= url_for "/deploy/#{integration_mode_type}/deployment_error_resistance.html" %>) is enabled:
+If Passenger Enterprise could not rolling restart a process (let's call it 'A') because it is unable to spawn a new process (let's call it 'B'), then Passenger Enterprise will give up trying to rolling restart that particular process 'A'. What happens next depends on whether [deployment error resistance](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/deployment_error_resistance.html" %>) is enabled:
 
  * If deployment error resistance is disabled (the default), then Passenger Enterprise will proceed with trying to restart the remaining processes.
  * If deployment error resistance is enabled, the Passenger Enterprise will give up rolling restarting immediately. The application group will be put into Deployment Error Resistance Mode.
 
-In any case, all errors encountered during a rolling restart process are [logged](<%= url_for "/admin/#{integration_mode_type}/log_file/index.html" %>). If you suspect that something is wrong, please read the log file.
+In any case, all errors encountered during a rolling restart process are [logged](<%= url_for "/advanced_guides/troubleshooting/nginx/log_file.html" %>). If you suspect that something is wrong, please read the log file.
 
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/deployment_and_scaling/index.html" %>">Back</a>
 </div>
-

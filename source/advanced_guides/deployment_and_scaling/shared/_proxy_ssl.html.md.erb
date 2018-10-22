@@ -15,7 +15,7 @@ An SSL terminating reverse proxy is simply a web server that is configured to ac
 
 ## Prepare the system
 
-Follow [these instructions](<%= url_for "/deploy/standalone/reverse_proxy.html" %>), before continuing with this guide.
+Follow [these instructions](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/reverse_proxy.html" %>), before continuing with this guide.
 
 Assumptions: you are using the bash shell, and have admin rights to your computer, and are using a modern browser. Ensure that OpenSSL is installed.
 
@@ -120,7 +120,7 @@ To check the versions of the packages you have installed you can use the followi
 </table>
 
 ## Obtain your certificate / key pair
-You can read up on self signing a certificate in [this article](<%= url_for "/dev/standalone/dev_ssl.html#openssl-configuration" %>) or if this is for production use you can use [Let's Encrypt](https://letsencrypt.org/) or another certificate authority to get a valid certificate.
+You can read up on self signing a certificate in [this article](<%= url_for "/advanced_guides/developing_with_passenger/ruby/dev_ssl/standalone#openssl-configuration" %>) or if this is for production use you can use [Let's Encrypt](https://letsencrypt.org/) or another certificate authority to get a valid certificate.
 
 ## Configure Web Server
 Replace example.com with your domain:
@@ -191,7 +191,7 @@ server {
 
 
 ## Start Passenger
-The instructions for starting passenger are the same for an SSL terminating reverse proxy as for a regular [reverse proxy](<%= url_for "/deploy/standalone/reverse_proxy.html#step-1-starting-all-applications" %>).
+The instructions for starting passenger are the same for an SSL terminating reverse proxy as for a regular [reverse proxy](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/reverse_proxy.html#step-1-starting-all-applications" %>).
 
 ## Done
 
@@ -200,4 +200,3 @@ Now if you restart your web server, SSL should be working and Passenger should b
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/deployment_and_scaling/index.html" %>">Back</a>
 </div>
-

@@ -16,7 +16,7 @@ This guide teaches you how you can deploy your app to a server. This guide assum
   <li>You have already installed all necessary dependencies that your application needs.</li>
 </ul>
 
-If you miss one of these prerequisites or don't know how to perform it, then we recommend you to follow the [Deployment tutorial](<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>). The deployment tutorial is end-to-end guide and teaches you how to install every component.
+If you miss one of these prerequisites or don't know how to perform it, then we recommend you to follow the [Deployment tutorial](<%= url_for "/tutorials/deploy_to_production/" %>). The deployment tutorial is end-to-end guide and teaches you how to install every component.
 
 <% if integration_mode_type == :nginx %>
 **Table of contents**
@@ -27,7 +27,7 @@ If you miss one of these prerequisites or don't know how to perform it, then we 
   <h2 id="determine_ruby_command">Determine the Ruby command that Passenger should use</h2>
 
   <p>
-    Before you begin, you need to tell Passenger which Ruby command it should use to run your app, just in case there are <a href="<%= url_for "/indepth/ruby/multiple_rubies.html" %>">multiple Ruby interpreters on your system</a>. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
+    Before you begin, you need to tell Passenger which Ruby command it should use to run your app, just in case there are <a href="<%= url_for "/advanced_guides/in_depth/ruby/multiple_rubies.html" %>">multiple Ruby interpreters on your system</a>. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
   </p>
   <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
 <span class="output">passenger-config was invoked through the following Ruby interpreter:
@@ -126,7 +126,7 @@ Otherwise, if you installed Nginx from source and don't have an init script:
   <pre class="highlight"><span class="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
 <span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
 
-You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/nginx/troubleshooting/index.html" %>).
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/nginx/troubleshooting/ruby/" %>).
 
 
 ## Deploying an app to a sub-URI or subdirectory
@@ -205,7 +205,7 @@ Otherwise, if you installed Nginx from source and don't have an init script:
   <pre class="highlight"><span class="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
 <span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
 
-You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/nginx/troubleshooting/index.html" %>).
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/nginx/troubleshooting/ruby/" %>).
 
 <% end %>
 
@@ -218,7 +218,7 @@ You are now done. If you run into any problems, please refer to the [troubleshoo
   <h2 id="determine_ruby_command">Determine the Ruby command that Passenger should use</h2>
 
   <p>
-    We need to tell Passenger which Ruby command it should use to run your app, just in case there are <a href="<%= url_for "/indepth/ruby/multiple_rubies.html" %>">multiple Ruby interpreters on your system</a>. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
+    We need to tell Passenger which Ruby command it should use to run your app, just in case there are <a href="<%= url_for "/advanced_guides/in_depth/ruby/multiple_rubies.html" %>">multiple Ruby interpreters on your system</a>. Please run <code>passenger-config about ruby-command</code> to find out which Ruby interpreter you are using. For example:
   </p>
   <pre class="highlight"><span class="prompt">$ </span><%= passenger_command_prefix(locals) %>passenger-config about ruby-command
 <span class="output">passenger-config was invoked through the following Ruby interpreter:
@@ -234,7 +234,7 @@ You are now done. If you run into any problems, please refer to the [troubleshoo
 
 To deploy an app to an Apache virtual host's root path, the following steps must be taken:
 
- * Add a virtual host entry to your [Apache configuration file](<%= url_for "/install/apache/working_with_the_apache_config_file.html" %>).
+ * Add a virtual host entry to your [Apache configuration file](<%= url_for "/advanced_guides/install_and_upgrade/apache/working_with_the_apache_config_file.html" %>).
  * The virtual host's document root must point to your application's public subdirectory.
  * The Apache per-directory permissions must allow access to this directory.
  * MultiViews must be disabled for this directory.
@@ -358,7 +358,7 @@ When you are done, restart Apache:
 
 (Depending on your operating system, the right command may be `apache2ctl` instead of `apachectl`.)
 
-You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/apache/troubleshooting/index.html" %>).
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/apache/troubleshooting/ruby/" %>).
 
 
 ## Deploying an app to a sub-URI or subdirectory
@@ -435,7 +435,7 @@ When you are done, restart Apache:
 
 (Depending on your operating system, the right command may be `apache2ctl` instead of `apachectl`.)
 
-You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/admin/apache/troubleshooting/index.html" %>).
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/apache/troubleshooting/ruby/" %>).
 
 <% end %>
 
@@ -523,7 +523,7 @@ The reason why we prefix the command with `sudo` is because, in the Passengerfil
 
 Did you configure Passenger on port 80 in step 1? If so, then you can skip to step 4.
 
-Did you choose to configure Passenger on another port? Then please read [Putting Passenger Standalone behind an Nginx or Apache reverse proxy](<%= url_for "/deploy/standalone/reverse_proxy.html" %>).
+Did you choose to configure Passenger on another port? Then please read [Putting Passenger Standalone behind an Nginx or Apache reverse proxy](<%= url_for "/advanced_guides/deployment_and_scaling/standalone/reverse_proxy.html" %>).
 
 
 ## Step 4: make sure Passenger Standalone starts on system boot

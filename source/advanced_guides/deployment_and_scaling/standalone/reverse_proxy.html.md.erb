@@ -14,7 +14,7 @@ In some cases, you may want to put Passenger Standalone behind a reverse proxy. 
 
 There are two reasons why you may want to have this kind of reverse proxy:
 
- 1. You already have an existing Nginx or Apache installation, but you want to use Passenger Standalone instead of using Passenger's Nginx or Apache [integration modes](<%= url_for "/indepth/integration_modes.html" %>).
+ 1. You already have an existing Nginx or Apache installation, but you want to use Passenger Standalone instead of using Passenger's Nginx or Apache [integration modes](<%= url_for "/advanced_guides/in_depth/ruby/integration_modes.html" %>).
  2. You have multiple Passenger Standalone instances, and you want all of them to be accessible on the same port, just with different host names.
 
 ### Which reverse proxy are you using?
@@ -214,7 +214,7 @@ sudo a2enmod proxy_http</pre></td>
   </tr>
 </table>
 
-<p class="apache"><a href="<%= "/install/apache/working_with_the_apache_config_file.html" %>">Open the Apache configuration file</a>. Add virtual host entries for your applications foo and bar. While making the virtual host entries, you must determine what host names foo and bar should respond to. Let's say that foo should respond to <code>www.foo.com</code> and bar should respond to <code>www.bar.com</code>. Then the following entries will tell Apache to listen on port 80, and to handle requests for the domains <code>www.foo.com</code> and <code>www.bar.com</code> differently.</p>
+<p class="apache"><a href="<%= "/advanced_guides/install_and_upgrade/apache/working_with_the_apache_config_file.html" %>">Open the Apache configuration file</a>. Add virtual host entries for your applications foo and bar. While making the virtual host entries, you must determine what host names foo and bar should respond to. Let's say that foo should respond to <code>www.foo.com</code> and bar should respond to <code>www.bar.com</code>. Then the following entries will tell Apache to listen on port 80, and to handle requests for the domains <code>www.foo.com</code> and <code>www.bar.com</code> differently.</p>
 
 ~~~apache
 <VirtualHost *:80>

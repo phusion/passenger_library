@@ -4,13 +4,13 @@
 
 <figure><a href="http://capistranorb.com/"><img src="<%= url_for '/images/CapistranoLogo.png' %>" alt="Capistrano"></a></figure>
 
-If you have followed the [Ruby deployment tutorial](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
+If you have followed the [Ruby deployment tutorial](<%= url_for "/tutorials/deploy_to_production/" %>), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
 
 This guide teaches you how to automate the deployment of application updates through [Capistrano](http://capistranorb.com/). Capistrano is a popular task automation tool among Ruby developers. Once Capistrano is set up, deploying further application updates only takes a single command.
 
 **Notes:**
 
- * This guide assumes that you know how to manually deploy Ruby applications and how to manually deploy updates. Capistrano only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [Ruby deployment tutorial](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>).
+ * This guide assumes that you know how to manually deploy Ruby applications and how to manually deploy updates. Capistrano only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [Ruby deployment tutorial](<%= url_for "/tutorials/deploy_to_production/" %>).
  * This guide assumes you are using at least Passenger 5.0.13. This guide does not work with earlier Passenger versions.
 
 ----
@@ -53,7 +53,7 @@ Both of these are covered in this guide.
 
 ### Capistrano-style directory structure
 
-In the [deployment tutorial](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), we simply cloned our application code to `/var/www/myapp/code` and instructed Passenger serve the app from there. But if you use Capistrano's `capistrano/deploy` recipe to clone/pull from Git, it will use [a strictly defined directory structure](http://capistranorb.com/documentation/getting-started/structure/) on the server. Here is an example of how `/var/www/myapp` -- an example application directory -- will look like when Capistrano is used:
+In the [deployment tutorial](<%= url_for "/tutorials/deploy_to_production/" %>), we simply cloned our application code to `/var/www/myapp/code` and instructed Passenger serve the app from there. But if you use Capistrano's `capistrano/deploy` recipe to clone/pull from Git, it will use [a strictly defined directory structure](http://capistranorb.com/documentation/getting-started/structure/) on the server. Here is an example of how `/var/www/myapp` -- an example application directory -- will look like when Capistrano is used:
 
 <pre class="highlight">
 myapp
@@ -440,7 +440,7 @@ Install Git on your server if you haven't already:
 
 ### Setting up a user account (if you haven't already)
 
-If you have followed the [deployment tutorial](<%= url_for "/walkthroughs/deploy/ruby/index.html" %>), then you have already setup a user account for your application (`myappuser` in our example), for the sake of using Passenger's [user account sandboxing feature](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>).
+If you have followed the [deployment tutorial](<%= url_for "/tutorials/deploy_to_production/" %>), then you have already setup a user account for your application (`myappuser` in our example), for the sake of using Passenger's [user account sandboxing feature](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>).
 
 If not, you must set them up now. Login to your server(s), and run the following commands on each one:
 
@@ -560,7 +560,7 @@ Congratulations, you have learned how to automate deployments using Capistrano! 
 
 ## Related guides
 
- * [Zero-downtime app updates and restarts](<%= url_for "/deploy/#{integration_mode_type}/zero_downtime_redeployments/#{language_type}/index.html" %>)
+ * [Zero-downtime app updates and restarts](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/zero_downtime_redeployments/ruby/" %>)
 
 <% else %>
 <%
@@ -575,13 +575,13 @@ end
 # Automating deployments of <%= language_name %> application updates with shell scripts
 <%= render_partial('/shared/current_selection') %>
 
-If you have followed the [<%= language_name %> deployment tutorial](<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
+If you have followed the [<%= language_name %> deployment tutorial](<%= url_for "/tutorials/deploy_to_production/" %>), then you know that deploying application updates takes multiple steps. Performing all these steps every time you want to deploy application updates is time-consuming and error-prone.
 
 This guide teaches you how to automate the deployment of application updates with SSH and shell scripts. Once these scripts are set up, deploying further application updates only takes a single command.
 
 **Notes:**
 
- * This guide assumes that you know how to manually deploy <%= language_name %> applications and how to manually deploy updates. This guide only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [<%= language_name %> deployment tutorial](<%= url_for "/walkthroughs/deploy/#{language_type}/index.html" %>).
+ * This guide assumes that you know how to manually deploy <%= language_name %> applications and how to manually deploy updates. This guide only makes sense if you have that prior knowledge. If you are not experienced in deploying manually, please read the [<%= language_name %> deployment tutorial](<%= url_for "/tutorials/deploy_to_production/" %>).
  * This guide assumes you are using at least Passenger 5.0.13. This guide does not work with earlier Passenger versions.
 
 ----
