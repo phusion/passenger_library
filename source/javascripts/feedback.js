@@ -1,6 +1,6 @@
 const axios = require('axios');
 const uuidv4 = require('uuid/v4');
-const feedbackBaseUrl = 'https://feedback.phusionpassenger.com'
+const feedbackBaseUrl = 'http://localhost:3000'
 const feedbackApiVersion = 'v1'
 const feedbackUrl = `${feedbackBaseUrl}/api/${feedbackApiVersion}`
 
@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
         e.preventDefault();
         handleVote(true, elems);
-      })
+      }, { once: true })
       elems.no.addEventListener('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
         handleVote(false, elems);
-      })
+      }, { once: true })
     } else if(elems.vote == 'true') {
       disable(elems.buttons, elems.no);
     } else {
@@ -52,6 +52,9 @@ function getElements(feedback) {
 }
 
 function handleVote(vote, elems) {
+  if(getVote(elems.page) != null) {
+    return;
+  }
   storeVote(elems.page, vote);
   //send vote
   sendVote(elems.page, vote);
@@ -67,7 +70,7 @@ function handleVote(vote, elems) {
     sendReason(elems.page, elems.reasonBox.value)
     elems.reason.classList.add('hide');
     elems.thankYou.classList.remove('hide');
-  });
+  }, { once: true });
   //show reason box
   elems.reason.classList.remove('hide');
   //send reason
