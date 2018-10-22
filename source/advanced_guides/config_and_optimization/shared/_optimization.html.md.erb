@@ -17,11 +17,11 @@ If you are optimizing Passenger for the purpose of **benchmarking** then you sho
 
 ## Minimizing process spawning
 
-By default, Passenger [spawns and shuts down application processes according to traffic](<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html" %>). This allows it to use more resources during busy times, while conserving resources during idle times. This is especially useful if you host more than 1 app on a single server: if not all apps are used at the same time, then you don't have to keep all apps running at the same time.
+By default, Passenger [spawns and shuts down application processes according to traffic](<%= url_for "/advanced_guides/config_and_optimization/nginx/dynamic_scaling_vs_fixed_app_processes/ruby/" %>). This allows it to use more resources during busy times, while conserving resources during idle times. This is especially useful if you host more than 1 app on a single server: if not all apps are used at the same time, then you don't have to keep all apps running at the same time.
 
 However, spawning a process takes a lot of time (in the order of 10-20 seconds for a Rails app), and CPU usage will be near 100% during spawning. Therefore, while spawning, your server will be slower at performing other activities, such as handling requests.
 
-For consistent performance, it is thus recommended that you configure a [fixed process pool](<%= url_for "/config/#{integration_mode_type}/dynamic_scaling_vs_fixed_app_processes/index.html" %>?a=fixed): telling Passenger to use a fixed number of processes, instead of spawning and shutting them down dynamically.
+For consistent performance, it is thus recommended that you configure a [fixed process pool](<%= url_for "/advanced_guides/config_and_optimization/nginx/dynamic_scaling_vs_fixed_app_processes/ruby/" %>?a=fixed): telling Passenger to use a fixed number of processes, instead of spawning and shutting them down dynamically.
 
 <% if integration_mode_type == :nginx %>
   <p>
@@ -37,7 +37,7 @@ For consistent performance, it is thus recommended that you configure a [fixed p
   <pre class="highlight">passenger_min_instances N;</pre>
 
   <p>
-    You should also configure <a href="<%= url_for "/config/nginx/reference/index.html" %>#passenger_pre_start">passenger_pre_start</a> in the <code>http</code> block so that your app is started during web server launch:
+    You should also configure <a href="<%= url_for "/references/config_reference/nginx/" %>#passenger_pre_start">passenger_pre_start</a> in the <code>http</code> block so that your app is started during web server launch:
   </p>
 
   <pre class="highlight">passenger_pre_start http://your-website-url.com;</pre>
@@ -55,7 +55,7 @@ For consistent performance, it is thus recommended that you configure a [fixed p
   <pre class="highlight">PassengerMinInstances N</pre>
 
   <p>
-    You should also configure <a href="<%= url_for "/config/apache/reference/index.html" %>#passengerprestart">PassengerPreStart</a> in the global context so that your app is started during web server launch:
+    You should also configure <a href="<%= url_for "/references/config_reference/apache/" %>#passengerprestart">PassengerPreStart</a> in the global context so that your app is started during web server launch:
   </p>
 
   <pre class="highlight">PassengerPreStart http://your-website-url.com</pre>
@@ -188,7 +188,7 @@ Configure:
  * `passenger_concurrency_model thread;`
  * `passenger_thread_count <desired_app_threads_per_process>;`
  * `passenger_pre_start` to have your app started automatically at web server boot.
- * If `desired_app_processes` is 1, then you should set `passenger_spawn_method direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
+ * If `desired_app_processes` is 1, then you should set `passenger_spawn_method direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/advanced_guides/in_depth/ruby/spawn_methods.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
 <% elsif integration_mode_type == :apache %>
 Configure:
 
@@ -197,10 +197,10 @@ Configure:
  * `PassengerConcurrencyModel thread`
  * `PassengerThreadCount <desired_app_threads_per_process>`
  * `PassengerPreStart` to have your app started automatically at web server boot.
- * If `desired_app_processes` is 1, then you should set `PassengerSpawnMethod direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
+ * If `desired_app_processes` is 1, then you should set `PassengerSpawnMethod direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/advanced_guides/in_depth/ruby/spawn_methods.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
 <% else %>
  * Run `passenger start` with `--max-pool-size=<CHOSEN_NUMBER_OF_PROCESSES> --min-instances=<CHOSEN_NUMBER_OF_PROCESSES> --concurrency-model=thread --thread-count=<desired_app_threads_per_process>`
- * If `desired_app_processes` is 1, then you should also add `--spawn-method=direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/indepth/spawn_methods/index.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
+ * If `desired_app_processes` is 1, then you should also add `--spawn-method=direct`. By using direct spawning instead of smart spawning, Passenger will not keep a Preloader process around, saving you some memory (learn more at [Spawn methods](<%= url_for "/advanced_guides/in_depth/ruby/spawn_methods.html" %>)). This is because a Preloader process is useless when there's only 1 application process.
 <% end %>
 
 #### Possible step 4: configure Rails
@@ -404,7 +404,7 @@ It should be noted that the builtin HTTP engine has fewer features than the Ngin
   <div class="note">
     <h3 class="notoc">There is a version of this Optimization Guide for the Standalone mode</h3>
     <p>
-      You are currently reading the <%= integration_mode_name %> version of this Optimization Guide. Have you decided to switch to Passenger Standalone? <a href="<%= url_for "/config/standalone/optimization/index.html" %>">Read the Passenger Standalone version of this guide.</a>
+      You are currently reading the <%= integration_mode_name %> version of this Optimization Guide. Have you decided to switch to Passenger Standalone? <a href="<%= url_for "/advanced_guides/config_and_optimization/nginx/optimization.html" %>">Read the Passenger Standalone version of this guide.</a>
     </p>
   </div>
 <% end %>
@@ -429,7 +429,7 @@ It should be noted that the builtin HTTP engine has fewer features than the Ngin
  * If the purpose of your benchmark is to compare against Puma, Unicorn or other app servers, be sure to benchmark against Passenger Standalone, not Passenger for Nginx or Passenger for Apache.
    - This is because Puma, Unicorn and other app servers are standalone servers, while Passenger for Nginx and Passenger for Apache introduce additional layers (namely Nginx and Apache), making the comparison unfair.
    - Be sure to [start Passenger Standalone with the `builtin` engine](#using-passenger-standalone-with-the-builtin-http-engine).
-   - See also: [Integration modes](<%= "/indepth/integration_modes.html" %>)
+   - See also: [Integration modes](<%= "/advanced_guides/in_depth/ruby/integration_modes.html" %>)
  * Configure Passenger to [use a static number of processes](#minimizing-process-spawning). The number of processes should be a multiple of the number of CPU cores if you are using MRI.
  * Ensure that your app outputs HTTP caching headers, so that Passenger's [turbocaching](#turbocaching) can kick in.
  * Pay attention to the actual responses from the app servers, especially error codes (any http code >= 400), and dropped requests. Puma for example drops requests when it cannot keep up with the load in our testing.
@@ -440,4 +440,3 @@ It should be noted that the builtin HTTP engine has fewer features than the Ngin
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/config_and_optimization/index.html" %>">Back</a>
 </div>
-

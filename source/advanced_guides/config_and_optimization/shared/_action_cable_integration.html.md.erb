@@ -84,7 +84,7 @@ You need to insert a `location` block which configures the Action Cable end poin
 
  * Replace `/cable` with the actual Action Cable path as is specified in your routes.rb.
  * Replace `YOUR_APP_NAME_HERE` with a unique identifier that doesn't appear anywhere else in the Nginx configuration file.
- * The <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> option tunes Passenger for [optimal WebSocket performance](<%= url_for '/config/nginx/tuning_sse_and_websockets/index.html' %>).
+ * The [passenger_force_max_concurrent_requests_per_process](<%= url_for "/references/config_reference/nginx/#passenger_force_max_concurrent_requests_per_process" %>) option tunes Passenger for [optimal WebSocket performance](<%= url_for "/advanced_guides/config_and_optimization/nginx/tuning_sse_and_websockets.html" %>).
 
 ## Running the Action Cable server on a different host or port
 
@@ -121,28 +121,30 @@ Create a virtual host entry as follows:
 }</pre>
 
  * Replace `YOUR_APP_NAME_HERE` with a unique identifier that doesn't appear anywhere else in the Nginx configuration file.
- * The <%= link_to_config_option(:force_max_concurrent_requests_per_process, locals) %> option tunes Passenger for [optimal WebSocket performance](<%= url_for '/config/nginx/tuning_sse_and_websockets/index.html' %>).
+ * The [passenger_force_max_concurrent_requests_per_process](<%= url_for "/references/config_reference/nginx/#passenger_force_max_concurrent_requests_per_process" %>) option tunes Passenger for [optimal WebSocket performance](<%= url_for "/advanced_guides/config_and_optimization/nginx/tuning_sse_and_websockets.html" %>).
 
 ## Restarting the Action Cable server
 
-_Main article: [Restarting applications](<%= url_for '/admin/nginx/restart_app.html' %>)_
+_Main article: [Restarting applications](<%= url_for '/advanced_guides/troubleshooting/nginx/restart_app.html' %>)_
 
 If you want to restart the Action Cable server, then you must use the `passenger-config restart-app` command. Touching `restart.txt` does not work well, because restart.txt is checked at the beginning of every new request. But WebSockets are persistent, so restart.txt won't be checked often.
 
 ## See also
 
- * [Passenger + Ruby on Rails integration](<%= url_for '/dev/ruby/rails_integration.html' %>)
+ * [Passenger + Ruby on Rails integration](<%= url_for '/advanced_guides/developing_with_passenger/ruby/rails_integration.html' %>)
 
 <% end %>
 
 <% if integration_mode_type == :apache %>
-Action Cable is currently not supported on Passenger + Apache. Please use [Passenger Standalone](<%= url_for '/config/standalone/action_cable_integration/index.html' %>) or [Passenger + Nginx](<%= url_for '/config/nginx/action_cable_integration/index.html' %>) instead.
+<div class="info">
+  Action Cable is currently not supported on Passenger + Apache. Please use Passenger Standalone or Passenger + Nginx instead by selecting the correct integration.
+</div>
 
-If you cannot move away from Apache, please consider [putting Passenger Standalone behind an Apache reverse proxy](<%= url_for '/deploy/standalone/reverse_proxy.html' %>).
+If you cannot move away from Apache, please consider [putting Passenger Standalone behind an Apache reverse proxy](<%= url_for '/advanced_guides/deployment_and_scaling/standalone/reverse_proxy.html' %>).
 
 ## See also
 
- * [Passenger + Ruby on Rails integration](<%= url_for '/dev/ruby/rails_integration.html' %>)
+ * [Passenger + Ruby on Rails integration](<%= url_for '/advanced_guides/developing_with_passenger/ruby/rails_integration.html' %>)
 
 <% end %>
 
@@ -177,7 +179,7 @@ Suppose that your routes.rb contains a call which mounts the Action Cable server
 mount ActionCable.server => '/cable'
 ~~~
 
-To make this work in Passenger Standalone, you need to tell Passenger that you are running Action Cable inside your Rails application, and you need to tell Passenger what path it's listening on. In your [Passengerfile.json](<%= url_for '/config/standalone/intro.html' %>), specify the [`--unlimited-concurrency-path` / "unlimited_concurrency_paths"](<%= url_for '/config/standalone/reference/index.html' %>#--unlimited-concurrency-path-unlimited_concurrency_paths) option:
+To make this work in Passenger Standalone, you need to tell Passenger that you are running Action Cable inside your Rails application, and you need to tell Passenger what path it's listening on. In your [Passengerfile.json](<%= url_for '/advanced_guides/config_and_optimization/standalone/intro.html' %>), specify the [`--unlimited-concurrency-path` / "unlimited_concurrency_paths"](<%= url_for '/references/config_reference/standalone/' %>#--unlimited-concurrency-path-unlimited_concurrency_paths) option:
 
 ~~~json
 {
@@ -265,7 +267,7 @@ The above code assumes that you have Passenger in your Gemfile. If you don't hav
 <pre class="highlight">#!/bin/sh
 exec env NOEXEC_EXCLUDE=passenger passenger start -p <span class="si">YOUR_ACTION_CABLE_PORT_NUMBER_HERE</span> -R cable/config.ru --force-max-concurrent-requests-per-process 0</pre>
 
-The <%= link_to_config_option :force_max_concurrent_requests_per_process, locals.merge(integration_mode_type: :standalone) %> option tunes Passenger for [optimal WebSocket performance](<%= url_for '/config/standalone/tuning_sse_and_websockets/index.html' %>).
+The <code>--force-max-concurrent-requests-per-process</code>/"[force_max_concurrent_requests_per_process](<%= url_for '/references/config_reference/standalone/#--force-max-concurrent-requests-per-process-force_max_concurrent_requests_per_process' %>)" option tunes Passenger for [optimal WebSocket performance](<%= url_for '/advanced_guides/config_and_optimization/standalone/tuning_sse_and_websockets.html' %>).
 
 When done, make the file executable:
 
@@ -281,13 +283,13 @@ Congratulations, you are done!
 
 ### Restarting the Action Cable server
 
-_Main article: [Restarting applications](<%= url_for '/admin/standalone/restart_app.html' %>)_
+_Main article: [Restarting applications](<%= url_for '/advanced_guides/troubleshooting/standalone/restart_app.html' %>)_
 
 If you want to restart the Action Cable server, then you must use the `passenger-config restart-app` command. Touching `restart.txt` does not work well, because restart.txt is checked at the beginning of every new request. But WebSockets are persistent, so restart.txt won't be checked often.
 
 ## See also
 
- * [Passenger + Ruby on Rails integration](<%= url_for '/dev/ruby/rails_integration.html' %>)
+ * [Passenger + Ruby on Rails integration](<%= url_for '/advanced_guides/developing_with_passenger/ruby/rails_integration.html' %>)
 
 <% end %>
 
