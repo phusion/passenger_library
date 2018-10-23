@@ -33,7 +33,7 @@ end
     <% end %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css"
 />
-    <%= stylesheet_link_tag '/stylesheets/bundle.css', relative: (not current_page.data.absolute_paths) %>
+    <%= stylesheet_link_tag('bundle', relative: (not current_page.data.absolute_paths)).html_safe %>
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Open+Sans:400,600" rel="stylesheet" type="text/css">
     <% if current_page.data.skip_search || @skip_search %>
       <meta name="st:robots" content="noindex">
