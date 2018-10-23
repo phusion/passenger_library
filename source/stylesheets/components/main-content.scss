@@ -218,6 +218,10 @@
   border: 1px solid #35373B;
   margin: 60px 0 40px;
   border-top-left-radius: 0;
+
+  pre {
+    margin-top: 20px;
+  }
 }
 
 #main-content .info::before {
@@ -253,6 +257,10 @@
   border: 1px solid #35373B;
   margin: 60px 0 40px;
   border-top-left-radius: 0;
+
+  pre {
+    margin-top: 20px;
+  }
 }
 
 #main-content .note::before {
@@ -280,6 +288,10 @@
   margin: 60px 0 40px;
   border: 1px solid #35373B;
   border-top-left-radius: 0;
+
+  pre {
+    margin-top: 20px;
+  }
 }
 
 #main-content .warning::before {
