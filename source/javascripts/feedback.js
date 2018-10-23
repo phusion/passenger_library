@@ -1,6 +1,6 @@
 const axios = require('axios');
 const uuidv4 = require('uuid/v4');
-const feedbackBaseUrl = 'http://localhost:3000'
+const feedbackBaseUrl = 'https://feedback.phusionpassenger.com'
 const feedbackApiVersion = 'v1'
 const feedbackUrl = `${feedbackBaseUrl}/api/${feedbackApiVersion}`
 
@@ -52,6 +52,8 @@ function getElements(feedback) {
 }
 
 function handleVote(vote, elems) {
+  let textarea = document.querySelector('#feedback textarea');
+
   if(getVote(elems.page) != null) {
     return;
   }
@@ -60,8 +62,10 @@ function handleVote(vote, elems) {
   sendVote(elems.page, vote);
   if(vote) {
     disable(elems.buttons, elems.no);
+    textarea.placeholder = 'Thank you! Would you mind telling us what you liked? [optional]';
   } else {
     disable(elems.buttons, elems.yes);
+    textarea.placeholder = 'We\'re sorry to hear that, could you tell us how we can improve? [optional]';
   }
   //attach send reason event handler
   elems.reasonButton.addEventListener('click', (e) => {

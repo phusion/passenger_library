@@ -1,9 +1,9 @@
 #new-item, #right-content-toc {
   #feedback {
     .hide {
-      display: none;
+      display: none !important;
     }
-    margin-top: 20px;
+    margin-top: 30px;
     p {
       font-weight: 400;
       font-size: 14px;
@@ -50,16 +50,41 @@
       }
     }
     .reason {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 20px;
+      width: 150px;
+
       textarea {
+        height: 80px;
         border: 1px solid #BABECD;
         border-radius: 4px;
         color: #35373B;
         font-family: 'Inter UI', 'Helvetica', sans-serif;
         margin-top: 10px;
+        font-size: 11px;
+        padding: 5px;
+        line-height: 15px;
+
+        &:focus {
+          outline: 0;
+          box-shadow: 2px 2px 8px #C3C3C3;
+        }
+      }
+
+      .dark-button {
+        border: none;
+        margin-top: 10px;
+        padding: 9px 20px;
+        cursor: pointer;
       }
     }
     .thank-you {
-      margin-top: 10px;
+      line-height: 21px;
+      margin-top: 16px;
+      font-size: 11px;
+      width: 150px;
     }
   }
 }
