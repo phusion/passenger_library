@@ -2,12 +2,16 @@
   width: 215px;
   margin-right: 16px;
   position: relative;
+
+  img:-moz-loading {
+    visibility: hidden;
+  }
 }
 
 #left-nav-content {
   margin-top: 5px;
   background: #fff;
-  transition: .6s transform;
+  transition: .2s transform ease-out;
 }
 
 #left-nav-content span {
