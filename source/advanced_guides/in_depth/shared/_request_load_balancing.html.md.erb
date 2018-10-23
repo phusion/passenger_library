@@ -17,7 +17,7 @@ At its core, Passenger is a process manager and HTTP request router. In order to
 <% end %>
 With Passenger this is improved by running multiple processes of the application using pooled application groups. For each request from the incoming request queue, a non-busy (free) application process is selected to handle the request.
 
-<div><img src="<%= url_for "/images/request_load_balancing.png" %>" alt="request load balancing"></div>
+<div><img class="request-load-balancing" src="<%= url_for "/images/request_load_balancing.png" %>" alt="request load balancing"></div>
 
 <% if language_type == :ruby %>
   For thread-safe Ruby apps it is also possible to enable [multithreading](<%= url_for "/references/config_reference/nginx/#passenger_concurrency_model" %>), which allows the application processes to concurrently handle multiple requests at the same time -- up to the amount of threads configured. In this case, Passenger forwards the request to the instance that is currently handling the least number of requests.
@@ -28,7 +28,7 @@ If all application processes and threads are busy, Passenger spawns a new instan
 <% elsif language_type == :nodejs || language_type == :meteor %>
 <%= language_name %> applications normally execute in a single thread/process, using a single CPU core. Passenger enables running multiple instances of the application (multiple processes) using pooled application groups, distributing requests to the process that is currently handling the least amount of requests.
 
-<div><img src="<%= url_for "/images/request_load_balancing.png" %>" alt="request load balancing"></div>
+<div><img class="request-load-balancing" src="<%= url_for "/images/request_load_balancing.png" %>" alt="request load balancing"></div>
 
 In this way, load can be distributed across multiple cores without using [the cluster module](https://nodejs.org/api/cluster.html). Assuming a properly written asynchronous app, incoming requests will be handled concurrently (i.e. the next request can already start being handled while the previous is still being handled), and the Passenger request queue will remain empty.
 

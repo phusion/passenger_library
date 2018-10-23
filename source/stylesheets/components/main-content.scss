@@ -153,6 +153,20 @@
   background: #f9f9f9;
 }
 
+#main-content .batch {
+  max-height: 500px;
+  margin-bottom: 20px;
+}
+
+#main-content .smart-spawning {
+  max-height: 350px;
+}
+
+#main-content .request-load-balancing {
+  max-height: 350px;
+  margin-bottom: 40px;
+}
+
 #main-content figure figcaption {
   font-size: 12px;
   line-height: 16px;
