@@ -15,15 +15,16 @@ when :enterprise
   item_text = 'Try Enterprise'
   item_link = 'https://www.phusionpassenger.com/install'
 when :stream
+  smaller_font = 'smaller-font'
   item_class = 'stream'
   item_image = url_for("/images/stream.png")
-  item_text = 'Live stream'
-  item_link = 'https://www.phusionpassenger.com/install'
+  item_text = 'Join livestream'
+  item_link = 'https://blog.phusion.nl/2018/10/19/livestreaming-from-phusion-hq-adding-a-feature-to-passenger/'
 end
 %>
 
 <div id="new-item">
   <img class="<%= item_class %>" src="<%= item_image %>" alt="<%= item_text %>"/>
-  <a class="light-button" href="<%= item_link %>"><%= item_text %></a>
+  <a class="light-button <%= smaller_font %>" href="<%= item_link %>"><%= item_text %></a>
   <img src="<%= url_for "/images/feedback_placeholder.svg" %>" alt="feedback"/>
 </div>
