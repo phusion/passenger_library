@@ -41,9 +41,9 @@ Using `restart.txt` to restart the app is still supported, but with the new defa
 
 If you want to revert to the old restart.txt behavior (where any change is noticed immediately on the next request), set
 <% if integration_mode_type == :apache -%>
-  [PassengerStatThrottleRate](<%= url_for '/config/apache/reference/index.html' %>#passengerstatthrottlerate)
+  [PassengerStatThrottleRate](<%= url_for '/references/config_reference/nginx/' %>#passengerstatthrottlerate)
 <% elsif integration_mode_type == :nginx || integration_mode_type == :standalone -%>
-  [passenger_stat_throttle_rate](<%= url_for '/config/nginx/reference/index.html' %>#passenger_stat_throttle_rate) (using [the Nginx configuration template](<%= url_for '/config/standalone/intro.html' %>#nginx-configuration-template))
+  [passenger_stat_throttle_rate](<%= url_for '/references/config_reference/nginx/' %>#passenger_stat_throttle_rate) (using [the Nginx configuration template](<%= url_for '/advanced_guides/config_and_optimization/nginx/intro.html' %>#nginx-configuration-template))
 <% else -%>
   <% raise 'Unknown integration mode' %>
 <% end -%>
@@ -55,18 +55,18 @@ to 0.
  * When using Rack's full socket hijacking, you must now output an HTTP status line.
 <% if integration_mode_type == :nginx %>
  * The minimum required Nginx version is now 1.6.0.
- * The `passenger_set_cgi_param` option has been removed and replaced by [passenger_set_header](<%= url_for '/config/nginx/reference/index.html' %>#passenger_set_header) and [passenger_env_var](<%= url_for '/config/nginx/reference/index.html' %>#passenger_env_var).
- * [passenger_show_version_in_header](<%= url_for '/config/nginx/reference/index.html' %>#passenger_show_version_in_header) is now only valid in the `http` context.
- * The [passenger_enabled on](<%= url_for '/config/nginx/reference/index.html' %>#passenger_enabled) directive is now inherited across location blocks. This wasn't the case previously, so you had to re-specify it inside location blocks. Now the opposite holds: if you specified `passenger_enabled on` in the server block, then you have to explicitly specify `passenger_enabled off` in all location blocks where you disabled Passenger.
- * The `passenger_temp_dir` option has been replaced by two config options: [passenger_instance_registry_dir](<%= url_for '/config/nginx/reference/index.html' %>#passenger_instance_registry_dir) and [passenger_data_buffer_dir](<%= url_for '/config/nginx/reference/index.html' %>#passenger_data_buffer_dir).
+ * The `passenger_set_cgi_param` option has been removed and replaced by [passenger_set_header](<%= url_for '/references/config_reference/nginx/' %>#passenger_set_header) and [passenger_env_var](<%= url_for '/references/config_reference/nginx/' %>#passenger_env_var).
+ * [passenger_show_version_in_header](<%= url_for '/references/config_reference/nginx/' %>#passenger_show_version_in_header) is now only valid in the `http` context.
+ * The [passenger_enabled on](<%= url_for '/references/config_reference/nginx/' %>#passenger_enabled) directive is now inherited across location blocks. This wasn't the case previously, so you had to re-specify it inside location blocks. Now the opposite holds: if you specified `passenger_enabled on` in the server block, then you have to explicitly specify `passenger_enabled off` in all location blocks where you disabled Passenger.
+ * The `passenger_temp_dir` option has been replaced by two config options: [passenger_instance_registry_dir](<%= url_for '/references/config_reference/nginx/' %>#passenger_instance_registry_dir) and [passenger_data_buffer_dir](<%= url_for '/references/config_reference/nginx/' %>#passenger_data_buffer_dir).
 <% end %>
 <% if integration_mode_type == :apache %>
- * The [PassengerStatThrottleRate](<%= url_for '/config/apache/reference/index.html' %>#passengerstatthrottlerate) option is now global.
- * The `PassengerTempDir` option has been replaced by two config options: [PassengerInstanceRegistryDir](<%= url_for '/config/apache/reference/index.html' %>#passengerinstanceregistrydir) and [PassengerDataBufferDir](<%= url_for '/config/apache/reference/index.html' %>#passengerdatabufferdir).
- * The `PassengerUploadBufferDir` option has been replaced by [PassengerDataBufferDir](<%= url_for '/config/apache/reference/index.html' %>#passengerdatabufferdir).
+ * The [PassengerStatThrottleRate](<%= url_for '/references/config_reference/nginx/' %>#passengerstatthrottlerate) option is now global.
+ * The `PassengerTempDir` option has been replaced by two config options: [PassengerInstanceRegistryDir](<%= url_for '/references/config_reference/nginx/' %>#passengerinstanceregistrydir) and [PassengerDataBufferDir](<%= url_for '/references/config_reference/nginx/' %>#passengerdatabufferdir).
+ * The `PassengerUploadBufferDir` option has been replaced by [PassengerDataBufferDir](<%= url_for '/references/config_reference/nginx/' %>#passengerdatabufferdir).
 <% end %>
 <% if integration_mode_type == :standalone %>
- * The [Nginx configuration template](<%= url_for '/config/standalone/intro.html' %>#nginx-configuration-template) has changed. Users are encouraged to update it.
+ * The [Nginx configuration template](<%= url_for '/advanced_guides/config_and_optimization/nginx/intro.html' %>#nginx-configuration-template) has changed. Users are encouraged to update it.
  * `passenger-standalone.json` has been renamed to `Passengerfile.json`.
  * `passenger-standalone.json`/`Passengerfile.json` no longer overrides command line options. Instead, command line options now have the highest priority.
 <% end %>

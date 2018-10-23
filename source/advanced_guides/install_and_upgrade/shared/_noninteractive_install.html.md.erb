@@ -3,7 +3,7 @@
 
 Passenger and Passenger Enterprise can be installed in a non-interactive, automatic, headless manner. This is perfect in automated scenarios, e.g. when using Chef or Puppet, or when building a Docker container.
 
-This guide assumes that you are already familiar with installing Passenger manually. If not, please read the [installation guide](.).
+This guide assumes that you are already familiar with installing Passenger manually. If not, please read the [installation guide](<%= url_for "/advanced_guides/install_and_upgrade/nginx/install/" %>).
 
 The instructions in this guide apply equally to the open source version and to the Enterprise version.
 
@@ -13,13 +13,13 @@ The instructions in this guide apply equally to the open source version and to t
 
 ## Debian packages
 
-If you are on a Debian or Ubuntu operating system, then the recommended way to install Passenger is through [APT](apt_repo/). While installing the Passenger packages through APT, you can pass `-y` to `apt-get install` to have it run non-interactively. For example:
+If you are on a Debian or Ubuntu operating system, then the recommended way to install Passenger is through [APT](<%= url_for "/advanced_guides/install_and_upgrade/nginx/apt_repo.html" %>). While installing the Passenger packages through APT, you can pass `-y` to `apt-get install` to have it run non-interactively. For example:
 
     sudo apt-get install -y passenger
 
 ## RPM packages
 
-If you are on a Red Hat or CentOS operating system, then the recommended way to install Passenger is through [YUM](yum_repo/). While installing the Passenger packages through YUM, you can pass `-y` to `yum install` to have it run non-interactively. For example:
+If you are on a Red Hat or CentOS operating system, then the recommended way to install Passenger is through [YUM](<%= url_for "/advanced_guides/install_and_upgrade/nginx/yum_repo.html" %>). While installing the Passenger packages through YUM, you can pass `-y` to `yum install` to have it run non-interactively. For example:
 
     sudo yum install -y --enablerepo=epel passenger
 
@@ -41,7 +41,7 @@ If you are on a Red Hat or CentOS operating system, then the recommended way to 
       <pre class="highlight">passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx</pre>
 
       <p>
-        You can also achieve non-interactive installation by <a href="<%= url_for "/install/nginx/install_as_nginx_module.html" %>">installing Passenger as a normal Nginx module</a>.
+        You can also achieve non-interactive installation by <a href="<%= url_for "/advanced_guides/install_and_upgrade/nginx/install_as_nginx_module.html" %>">installing Passenger as a normal Nginx module</a>.
       </p>
     <% else %>
       <pre class="highlight">passenger-install-apache2-module --auto</pre>

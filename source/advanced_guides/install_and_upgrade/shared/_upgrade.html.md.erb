@@ -63,7 +63,7 @@ brew upgrade <span class="formula_name">passenger</span></pre>
   </div>
 <% end %>
 
-If <span class="edition_title">Passenger</span> was installed through the Phusion Passenger [APT repository](<%= url_for "/install/#{integration_mode_type}/apt_repo/index.html" %>), then you can upgrade <span class="edition_title">Passenger</span>
+If <span class="edition_title">Passenger</span> was installed through the Phusion Passenger [APT repository](<%= url_for "/advanced_guides/install_and_upgrade/nginx/apt_repo.html" %>), then you can upgrade <span class="edition_title">Passenger</span>
 <% if integration_mode_type != :standalone -%>
   along with <%= integration_mode_name %>
 <% end -%>
@@ -77,11 +77,11 @@ through APT using the following command:
 If you don't see any updates, then there are two possible reasons:
 
  1. Our Debian packages haven't been released yet. When we release a new version of <span class="edition_title">Passenger</span>, it typically takes 1-2 hours for our server to build Debian packages.
- 2. If you are using a non-Long Term Support version of Ubuntu, then it is possible that we have [dropped support for that Ubuntu version](<%= url_for "/install/#{integration_mode_type}/apt_repo/index.html" %>#limited-package-support-for-non-lts-ubuntu-versions).
+ 2. If you are using a non-Long Term Support version of Ubuntu, then it is possible that we have [dropped support for that Ubuntu version](<%= url_for "/advanced_guides/install_and_upgrade/nginx/apt_repo.html" %>#limited-package-support-for-non-lts-ubuntu-versions).
 
 <h2 id="redhat_centos">RPM packages (Red Hat, CentOS)</h2>
 
-If <span class="edition_title">Passenger</span> was installed through the Phusion Passenger [YUM repository](<%= url_for "/install/#{integration_mode_type}/yum_repo/index.html" %>), then you can upgrade <span class="edition_title">Passenger</span>
+If <span class="edition_title">Passenger</span> was installed through the Phusion Passenger [YUM repository](<%= url_for "/advanced_guides/install_and_upgrade/nginx/yum_repo.html" %>), then you can upgrade <span class="edition_title">Passenger</span>
 <% if integration_mode_type != :standalone -%>
   along with <%= integration_mode_name %>
 <% end -%>
@@ -109,7 +109,7 @@ Please refer to [the passenger-docker website](https://github.com/phusion/passen
 
 <h2 id="source_tarball">Source tarball</h2>
 
-If <span class="edition_title">Passenger</span> was installed through a source tarball, then please follow the [source tarball upgrade guide](tarball_upgrade.html).
+If <span class="edition_title">Passenger</span> was installed through a source tarball, then please follow the [source tarball upgrade guide](<%= url_for "/advanced_guides/install_and_upgrade/nginx/install/oss/tarball.html" %>).
 
 <% if integration_mode_type == :standalone %>
   <!-- ****** Ruby gemfile ****** -->
@@ -131,8 +131,8 @@ If Passenger was installed through RubyGems,
 <% end -%>
 then upgrading Passenger involves going through the normal installation process again. Please follow the installation guide that is most relevant to you:
 
- * [Installation guide with RVM](<%= url_for "/install/#{integration_mode_type}/install/oss/rubygems_rvm/index.html" %>)
- * [Installation guide without RVM](<%= url_for "/install/#{integration_mode_type}/install/oss/rubygems_norvm/index.html" %>)
+ * [Installation guide with RVM](<%= url_for "/advanced_guides/install_and_upgrade/nginx/install/oss/rubygems_rvm.html" %>)
+ * [Installation guide without RVM](<%= url_for "/advanced_guides/install_and_upgrade/nginx/install/oss/rubygems_norvm.html" %>)
 
 Please *ignore the warning* there that tells you that the guide is not for updates.
 

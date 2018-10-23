@@ -431,6 +431,11 @@
   margin-top: 20px;
 }
 
+#main-content .unsupported_redhat_instructions,
+#main-content .unsupported_debian_instructions {
+  line-height: 26px;
+}
+
 #main-content .img-thumbnail {
   margin: 20px 0;
   border: 1px solid #ddd;

@@ -5,8 +5,8 @@ Passenger comes in two variants: an open source version, as well as an [Enterpri
 
 Customers who have bought Passenger Enterprise can upgrade their open source installation to Enterprise as follows:
 
- 1. [Uninstall the open source Passenger](uninstall/oss/).
- 2. Install Passenger Enterprise by following one of the [deployment tutorials](../../walkthroughs/deploy/) or [installation guides](.). When following a deployment tutorial, be sure to select "I use am using the Enterprise edition" during the "Open source vs Enterprise" step.
+ 1. [Uninstall the open source Passenger](<%= url_for "/advanced_guides/install_and_upgrade/standalone/uninstall.html" %>).
+ 2. Install Passenger Enterprise by following one of the [deployment tutorials](<%= url_for "/tutorials/deploy_to_production/" %>) or [installation guides](.). When following a deployment tutorial, be sure to select "I use am using the Enterprise edition" during the "Open source vs Enterprise" step.
 
 The uninstallation is necessary because the Enterprise Ruby gem has a different gem name ('passenger-enterprise-server' instead of 'passenger'), but the same administration command names (e.g. `passenger-status`). Uninstalling the open source version avoids any conflicts.
 

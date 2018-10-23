@@ -10,7 +10,7 @@ disabled_integrations:
 # Working with the Apache configuration file
 <%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
-If you want to [install Passenger in its Apache integration mode](<%= url_for "/install/apache/install/index.html" %>) then you will reach a point where you have to edit Apache the configuration file. This page provides information for those who are not familiar with how the Apache configuration file and its related directories are organized.
+If you want to [install Passenger in its Apache integration mode](<%= url_for "/advanced_guides/install_and_upgrade/apache/install/" %>) then you will reach a point where you have to edit Apache the configuration file. This page provides information for those who are not familiar with how the Apache configuration file and its related directories are organized.
 
 ## The location of the Apache configuration file
 
@@ -57,8 +57,8 @@ If the `mods-enabled` mechanism is not available then you can paste configuratio
 
 ## See also
 
- * [Deployment tutorial](<%= url_for '/walkthroughs/deploy/index.html' %>)
- * [Integration modes](<%= url_for '/indepth/integration_modes.html' %>)
+ * [Deployment tutorial](<%= url_for '/tutorials/deploy_to_production/' %>)
+ * [Integration modes](<%= url_for '/advanced_guides/in_depth/ruby/integration_modes.html' %>)
  * [Unixmen.com: How to enable and disable Apache modules](http://www.unixmen.com/how-to-enable-and-disable-apache-modules/)
  * [Ubuntu manual page for 'a2enmod'](http://manpages.ubuntu.com/manpages/trusty/man8/a2enmod.8.html)
 
