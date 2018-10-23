@@ -92,9 +92,7 @@ set :markdown_engine, :kramdown
 set :relative_links, true
 
 activate :syntax
-activate :relative_assets do |assets|
-  assets.rewrite_ignore = ["/404.html"]
-end
+activate :relative_assets
 
 configure :development do
   set :url_root, DEVELOPMENT_URL_ROOT
