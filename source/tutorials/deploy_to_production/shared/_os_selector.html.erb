@@ -5,7 +5,7 @@
     <option value="none" selected>Please select an operating system / installation method</option>
     <option value="debian">Debian, Ubuntu (with APT)</option>
     <option value="redhat">Red Hat, CentOS (with RPM)</option>
-    <% if [:ownserver, nil].include? locals[:infrastructure_type] %><option value="osx">macOS</option><% end %>
+    <option data-ownserver_only value="osx">macOS</option>
     <option value="other">Other / OS independent (generic installation method)</option>
   </select>
   <span class="arrow-down"></span>
