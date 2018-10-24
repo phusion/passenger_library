@@ -16,7 +16,7 @@ This guide teaches you how you can deploy your app to a server. This guide assum
   <li>You have already installed all necessary dependencies that your application needs.</li>
 </ul>
 
-If you miss one of these prerequisites or don't know how to perform it, then we recommend you to follow the [Deployment tutorial](<%= url_for "/tutorials/deploy_to_production/" %>). The deployment tutorial is end-to-end guide and teaches you how to install every component.
+If you miss one of these prerequisites or don't know how to perform it, then we recommend you to follow the [Deployment tutorial](<%= url_for "/tutorials/deploy_to_production/index.html" %>). The deployment tutorial is end-to-end guide and teaches you how to install every component.
 
 <% if integration_mode_type == :nginx %>
 **Table of contents**
@@ -126,7 +126,7 @@ Otherwise, if you installed Nginx from source and don't have an init script:
   <pre class="highlight"><span class="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
 <span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
 
-You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/nginx/troubleshooting/ruby/" %>).
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/nginx/troubleshooting/ruby/index.html" %>).
 
 
 ## Deploying an app to a sub-URI or subdirectory
@@ -205,7 +205,7 @@ Otherwise, if you installed Nginx from source and don't have an init script:
   <pre class="highlight"><span class="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
 <span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
 
-You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/nginx/troubleshooting/ruby/" %>).
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/nginx/troubleshooting/ruby/index.html" %>).
 
 <% end %>
 
@@ -358,7 +358,7 @@ When you are done, restart Apache:
 
 (Depending on your operating system, the right command may be `apache2ctl` instead of `apachectl`.)
 
-You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/apache/troubleshooting/ruby/" %>).
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/apache/troubleshooting/ruby/index.html" %>).
 
 
 ## Deploying an app to a sub-URI or subdirectory
@@ -435,7 +435,7 @@ When you are done, restart Apache:
 
 (Depending on your operating system, the right command may be `apache2ctl` instead of `apachectl`.)
 
-You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/apache/troubleshooting/ruby/" %>).
+You are now done. If you run into any problems, please refer to the [troubleshooting guide](<%= url_for "/advanced_guides/troubleshooting/apache/troubleshooting/ruby/index.html" %>).
 
 <% end %>
 

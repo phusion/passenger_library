@@ -154,7 +154,7 @@ substep = 0
   <%= h3(id_prefix, "#{header_step}.#{substep} Push your code to a Git repository") %>
 
   <div class="note">
-    If you are using our <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>#preparing-the-example-application">sample app</a>, you can <a href="#<%= id_prefix %>login-to-your-server-create-a-user-for-the-app">skip to the next step</a>.
+    If you are using our <a href="<%= url_for "/tutorials/quickstart/ruby/index.html" %>#preparing-the-example-application">sample app</a>, you can <a href="#<%= id_prefix %>login-to-your-server-create-a-user-for-the-app">skip to the next step</a>.
   </div>
 
   <p>
@@ -190,7 +190,7 @@ Replace `adminuser` with the name of an account with administrator privileges or
 
 <div class="alert alert-info">Starting from this point, unless stated otherwise, all commands that we instruct you to run should be run on the server, not on your local computer!</div>
 
-Now that you have logged in, you should create an operating system user account for your app. For security reasons, it is a good idea to run each app under its own user account, in order to limit the damage that security vulnerabilities in the app can do. Passenger will automatically run your app under this user account as part of its [user account sandboxing feature](<%= url_for "/deploy/#{integration_mode_type}/user_sandboxing.html" %>).
+Now that you have logged in, you should create an operating system user account for your app. For security reasons, it is a good idea to run each app under its own user account, in order to limit the damage that security vulnerabilities in the app can do. Passenger will automatically run your app under this user account as part of its [user account sandboxing feature](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>).
 
 You should give the user account the same name as your app. But for demonstration purposes, this tutorial names the user account `myappuser`.
 
@@ -281,7 +281,7 @@ We also ensure that that user has your SSH key installed:
 <span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone <span class="o">git://github.com/username/myapp.git</span> code</pre>
 
   <div class="info">
-    <p>If you are using our <a href="<%= url_for "/walkthroughs/start/#{language_type}.html" %>#preparing-the-example-application">sample app</a>, use this Git clone command instead:</p>
+    <p>If you are using our <a href="<%= url_for "/tutorials/quickstart/ruby/index.html" %>#preparing-the-example-application">sample app</a>, use this Git clone command instead:</p>
     <% git_url, branch = deployment_walkthrough_sample_app_git_url(locals) %>
     <pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>
 <span class="prompt">$ </span>sudo -u <span class="o">myappuser</span> -H git clone --branch=<%= branch %> <%= git_url %> code</pre>

@@ -32,14 +32,14 @@ When deployment error resistance is enabled, Passenger Enterprise would perform 
 
  1. It ensures that all requests are routed to existing application processes (that belongs to the previous version of the application). Passenger will not display an error message to the visitor.
  2. It logs the error to [the log file](<%= url_for "/advanced_guides/troubleshooting/standalone/log_file.html" %>).
- 3. It sets an internal flag (Deployment Error Resistance Mode) so that no processes for this application will be spawned (even when the current traffic would normally result in more processes being spawned) and no processes will be [idle cleaned](<%= url_for "/references/config_reference/nginx/" %>#<%= passenger_pool_idle_time_anchor %>). Processes *could* still be shutdown because of other events, e.g. because their [memory limit](<%= url_for "/references/config_reference/nginx/" %>#<%= passenger_memory_limit_anchor %>) have been reached.
+ 3. It sets an internal flag (Deployment Error Resistance Mode) so that no processes for this application will be spawned (even when the current traffic would normally result in more processes being spawned) and no processes will be [idle cleaned](<%= url_for "/references/config_reference/nginx/index.html" %>#<%= passenger_pool_idle_time_anchor %>). Processes *could* still be shutdown because of other events, e.g. because their [memory limit](<%= url_for "/references/config_reference/nginx/index.html" %>#<%= passenger_memory_limit_anchor %>) have been reached.
 
 You can check whether Passenger Enterprise has entered Deployment Error Resistance mode by invoking `passenger-status` and checking for the message "Resisting deployment error" then the flag is set.
 
 ## Enabling the feature
 
 <% if integration_mode_type == :nginx %>
-  Deployment error resistance only works when a rolling restart is performed. So to enable this feature, we recommend that you set [passenger_rolling_restarts on](<%= url_for "/references/config_reference/nginx/" %>#passenger_rolling_restarts) and [passenger_resist_deployment_errors on](<%= url_for "/references/config_reference/nginx/" %>#passenger_resist_deployment_errors). Enabling deployment error resistance only works if rolling restarts are also enabled.
+  Deployment error resistance only works when a rolling restart is performed. So to enable this feature, we recommend that you set [passenger_rolling_restarts on](<%= url_for "/references/config_reference/nginx/index.html" %>#passenger_rolling_restarts) and [passenger_resist_deployment_errors on](<%= url_for "/references/config_reference/nginx/index.html" %>#passenger_resist_deployment_errors). Enabling deployment error resistance only works if rolling restarts are also enabled.
 
   For example, open your Nginx configuration file and set:
 
@@ -48,7 +48,7 @@ passenger_resist_deployment_errors on;</pre>
 
   Then restart Nginx to activate the change.
 <% elsif integration_mode_type == :apache %>
-  Deployment error resistance only works when a rolling restart is performed. So to enable this feature, we recommend that you set [PassengerRollingRestarts on](<%= url_for "/references/config_reference/nginx/" %>#passengerrollingrestarts) and [PassengerResistDeploymentErrors on](<%= url_for "/references/config_reference/nginx/" %>#passengerresistdeploymenterrors). Enabling deployment error resistance only works if rolling restarts are also enabled.
+  Deployment error resistance only works when a rolling restart is performed. So to enable this feature, we recommend that you set [PassengerRollingRestarts on](<%= url_for "/references/config_reference/nginx/index.html" %>#passengerrollingrestarts) and [PassengerResistDeploymentErrors on](<%= url_for "/references/config_reference/nginx/index.html" %>#passengerresistdeploymenterrors). Enabling deployment error resistance only works if rolling restarts are also enabled.
 
   For example, open your Apache configuration file and set:
 
@@ -75,8 +75,8 @@ To solve this problem, you you should find out the exact cause of the spawn erro
 
 ## Related guides
 
- * [Configuration reference: PassengerResistDeploymentErrors](<%= url_for "/references/config_reference/nginx/" %>#<%= passenger_resist_deployment_errors_anchor %>)
- * [Zero-downtime app updates and restarts](<%= url_for "/advanced_guides/deployment_and_scaling/apache/zero_downtime_redeployments/ruby/" %>)
+ * [Configuration reference: PassengerResistDeploymentErrors](<%= url_for "/references/config_reference/nginx/index.html" %>#<%= passenger_resist_deployment_errors_anchor %>)
+ * [Zero-downtime app updates and restarts](<%= url_for "/advanced_guides/deployment_and_scaling/apache/zero_downtime_redeployments/ruby/index.html" %>)
 
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/deployment_and_scaling/index.html" %>">Back</a>

@@ -16,7 +16,7 @@ This guide teaches you where to find the log file, how to customize its location
     By default, the Passenger log file is the <strong>global</strong> Nginx error log file. This is one specified by the <code>error_log</code> directive in the main context (that is, <strong>not</strong> the one inside the <code>http</code> context). The file is typically located in <code>/var/log/nginx/error.log</code>.
   </p>
   <p>
-    Or, if you configured the <a href="<%= url_for "/references/config_reference/nginx/" %>#passenger_log_file">passenger_log_file</a> directive, then the log file is in the referenced file.
+    Or, if you configured the <a href="<%= url_for "/references/config_reference/nginx/index.html" %>#passenger_log_file">passenger_log_file</a> directive, then the log file is in the referenced file.
   </p>
 <% elsif integration_mode_type == :apache %>
   <p>
@@ -26,14 +26,14 @@ This guide teaches you where to find the log file, how to customize its location
     You can find out the exact location of the error log by running <code>passenger-config --detect-apache2</code>.
   </p>
   <p>
-    Or, if you configured the <a href="<%= url_for "/references/config_reference/apache/" %>#passengerlogfile">PassengerLogFile</a> directive, then the log file is in the referenced file.
+    Or, if you configured the <a href="<%= url_for "/references/config_reference/apache/index.html" %>#passengerlogfile">PassengerLogFile</a> directive, then the log file is in the referenced file.
   </p>
 <% elsif integration_mode_type == :standalone %>
   <p>
     The default log file is located in <code>log/passenger.XXX.log</code>, where <code>XXX</code> is the port number that Passenger listens on.
   </p>
   <p>
-    Or, if you passed the <a href="<%= url_for "/references/config_reference/standalone/" %>#--log-file-log_file"><code>--log-file</code> / "log_file"</a> configuration, then the log file is in the referenced file.
+    Or, if you passed the <a href="<%= url_for "/references/config_reference/standalone/index.html" %>#--log-file-log_file"><code>--log-file</code> / "log_file"</a> configuration, then the log file is in the referenced file.
   </p>
 <% else %>
   <% raise "TODO" %>
@@ -60,17 +60,17 @@ Note that Passenger runs applications in the "production" environment by default
 ## Customizing the log file
 
 <% if integration_mode_type == :nginx %>
-  You can instruct Passenger to log to a specific log using the [passenger_log_file](<%= url_for "/references/config_reference/nginx/" %>#passenger_log_file) option.
+  You can instruct Passenger to log to a specific log using the [passenger_log_file](<%= url_for "/references/config_reference/nginx/index.html" %>#passenger_log_file) option.
 
-  By default, Passenger only prints important informational messages, warnings and errors. You can configure Passenger to log less important messages too, such as debugging messages, through [passenger_log_level](<%= url_for "/references/config_reference/nginx/" %>#passenger_log_level).
+  By default, Passenger only prints important informational messages, warnings and errors. You can configure Passenger to log less important messages too, such as debugging messages, through [passenger_log_level](<%= url_for "/references/config_reference/nginx/index.html" %>#passenger_log_level).
 <% elsif integration_mode_type == :apache %>
-  You can instruct Passenger to log to a specific log using the [PassengerLogFile](<%= url_for "/references/config_reference/nginx/" %>#passengerlogfile) option.
+  You can instruct Passenger to log to a specific log using the [PassengerLogFile](<%= url_for "/references/config_reference/nginx/index.html" %>#passengerlogfile) option.
 
-  By default, Passenger only prints important informational messages, warnings and errors. You can configure Passenger to log less important messages too, such as debugging messages, through [PassengerLogLevel](<%= url_for "/references/config_reference/apache/" %>#passengerloglevel).
+  By default, Passenger only prints important informational messages, warnings and errors. You can configure Passenger to log less important messages too, such as debugging messages, through [PassengerLogLevel](<%= url_for "/references/config_reference/apache/index.html" %>#passengerloglevel).
 <% elsif integration_mode_type == :standalone %>
-  You can instruct Passenger to log to a specific log using the [passenger_log_file](<%= url_for "/references/config_reference/standalone/" %>#--log-file-log_file) option.
+  You can instruct Passenger to log to a specific log using the [passenger_log_file](<%= url_for "/references/config_reference/standalone/index.html" %>#--log-file-log_file) option.
 
-  By default, Passenger only prints important informational messages, warnings and errors. You can configure Passenger to log less important messages too, such as debugging messages, through [`--log-level` / "log_level"](<%= url_for "/references/config_reference/standalone/" %>#--log-level-log_level).
+  By default, Passenger only prints important informational messages, warnings and errors. You can configure Passenger to log less important messages too, such as debugging messages, through [`--log-level` / "log_level"](<%= url_for "/references/config_reference/standalone/index.html" %>#--log-level-log_level).
 <% else %>
   <% raise "TODO" %>
 <% end %>
@@ -90,7 +90,7 @@ Note that Passenger runs applications in the "production" environment by default
 <% if integration_mode_type == :standalone %>
 ### Specifying /dev/stdout or /dev/stderr instead of a file doesn't work
 
-Passenger Standalone supports using /dev/stdout and /dev/stderr since version 5.0.29, using the [regular standalone options](<%= url_for "/references/config_reference/standalone/" %>#--log-file-log_file). Using other ways to configure these paths, for example via the [Nginx configuration template](<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>#nginx-configuration-template), are not supported at this time.
+Passenger Standalone supports using /dev/stdout and /dev/stderr since version 5.0.29, using the [regular standalone options](<%= url_for "/references/config_reference/standalone/index.html" %>#--log-file-log_file). Using other ways to configure these paths, for example via the [Nginx configuration template](<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>#nginx-configuration-template), are not supported at this time.
 <% end %>
 
 ### Application stdout/stderr problems

@@ -48,11 +48,11 @@ restart.txt
 
 : If you use `restart.txt` to restart your application, then enable the
 <% if integration_mode_type == :nginx %>
-  [passenger_rolling_restarts on](<%= url_for "/references/config_reference/nginx/" %>#passenger_rolling_restarts) configuration option.
+  [passenger_rolling_restarts on](<%= url_for "/references/config_reference/nginx/index.html" %>#passenger_rolling_restarts) configuration option.
 <% elsif integration_mode_type == :apache %>
-  [PassengerRollingRestarts on](<%= url_for "/references/config_reference/apache/" %>#passengerrollingrestarts) configuration option.
+  [PassengerRollingRestarts on](<%= url_for "/references/config_reference/apache/index.html" %>#passengerrollingrestarts) configuration option.
 <% elsif integration_mode_type == :standalone %>
-  [`--rolling-restarts` / "rolling_restarts"](<%= url_for "/references/config_reference/standalone/" %>#--rolling-restarts-rolling_restarts) configuration option.
+  [`--rolling-restarts` / "rolling_restarts"](<%= url_for "/references/config_reference/standalone/index.html" %>#--rolling-restarts-rolling_restarts) configuration option.
 <% else %>
   <% raise "TODO" %>
 <% end %>

@@ -13,11 +13,11 @@ end
 <% if integration_mode_type == :apache || integration_mode_type == :nginx -%>
 This guide assumes that you are already familiar with Passenger's basic concepts and that you are already familiar with <%= integration_mode_name %> (and thus that you chose <%= integration_mode_name %> for a reason).
 
- * Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the [quickstart](<%= url_for '/walkthroughs/start/index.html' %>) and the [basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>).
- * Not familiar with <%= integration_mode_name %>? Please follow [the end-to-end deployment tutorial](<%= url_for '/walkthroughs/deploy/index.html' %>) instead, which guide you through the entire installation process, including installing the programming language runtime that your application needs.
- * This guide is for *first time installations* only. If you are upgrading, please refer to the [upgrade guide](<%= url_for "/install/#{integration_mode_type}/upgrade/#{edition_type}/index.html" %>).
+ * Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the [quickstart](<%= url_for '/tutorials/quickstart/ruby/index.html' %>) and the rest of the tutorial guides.
+ * Not familiar with <%= integration_mode_name %>? Please follow [the end-to-end deployment tutorial](<%= url_for '/tutorials/deploy_to_production/' %>) instead, which guide you through the entire installation process, including installing the programming language runtime that your application needs.
+ * This guide is for *first time installations* only. If you are upgrading, please refer to the [upgrade guide](<%= url_for "/advanced_guides/install_and_upgrade/nginx/upgrade.html" %>).
 <% else %>
-This guide assumes you are already familiar with Passenger's basic concepts. Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the [quickstart](<%= url_for '/walkthroughs/start/index.html' %>) and the [basics walkthrough](<%= url_for '/walkthroughs/basics/index.html' %>).
+This guide assumes you are already familiar with Passenger's basic concepts. Not familiar with Passenger, or looking to run Passenger in a development environment instead? Then please take a look at the [quickstart](<%= url_for '/tutorials/quickstart/ruby/index.html' %>) and the rest of the tutorial guides.
 
-This guide is for *first time installations* only. If you are upgrading, please refer to the [upgrade guide](<%= url_for "/install/#{integration_mode_type}/upgrade/#{edition_type}/index.html" %>).
+This guide is for *first time installations* only. If you are upgrading, please refer to the [upgrade guide](<%= url_for "/advanced_guides/install_and_upgrade/nginx/upgrade.html" %>).
 <% end %>

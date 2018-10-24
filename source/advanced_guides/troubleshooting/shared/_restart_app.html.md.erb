@@ -113,7 +113,7 @@ If you use [passenger-config restart-app](#passenger-config-restart-app) or [res
 
 However, Passenger performs a *blocking* restart by default. Passenger will shut down all processes for that application and spawn a new one. The spawning of a new application process could take a while (may be as high as 30 seconds for a moderate-sized Rails application on a busy server). Any requests that come in during this time won't be dropped, but will be blocked until this first application process has spawned. Visitors may experience this as "downtime".
 
-In the [Enterprise version of Passenger](https://www.phusionpassenger.com/enterprise), a feature called [rolling restarts](<%= url_for "/references/config_reference/nginx/" %>#<%= passenger_rolling_restarts_anchor %>) is provided which solves this problem. With rolling restarts enabled, Passenger Enterprise restarts the application in the background so that visitors never experience any delays and never experience any degraded user experience. Please learn more at [Zero-downtime app updates and restarts](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/zero_downtime_redeployments/ruby/" %>).
+In the [Enterprise version of Passenger](https://www.phusionpassenger.com/enterprise), a feature called [rolling restarts](<%= url_for "/references/config_reference/nginx/index.html" %>#<%= passenger_rolling_restarts_anchor %>) is provided which solves this problem. With rolling restarts enabled, Passenger Enterprise restarts the application in the background so that visitors never experience any delays and never experience any degraded user experience. Please learn more at [Zero-downtime app updates and restarts](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/zero_downtime_redeployments/ruby/index.html" %>).
 
 ## Deployment error resistance
 
@@ -129,9 +129,9 @@ Restarting an application does not activate any <%= integration_mode_web_server_
 
 ## Related guides
 
- * [Configuration reference: PassengerRollingRestarts](<%= url_for "/references/config_reference/nginx/" %>#<%= passenger_rolling_restarts_anchor %>)
- * [Configuration reference: PassengerResistDeploymentErrors](<%= url_for "/references/config_reference/nginx/" %>#<%= passenger_resist_deployment_errors_anchor %>)
- * [Deployment: Zero-downtime app updates and restarts](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/zero_downtime_redeployments/ruby/" %>)
+ * [Configuration reference: PassengerRollingRestarts](<%= url_for "/references/config_reference/nginx/index.html" %>#<%= passenger_rolling_restarts_anchor %>)
+ * [Configuration reference: PassengerResistDeploymentErrors](<%= url_for "/references/config_reference/nginx/index.html" %>#<%= passenger_resist_deployment_errors_anchor %>)
+ * [Deployment: Zero-downtime app updates and restarts](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/zero_downtime_redeployments/ruby/index.html" %>)
 <% if integration_mode_type == :nginx || integration_mode_type == :apache -%>
  * [Deployment: Zero-downtime web server restarts with Flying Passenger Enterprise](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/flying_passenger.html" %>)
 <% end -%>

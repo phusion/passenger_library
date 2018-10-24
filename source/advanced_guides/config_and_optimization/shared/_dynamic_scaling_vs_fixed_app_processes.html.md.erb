@@ -27,7 +27,7 @@ However, dynamic process scaling has a performance penalty. Spinning processes u
 
 ### How it works
 
-To learn how exactly Passenger decides when to spin up and spin down processes, read [How dynamic scaling of application processes works](<%= url_for "/advanced_guides/in_depth/ruby/dynamic_scaling_of_app_processes/#{integration_mode_type}/index.html" %>).
+To learn how exactly Passenger decides when to spin up and spin down processes, read [How dynamic scaling of application processes works](<%= url_for "/advanced_guides/in_depth/ruby/dynamic_scaling_of_app_processes/apache/index.html" %>).
 
 ### Configuration
 
@@ -101,7 +101,7 @@ Passenger can also maintain a fixed number of application processes instead of a
   <pre class="highlight">passenger_min_instances N;</pre>
 
   <p>
-    You should also configure <a href="<%= url_for "/references/config_reference/nginx/" %>#passenger_pre_start">passenger_pre_start</a> in the <code>http</code> block so that your app is started during web server launch:
+    You should also configure <a href="<%= url_for "/references/config_reference/nginx/index.html" %>#passenger_pre_start">passenger_pre_start</a> in the <code>http</code> block so that your app is started during web server launch:
   </p>
 
   <pre class="highlight">passenger_pre_start http://your-website-url.com;</pre>
@@ -119,7 +119,7 @@ Passenger can also maintain a fixed number of application processes instead of a
   <pre class="highlight">PassengerMinInstances N</pre>
 
   <p>
-    You should also configure <a href="<%= url_for "/references/config_reference/nginx/" %>#passengerprestart">PassengerPreStart</a> in the global context so that your app is started during web server launch:
+    You should also configure <a href="<%= url_for "/references/config_reference/nginx/index.html" %>#passengerprestart">PassengerPreStart</a> in the global context so that your app is started during web server launch:
   </p>
 
   <pre class="highlight">PassengerPreStart http://your-website-url.com</pre>

@@ -80,7 +80,7 @@ myappuser$ ...</span>
     We need to edit your Nginx configuration file and setup a virtual host entry that points to your app. This virtual host entry tells Nginx (and Passenger) where your app is located.
   </p>
   <p>
-    The location of the Nginx configuration file depends on <a href="install_passenger.html#using_nginx">the Nginx installation prefix you chose while installing Passenger</a>. Assuming you installed Nginx to the default prefix <code>/opt/nginx</code>, you need to open /opt/nginx/conf/nginx.conf:
+    The location of the Nginx configuration file depends on <a href="/advanced_guides/install_and_upgrade/nginx/install/index.html#using_nginx">the Nginx installation prefix you chose while installing Passenger</a>. Assuming you installed Nginx to the default prefix <code>/opt/nginx</code>, you need to open /opt/nginx/conf/nginx.conf:
   </p>
   <pre class="highlight"><span class="prompt">$ </span>sudo nano /opt/nginx/conf/nginx.conf</pre>
   <p>
@@ -164,7 +164,7 @@ When you are done, restart Nginx:
 <div class="unsupported_debian_instructions unsupported_redhat_instructions">
   <pre class="highlight"><span class="prompt">$ </span>sudo <span class="nb">kill</span> <span class="k">$(</span>cat /opt/nginx/logs/nginx.pid<span class="k">)</span>
 <span class="prompt">$ </span>sudo /opt/nginx/sbin/nginx</pre>
-  <p>(<a href="install_passenger.html#restarting_nginx">Learn more about restarting Nginx</a>)</p>
+  <p>(<a href="install_passenger.html#restarting_nginx %>">Learn more about restarting Nginx</a>)</p>
 </div>
 
 <% substep += 1 %>

@@ -37,7 +37,7 @@ references: true
 
 Refers to the location to the Passenger root directory, or to a location configuration file. This configuration option is essential to Passenger, and allows Passenger to locate its own data files.
 
-You normally do not need to set this configuration option. If you used our [Debian](<%= url_for "/advanced_guides/install_and_upgrade/nginx/apt_repo.html" %>) or [RPM](<%= url_for "/advanced_guides/install_and_upgrade/nginx/yum_repo.html" %>) packages to [install Passenger](<%= url_for "/advanced_guides/install_and_upgrade/nginx/install/" %>), then they automatically configure `passenger_root` for you with the right value. If you installed Passenger from Homebrew, tarball or RubyGems, then at some point during the installation process you are told what the correct value should be, and instructed to insert it into your Nginx configuration file.
+You normally do not need to set this configuration option. If you used our [Debian](<%= url_for "/advanced_guides/install_and_upgrade/nginx/apt_repo.html" %>) or [RPM](<%= url_for "/advanced_guides/install_and_upgrade/nginx/yum_repo.html" %>) packages to [install Passenger](<%= url_for "/advanced_guides/install_and_upgrade/nginx/install/index.html" %>), then they automatically configure `passenger_root` for you with the right value. If you installed Passenger from Homebrew, tarball or RubyGems, then at some point during the installation process you are told what the correct value should be, and instructed to insert it into your Nginx configuration file.
 
 #### What happens if this option is not set, or set wrongly
 
@@ -78,7 +78,7 @@ Once you have obtained the value, open your Nginx configuration file and insert 
   </tr>
 </table>
 
-This option enables or disables Passenger for that particular context. Passenger is disabled by default, so you must explicitly enable it for contexts where you want Passenger to serve your application. Please see [the deployment guide](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/" %>) for full examples.
+This option enables or disables Passenger for that particular context. Passenger is disabled by default, so you must explicitly enable it for contexts where you want Passenger to serve your application. Please see [the deployment guide](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/index.html" %>) for full examples.
 
 ~~~nginx
 server {
@@ -327,7 +327,7 @@ These are aliases for [passenger_app_env](#passenger_app_env).
 
 By default, Passenger assumes that the application's root directory is the parent directory of the virtual host's (`server` block's) root directory. This option allows one to the application's root independently from the virtual host root, which is useful if your application does not follow the conventions that Passenger assumes.
 
-See also [How Passenger + Nginx autodetects applications](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>).
+See also [How Passenger + Nginx autodetects applications](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/index.html" %>).
 
 #### Example
 
@@ -451,7 +451,7 @@ server {
   </tr>
   <tr>
     <th>Default</th>
-    <td><a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>">Autodetected</a></td>
+    <td><a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/index.html" %>">Autodetected</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -463,7 +463,7 @@ server {
   </tr>
 </table>
 
-By default, Passenger [autodetects](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>) the type of the application, e.g. whether it's a Ruby, Python, Node.js or Meteor app. If it's unable to autodetect the type of the application (e.g. because you've specified a custom [passenger_startup_file](#passenger_startup_file)) then you can use this option to force Passenger to recognize the application as a specific type.
+By default, Passenger [autodetects](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/index.html" %>) the type of the application, e.g. whether it's a Ruby, Python, Node.js or Meteor app. If it's unable to autodetect the type of the application (e.g. because you've specified a custom [passenger_startup_file](#passenger_startup_file)) then you can use this option to force Passenger to recognize the application as a specific type.
 
 Allowed values are:
 
@@ -506,7 +506,7 @@ server {
   </tr>
   <tr>
     <th>Default</th>
-    <td><a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>">Autodetected</a></td>
+    <td><a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/index.html" %>">Autodetected</a></td>
   </tr>
   <tr>
     <th>Since</th>
@@ -518,7 +518,7 @@ server {
   </tr>
 </table>
 
-This option specifies the startup file that Passenger should use when loading the application. This path is relative to the <a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>">application root(#passenger_app_root).
+This option specifies the startup file that Passenger should use when loading the application. This path is relative to the <a href="<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/index.html" %>">application root(#passenger_app_root).
 
 Every application has a *startup file* or *entry point file*: a file where the application begins execution. Some languages have widely accepted conventions about how such a file should be called (e.g. Ruby, with its `config.ru`). Other languages have somewhat-accepted conventions (e.g. Node.js, with its `app.js`). In these cases, Passenger follows these conventions, and executes applications through those files.
 
@@ -740,7 +740,7 @@ If this option is turned off, applications are loaded by running them directly f
   <%= render_partial("/config/reference/enterprise_only") %>
 </table>
 
-Enables or disables support for [zero-downtime application restarts](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/zero_downtime_redeployments/ruby/" %>) through `restart.txt`.
+Enables or disables support for [zero-downtime application restarts](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/zero_downtime_redeployments/ruby/index.html" %>) through `restart.txt`.
 
 Please note that `passenger_rolling_restarts` is completely unrelated to the `passenger-config restart-app` command. That command always initiates a blocking restart, unless `--rolling-restart` is given.
 
@@ -1180,7 +1180,7 @@ Use this option to tell Passenger how many concurrent requests the application c
 
 There are two main use cases for this option:
 
- 1. To make [dynamic process scaling](<%= url_for "/advanced_guides/config_and_optimization/nginx/dynamic_scaling_vs_fixed_app_processes/ruby/" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
+ 1. To make [dynamic process scaling](<%= url_for "/advanced_guides/config_and_optimization/nginx/dynamic_scaling_vs_fixed_app_processes/ruby/index.html" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
  2. [To make SSE and WebSockets work well in Ruby applications.](<%= url_for "/advanced_guides/config_and_optimization/nginx/tuning_sse_and_websockets.html" %>) Set this option to 0.
 
 This option is a hint to Passenger and does not make the application *actually* able to handle that many concurrent requests per process. For example in Ruby applications, the amount of concurrency that your application process can handle usually depends on the number of [configured threads](#passenger_thread_count). If you set the number of threads, then Passenger will automatically infer that Ruby applications' max concurrency per process equals the number of threads. But in non-standard cases where this heuristic fails (e.g. in situations where a WebSocket library such as Faye spawns threads to handle WebSockets) then you can use this option to override Passenger's heuristic.
@@ -1279,7 +1279,7 @@ Specifies the number of threads that Passenger should spawn per Ruby application
 
 By default, Passenger performs several filesystem checks (or, in programmers jargon, "`stat()` calls") each time a request is processed:
 
- * It checks which the application [startup files](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/" %>) are present, in order to autodetect the application type.
+ * It checks which the application [startup files](<%= url_for "/advanced_guides/in_depth/ruby/app_autodetection/nginx/index.html" %>) are present, in order to autodetect the application type.
  * It checks whether [restart.txt](<%= url_for "/advanced_guides/troubleshooting/nginx/restart_app.html" %>) has changed or whether `always_restart.txt` exists, in order to determine whether the application should be restarted.
 
 On some systems where disk I/O is expensive, e.g. systems where the harddisk is already being heavily loaded, or systems where applications are stored on NFS shares, these filesystem checks can incur a lot of overhead.
@@ -1965,7 +1965,7 @@ When `passenger_buffer_response` is turned on, Nginx will wait until the applica
 </table>
 
 <!-- TODO: fix link -->
-Used to specify that the given URI is an distinct application that should be served by Passenger. Please see [the deployment guide](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/" %>) for more information.
+Used to specify that the given URI is an distinct application that should be served by Passenger. Please see [the deployment guide](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/index.html" %>) for more information.
 
 It is allowed to specify this option multiple times. Do this to deploy multiple applications in different sub-URIs under the same virtual host.
 
@@ -1988,7 +1988,7 @@ It is allowed to specify this option multiple times. Do this to deploy multiple 
 </table>
 
 <!-- TODO: fix link -->
-Used in sub-URI deployment scenarios to tell Passenger where it should look for static files. Please see [the deployment guide](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/" %>) for more information.
+Used in sub-URI deployment scenarios to tell Passenger where it should look for static files. Please see [the deployment guide](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/index.html" %>) for more information.
 
 ### passenger_sticky_sessions
 
@@ -2496,7 +2496,7 @@ File descriptor activity is logged as follows:
   At this time, this feature is supported for Ruby applications only.
 </div>
 
-Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/advanced_guides/troubleshooting/nginx/debugging_console/ruby/" %>) guide for more information.
+Turns support for Ruby application debugging on or off. Please read the [Ruby debugging console](<%= url_for "/advanced_guides/troubleshooting/nginx/debugging_console/ruby/index.html" %>) guide for more information.
 
 
 ### passenger_admin_panel_url

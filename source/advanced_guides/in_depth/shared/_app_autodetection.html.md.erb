@@ -47,9 +47,9 @@ Note that Passenger does *not* resolve any symlinks in the DocumentRoot path by 
 So for example, suppose that your DocumentRoot points to `/home/www/example.com`, which in turn is a symlink to `/webapps/example.com/public`. In versions earlier than 2.2.0,
 Passenger will check whether `/webapps/example.com/config.ru` exists because it resolves all symlinks. Passenger 2.2.0 and later however will check for `/home/www/config.ru`. This file of course doesn't exist, and as a result Passenger will not activate itself for this virtual host, and you'll most likely see an Apache `mod_dirindex` directory listing.
 
-If you need the old symlink-resolving behavior for whatever reason, then you can turn on [PassengerResolveSymlinksInDocumentRoot](<%= url_for("/references/config_reference/apache/") %>#passengerresolvesymlinksindocumentRoot).
+If you need the old symlink-resolving behavior for whatever reason, then you can turn on [PassengerResolveSymlinksInDocumentRoot](<%= url_for("/references/config_reference/apache/index.html") %>#passengerresolvesymlinksindocumentRoot).
 
-Another way to solve this situation is to explicitly tell Passenger what the correct application root is through the [PassengerAppRoot](<%= url_for("/references/config_reference/apache/") %>#passengerapproot) option.
+Another way to solve this situation is to explicitly tell Passenger what the correct application root is through the [PassengerAppRoot](<%= url_for("/references/config_reference/apache/index.html") %>#passengerapproot) option.
 <% end %>
 
 ## What happens if autodetection fails
@@ -69,13 +69,13 @@ Another way to solve this situation is to explicitly tell Passenger what the cor
 If Passenger's autodetection has failed you, or if your application uses directory structure that does not match Passenger's autodetection defaults, then you can add a few configuration options to tell Passenger how your application looks like. The relevant configuration options are:
 
 <% if integration_mode_type == :nginx %>
- * [passenger_app_root](<%= url_for("/references/config_reference/nginx/") %>#passenger_app_root) -- Tells Passenger where your application root is.
- * [passenger_app_type](<%= url_for("/references/config_reference/nginx/") %>#passenger_app_type) -- Tells Passenger what kind of application it is.
- * [passenger_startup_file](<%= url_for("/references/config_reference/nginx/") %>#passenger_startup_file) -- Tells Passenger where your application's entry point file is.
+ * [passenger_app_root](<%= url_for("/references/config_reference/nginx/index.html") %>#passenger_app_root) -- Tells Passenger where your application root is.
+ * [passenger_app_type](<%= url_for("/references/config_reference/nginx/index.html") %>#passenger_app_type) -- Tells Passenger what kind of application it is.
+ * [passenger_startup_file](<%= url_for("/references/config_reference/nginx/index.html") %>#passenger_startup_file) -- Tells Passenger where your application's entry point file is.
 <% else %>
- * [PassengerAppRoot](<%= url_for("/references/config_reference/apache/") %>#passengerapproot) -- Tells Passenger where your application root is.
- * [PassengerAppType](<%= url_for("/references/config_reference/apache/") %>#passengerapptype) -- Tells Passenger what kind of application it is.
- * [PassengerStartupFile](<%= url_for("/references/config_reference/apache/") %>#passengerstartupfile) -- Tells Passenger where your application's entry point file is.
+ * [PassengerAppRoot](<%= url_for("/references/config_reference/apache/index.html") %>#passengerapproot) -- Tells Passenger where your application root is.
+ * [PassengerAppType](<%= url_for("/references/config_reference/apache/index.html") %>#passengerapptype) -- Tells Passenger what kind of application it is.
+ * [PassengerStartupFile](<%= url_for("/references/config_reference/apache/index.html") %>#passengerstartupfile) -- Tells Passenger where your application's entry point file is.
 <% end %>
 
 <div class="info">
@@ -156,8 +156,8 @@ So if you see a "404 Not Found" response page instead of your application, then 
 
 If Passenger's autodetection has failed you, or if your application uses directory structure that does not match Passenger's autodetection defaults, then you can add a few configuration options to tell Passenger how your application looks like. The relevant configuration options are:
 
- * [`--app-type` / "app_type"](<%= url_for "/references/config_reference/standalone/" %>#--app-type-app_type) -- Tells Passenger what kind of application it is.
- * [`--startup-file` / "startup_file"](<%= url_for "/references/config_reference/standalone/" %>#--startup-file-startup_file) -- Tells Passenger where your application's entry point file is.
+ * [`--app-type` / "app_type"](<%= url_for "/references/config_reference/standalone/index.html" %>#--app-type-app_type) -- Tells Passenger what kind of application it is.
+ * [`--startup-file` / "startup_file"](<%= url_for "/references/config_reference/standalone/index.html" %>#--startup-file-startup_file) -- Tells Passenger where your application's entry point file is.
 
 <div class="info">
   Make sure to select the correct integration in the config reference article mentioned above.
@@ -171,7 +171,7 @@ passenger start --app-type node --startup-file server.js
 
 ### Static assets
 
-Passenger Standalone automatically serves static assets from the `public` directory in the application directory. This can be overridden with the [`--static-files-dir` / "static_files_dir"](<%= url_for "/references/config_reference/standalone/" %>#--static-files-dir-static_files_dir) option.
+Passenger Standalone automatically serves static assets from the `public` directory in the application directory. This can be overridden with the [`--static-files-dir` / "static_files_dir"](<%= url_for "/references/config_reference/standalone/index.html" %>#--static-files-dir-static_files_dir) option.
 
 <% end %>
 
