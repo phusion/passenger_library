@@ -14,8 +14,6 @@ deploy_walkthrough:
 
 <% locals = {language_type: :nodejs, integration_mode_type: :nginx, edition_type: :enterprise, infrastructure_type: :aws} %>
 
-<%= render_partial("/walkthroughs/deploy/deploy_app/intro", locals: locals) %>
-<%= render_partial("/tutorials/deploy_to_production/shared/os_selector") %>
 <%= render_partial("/walkthroughs/deploy/deploy_app/nginx", locals: locals) %>
 
 <div id="next-step">

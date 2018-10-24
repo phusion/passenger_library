@@ -14,8 +14,6 @@ deploy_walkthrough:
 
 <% locals = {language_name: 'Meteor',language_type: :meteor, integration_mode_type: :apache, edition_type: :oss, infrastructure_type: :aws} %>
 
-<%= render_partial("/walkthroughs/deploy/deploy_app/intro", locals: locals) %>
-<%= render_partial("/tutorials/deploy_to_production/shared/os_selector") %>
 <%= render_partial("/walkthroughs/deploy/deploy_app/apache", locals: locals) %>
 
 <div id="next-step">
