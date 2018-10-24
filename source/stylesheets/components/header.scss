@@ -53,13 +53,23 @@
   background-position: 20px 50%;
 }
 
-#header input:hover,
 #header input:focus {
   border-right: 0px;
   width: 400px;
 
   &::placeholder {
     opacity: 1;
+  }
+}
+
+@media (hover:hover) {
+  #header input:hover {
+    border-right: 0px;
+    width: 400px;
+
+    &::placeholder {
+      opacity: 1;
+    }
   }
 }
 
@@ -127,9 +137,12 @@
     justify-content: flex-start;
   }
 
-  #header input {
-    &:focus,
-    &:hover {
+  #header input:focus {
+    width: calc(100vw + 10px);
+  }
+
+  @media (hover:hover) {
+    #header input:hover {
       width: calc(100vw + 10px);
     }
   }
