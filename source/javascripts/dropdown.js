@@ -63,6 +63,9 @@ function makeDropdown(dropdown_type, dropdown_items) {
   localStorage.setItem(element.name, value);
   const option = element.querySelector(`option[value="${value}"]`);
   option.setAttribute('selected', true);
+  // explicitely set value on the selectbox
+  // otherwise Safari doesn't understand it...
+  element.value = value;
   changeHandler.bind(element)();
 }
 
