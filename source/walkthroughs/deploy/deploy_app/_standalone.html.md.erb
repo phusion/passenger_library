@@ -1,7 +1,5 @@
 <%= render_partial("/walkthroughs/deploy/deploy_app/app_details_form", locals: locals) %>
 
-<hr>
-
 <% if language_type == :ruby %>
   <div class="app_details app_details_rails" style="display: none">
     <%= render_partial("/walkthroughs/deploy/deploy_app/standalone_instructions",
