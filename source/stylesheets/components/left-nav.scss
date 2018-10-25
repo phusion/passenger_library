@@ -109,8 +109,10 @@
   appearance: none;
 }
 
-.dropdown select::-ms-expand {
-  padding-left: 33px;
+@supports (-ms-ime-align: auto) {
+  .dropdown select {
+    padding-left: 33px;
+  }
 }
 
 // class for scroll nav script
