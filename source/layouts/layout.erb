@@ -149,6 +149,9 @@ end
               <p>It looks like your Javascript isn't working. This website requires you to have Javascript enabled. However we have an <a href="https://www.phusionpassenger.com/documentation/Design%20and%20Architecture.html">old documentation</a> where you might be able to find your answer.</p>
             </div>
           </noscript>
+          <div id="ie-warning" class="warning" style="display: none;">
+            <p>This documentation website doesn’t support Internet Explorer. Please visit our <a href="https://www.phusionpassenger.com/library">old documentation</a> to find what you’re looking for.</p>
+          </div>
 
           <% if current_page.data.breadcrumb == true || current_page.data.breadcrumb_layered == true %>
             <ul id="breadcrumb">
@@ -199,6 +202,23 @@ end
     <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
     <% if !current_page.data.skip_default_javascript %>
     <%= javascript_include_tag 'bundle' %>
+    <script type="text/javascript">
+      function isIE() {
+        var version = -1;
+        if (navigator) {
+          var userAgent = navigator.userAgent;
+          var ieRegEx = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+          var tridentRegEx = new RegExp("Trident/([0-9]{1,}[\.0-9]{0,})");
+          if (ieRegEx.exec(userAgent) != null || tridentRegEx.exec(userAgent) != null) {
+            version = parseFloat(RegExp.$1);
+          }
+        }
+        return version != -1;
+      }
+      if(isIE()) {
+        document.getElementById('ie-warning').style.display = 'inherit';
+      }
+    </script>>
     <% end %>
 
     <%= globals[:layout_body_trailer] || "" %>
