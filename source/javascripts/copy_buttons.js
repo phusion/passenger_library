@@ -11,21 +11,22 @@ function filterText(text) {
   const newText = Array.from(text)
     .filter(c=>c.nodeType == 3 || (c.nodeType == 1 && !classes.some(n=>c.classList.contains(n))))
     .map(e=>e.nodeType == 3 ? e.data : e.innerText)
-    .join("\n")
+    .join("")
     .trim();
 
   return newText;
 }
 
-function copyToken() {
+function copyToken(e) {
+  const mehr = this.parentNode;
   const element = document.createElement('textarea');
   element.value = filterText(this.parentNode.childNodes);
-  document.body.appendChild(element);
+  mehr.appendChild(element);
   element.select();
   element.setSelectionRange(0, element.value.length);
   if (document.queryCommandSupported('copy') && document.queryCommandEnabled('copy')) {
     if (document.execCommand('copy')) {
-      document.body.removeChild(element);
+      mehr.removeChild(element);
       this.textContent = 'copied!';
       setTimeout(() => {
         this.textContent = 'copy';
@@ -33,7 +34,7 @@ function copyToken() {
       }, 1500);
     }
   } else {
-    document.body.removeChild(element);
+    mehr.removeChild(element);
   }
 }
 
