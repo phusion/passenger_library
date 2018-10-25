@@ -16,13 +16,13 @@ namespace :rsync do
   desc "Upload documentation to staging server"
   task :staging => [:build] do
     sh "cd build && rsync -rv --progress --partial-dir=.rsync-partial --human-readable . " +
-      "passenger_library@staging.phusionpassenger.com:/var/www/passenger_library/"
+      "passenger_library@staging.phusionpassenger.com:/var/www/docs_2018/"
   end
 
   desc "Upload documentation to production server"
   task :production => [:build] do
     sh "cd build && rsync -rv --progress --partial-dir=.rsync-partial --human-readable . " +
-      "passenger_library@www.phusionpassenger.com:/var/www/passenger_library/"
+      "passenger_library@www.phusionpassenger.com:/var/www/docs_2018/"
   end
 end
 
