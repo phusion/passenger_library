@@ -1,6 +1,10 @@
 <% disabled_selections ||= [] %>
 <div id="current-selection">
-  <p>Current selection: </p>
+  <% if disabled_selections.include?(:lang) || disabled_selections.include?(:integration) %>
+  <p>Relevant selection for this article: </p>
+  <% else %>
+  <p>Relevant selections for this article: </p>
+  <% end %>
   <div>
     <% if !disabled_selections.include? :lang %>
       <img src="<%= url_for "/images/ruby.svg" %>" alt="Ruby">
