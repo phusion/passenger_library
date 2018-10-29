@@ -14,13 +14,15 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
+        include: path.resolve(__dirname, 'source/javascripts'),
         loader: 'babel-loader',
         query: {
           presets: ['es2015']
         }
       },
       {
-        test: /\.s[ac]ss$/,
+        test: /\.scss$/,
+        include: path.resolve(__dirname, 'source/stylesheets'),
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
