@@ -2,29 +2,53 @@
 if (defined?(item)).nil?
   item = :enterprise
 end
-
-case item
-when :gls
-  item_class = 'gls'
-  item_image = url_for("/images/test.png")
-  item_text = 'Passenger 6.0'
-  item_link = 'https://www.phusionpassenger.com/passenger6'
-when :enterprise
-  item_class = 'fuse'
-  item_image = url_for("/images/fuse.png")
-  item_text = 'Try Enterprise'
-  item_link = 'https://www.phusionpassenger.com/install'
-when :stream
-  smaller_font = 'smaller-font'
-  item_class = 'stream'
-  item_image = url_for("/images/stream.png")
-  item_text = 'Join livestream'
-  item_link = 'https://blog.phusion.nl/2018/10/19/livestreaming-from-phusion-hq-adding-a-feature-to-passenger/'
-end
 %>
 
-<div id="new-item">
-  <img class="<%= item_class %>" src="<%= item_image %>" alt="<%= item_text %>"/>
-  <a class="light-button <%= smaller_font %>" href="<%= item_link %>"><%= item_text %></a>
-  <%= partial "/shared/feedback" %>
-</div>
+<% if item == :gls %>
+  <div id="new-item">
+    <a class="new-item-image-link gls" href="https://www.phusionpassenger.com/passenger6">
+      <img class="new-item-image" src="<%= url_for('/images/test.png') %>" alt="Passenger 6" target="_blank">
+    </a>
+    <a class="new-item-link light-button" href="https://www.phusionpassenger.com/passenger6" target="_blank">
+      What's new in Passenger 6?
+    </a>
+
+    <%= partial "/shared/feedback" %>
+  </div>
+<% elsif item == :enterprise %>
+  <div id="new-item">
+    <a class="new-item-image-link fuse" href="https://www.phusionpassenger.com/install"><img class="new-item-image" src="<%= url_for('/images/fuse.png') %>" alt="Passenger Enterprise" target="_blank"></a>
+    <a class="new-item-link light-button" href="https://www.phusionpassenger.com/install" target="_blank">
+      Try for free
+    </a>
+    <p class="new-item-footer">
+      Deliver apps with more confidence with<br>
+      <a href="https://www.phusionpassenger.com/enterprise" target="_blank">Passenger Enterprise</a>
+    </p>
+
+    <%= partial "/shared/feedback" %>
+  </div>
+<% elsif item == :stream %>
+  <div id="new-item">
+    <a class="new-item-image-link stream" href="https://blog.phusion.nl/2018/10/19/livestreaming-from-phusion-hq-adding-a-feature-to-passenger/">
+      <img class="new-item-image" src="<%= url_for('/images/stream.png') %>" alt="Join livestream" target="_blank">
+    </a>
+    <a class="new-item-link light-button smaller-font" href="https://blog.phusion.nl/2018/10/19/livestreaming-from-phusion-hq-adding-a-feature-to-passenger/" target="_blank">
+      Join livestream
+    </a>
+    <p class="new-item-footer">
+      <strong>Yay, Passenger 6 is coming!</strong>
+    </p>
+    <p class="new-item-footer">
+      Learn about a major new feature:
+      <a href="https://blog.phusion.nl/2018/10/19/livestreaming-from-phusion-hq-adding-a-feature-to-passenger/" target="_blank">Generic Language Support</a>.
+    </p>
+    <p class="new-item-footer">
+      Join the coding livestream & AMA on Nov 1st or <a href="https://blog.phusion.nl/2018/10/19/livestreaming-from-phusion-hq-adding-a-feature-to-passenger/" target="_blank">learn more</a>!
+    </p>
+
+    <hr/>
+
+    <%= partial "/shared/feedback" %>
+  </div>
+<% end %>
