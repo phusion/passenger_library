@@ -12,10 +12,13 @@
 </div>
 
 <div class="install_os install_os_debian" style="display: none">
-  <p><select id="debian_version_select">
-    <%= debian_version_selection_options %>
-    <option value="other">Other</option>
-  </select></p>
+  <div>
+    <select id="debian_version_select">
+      <%= debian_version_selection_options %>
+      <option value="other">Other</option>
+    </select>
+    <span class="arrow-down"></span>
+  </div>
 
   <div class="unsupported_debian_instructions">
     Is your Debian or Ubuntu version not listed? Then sorry, we do not provide packages for this version at the moment. Please <a href="javascript:void(showGenericInstallationInstructions())">select "Other / OS independent (generic installation method)"</a> in the installation method dropdown, then select an appropriate choice.
@@ -23,10 +26,13 @@
 </div>
 
 <div class="install_os install_os_redhat" style="display: none">
-  <p><select id="redhat_version_select">
-    <%= redhat_version_selection_options %>
-    <option value="other">Other</option>
-  </select></p>
+  <div>
+    <select id="redhat_version_select">
+      <%= redhat_version_selection_options %>
+      <option value="other">Other</option>
+    </select>
+    <span class="arrow-down"></span>
+  </div>
 
   <div class="unsupported_redhat_instructions">
     Is your Red Hat or CentOS version not listed? Then sorry, we do not provide packages for this version at the moment. Please <a href="javascript:void(showGenericInstallationInstructions())">select "Other / OS independent (generic installation method)"</a> in the installation method dropdown, then select an appropriate choice.

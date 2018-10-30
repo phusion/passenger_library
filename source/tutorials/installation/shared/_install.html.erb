@@ -25,10 +25,13 @@
      OS: Debian and Ubuntu
      *************************** -->
 <div class="install_os install_os_debian" style="display: none">
-  <p><select id="debian_version_select">
-    <%= debian_version_selection_options %>
-    <option value="other">Other</option>
-  </select></p>
+  <div>
+    <select id="debian_version_select">
+      <%= debian_version_selection_options %>
+      <option value="other">Other</option>
+    </select>
+    <span class="arrow-down"></span>
+  </div>
 
   <div class="supported_debian_instructions">
     <div class="note limited_package_support_for_non_lts_ubuntu" style="display: none">
@@ -67,10 +70,13 @@ sudo apt-get install -y passenger</code></pre>
      OS: Red Hat and CentOS
      *************************** -->
 <div class="install_os install_os_redhat" style="display: none">
-  <p><select id="redhat_version_select">
-    <%= redhat_version_selection_options %>
-    <option value="other">Other</option>
-  </select></p>
+  <div>
+    <select id="redhat_version_select">
+      <%= redhat_version_selection_options %>
+      <option value="other">Other</option>
+    </select>
+    <span class="arrow-down"></span>
+  </div>
 
   <div class="supported_redhat_instructions">
     <div class="note">
