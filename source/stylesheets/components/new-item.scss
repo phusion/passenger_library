@@ -36,15 +36,22 @@
 
   .new-item-footer {
     font-size: 12px;
+    margin-top: 15px;
+    margin-left: 15px;
+
+    p:first-of-type {
+      margin-top: 5px;
+    }
   }
 
   .new-item-intro,
   .new-item-footer {
-    max-width: 180px;
-    text-align: center;
+    max-width: 165px;
+    text-align: left;
     line-height: 1.5;
 
     a {
+      color: #4EA0FF;
       text-decoration: none;
     }
 
@@ -73,11 +80,10 @@
   }
 
   > hr {
-    width: 155px;
+    width: 150px;
     border: none;
     border-top: solid 1px #ccc;
-    margin-top: 35px;
-    margin-bottom: 0;
+    margin-top: 25px;
   }
 
   p {

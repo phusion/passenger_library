@@ -1,12 +1,32 @@
+#new-item {
+  #feedback {
+    margin-top: 0;
+    margin-left: -15px;
+  }
+}
+
+#right-content-toc {
+  .light-button {
+    margin-left: 8px;
+  }
+
+  hr {
+    width: 150px;
+    border: none;
+    border-top: solid 1px #ccc;
+    margin-top: 40px;
+    margin-left: 8px;
+  }
+}
+
 #new-item, #right-content-toc {
   #feedback {
     .hide {
       display: none !important;
     }
-    margin-top: 30px;
     p {
       font-weight: 400;
-      font-size: 14px;
+      font-size: 12px;
     }
     .buttons {
       display: flex;
@@ -54,7 +74,7 @@
       flex-direction: column;
       align-items: flex-start;
       margin-top: 20px;
-      width: 150px;
+      width: 135px;
 
       textarea {
         height: 80px;
@@ -81,10 +101,10 @@
       }
     }
     .thank-you {
-      line-height: 21px;
+      line-height: 16px;
       margin-top: 16px;
       font-size: 11px;
-      width: 150px;
+      width: 135px;
     }
   }
 }
