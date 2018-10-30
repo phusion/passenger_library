@@ -40,8 +40,9 @@
 <p>
   These commands will install <span data-packages_title></span> through Phusion's APT repository.
   <% if integration_mode_type == :nginx %>
-    <div class="dynamic_nginx_package">
-      At this point we assume that you already have Nginx installed from your system repository. If not, you should do that first before continuing.
+    <div class="note dynamic_nginx_package">
+      At this point we assume that you already have Nginx installed from your system repository. If not, you should install Nginx with the following command:
+      <pre><code>sudo apt-get install nginx</code></pre>
     </div>
     <div class="compiled_in_nginx_package">
       If you already had Nginx installed, then these commands will upgrade Nginx to Phusion's version (with Passenger compiled in).
@@ -57,7 +58,7 @@ sudo apt-get install -y dirmngr gnupg
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
 sudo apt-get install -y apt-transport-https ca-certificates
 
-  <span class="c unselectable"># Add our APT repository</span>
+<span class="c unselectable"># Add our APT repository</span>
   <% if edition_type == :oss -%>
 sudo sh -c <span class="s1">'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger <span class="debian_codename si"></span> main &gt; /etc/apt/sources.list.d/passenger.list'</span>
   <% else -%>
@@ -71,7 +72,7 @@ sudo chmod 600 /etc/apt/auth.conf
   <% end -%>
 sudo apt-get update
 
-  <span class="c unselectable"># Install <span data-packages_title></span></span>
+<span class="c unselectable"># Install <span data-packages_title></span></span>
 sudo apt-get install -y <span data-packages></span></code></pre>
 
 <% if integration_mode_type == :apache %>
@@ -88,10 +89,10 @@ sudo apt-get install -y <span data-packages></span></code></pre>
 <span class="prompt">$ </span>sudo ls /etc/nginx/conf.d/mod-http-passenger.conf</pre>
       <div class="note">
         <p>If you don't see a file at <code>/etc/nginx/conf.d/mod-http-passenger.conf</code>; then you need to create it yourself and set the <code>passenger_ruby</code> and <code>passenger_root</code> config options. For example:</p>
-        <pre class="highlight">
-          <span class="nf">passenger_root</span> /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
-          <span class="nf">passenger_ruby</span> /usr/bin/passenger_free_ruby;
-        </pre>
+<pre class="highlight">
+<span class="nf">passenger_root</span> /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
+<span class="nf">passenger_ruby</span> /usr/bin/passenger_free_ruby;
+</pre>
       </div>
     </div>
     <div class="compiled_in_nginx_package">
