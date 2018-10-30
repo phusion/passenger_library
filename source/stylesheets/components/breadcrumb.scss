@@ -6,10 +6,22 @@
   margin-bottom: 15px;
   list-style: none;
   padding-left: 0;
-  display: flex;
   font-weight: 500;
   padding-bottom: 8px;
   border-bottom: 1px solid #efefef;
+
+  @media(min-width: 800px) {
+    flex-wrap: nowrap;
+
+    li {
+      white-space: nowrap;
+
+      &:last-of-type {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
 }
 
 #breadcrumb li:not(:last-child)::after {
