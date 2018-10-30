@@ -82,21 +82,21 @@
 }
 
 #main-content .copy-btn {
-    margin-top: -2px;
-    font-size: 13px;
-    margin-right: -8px;
-    padding: 0px 8px 2px;
-    border-radius: 4px;
-    position: relative;
-    z-index: 9000;
-    background: #122b3b;
-    display: none;
-    color: #faf6e4;
-    float: right;
-    cursor: pointer;
-    border: 1px solid #faf6e4;
+  margin-top: -2px;
+  font-size: 13px;
+  margin-right: -8px;
+  padding: 0px 8px 2px;
+  border-radius: 4px;
+  position: relative;
+  z-index: 9000;
+  background: #122b3b;
+  display: none;
+  color: #faf6e4;
+  float: right;
+  cursor: pointer;
+  border: 1px solid #faf6e4;
 }
- 
+
 #main-content img {
   margin-top: 25px;
   max-width: 100%;
@@ -199,6 +199,15 @@
   margin-top: 0;
   margin-bottom: 20px;
   overflow-x: auto;
+}
+
+#main-content .no-copy {
+  &:hover,
+  &:focus {
+    .copy-btn {
+      display: none !important;
+    }
+  }
 }
 
 #main-content pre:hover,

@@ -36,11 +36,11 @@ When you are done, install your gem bundle with:
 ### Updating your Procfile
 
 Open your app's Procfile, or create one if you don't already have one. Remove lines that look like one of these:
-
-    web: bundle exec ruby web.rb -p $PORT
-    web: bundle exec unicorn -p $PORT
-    web: bundle exec puma -p $PORT
-    web: bundle exec thin start -p $PORT
+<pre class="highlight no-copy"><code>web: bundle exec ruby web.rb -p $PORT
+web: bundle exec unicorn -p $PORT
+web: bundle exec puma -p $PORT
+web: bundle exec thin start -p $PORT
+</code></pre>
 
 Insert:
 
