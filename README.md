@@ -2,7 +2,7 @@
 
 Welcome to the Passenger documentation project. The goal of this project is to write excellent documentation for the [Phusion Passenger application server](https://www.phusionpassenger.com/).
 
-You can view the live version of this documentation at [https://www.phusionpassenger.com/library/](https://www.phusionpassenger.com/library/).
+You can view the live version of this documentation at [https://www.phusionpassenger.com/docs](https://www.phusionpassenger.com/docs/).
 
 Documentation is written in markdown and HTML. The final output is generated through the [Middleman static site generator](https://middlemanapp.com/).
 
