@@ -48,6 +48,12 @@
       If you already had Nginx installed, then these commands will upgrade Nginx to Phusion's version (with Passenger compiled in).
     </div>
   <% end %>
+  <% if integration_mode_type == :apache %>
+    <div class="note">
+      At this point we assume that you already have Apache installed from your system repository. If not, you should install Apache with the following command:
+      <pre><code>sudo apt-get install apache2</code></pre>
+    </div>
+  <% end %>
   <% if edition_type == :enterprise %>
     Replace <code>YOUR_DOWNLOAD_TOKEN</code> with the download token you obtained in the last step.
   <% end %>
