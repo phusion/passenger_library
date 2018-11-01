@@ -41,6 +41,23 @@ end
 
     <%= partial "/shared/feedback" %>
   </div>
+
+<% elsif item == :consultancy %>
+  <div id="new-item">
+    <a class="new-item-image-link fuse" href="https://www.phusion.nl/consultancy"><img class="new-item-image" src="<%= url_for('/images/consultancy.png') %>" alt="Consultancy" target="_blank"></a>
+    <a class="new-item-link light-button" href="https://www.phusion.nl/consultancy" target="_blank">
+      Find out more
+    </a>
+    <div class="new-item-footer">
+      <strong>Experts at your service</strong>
+      <p>Phusion can help you build secure and performant apps.</p>
+    </div>
+
+    <hr />
+
+    <%= partial "/shared/feedback" %>
+  </div>
+
 <% elsif item == :stream %>
   <div id="new-item">
     <a class="new-item-image-link stream" href="https://blog.phusion.nl/2018/10/19/livestreaming-from-phusion-hq-adding-a-feature-to-passenger/">
