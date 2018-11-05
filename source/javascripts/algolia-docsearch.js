@@ -1,7 +1,6 @@
 docsearch({
-  appId: '1JPDCWGRHX',
-  apiKey: '39fe0068931cab7ef17610307d6b6e97',
-  indexName: 'passenger_docs_v1',
+  apiKey: '9170d545c220287ed521a37a5f5831b4',
+  indexName: 'phusionpassenger',
   inputSelector: '#search-bar',
   debug: false
 });
