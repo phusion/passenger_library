@@ -207,6 +207,14 @@ module CustomHelpers
     path.sub(/\/index\.html$/, "/")
   end
 
+  def add_index_html_if_necessary(link)
+    if link.end_with? "/"
+      "#{link}index.html"
+    else
+      link
+    end
+  end
+
   def current_url_generalized(generalized_param, scan_for)
     regex_str = ""
     scan_for.each_with_index do |entry, idx|
