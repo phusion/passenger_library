@@ -40,12 +40,6 @@ module CustomHelpers
     current_page.data.title || @page_title
   end
 
-  def string_cutter(str, arr)
-    arr.each do |item|
-      str.slice!(item)
-    end
-  end
-
   def nav_link(link_text, url, options = {})
     options[:class] ||= ""
     if current_page.data.is_404
