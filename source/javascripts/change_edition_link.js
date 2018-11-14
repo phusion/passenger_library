@@ -20,9 +20,9 @@ function sendLocalStorageItem() {
 }
 
 function changeLink(edition) {
-  if (edition === 'OSS' || edition === null) {
+  if (edition === 'OSS') {
     btn.href = btn.href.replace('enterprise', 'oss');
-  } else {
+  } else if(edition === 'Enterprise') {
     btn.href = btn.href.replace('oss', 'enterprise');
   }
 }

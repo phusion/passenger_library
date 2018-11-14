@@ -125,43 +125,45 @@ $(document).ready(function() {
 function setDebianText() {
   let packages = "";
   let packages_title = "";
-  switch (window.localStorage.getItem('Integration').toLowerCase()) {
-    case 'apache':
-      if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
-        packages = "libapache2-mod-passenger";
-        packages_title = "Passenger + Apache module";
-      } else {
-        packages = "libapache2-mod-passenger-enterprise";
-        packages_title = "Passenger Enterprise + Apache module";
-      }
-      break;
-    case 'nginx':
-      if (dynamic_module_supported()) {
+  if (window.localStorage.getItem('Edition')) {
+    switch (window.localStorage.getItem('Integration').toLowerCase()) {
+      case 'apache':
         if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
-          packages = "libnginx-mod-http-passenger";
-          packages_title = "Passenger + Nginx module";
-        }else{
-          packages = "libnginx-mod-http-passenger-enterprise";
-          packages_title = "Passenger Enterprise + Nginx module";
+          packages = "libapache2-mod-passenger";
+          packages_title = "Passenger + Apache module";
+        } else {
+          packages = "libapache2-mod-passenger-enterprise";
+          packages_title = "Passenger Enterprise + Apache module";
         }
-      } else {
+        break;
+      case 'nginx':
+        if (dynamic_module_supported()) {
+          if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
+            packages = "libnginx-mod-http-passenger";
+            packages_title = "Passenger + Nginx module";
+          }else{
+            packages = "libnginx-mod-http-passenger-enterprise";
+            packages_title = "Passenger Enterprise + Nginx module";
+          }
+        } else {
+          if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
+            packages = "nginx-extras passenger";
+            packages_title = "Passenger + Nginx";
+          }else{
+            packages = "nginx-extras passenger-enterprise";
+            packages_title = "Passenger Enterprise + Nginx";
+          }
+        }
+        break;
+      default:
         if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
-          packages = "nginx-extras passenger";
-          packages_title = "Passenger + Nginx";
-        }else{
-          packages = "nginx-extras passenger-enterprise";
-          packages_title = "Passenger Enterprise + Nginx";
+          packages = "passenger";
+          packages_title = "Passenger";
+        } else {
+          packages = "passenger-enterprise";
+          packages_title = "Passenger Enterprise";
         }
-      }
-      break;
-    default:
-      if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
-        packages = "passenger";
-        packages_title = "Passenger";
-      } else {
-        packages = "passenger-enterprise";
-        packages_title = "Passenger Enterprise";
-      }
+    }
   }
   $('[data-packages_title]').text(packages_title);
   $('[data-packages]').text(packages);
@@ -175,33 +177,35 @@ function dynamic_module_supported() {
 function setRedhatText() {
   let packages = "";
   let packages_title = "";
-  switch (window.localStorage.getItem('Integration').toLowerCase()) {
-    case "apache":
-      if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
-        packages = "mod_passenger"
-        packages_title = "Passenger + Apache module"
-      }else{
-        packages = "mod_passenger_enterprise"
-        packages_title = "Passenger Enterprise + Apache module"
-      }
-      break;
-    case "nginx":
-      if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
-        packages = "nginx passenger"
-        packages_title = "Passenger Nginx"
-      } else {
-        packages = "nginx passenger-enterprise"
-        packages_title = "Passenger Enterprise + Nginx"
-      }
-      break;
-    default:
-      if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
-        packages = "passenger"
-        packages_title = "Passenger"
-      } else {
-        packages = "passenger-enterprise"
-        packages_title = "Passenger Enterprise"
-      }
+  if (window.localStorage.getItem('Edition')) {
+    switch (window.localStorage.getItem('Integration').toLowerCase()) {
+      case "apache":
+        if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
+          packages = "mod_passenger"
+          packages_title = "Passenger + Apache module"
+        }else{
+          packages = "mod_passenger_enterprise"
+          packages_title = "Passenger Enterprise + Apache module"
+        }
+        break;
+      case "nginx":
+        if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
+          packages = "nginx passenger"
+          packages_title = "Passenger Nginx"
+        } else {
+          packages = "nginx passenger-enterprise"
+          packages_title = "Passenger Enterprise + Nginx"
+        }
+        break;
+      default:
+        if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
+          packages = "passenger"
+          packages_title = "Passenger"
+        } else {
+          packages = "passenger-enterprise"
+          packages_title = "Passenger Enterprise"
+        }
+    }
   }
   $('[data-packages_title]').text(packages_title);
   $('[data-packages]').text(packages);
