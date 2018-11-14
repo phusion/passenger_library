@@ -11,6 +11,8 @@ function sendLocalStorageItem() {
       var edition = localStorage.getItem('Edition');
       if (input.value === edition) {
         input.checked = true;
+      } else {
+        radioChoices[0].checked = true;
       }
     });
   }
