@@ -110,10 +110,19 @@ step = 0
   These commands will install <%= packages_title %> through Phusion's APT repository.
   <% if integration_mode_type == :nginx %>
     <% if dynamic_nginx_module_available?(os_config_type.to_s) %>
-      At this point we assume that you already have Nginx installed from your system repository. If not, you should do that first before continuing.
+      <div class="note dynamic_nginx_package">
+        At this point we assume that you already have Nginx installed from your system repository. If not, you should install Nginx with the following command:
+        <pre><code>sudo apt-get install nginx</code></pre>
+      </div>
     <% else %>
       If you already had Nginx installed, then these commands will upgrade Nginx to Phusion's version (with Passenger compiled in).
     <% end %>
+  <% end %>
+  <% if integration_mode_type == :apache %>
+      <div class="note">
+      At this point we assume that you already have Apache installed from your system repository. If not, you should install Apache with the following command:
+      <pre><code>sudo apt-get install apache2</code></pre>
+    </div>
   <% end %>
   <% if edition_type == :enterprise %>
     Replace <code>YOUR_DOWNLOAD_TOKEN</code> with the download token you obtained in the last step.
