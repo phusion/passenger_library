@@ -192,7 +192,7 @@ Replace `adminuser` with the name of an account with administrator privileges or
   This is usually `admin`, `ec2-user`, `root` or `ubuntu`.
 <% end %>
 
-<div class="alert alert-info">Starting from this point, unless stated otherwise, all commands that we instruct you to run should be run on the server, not on your local computer!</div>
+<div class="alert alert-info info">Starting from this point, unless stated otherwise, all commands that we instruct you to run should be run on the server, not on your local computer!</div>
 
 Now that you have logged in, you should create an operating system user account for your app. For security reasons, it is a good idea to run each app under its own user account, in order to limit the damage that security vulnerabilities in the app can do. Passenger will automatically run your app under this user account as part of its [user account sandboxing feature](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/user_sandboxing.html" %>).
 

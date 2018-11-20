@@ -26,6 +26,11 @@
     input {
       border-left: 1px solid #3C3F45;
       background-color: #1E2022;
+      color: #C6C6C6;
+
+      &:focus {
+        box-shadow: none;
+      }
     }
   }
 
@@ -57,7 +62,7 @@
     .info,
     .warning,
     .note {
-      background: #3C3F45;
+      background: #1e1f21;
       color: #C6C6C6;
 
       &::before {
@@ -67,6 +72,14 @@
         border-radius: 3px 3px 0px 0px;
         border: 1px solid #3C3F45;
         margin-top: -48px;
+      }
+    }
+
+    #yes-no-radio {
+      label {
+        span {
+          color: #CBCBCB;
+        }
       }
     }
 
@@ -105,6 +118,10 @@
       color: #C6C6C6;
     }
 
+    .app_details_form {
+      color: #C6C6C6;
+    }
+
     .supported-logos {
       color: #E4E4E4;
 
@@ -115,6 +132,10 @@
 
     pre {
       background: #213442;
+      background: #2d313e;
+      background: #2c4f71;
+      background: #383f56;
+
 
       code {
         background: unset;
@@ -122,7 +143,7 @@
     }
 
     code {
-      background: #2c4f71;
+      background: #383f56;
     }
 
     tbody {
@@ -163,8 +184,8 @@
       border-bottom: 1px solid #3C3F45;
 
       li {
-        a::after {
-          color: red;
+        &::after {
+          color: #C6C6C6;
         }
       }
     }
@@ -217,6 +238,16 @@
           color: #C6C6C6;
         }
       }
+
+      .reason {
+        textarea {
+          border: none;
+
+          &:focus {
+            box-shadow: none;
+          }
+        }
+      }
     }
   }
 
@@ -236,5 +267,42 @@
 
   .toc-container {
     color: #C6C6C6;
+  }
+
+  footer {
+    border-top: 1px solid #3C3F45;
+
+    li,
+    p {
+      color: #C6C6C6;
+    }
+  }
+
+  .algolia-autocomplete {
+    .ds-dropdown-menu {
+      border: 1px solid #3C3F45;
+      background: #1E2022;
+    }
+
+    .algolia-docsearch-suggestion {
+      background: #1E2022;
+    }
+
+    .algolia-docsearch-suggestion--title span {
+      color: #C6C6C6;
+    }
+
+    .ds-dropdown-menu [class^=ds-dataset-] {
+      background: #1E2022
+    }
+
+    .algolia-docsearch-suggestion--category-header {
+      color: #C6C6C6;
+    }
+
+    .ds-dropdown-menu::before {
+      background: #1E2022;
+      border-color: #3C3F45;
+    }
   }
 }
