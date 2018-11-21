@@ -1,6 +1,10 @@
 .dark-mode {
   background: #24252A;
 
+  img {
+    filter: saturate(.8);
+  }
+
   .light-button {
     background: #1E2022;
     color: #E4E4E4;
@@ -100,13 +104,19 @@
       }
 
       input[type="radio"]:checked + label {
-        background: #CBCBCB;
+        background: #3F4B59;
         border: 1px solid #343f52;
         color: #000;
 
         h3 {
           color: #000;
         }
+      }
+    }
+
+    .radio-choices {
+      > div > div > input:not([data-label="Edition"]) + label > img {
+        filter: invert(1) hue-rotate(180deg);
       }
     }
 
@@ -135,13 +145,14 @@
     }
 
     pre {
-      background: #273342;
-      background: #2d313e;
-      background: #383f56;
       background: #343f52;
 
       code {
         background: unset;
+      }
+
+      .copy-btn {
+        background: #343f52;
       }
     }
 
@@ -328,7 +339,7 @@
   }
 
   .heroku {
-    filter: brightness(170%);
+    filter: invert(1) hue-rotate(180deg);
   }
 }
 
@@ -392,3 +403,11 @@
     background: #E4E4E4;
   }
 }
+
+.dark-mode #main-content [class$="radio-choices"] input[type="radio"]:checked + label {
+  background: #3F4B59;
+}
+
+// #screen-mode img {
+//   filter: saturate(0)
+// }
