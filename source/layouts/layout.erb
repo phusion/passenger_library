@@ -73,7 +73,13 @@ end
     <%= yield_content :head %>
   </head>
 
-  <body class="<%= page_classes %> dark-mode">
+  <body class="<%= page_classes %>">
+    <!-- script after the body tag to prevent a white flash in dark mode -->
+    <script>
+      if (localStorage.getItem('screen_mode')) {
+        document.querySelector('body').classList.add('dark-mode')
+      }
+    </script>
 
     <!-- Main navigation
     =========================================== -->
@@ -180,6 +186,11 @@ end
             <div class="editlink">
               <a href="<%=h current_page_github_url %>"><img src="<%= url_for "/images/edit.svg" %>" alt="edit">Edit page</a>
             </div>
+          </div>
+          <div id="screen-mode">
+            <img src="<%= url_for "/images/sun.svg" %>" alt="light mode">
+            <!-- input gets injected here -->
+            <img src="<%= url_for "/images/moon.svg" %>" alt="dark mode">
           </div>
           <%= partial "/shared/new_items", locals: { item: :consultancy } %>
         <% end %>
