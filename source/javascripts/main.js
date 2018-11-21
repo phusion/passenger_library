@@ -22,3 +22,4 @@ import './docs';
 import './left-nav';
 import './feedback';
 import './date';
+import './dark_mode';
