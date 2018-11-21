@@ -8,16 +8,19 @@ class Mode {
   }
 
   renderInput() {
-    this.container.insertAdjacentHTML('afterend', `
-      <label class="switch">
-        <input type="checkbox">
-        <span class="slider round"></span>
-      </label>
-    `)
+    if (this.container) {
+      this.container.insertAdjacentHTML('afterend', `
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+      `)
 
-    const input = document.querySelector('.switch input')
-    this.eventHandler(input)
-    this.checkStorage(input)
+      const input = document.querySelector('.switch input')
+
+      this.eventHandler(input)
+      this.checkStorage(input)
+    }
   }
 
   eventHandler(input) {

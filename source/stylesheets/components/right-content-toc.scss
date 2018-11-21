@@ -7,6 +7,10 @@
   flex-direction: column;
   align-items: flex-start;
   transition: .2s transform ease-out;
+
+  #screen-mode {
+    margin: 10px 0 10px 5px;
+  }
 }
 
 #right-content-toc ol {
@@ -43,7 +47,7 @@
   }
 }
 
-#right-content-toc img:last-of-type {
+#right-content-toc #feedback img:last-of-type {
   margin-top: 10px;
 }
 
