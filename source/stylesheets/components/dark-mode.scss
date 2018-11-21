@@ -90,7 +90,7 @@
     .radio-choices,
     .adv-radio-choices {
       label {
-        background: #343f52;
+        background: #1c1d1e;
         border: 1px solid #343f52;
         color: #CBCBCB;
 
@@ -279,9 +279,23 @@
   footer {
     border-top: 1px solid #3C3F45;
 
+    .passenger-full {
+      display: none;
+    }
+
+    .passenger-dm {
+      display: inline-block;
+    }
+
     li,
     p {
       color: #C6C6C6;
+    }
+
+    ul {
+      img {
+        filter: contrast(50%);
+      }
     }
   }
 
@@ -311,6 +325,10 @@
       background: #1E2022;
       border-color: #3C3F45;
     }
+  }
+
+  .heroku {
+    filter: brightness(170%);
   }
 }
 
