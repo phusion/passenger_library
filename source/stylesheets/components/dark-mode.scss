@@ -120,6 +120,11 @@
       }
     }
 
+    [class$="radio-choices"] input[type="radio"]:checked + label {
+      background: #3F4B59;
+      color: #C6C6C6;
+    }
+
     h2 {
       border-bottom: 1px solid #3C3F45;
     }
@@ -403,11 +408,3 @@
     background: #E4E4E4;
   }
 }
-
-.dark-mode #main-content [class$="radio-choices"] input[type="radio"]:checked + label {
-  background: #3F4B59;
-}
-
-// #screen-mode img {
-//   filter: saturate(0)
-// }
