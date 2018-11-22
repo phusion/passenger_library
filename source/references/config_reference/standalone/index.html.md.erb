@@ -1631,14 +1631,15 @@ end
 
 Use this option to tell Passenger how many concurrent requests the application can handle per process. A value of 0 means that each process can handle an unlimited number of connections, while a value of -1 (the default) means that Passenger will infer the value based on internal heuristics.
 
-There are two main use cases for this option:
+There are three main use cases for this option:
 
  1. To make [dynamic process scaling](<%= url_for "/advanced_guides/config_and_optimization/standalone/dynamic_scaling_vs_fixed_app_processes/ruby/index.html" %>) work in <%= languages_requiring_hint_for_dynamic_process_scaling_to_work[0..-2].join(', ') %> and <%= languages_requiring_hint_for_dynamic_process_scaling_to_work.last %> applications. Set this option to approximately the number of concurrent requests at which the performance of a single process begins to degrade.
  2. [To make SSE and WebSockets work well in Ruby applications.](<%= url_for "/advanced_guides/config_and_optimization/standalone/tuning_sse_and_websockets.html" %>) Set this option to 0.
+ 3. To specify the available concurrency of an app using the [GLS](<%= url_for "" %>) capabilities of Passenger.
 
 This option is a hint to Passenger and does not make the application *actually* able to handle that many concurrent requests per process. For example in Ruby applications, the amount of concurrency that your application process can handle usually depends on the number of [configured threads](#--thread-count-thread_count). If you set the number of threads, then Passenger will automatically infer that Ruby applications' max concurrency per process equals the number of threads. But in non-standard cases where this heuristic fails (e.g. in situations where a WebSocket library such as Faye spawns threads to handle WebSockets) then you can use this option to override Passenger's heuristic.
 
-It is recommended that you do not touch this configuration option unless you want to tweak Passenger for one of the two main use cases documented above.
+It is recommended that you do not touch this configuration option unless you want to tweak Passenger for one of the three main use cases documented above.
 
 
 <a name="passenger_concurrency_model"></a>
