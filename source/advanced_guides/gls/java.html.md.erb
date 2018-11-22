@@ -6,31 +6,35 @@ breadcrumb: true
 
 <h1 class="solo-h1">Using Passenger GLS with Java</h1>
 
-To use Passenger GLS with Java, you'll need to use one of the many web frameworks written in Java.
+To use Passenger with Java, you'll need to use one of the many web frameworks written in Java.
 
 In this example we'll be using [Spring](https://spring.io), because it is popular. We're also adapting their [hello world tutorial](https://spring.io/guides/gs/serving-web-content/) here.
 
 ## Step 1: Install Java
 
-Java is available from OpenJDK or your OS' package manager. Unfortunately due to the package names and methods of distributing Java, installing Java via the command line involves version numbers and scraping non-API websites, and therefore these instrucitons are more fragile than for other languages.
+Java is available from OpenJDK or your OS' package manager. Unfortunately due to the package names and methods of distributing Java, installing Java via the command line involves version numbers and scraping non-API websites, and therefore these instructions are more fragile than for other languages.
 
 ### Debian & Ubuntu:
+
 ~~~
 apt install -y default-jdk-headless
 ~~~
 
 ### CentOS:
+
 ~~~
 yum install -y java-1.8.0-openjdk-devel
 ~~~
 
 ### RHEL:
+
 ~~~
 subscription-manager register --username $USERNAME_EMAIL --password $PASSWORD --auto-attach
 yum install -y java-1.8.0-openjdk-devel
 ~~~
 
 ### macOS:
+
 ~~~
 URL=$(curl -s https://jdk.java.net/11/ | egrep -o 'http[^"]+osx[^"]+bin.tar.gz' | head -1)
 curl -O $URL
@@ -42,12 +46,14 @@ mv jdk-*.jdk /Library/Java/JavaVirtualMachines/
 ## Step 2: Setup your JAVA_HOME
 
 ### Linux:
+
 ~~~
 /usr/sbin/alternatives --config java
 export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
 ~~~
 
 ### macOS:
+
 ~~~
 export JAVA_HOME=$(/usr/libexec/java_home)
 ~~~
@@ -69,17 +75,23 @@ export PATH=$PATH:/opt/apache-maven/bin
 
 #### Note: Install Homebrew on macOS
 
-In order to use homebrew on macOS, you'll need to install the command line tools, as well as homebrew itself. The following commands will install both for you, entirely from the cli, so you can run them over ssh if need be.
+In order to use Homebrew to install Go on macOS, you'll need to install the command line tools, as well as Homebrew itself.
+
+If you are physically present at the mac, you can run the following simplified commands to install everything you need:
+
+~~~
+xcode-select --install
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew install maven
+~~~
+
+The following commands will install everything for you, entirely from the cli, so you can run them over ssh if need be.
 
 ~~~
 touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
 softwareupdate -i $(softwareupdate -l | grep "\*.*Command Line" | grep $(sw_vers -productVersion) | awk -F"*" '{print $2}' | sed -e 's/^ *//' | tr -d '\n') --verbose
 rm /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-~~~
-
-#### Install Maven
-~~~
 brew install maven
 ~~~
 
@@ -117,6 +129,7 @@ public class GreetingController {
 
 }
 ~~~
+
 And edit the `src/main/java/hello/Application.java` file to add the following contents:
 
 ~~~
@@ -141,9 +154,9 @@ Run `env SERVER_PORT=5000 ./mvnw spring-boot:run` in the root directory to run t
 
 ## Step 7: Add Passenger
 
-First we will want a release build of our web app, which you can make with `./mvnw clean package`, then you can move the jar into a more convienient location on your disk, such as `~/Sites/`. Once you are happy with where things are, you can start your web app in Passenger by `cd`ing to the dir with the executable and running the following command:
+First we will want a release build of our web app, which you can make with `./mvnw clean package`, then you can move the jar into a more convienient location on your disk, such as `~/Sites/`. Once you are happy with where things are, you can start your web app in Passenger by `cd`ing to the dir with the executable and running the following command: `passenger start --app-start-command 'env SERVER_PORT=$PORT java -jar ./gs-serving-web-content-0.1.0.jar'`.
 
-`passenger start --app-start-command 'env SERVER_PORT=$PORT java -jar ./gs-serving-web-content-0.1.0.jar'`.
+Passenger requires that applications listen on a particular port that Passenger has chosen, which it provides to the application by replacing the `$PORT` string in its startup command with the actual port number. Regardless of how your app accepts port arguments, the startup string must be able to convert from a cli argument to what works for your app. In our example we converted the port argument to an envvar to show how one may need to change how the port is passed to your app.
 
 You can verify that everything is working with `curl http://localhost:3000`. To stop Passenger simply press `Ctrl+C` in the terminal where you started it.
 

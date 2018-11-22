@@ -15,6 +15,7 @@ In this example we'll be using [Phoenix](http://www.phoenixframework.org/), beca
 Unfortunately a sufficiently recent Elixir is not available from most OS' package managers, so manual installation is required. Additionally due to the package names and methods of distributing Elixir and Erlang, installing Elixir via the command line involves version numbers, and therefore these instructions are more fragile than for most other languages.
 
 ### Debian & Ubuntu:
+
 ~~~
 apt install -y wget gnupg2 unzip curl
 wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
@@ -32,6 +33,7 @@ export PATH="$PATH:/opt/elixir/bin"
 ~~~
 
 ### CentOS:
+
 ~~~
 yum install -y epel-release yum-utils
 yum-config-manager --enable epel
@@ -51,6 +53,7 @@ export PATH="$PATH:/opt/elixir/bin"
 ~~~
 
 ### RHEL:
+
 ~~~
 subscription-manager register --username $USERNAME_EMAIL --password $PASSWORD --auto-attach
 subscription-manager repos --enable rhel-*-devtools-rpms --enable "rhel-*-optional-rpms" --enable "rhel-*-extras-rpms"

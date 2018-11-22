@@ -4,7 +4,7 @@ advanced_guides: true
 breadcrumb: true
 ---
 
-<h1 class="solo-h1">Using Passenger GLS with Go</h1>
+<h1 class="solo-h1">Using Passenger with Go</h1>
 
 To use Passenger with Go, you'll need to use one of the many web frameworks written in Go.
 
@@ -12,12 +12,16 @@ In this example we'll be using [Gorilla](https://github.com/gorilla/mux), becaus
 
 ## Step 1: Install Go
 
-Go is available from most OS' package mangers. We recommend against installing manually if possible, because then you don't get updates via your package manager.
+Go is available from most OS' package managers. We recommend against installing manually if possible, because then you don't get updates via your package manager.
 
 ### Debian & Ubuntu:
-`apt install -y golang-go`
+
+~~~
+apt install -y golang-go
+~~~
 
 ### CentOS:
+
 ~~~
 yum install -y centos-release-scl
 yum install -y go-toolset-7
@@ -25,6 +29,7 @@ scl enable go-toolset-7 bash
 ~~~
 
 ### RHEL:
+
 ~~~
 subscription-manager register --username $USERNAME_EMAIL --password $PASSWORD --auto-attach
 subscription-manager repos --enable rhel-7-server-devtools-rpms
@@ -66,6 +71,7 @@ ls $GOPATH/src/github.com/gorilla/mux/
 
 ## Step 3: Create your project
 Create the file and directories you'll use for this project and `cd` there.
+
 ~~~
 mkdir -p $GOPATH/src/localhost/testing/helloworld/
 cd $GOPATH/src/localhost/testing/helloworld/
@@ -109,7 +115,7 @@ func main() {
 
 ## Step 5: Build and run
 
-Run the following commands to run the web app, which will serve the web app on port 5000, then verify that your app is being served by sending a request to the webapp from another terminal.
+Run the following commands to run the web app, which will serve the web app on port 5000, then verify that your app is being served by sending a request to the web app from another terminal.
 
 ~~~
 cd $GOPATH/src/localhost/testing/helloworld/
@@ -136,6 +142,7 @@ passenger start --app-start-command 'env PORT=$PORT ./main'
 # in another terminal
 curl http://localhost:3000
 ~~~
+
 
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/gls/index.html" %>">Back</a>
