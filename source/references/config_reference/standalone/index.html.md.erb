@@ -801,6 +801,50 @@ The corresponding Passengerfile.json looks as follows:
 ~~~
 
 
+### `--app-start-command` / "app_start_command"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --app-start-command <em>COMMAND</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"app_start_command": <em>string</em></td>
+  </tr>
+  <%# <tr>
+       <th>Environment variable syntax</th>
+       <td>PASSENGER_APP_START_COMMAND=<em>string</em></td>
+       </tr> %>
+  <tr>
+    <th>Since</th>
+    <td>6.0.0</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Specifies how Passenger should start your app on a specific port.
+
+Passenger has built-in support for starting Ruby, Python, Node.js, and Meteor apps, however it can also start any application written in any language which can listen on a specified port. This functionality is termed Generic Language Support (GLS) and is discussed in greater detail [here](<%= url_for "" %>). The minimum required configuration to make use of GLS in Passenger, is to specify how Passenger should start your app on a specific port. To achieve this you specify the `app-start-command` which is the command you would use on the command line to start your app, with a placeholder `$PORT` where Passenger should substitute its chosen port, for your app to receive and bind to. We go into greater detail on various ways to pass the port to your app if it doesn't take a command line argument to set the port [here](<%= url_for "" %>).
+
+Consider the following config snippet:
+
+~~~json
+{
+  "app_start_command": "/usr/local/bin/myapp --foreground --port $PORT" <%#,
+  "app_support_kuria_protocol": false %>
+}
+~~~
+
+Passenger will start your app by calling your command, with an actual port number in place of the `$PORT` placeholder. For eg. `/usr/local/bin/myapp --foreground --port 5000`.
+
 ### `--app-type` / "app_type"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -893,7 +937,7 @@ Use server.js as the startup file (entry point file) for your Node.js applicatio
     <td>nginx, builtin</td>
   </tr>
   <tr>
-    <th><a href="/advanced_guides/config_and_optimization/standalone/intro.html">Mass deployment context</a></th>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
     <td>Main, per-app</td>
   </tr>
 </table>

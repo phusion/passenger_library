@@ -442,6 +442,36 @@ server {
 ~~~
 
 
+### passenger_app_start_command
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_app_start_command <em>COMMAND</em>;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>server, location, if</td>
+  </tr>
+</table>
+
+Specifies how Passenger should start your app on a specific port.
+
+Passenger has built-in support for starting Ruby, Python, Node.js, and Meteor apps, however it can also start any application written in any language which can listen on a specified port. This functionality is termed Generic Language Support (GLS) and is discussed in greater detail [here](<%= url_for "" %>). The minimum required configuration to make use of GLS in Passenger, is to specify how Passenger should start your app on a specific port. To achieve this you specify the `passenger_app_start_command` which is the command you would use on the command line to start your app, with a placeholder `$PORT` where Passenger should substitute its chosen port, for your app to receive and bind to. We go into greater detail on various ways to pass the port to your app if it doesn't take a command line argument to set the port [here](<%= url_for "" %>).
+
+Consider the following config snippet:
+
+~~~
+  passenger_app_start_command "/usr/local/bin/myapp --foreground --port $PORT";
+~~~
+
+Passenger will start your app by calling your command, with an actual port number in place of the `$PORT` placeholder. For eg. `/usr/local/bin/myapp --foreground --port 5000`.
+
+
 ### passenger_app_type
 
 <table class="table table-bordered table-condensed">
