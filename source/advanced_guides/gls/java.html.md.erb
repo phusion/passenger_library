@@ -1,0 +1,152 @@
+---
+title: Java
+advanced_guides: true
+breadcrumb: true
+---
+
+<h1 class="solo-h1">Using Passenger GLS with Java</h1>
+
+To use Passenger GLS with Java, you'll need to use one of the many web frameworks written in Java.
+
+In this example we'll be using [Spring](https://spring.io), because it is popular. We're also adapting their [hello world tutorial](https://spring.io/guides/gs/serving-web-content/) here.
+
+## Step 1: Install Java
+
+Java is available from OpenJDK or your OS' package manager. Unfortunately due to the package names and methods of distributing Java, installing Java via the command line involves version numbers and scraping non-API websites, and therefore these instrucitons are more fragile than for other languages.
+
+### Debian & Ubuntu:
+~~~
+apt install -y default-jdk-headless
+~~~
+
+### CentOS:
+~~~
+yum install -y java-1.8.0-openjdk-devel
+~~~
+
+### RHEL:
+~~~
+subscription-manager register --username $USERNAME_EMAIL --password $PASSWORD --auto-attach
+yum install -y java-1.8.0-openjdk-devel
+~~~
+
+### macOS:
+~~~
+URL=$(curl -s https://jdk.java.net/11/ | egrep -o 'http[^"]+osx[^"]+bin.tar.gz' | head -1)
+curl -O $URL
+tar xzvf openjdk-*bin.tar.gz
+rm openjdk-*bin.tar.gz
+mv jdk-*.jdk /Library/Java/JavaVirtualMachines/
+~~~
+
+## Step 2: Setup your JAVA_HOME
+
+### Linux:
+~~~
+/usr/sbin/alternatives --config java
+export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which javac)))))
+~~~
+
+### macOS:
+~~~
+export JAVA_HOME=$(/usr/libexec/java_home)
+~~~
+
+## Step 3: Install Maven
+
+### Linux:
+
+~~~
+URL=$(curl -s https://maven.apache.org/download.cgi | egrep -o 'http[^"]+apache.org[^"]+bin\.tar\.gz' | head -1)
+curl -O $URL
+tar xzvf apache-maven-*-bin.tar.gz
+rm apache-maven-*-bin.tar.gz
+mv apache-maven-* /opt/apache-maven
+export PATH=$PATH:/opt/apache-maven/bin
+~~~
+
+### macOS:
+
+#### Note: Install Homebrew on macOS
+
+In order to use homebrew on macOS, you'll need to install the command line tools, as well as homebrew itself. The following commands will install both for you, entirely from the cli, so you can run them over ssh if need be.
+
+~~~
+touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+softwareupdate -i $(softwareupdate -l | grep "\*.*Command Line" | grep $(sw_vers -productVersion) | awk -F"*" '{print $2}' | sed -e 's/^ *//' | tr -d '\n') --verbose
+rm /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+~~~
+
+#### Install Maven
+~~~
+brew install maven
+~~~
+
+## Step 4: Create your project
+Create a directory with the following commands:
+
+~~~
+curl -LO https://github.com/spring-guides/gs-serving-web-content/archive/master.zip
+unzip master.zip
+rm master.zip
+mv gs-serving-web-content-master/initial/ ./
+rm -rf gs-serving-web-content-master
+cd initial
+rm -rf *gradle* mvnw.cmd src/main/resources
+~~~
+
+## Step 5: Hello world
+Edit the `src/main/java/hello/GreetingController.java` file to add the following contents:
+
+~~~
+package hello;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class GreetingController {
+
+    @GetMapping("/")
+    @ResponseBody
+    public String greeting() {
+        return "Hello, World!";
+    }
+
+}
+~~~
+And edit the `src/main/java/hello/Application.java` file to add the following contents:
+
+~~~
+package hello;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+}
+~~~
+
+## Step 6: Build and run
+
+Run `env SERVER_PORT=5000 ./mvnw spring-boot:run` in the root directory to run the web app, which will serve the web app on port 5000, which you can verify with `curl http://localhost:5000/`
+
+## Step 7: Add Passenger
+
+First we will want a release build of our web app, which you can make with `./mvnw clean package`, then you can move the jar into a more convienient location on your disk, such as `~/Sites/`. Once you are happy with where things are, you can start your web app in Passenger by `cd`ing to the dir with the executable and running the following command:
+
+`passenger start --app-start-command 'env SERVER_PORT=$PORT java -jar ./gs-serving-web-content-0.1.0.jar'`.
+
+You can verify that everything is working with `curl http://localhost:3000`. To stop Passenger simply press `Ctrl+C` in the terminal where you started it.
+
+<div class="back-button">
+  <a class="dark-button" href="<%= url_for "/advanced_guides/gls/index.html" %>">Back</a>
+</div>

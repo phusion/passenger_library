@@ -408,3 +408,11 @@
     background: #E4E4E4;
   }
 }
+
+.dark-mode #main-content [class$="radio-choices"] input[type="radio"]:checked + label {
+  background: #3F4B59;
+}
+
+// #screen-mode img {
+//   filter: saturate(0)
+// }

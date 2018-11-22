@@ -1,0 +1,95 @@
+---
+title: Rust
+advanced_guides: true
+breadcrumb: true
+---
+
+<h1 class="solo-h1">Using Passenger GLS with Rust</h1>
+
+To use Passenger GLS with Rust, you'll need to use one of the many web frameworks available on [Crates.io](https://crates.io/).
+
+In this example we'll be using [Rouille](https://github.com/tomaka/rouille), because it is the simplest framework to use, and doesn't require a Nightly Rust compiler like [Rocket](https://rocket.rs/) nor does it use unsafe inappropriately like [actix-web](https://github.com/actix/actix-web).
+
+## Step 1: Install Rust
+
+Rust is available from most OS' package mangers. We recommend against using the `rustup` tool because it is less safe, more work to setup correctly, and requires you to perform updates outside your regular system updates via your package manager.
+
+### Debian:
+No `cargo` package is available, though `rustc` is, please see [this page](https://www.rust-lang.org/en-US/other-installers.html#standalone) for a manual download of the current stable release.
+
+### Ubuntu:
+<pre>apt install -y cargo</pre>
+
+### CentOS:
+~~~
+yum install -y centos-release-scl
+yum install -y rust-toolset-7
+scl enable rust-toolset-7 bash
+~~~
+
+### RHEL:
+
+~~~
+subscription-manager register --username $USERNAME_EMAIL --password $PASSWORD --auto-attach
+subscription-manager repos --enable rhel-7-server-devtools-rpms
+yum-config-manager --enable rhel-server-rhscl-7-rpms
+yum install -y rust-toolset-7
+scl enable rust-toolset-7 bash
+~~~
+
+### macOS:
+
+#### Note: Install Homebrew on macOS
+
+In order to use homebrew on macOS, you'll need to install the command line tools, as well as homebrew itself. The following commands will install both for you, entirely from the cli, so you can run them over ssh if need be.
+
+~~~
+touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+softwareupdate -i $(softwareupdate -l | grep "\*.*Command Line" | grep $(sw_vers -productVersion) | awk -F"*" '{print $2}' | sed -e 's/^ *//' | tr -d '\n') --verbose
+rm /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+~~~
+
+#### Install Rust
+
+~~~
+brew install rust
+~~~
+
+## Step 2: Create your project
+Run `cargo new hello-rouille --bin` in a directory where you keep your projects. The `cargo` command will create a new directory called `hello-rouille` and populates it with the files you'll use to create your app.
+
+## Step 3: Hello world
+Edit the `Cargo.toml` file to indicate that you are going to use the `Rouille` framework (called a crate in Rust lingo). You are going to add the following line in the `[dependencies]` section:
+
+`rouille = "^2.2.0"`
+
+Next edit the `src/main.rs` file to contain these contents:
+
+~~~
+extern crate rouille;
+use rouille::Response;
+use std::env::var;
+
+fn main() {
+    rouille::start_server(format!("0.0.0.0:{}", var("PORT").unwrap_or("80".to_string())), move |_request| {
+        Response::text("Hello, world!")
+    });
+}
+~~~
+
+## Step 4: Build and run
+
+Run `env PORT=5000 cargo run` in the `hello-rouille` directory to run the web app, which will serve the web app on port 5000. You can verify that your web app is being served by running `curl http://localhost:5000/`.
+
+## Step 5: Add Passenger
+
+You will need Passenger installed, for instrucitons on how to install Passenger [click here](https://www.phusionpassenger.com/docs/tutorials/installation/node/).
+
+Next we will want a release build of our web app, which you can make with `cargo build --release`, then you can move the executable into a more convenient location on your disk, such as `~/Sites/`. Once you are happy with where things are, you can start your web app in Passenger by `cd`ing to the dir with the executable and running the following command: `passenger start --app-start-command 'env PORT=$PORT ./hello-rouille'`.
+
+You can verify that everything is working with `curl http://localhost:3000`. To stop Passenger simply press `Ctrl+C` in the terminal where you started it.
+
+<div class="back-button">
+  <a class="dark-button" href="<%= url_for "/advanced_guides/gls/index.html" %>">Back</a>
+</div>

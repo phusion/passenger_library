@@ -1,0 +1,171 @@
+---
+title: Elixir
+advanced_guides: true
+breadcrumb: true
+---
+
+<h1 class="solo-h1">Using Passenger GLS with Elixir</h1>
+
+To use Passenger with Elixir, you'll need to use one of the many web frameworks written in Elixir.
+
+In this example we'll be using [Phoenix](http://www.phoenixframework.org/), because it is the most popular library.
+
+## Step 1: Install Elixir
+
+Unfortunately a sufficiently recent Elixir is not available from most OS' package managers, so manual installation is required. Additionally due to the package names and methods of distributing Elixir and Erlang, installing Elixir via the command line involves version numbers, and therefore these instructions are more fragile than for most other languages.
+
+### Debian & Ubuntu:
+~~~
+apt install -y wget gnupg2 unzip curl
+wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+dpkg -i erlang-solutions_1.0_all.deb
+rm erlang-solutions_1.0_all.deb
+apt update
+apt install -y erlang
+
+mkdir -p /opt/elixir
+cd /opt/elixir
+wget "https://github.com/$(curl -fsSL https://github.com/elixir-lang/elixir/releases/latest | grep -Eoe '/elixir-lang/elixir/releases/download/[^/]+/Precompiled.zip')"
+unzip Precompiled.zip
+rm Precompiled.zip
+export PATH="$PATH:/opt/elixir/bin"
+~~~
+
+### CentOS:
+~~~
+yum install -y epel-release yum-utils
+yum-config-manager --enable epel
+yum install -y wget unzip
+
+wget https://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm
+rpm -Uvh erlang-solutions-1.0-1.noarch.rpm
+rm erlang-solutions-1.0-1.noarch.rpm
+yum install -y erlang
+
+mkdir -p /opt/elixir
+cd /opt/elixir
+wget "https://github.com/$(curl -fsSL https://github.com/elixir-lang/elixir/releases/latest | grep -Eoe '/elixir-lang/elixir/releases/download/[^/]+/Precompiled.zip')"
+unzip Precompiled.zip
+rm Precompiled.zip
+export PATH="$PATH:/opt/elixir/bin"
+~~~
+
+### RHEL:
+~~~
+subscription-manager register --username $USERNAME_EMAIL --password $PASSWORD --auto-attach
+subscription-manager repos --enable rhel-*-devtools-rpms --enable "rhel-*-optional-rpms" --enable "rhel-*-extras-rpms"
+yum install -y wget unzip https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+rpm --import http://binaries.erlang-solutions.com/debian/erlang_solutions.asc
+cd /etc/yum.repos.d
+wget http://packages.erlang-solutions.com/rpm/centos/erlang_solutions.repo
+sed 's/$releasever/7/g' -i erlang_solutions.repo
+yum install -y erlang
+
+mkdir -p /opt/elixir
+cd /opt/elixir
+wget "https://github.com/$(curl -fsSL https://github.com/elixir-lang/elixir/releases/latest | grep -Eoe '/elixir-lang/elixir/releases/download/[^/]+/Precompiled.zip')"
+unzip Precompiled.zip
+rm Precompiled.zip
+export PATH="$PATH:/opt/elixir/bin"
+~~~
+
+### macOS:
+
+In order to use Homebrew to install Elixir on macOS, you'll need to install the command line tools, as well as Homebrew itself.
+
+If you are physically present at the mac, you can run the following simplified commands to install everything you need:
+
+~~~
+xcode-select --install
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew install elixir
+~~~
+
+The following commands will install everything for you, entirely from the cli, so you can run them over ssh if need be.
+
+~~~
+touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+softwareupdate -i $(softwareupdate -l | grep "\*.*Command Line" | grep $(sw_vers -productVersion) | awk -F"*" '{print $2}' | sed -e 's/^ *//' | tr -d '\n') --verbose
+rm /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew install elixir
+~~~
+
+## Step 2: Install Phoenix
+
+~~~
+mix local.hex --force
+mix archive.install hex phx_new 1.4.0 --force
+~~~
+
+## Step 3: Create your project
+Create the file and directories you'll use for this project and `cd` there.
+
+~~~
+mix phx.new hello_world --no-webpack --no-ecto --no-html
+~~~
+
+## Step 4: Hello world
+Edit the `lib/hello_web/router.ex` file to contain the following contents:
+
+~~~
+defmodule HelloWorldWeb.Router do
+  use HelloWorldWeb, :router
+
+  pipeline :api do
+    plug :accepts, ["json", "html"]
+  end
+
+  scope "/", HelloWorldWeb do
+    pipe_through :api
+    get "/", PageController, :index
+  end
+
+end
+~~~
+
+`lib/hello_world_web/controllers/page_controller.ex`
+
+~~~
+defmodule HelloWorldWeb.PageController do
+  use HelloWorldWeb, :controller
+
+  def index(conn, _params) do
+      text(conn, "Hello, world!")
+  end
+end
+~~~
+
+## Step 5: Build and run
+
+Run the following commands to run the web app, which will serve the web app on port 4000, then verify that your app is being served by sending a request to the web app from another terminal.
+
+~~~
+cd hello_world
+mix phx.server
+# in another terminal
+curl http://localhost:4000/
+~~~
+
+## Step 6: Add Passenger
+
+You will need Passenger installed, for instructions on how to install Passenger [click here](https://www.phusionpassenger.com/docs/tutorials/installation/node/).
+
+Next you can start your web app in Passenger by `cd`ing to the dir with the web app and running the following command: `passenger start --app-start-command 'env PORT=$PORT MIX_ENV=prod mix phx.server'`.
+
+Passenger requires that applications listen on a particular port that Passenger has chosen, which it provides to the application by replacing the `$PORT` string in its startup command with the actual port number. Regardless of how your app accepts port arguments, the startup string must be able to convert from a cli argument to what works for your app. In our example we converted the port argument to an envvar to show how one may need to change how the port is passed to your app.
+
+You can verify that everything is working with `curl http://localhost:3000`. To stop Passenger simply press `Ctrl+C` in the terminal where you started it.
+
+The commands to run from this section are collected here:
+
+~~~
+passenger start --app-start-command 'env PORT=$PORT MIX_ENV=prod mix phx.server'
+# in another terminal
+curl http://localhost:3000
+~~~
+
+<div class="back-button">
+  <a class="dark-button" href="<%= url_for "/advanced_guides/gls/index.html" %>">Back</a>
+</div>
