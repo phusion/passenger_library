@@ -1,0 +1,45 @@
+---
+title: Generic guide
+advanced_guides: true
+breadcrumb: true
+---
+
+# Generic guide
+
+To use Passenger with an arbitrary app written in any language, you'll need to meet a short list of criteria.
+
+Your app must be able to bind to a specified port, it must be able to run in the foreground, and it must be able to speak http.
+
+## Step 1: Install Your App
+
+Install your app in whatever way you like.
+
+## Step 2: Test Your App Without Passenger
+
+Run the web app, (this is a good time to work out how to get your app to bind to a non-default port of your choosing), then verify that your app is being served by sending a request to the web app from another terminal. In this example we assume your app takes a port as a command line argument, if it must be configured in another way, then see [our article about specifying ports for GLS apps](<%= url_for "" %>).
+
+~~~
+myApp --foreground --port 5000
+# in another terminal
+curl http://localhost:5000/
+~~~
+
+## Step 3: Add Passenger
+
+You will need Passenger installed, for instructions on how to install Passenger [click here](https://www.phusionpassenger.com/docs/tutorials/installation/node/).
+
+Once you have Passenger installed, you can start your web app in Passenger by running a command similar to this: `passenger start --app-start-command myApp --foreground --port $PORT'`.
+
+You can verify that everything is working with `curl http://localhost:3000`. To stop Passenger simply press `Ctrl+C` in the terminal where you started it.
+
+The commands to run from this section are collected here:
+
+~~~
+passenger start --app-start-command myApp --foreground --port $PORT'
+# in another terminal
+curl http://localhost:3000
+~~~
+
+<div class="back-button">
+  <a class="dark-button" href="<%= url_for "/advanced_guides/gls/index.html" %>">Back</a>
+</div>
