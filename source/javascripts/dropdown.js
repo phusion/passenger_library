@@ -30,25 +30,29 @@ function makeDropdown(dropdown_type, dropdown_items) {
     const location = window.location.href;
     const value = format(self.value);
 
-    array.forEach(function(item) {
-      if (item !== value && location.includes(item)) {
-        window.location = location.replace(item, value);
-      }
+    if (value !== 'other') {
+      array.forEach(function(item) {
+        if (item !== value && location.includes(item)) {
+          window.location = location.replace(item, value);
+        }
 
-      array.forEach(needle => {
-        // change logo if this's value doesn't change the content
-        self.style.backgroundImage = self.style.backgroundImage.replace(needle,value);
-        Array.from(document.querySelectorAll(`a[href*="/${needle}/"]`)).filter(e=>!("no_rewrite" in e.dataset)).forEach(a=>{a.href=a.href.replace(`/${needle}/`, `/${value}/`)});
-        document.querySelectorAll(`[data-${needle}_only]`).forEach(e=>e.style.display = (`${value}_only` in e.dataset ? (e.tagName == "SPAN" ? "inline" : "inherit") : "none"));
-        document.querySelectorAll(`#current-selection img[src*="/images/${needle}.svg"]`).forEach(e=>{e.src = e.src.replace(needle,value);e.alt=value;});
+        array.forEach(needle => {
+          // change logo if this's value doesn't change the content
+          self.style.backgroundImage = self.style.backgroundImage.replace(needle,value);
+          Array.from(document.querySelectorAll(`a[href*="/${needle}/"]`)).filter(e=>!("no_rewrite" in e.dataset)).forEach(a=>{a.href=a.href.replace(`/${needle}/`, `/${value}/`)});
+          document.querySelectorAll(`[data-${needle}_only]`).forEach(e=>e.style.display = (`${value}_only` in e.dataset ? (e.tagName == "SPAN" ? "inline" : "inherit") : "none"));
+          document.querySelectorAll(`#current-selection img[src*="/images/${needle}.svg"]`).forEach(e=>{e.src = e.src.replace(needle,value);e.alt=value;});
+        });
+        document.querySelectorAll(`[data-${dropdown_type.toLowerCase()}_placeholder]`).forEach(e=>{e.innerText=value});
+
+        // save selection in localStorage
+        localStorage.setItem(self.name, self.value);
       });
-      document.querySelectorAll(`[data-${dropdown_type.toLowerCase()}_placeholder]`).forEach(e=>{e.innerText=value});
-
-      // save selection in localStorage
-      localStorage.setItem(self.name, self.value);
-    });
-    reindex();
-    applySelection(self.name, self.value);
+      reindex();
+      applySelection(self.name, self.value);
+    } else {
+      window.location = '/advanced_guides/gls/';
+    }
   }
 
   element.addEventListener('change', changeHandler.bind(element));
