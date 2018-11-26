@@ -355,14 +355,20 @@
 
   img {
     width: 18px;
+    margin-top: 1px;
+
+    &:first-of-type {
+      margin-right: 54px;
+    }
   }
 
   .switch {
-    position: relative;
+    position: absolute;
     display: inline-block;
     width: 42px;
     height: 26px;
     margin: 0 6px;
+    margin-left: 24px;
   }
 
   .switch input {
