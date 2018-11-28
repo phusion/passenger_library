@@ -15,21 +15,25 @@ disabled_integrations:
 ---
 
 <h1 class="solo-h1">Generic Language Support</h1>
-<p><strong>Passenger 6: Generic Language Support</strong> is our answer to a world increasingly polyglot.</p>
-<div class="info">Your selected language won't be matter for these articles because Passenger 6 supports <strong>all</strong> languages.</div>
+<p><strong>Passenger 6 / Generic Language Support</strong> is the answer to a world increasingly polyglot.</p>
+
+<p>Per overwhelming request from language communities Passenger didn’t previously support out-of-the-box, we added support for all languages to <a href="http://www.phusionpassenger.com/passenger6">Passenger 6</a>. Passenger 6 introduces standardization to your stack, and across your microservices. We’ll serve your apps, you worry about the rest.</p>
+
+<div class="info">The language selected in the sidebar won’t influence the contents for these articles, as Passenger 6 supports <strong>all</strong> languages.</div>
 
 <div class="list-of-articles row">
   <div class="col-md-6">
     <h3>General tutorials</h3>
     <ul>
       <li><a href="generic_guide.html">Generic guide</a></li>
-      <li><a href="ports.html">How ports work in Passenger GLS</a></li>
+      <li><%= link_to "Upgrading Passenger", '/advanced_guides/install_and_upgrade/nginx/upgrade.html' %></li>
+      <li><a href="ports.html">How ports work in Passenger 6 / GLS</a></li>
     </ul>
   </div>
 
   <div class="col-md-6">
     <h3>Language tutorials</h3>
-    <p>For most of your apps, and a sufficient level of DevOps experience, our <a href="">generic guide</a> will work just fine. But just in case, we wrote tutorials for Rust, Go, Java and Elixir.</p>
+    <p>Assuming a sufficient level of DevOps experience, the <a href="generic_guide.html">generic guide</a> will do just fine. But just in case, we wrote tutorials for Rust, Go, Java, Elixir, and Swift.</p>
 
     <ul class="gls-guides">
       <li><a href="rust.html"><img src="<%= url_for "/images/gls/rust.png" %>" alt="Rust" />Rust</a></li>
