@@ -2048,9 +2048,58 @@ The proxy client code uses libcurl, which supports the following values for <em>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
 
+### `--disable-anonymous-telemetry` / "disable_anonymous_telemetry"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --disable-anonymous-telemetry</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"disable_anonymous_telemetry": <em>true</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>DISABLE_ANONYMOUS_TELEMETRY=<em>true</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>false</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.0</td>
+  </tr>
+</table>
+
+This option allows disabling the [Passenger anonymous telemetry reporting](<%= url_for("/advanced_guides/in_depth/ruby/anonymous_telemetry_reporting.html") %>), which regularly sends anonymous telemetry data to <em>https://anontelemetry.phusionpassenger.com</em>.
 
 
+### `--anonymous-telemetry-proxy` / "anonymous_telemetry_proxy"
 
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --anonymous-telemetry-proxy <em>scheme://user:password@proxy_host:proxy_port;</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"anonymous_telemetry_proxy": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_ANONYMOUS_TELEMETRY_PROXY=<em>string</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.0</td>
+  </tr>
+</table>
+
+This option allows use of an intermediate proxy for the [Passenger anonymous telemetry reporting](<%= url_for("/advanced_guides/in_depth/ruby/anonymous_telemetry_reporting.html") %>).
+The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
+<em>http, socks5, socks5h, socks4, socks4a</em>
 
 
 ## Request / response customization

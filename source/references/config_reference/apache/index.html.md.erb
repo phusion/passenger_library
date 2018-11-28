@@ -1955,6 +1955,55 @@ The proxy client code uses libcurl, which supports the following values for <em>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
 
+### PassengerDisableAnonymousTelemetry
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDisableAnonymousTelemetry <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>
+      PassengerDisableAnonymousTelemetry off
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+This option allows disabling the [Passenger anonymous telemetry reporting](<%= url_for("/advanced_guides/in_depth/ruby/anonymous_telemetry_reporting.html") %>), which regularly sends anonymous telemetry data to <em>https://anontelemetry.phusionpassenger.com</em>.
+
+
+### PassengerAnonymousTelemetryProxy
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAnonymousTelemetryProxy <em>scheme://user:password@proxy_host:proxy_port</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+This option allows use of an intermediate proxy for the [Passenger anonymous telemetry reporting](<%= url_for("/advanced_guides/in_depth/ruby/anonymous_telemetry_reporting.html") %>).
+The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
+<em>http, socks5, socks5h, socks4, socks4a</em>
+
+
+
 ### PassengerDataBufferDir
 
 <table class="table table-bordered table-condensed">

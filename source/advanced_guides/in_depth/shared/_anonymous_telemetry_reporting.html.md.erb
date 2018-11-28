@@ -1,0 +1,41 @@
+<h1 class="solo-h1">Anonymous telemetry reporting</h1>
+
+The Passenger anonymous telemetry reporting sends anonymous usage statistics to Phusion. We use these statistics to gather information on how to improve Passenger. The reporting mechanism was introduced in Passenger version 6.0.0.
+
+## Reporting mechanism
+
+The reporting mechanism works as follows:
+
+1. When running, Passenger sends a request via HTTPS to a Phusion server at `anontelemetry.phusionpassenger.com`
+2. The request contains:
+  - Version number (Passenger)
+  - Edition (Open Source, Enterprise)
+  - Number of requests handled
+  - Time period
+3. The server replies with response indicating if the data was processed succesfully.
+4. If the data was processed succesfully it will be removed from Passenger, otherwise it will be kept and resubmitted at a later moment. Any messages from the server will be logged.
+5. The data is typically reported every 6 to 9 hours
+
+## Security considerations
+
+The reporting does not require direct external access, it can also be [configured to use a web proxy](<%= url_for("/references/config_reference/nginx/#passenger_anonymous_telemetry_proxy") %>).
+
+The reporting is built with state of the art security measures to ensure trust and confidentiality:
+
+- a secure connection (HTTPS) between Passenger and the Phusion telemetry reporting server, against eavesdropping
+- Passenger checks the HTTPS server certificate (trust store, host name), before trusting the server enough to send it anything
+
+No information about (Enterprise) feature usage, operating system information or any information related to the environment Passenger is running in will be reported.
+
+The source code related to the anonymous telemetry reporting, is open for inspection on GitHub. You can also run Passenger with its log level set to 7 in order to see exactly which fields are exchanged with the server.
+
+## Options
+
+The anonymous telemetry reporting can be [configured to use a web proxy](<%= url_for("/references/config_reference/nginx/#passenger_anonymous_telemetry_proxy") %>).
+
+The anonymous telemetry reporting is on by default, but can also be [turned off](<%= url_for("/references/config_reference/nginx/#passenger_disable_anonymous_telemetry") %>).
+
+
+<div class="back-button">
+  <a class="dark-button" href="<%= url_for "/advanced_guides/in_depth/index.html" %>">Back</a>
+</div>
