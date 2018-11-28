@@ -346,6 +346,12 @@
   .heroku {
     filter: invert(1) hue-rotate(180deg);
   }
+
+  .gls-guides {
+    img {
+      filter: invert(1) hue-rotate(180deg);
+    }
+  }
 }
 
 #screen-mode {
@@ -362,6 +368,10 @@
     }
   }
 
+  img:-moz-loading {
+    visibility: hidden;
+  }
+
   .switch {
     position: absolute;
     display: inline-block;
@@ -369,6 +379,10 @@
     height: 26px;
     margin: 0 6px;
     margin-left: 24px;
+
+    @-moz-document url-prefix() {
+      margin-top: -2px;
+    }
   }
 
   .switch input {
