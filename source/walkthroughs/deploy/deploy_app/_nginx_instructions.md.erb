@@ -102,6 +102,22 @@ myappuser$ ...</span>
   Replace `yourserver.com` with your server's host name, and replace `/var/www/myapp/code` with your application's code directory path. However, make sure that Nginx is configured to point to the `public` subdirectory inside it!
 
   Replace `/path-to-ruby` with the Ruby command that you obtained in [step <%= header_step %>.<%= determine_ruby_substep %>](#<%= id_prefix %>determine-the-ruby-command-that-passenger-should-use).
+<% elsif language_type == :python %>
+  <pre class="highlight">server {
+    listen 80;
+    server_name <span class="o">yourserver.com</span>;
+
+    <span class="c"># Tell Nginx and Passenger where your app's 'public' directory is</span>
+    root <span class="o">/var/www/myapp/code</span>/public;
+
+    <span class="c"># Turn on Passenger</span>
+    passenger_enabled on;
+    passenger_python <span class="o">/path-to-python</span>;
+}</pre>
+
+  Replace `yourserver.com` with your server's host name, and replace `/var/www/myapp/code` with your application's code directory path. However, make sure that Nginx is configured to point to the `public` subdirectory inside it!
+
+  Replace `/path-to-python` with the location of the Python executable for the version with which the app was built. This is likely to be the folder containing the virtual environment.
 <% elsif language_type == :nodejs %>
   <pre class="highlight">server {
     listen 80;
