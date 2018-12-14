@@ -96,7 +96,7 @@ curl http://localhost:5000/
 
 ## Step 5: Add Passenger
 
-You will need Passenger installed, for instrucitons on how to install Passenger [click here](https://www.phusionpassenger.com/docs/tutorials/installation/node/).
+You will need Passenger installed, for instructions on how to install Passenger [click here](https://www.phusionpassenger.com/docs/tutorials/installation/node/).
 
 Next we will want a release build of our web app, which you can make with `cargo build --release`, then you can move the executable into a more convenient location on your disk, such as `~/Sites/`. Once you are happy with where things are, you can start your web app in Passenger by `cd`ing to the dir with the executable and running the following command: `passenger start --app-start-command 'env PORT=$PORT ./hello-rouille'`.
 
