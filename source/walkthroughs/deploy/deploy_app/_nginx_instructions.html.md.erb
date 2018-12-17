@@ -153,7 +153,24 @@ myappuser$ ...</span>
     passenger_enabled on;
 }</pre>
 
+  <div class="info">
+    In some cases you will have to change the location directory instead of using the public directory. For example, if you are using Webpack, Nginx will not serve the built bundle because it is not in the <code>public</code> folder. You need to add the <code>location</code> setting to the server block:
+
+<pre><code>server {
+  ...
+  <span class="c"># Tell Nginx where Webpack puts the build output</span>
+  location /static/ {
+    autoindex on;
+    alias /var/www/appname/appname/buildoutput/;
+  }
+  ...
+}
+</code></pre>
+  </div>
+
   Replace `yourserver.com` with your server's host name, and replace `/var/www/myapp/code` with your application's code directory path. However, make sure that Nginx is configured to point to the `public` subdirectory inside it!
+
+  <div></div>
 <% end %>
 
 When you are done, restart Nginx:
