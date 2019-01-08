@@ -6,7 +6,6 @@ SUPPORTED_DEBIAN_VERSIONS = {
   "wheezy"  => "Debian 7",
   "cosmic"  => "Ubuntu 18.10",
   "bionic"  => "Ubuntu 18.04 LTS",
-  "artful"  => "Ubuntu 17.10",
   "xenial"  => "Ubuntu 16.04 LTS",
   "trusty"  => "Ubuntu 14.04 LTS"
 }
