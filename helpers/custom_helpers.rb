@@ -4,6 +4,7 @@ SUPPORTED_DEBIAN_VERSIONS = {
   "stretch" => "Debian 9",
   "jessie"  => "Debian 8",
   "wheezy"  => "Debian 7",
+  "cosmic"  => "Ubuntu 18.10",
   "bionic"  => "Ubuntu 18.04 LTS",
   "artful"  => "Ubuntu 17.10",
   "xenial"  => "Ubuntu 16.04 LTS",
