@@ -171,7 +171,7 @@ function setDebianText() {
 
 function dynamic_module_supported() {
   const distro = $('#os_install_select').val();
-  return ["stretch", "bionic", "artful"].includes($(`#${distro}_version_select`).val());
+  return ["stretch", "bionic", "cosmic" ,"artful"].includes($(`#${distro}_version_select`).val());
 }
 
 function setRedhatText() {
