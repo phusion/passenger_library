@@ -2379,6 +2379,30 @@ Possible values are:
  * `7` (debug3): Show even more debugging information.
 
 
+### PassengerDisableLogPrefix
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDisableLogPrefix <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerDisableLogPrefix off</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.2</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+This option allows one to stop Passenger from prefixing logs that come from your app with "App PID stdout|stderr" when they are written to Passenger's log. This can be useful to simplify log-aggregating setups.
+
+
 ### PassengerLogFile
 
 <table class="table table-bordered table-condensed">

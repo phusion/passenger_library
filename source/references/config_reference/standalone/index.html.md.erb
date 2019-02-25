@@ -2323,6 +2323,42 @@ Possible values are:
  * `7` (debug3): Show even more debugging information.
 
 
+### `--disable-log-prefix` / "disable_log_prefix"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --disable-log-prefix</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"disable_log_prefix": <em>boolean</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>"PASSENGER_DISABLE_LOG_PREFIX": <em>boolean</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>false</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.2</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+This option allows one to stop Passenger from prefixing logs that come from your app with "App PID stdout|stderr" when they are written to Passenger's log. This can be useful to simplify log-aggregating setups.
+
+
 ### `--friendly-error-pages`, `--no-friendly-error-pages` / "friendly_error_pages"
 
 <table class="table table-bordered table-striped table-condensed">
