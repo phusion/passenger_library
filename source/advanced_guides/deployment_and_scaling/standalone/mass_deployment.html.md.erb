@@ -10,7 +10,7 @@ disabled_integrations:
 # Mass deployment
 <%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
-_The mass deployment feature is only available in [Passenger Enterprise](https://www.phusionpassenger.com/enterprise)._
+_The mass deployment feature is only available in [Passenger Enterprise](https://www.phusionpassenger.com/features#premium-features)._
 
 Mass deployment is a special mode in Passenger Standalone that allows you to deploy multiple web applications, without having to create configuration entries for each one of them like it is necessary for Passenger for Nginx or Passenger for Apache. Given a directory with multiple web applications, Passenger Standalone will automatically give each web application its own virtual host entry, and serve all of them from a single server. The virtual host's server name is equal to the web application's directory name. Whenever a new web application is added or removed, Passenger Standalone automatically reconfigures itself without administrator intervention. This makes the mass deployment mode especially useful when there are a large number of web applications.
 
