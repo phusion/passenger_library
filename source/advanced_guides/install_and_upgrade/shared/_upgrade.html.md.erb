@@ -43,11 +43,7 @@ brew upgrade <span class="formula_name">passenger</span></pre>
 
     <pre class="highlight">brew info <span class="formula_name">passenger</span></pre>
   <% elsif integration_mode_type == :nginx %>
-    <pre class="highlight">brew upgrade <span class="formula_name">passenger</span> <span class="nginx_formula">nginx --with-passenger</span></pre>
-
-    <p>If Passenger has been updated, but no new Nginx version has been released, then you must also reinstall Nginx against the latest version of Passenger:</p>
-
-    <pre class="highlight">brew reinstall <span class="nginx_formula">nginx --with-passenger</span></pre>
+    <pre class="highlight">brew upgrade <span class="formula_name">passenger</span> <span class="nginx_formula">nginx</span></pre>
   <% else %>
     <pre class="highlight">brew upgrade <span class="formula_name">passenger</span></pre>
   <% end %>

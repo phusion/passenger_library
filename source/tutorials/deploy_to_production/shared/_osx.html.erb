@@ -2,11 +2,10 @@
 
 <% if edition_type == :oss
   formula_name = "passenger"
-  nginx_formula = "nginx --with-passenger"
 else
   formula_name = "passenger-enterprise"
-  nginx_formula = "nginx-passenger-enterprise"
 end
+nginx_formula = "nginx "+formula_name
 %>
 
 <% if edition_type == :enterprise %>
@@ -63,9 +62,9 @@ To activate Passenger for Apache, create /etc/apache2/other/passenger.conf:
   <% step += 1 %>
   <h2>Step <%= step %>: enable the Passenger Nginx module and restart Nginx</h2>
   <p>
-    Passenger is now installed, but it still needs to be enabled inside Nginx. Run <code>brew info <%= nginx_formula %></code> and follow the instructions in the "Caveats" section:
+    Passenger is now installed, but it still needs to be enabled inside Nginx. Run <code>brew info <%= formula_name %></code> and follow the instructions in the "Caveats" section:
   </p>
-  <pre class="highlight shell"><span class="prompt">$ </span>brew info <%= nginx_formula %>
+  <pre class="highlight shell"><span class="prompt">$ </span>brew info <%= formula_name %>
 <span class="output">...
 ==&gt; Caveats
 ...

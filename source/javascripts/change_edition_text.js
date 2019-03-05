@@ -38,7 +38,7 @@ function changeEditionText(edition) {
     'Passenger Enterprise', 'passenger-enterprise-server', 'passenger-enterprise', 'nginx-passenger-enterprise', 'libnginx-mod-http-passenger-enterprise', 'passenger-enterprise', 'passenger-enterprise'];
     textConverter(varArr, textArr);
   } else {
-    var textArr = ['Passenger', 'passenger', 'passenger', 'nginx --with-passenger', 'libnginx-mod-http-passenger', 'passenger', 'passenger'];
+    var textArr = ['Passenger', 'passenger', 'passenger', 'nginx', 'libnginx-mod-http-passenger', 'passenger', 'passenger'];
     textConverter(varArr, textArr);
   }
 }
