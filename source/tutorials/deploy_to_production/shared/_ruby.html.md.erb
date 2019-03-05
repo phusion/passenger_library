@@ -25,7 +25,7 @@ Ensure that curl and gpg are installed, as well as a compiler toolchain. Curl an
       Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
     </td>
     <td>
-      <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y curl gpg gcc gcc-c++ make</pre>
+      <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y curl gpg gcc gcc-c++ make which tar</pre>
     </td>
   </tr>
   <tr>
@@ -42,7 +42,7 @@ Ensure that curl and gpg are installed, as well as a compiler toolchain. Curl an
 
 Run the following commands on your production server to install RVM:
 
-<pre class="highlight"><span class="prompt">$ </span>sudo gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+<pre class="highlight"><span class="prompt">$ </span>sudo gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 <span class="prompt">$ </span>curl -sSL https://get.rvm.io | sudo bash -s stable
 <span class="prompt">$ </span>sudo usermod -a -G rvm `whoami`</pre>
 
