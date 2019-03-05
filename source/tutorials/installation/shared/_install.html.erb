@@ -100,7 +100,8 @@ sudo apt-get install -y passenger</code></pre>
           <td><strong>Step 1:</strong><br>install EPEL package</td>
 
           <td>
-            <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y epel-release yum-utils
+            <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y yum-utils
+<span class="prompt">$ </span>sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(< /etc/redhat-release tr -dc '0-9.'|cut -d \. -f1).noarch.rpm
 <span class="prompt">$ </span>sudo yum-config-manager --enable epel
 <span class="prompt">$ </span>sudo yum clean all && sudo yum update -y</pre>
           </td>

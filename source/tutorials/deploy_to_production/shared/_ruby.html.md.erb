@@ -114,7 +114,7 @@ To install Node.js:
       Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
     </td>
     <td>
-      <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y epel-release
+      <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(< /etc/redhat-release tr -dc '0-9.'|cut -d \. -f1).noarch.rpm
 <span class="prompt">$ </span>sudo yum install -y --enablerepo=epel nodejs npm</pre>
     </td>
   </tr>
