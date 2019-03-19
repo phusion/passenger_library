@@ -20,7 +20,7 @@ end
 <h1>Deployment error resistance</h1>
 <%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
-[Passenger Enterprise](https://www.phusionpassenger.com/enterprise) provides a feature called "Deployment error resistance". This feature reduces the chance of visitors experiencing any errors in case the deployment of an application update failed.
+[Passenger Enterprise](https://www.phusionpassenger.com/features#premium-features) provides a feature called "Deployment error resistance". This feature reduces the chance of visitors experiencing any errors in case the deployment of an application update failed.
 
 Suppose that you have upgraded your application and you have [issued a command to restart it](<%= url_for "/advanced_guides/troubleshooting/standalone/restart_app.html" %>), but the application update contains an error (e.g. a syntax error or a database configuration error) that prevents Passenger from successfully spawning a process. Passenger would normally display an error message to the visitor in response to this.
 

@@ -1,7 +1,7 @@
 <h1>Zero-downtime application updates and restarts</h1>
 <%= render_partial('/shared/current_selection') %>
 
-Passenger has excellent support for zero-downtime application updates and restarts in its [Enterprise edition](https://www.phusionpassenger.com/enterprise).
+Passenger has excellent support for zero-downtime application updates and restarts in its [Enterprise edition](https://www.phusionpassenger.com/features#premium-features).
 
 Normally, when you instruct Passenger to [restart an application](<%= url_for "/advanced_guides/troubleshooting/nginx/restart_app.html" %>) after you have deployed an application update, Passenger performs a _blocking restart_. Passenger would shut down all processes for that application and spawn a new one. The spawning of a new application process could take a while, and any requests that come in during this time will be blocked until this first application process has spawned, which users may experience as "downtime".
 
