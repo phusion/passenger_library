@@ -123,7 +123,7 @@ curl http://localhost:5000/
 
 You will need Passenger installed, for instructions on how to install Passenger [click here](https://www.phusionpassenger.com/docs/tutorials/installation/node/).
 
-Next we will want a release build of our web app, which you can make with ``, then you can move the executable into a more convenient location on your disk, such as `~/Sites/`. Once you are happy with where things are, you can start your web app in Passenger by `cd`ing to the dir with the executable and running the following command: `passenger start --app-start-command 'env ASPNETCORE_URLS=http://localhost:$PORT dotnet run'`.
+Next we will want a release build of our web app, which you can make with `dotnet build -c Release`, then you can move the executable into a more convenient location on your disk, such as `~/Sites/`. Once you are happy with where things are, you can start your web app in Passenger by `cd`ing to the dir with the executable and running the following command: `passenger start --app-start-command 'env ASPNETCORE_URLS=http://localhost:$PORT dotnet ./hello_world.dll'`.
 
 Passenger requires that applications listen on a particular port that Passenger has chosen, which it provides to the application by replacing the `$PORT` string in its startup command with the actual port number. Regardless of how your app accepts port arguments, the startup string must be able to convert from a cli argument to what works for your app. In our example we converted the port argument to an envvar to show how one may need to change how the port is passed to your app.
 
@@ -132,8 +132,8 @@ You can verify that everything is working with `curl http://localhost:3000`. To 
 The commands to run from this section are collected here:
 
 ~~~
-# build release?
-passenger start --app-start-command 'env ASPNETCORE_URLS=http://localhost:$PORT dotnet run'
+dotnet build -c Release
+passenger start --app-start-command 'env ASPNETCORE_URLS=http://localhost:$PORT dotnet ./hello_world.dll'
 # in another terminal
 curl http://localhost:3000
 ~~~
