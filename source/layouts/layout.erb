@@ -235,16 +235,6 @@ end
 
     <%= globals[:layout_body_trailer] || "" %>
 
-    <% if config[:google_analytics] %>
-      <script>
-        window.__lo_site_id = 54203;
-        (function() {
-          var wa = document.createElement('script'); wa.type = 'text/javascript'; wa.async = true;
-          wa.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://cdn') + '.luckyorange.com/w.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(wa, s);
-          })();
-      </script>
-    <% end %>
     </div>
   </body>
 </html>
