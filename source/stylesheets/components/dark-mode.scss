@@ -1,4 +1,4 @@
-.dark-mode {
+@mixin dark-mode() {
   background: #24252A;
 
   img {
@@ -429,8 +429,14 @@
   }
 }
 
-.dark-mode #main-content [class$="radio-choices"] input[type="radio"]:checked + label {
-  background: #3F4B59;
+.dark-mode {
+  @include dark-mode();
+}
+
+@media (prefers-color-scheme: dark) {
+  body{
+    @include dark-mode();
+  }
 }
 
 // #screen-mode img {
