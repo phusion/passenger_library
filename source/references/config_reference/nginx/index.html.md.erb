@@ -2047,6 +2047,9 @@ Used to specify that the given URI is an distinct application that should be ser
 
 It is allowed to specify this option multiple times. Do this to deploy multiple applications in different sub-URIs under the same virtual host.
 
+<div class="note">
+  As of Version 5.2 there is a bug that prevents using both root and a base uri at the same time in Passenger.
+</div>
 
 ### passenger_document_root
 

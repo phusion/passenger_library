@@ -2251,6 +2251,9 @@ processes with UIDs equal to, or higher than, the specified value.
 <!-- TODO: write guide for sub-URI deployments -->
 Used to specify that the given URI is an distinct application that should be served by Passenger. Please see [the deployment guide](<%= url_for "/advanced_guides/deployment_and_scaling/apache/index.html" %>) for more information.
 
+<div class="note">
+  As of Version 5.2 there is a bug that prevents using both DocuemntRoot and a base uri at the same time in Passenger.
+</div>
 
 ### PassengerErrorOverride
 
