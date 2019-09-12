@@ -1,9 +1,9 @@
 require_relative 'constants'
 
 SUPPORTED_DEBIAN_VERSIONS = {
+  "buster"  => "Debian 10",
   "stretch" => "Debian 9",
   "jessie"  => "Debian 8",
-  "wheezy"  => "Debian 7",
   "disco"   => "Ubuntu 19.04",
   "bionic"  => "Ubuntu 18.04 LTS",
   "xenial"  => "Ubuntu 16.04 LTS",

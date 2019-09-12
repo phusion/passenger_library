@@ -1,11 +1,11 @@
 <%
 case os_config_type
+when :buster
+  os_config_description = "on Debian 10 (with APT)"
 when :stretch
   os_config_description = "on Debian 9 (with APT)"
 when :jessie
   os_config_description = "on Debian 8 (with APT)"
-when :wheezy
-  os_config_description = "on Debian 7 (with APT)"
 when :disco
   os_config_description = "on Ubuntu 19.04 (with APT)"
 when :bionic
