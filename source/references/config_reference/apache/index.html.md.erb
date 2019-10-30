@@ -1765,7 +1765,7 @@ If [user account sandboxing](<%= url_for "/advanced_guides/deployment_and_scalin
   </tr>
 </table>
 
-If [user account sandboxing](<%= url_for "/advanced_guides/deployment_and_scaling/apache/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the primary group of the owner of the application's startup file](<%= url_for "/advanced_guides/deployment_and_scaling/apache/user_sandboxing.html" %>#how-it-works). `PassengetGroup` allows you to override that behavior and explicitly set a group to run the web application as, regardless of the ownership of the startup file.
+If [user account sandboxing](<%= url_for "/advanced_guides/deployment_and_scaling/apache/user_sandboxing.html" %>) (also known as user switching) is enabled, then Passenger will by default [run the web application as the primary group of the owner of the application's startup file](<%= url_for "/advanced_guides/deployment_and_scaling/apache/user_sandboxing.html" %>#how-it-works). `PassengerGroup` allows you to override that behavior and explicitly set a group to run the web application as, regardless of the ownership of the startup file.
 
 The value may also be set to the special value `!STARTUP_FILE!`, in which case the web application's group will be set to the startup file's group.
 
