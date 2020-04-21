@@ -156,7 +156,7 @@ var Hapi = require('hapi');
 var server;
 
 if (typeof(PhusionPassenger) !== 'undefined') {
-    // Requires Passenger >= 4.0.52!
+    // Requires Passenger &ge; 4.0.52!
     server = new Hapi.Server('/passenger');
 } else {
     server = new Hapi.Server('localhost', 3000);

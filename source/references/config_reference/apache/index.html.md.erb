@@ -1390,7 +1390,7 @@ Suppose that you have a web application deployed in a sub-URI `/store`, like thi
     <Directory /websites/store/public>
         Allow from all
         Options -MultiViews
-        # Uncomment this if you're on Apache >= 2.4:
+        # Uncomment this if you're on Apache &ge; 2.4:
         #Require all granted
     </Directory>
 </VirtualHost>
@@ -1411,7 +1411,7 @@ Then specify the domain name of its containing virtual host followed by the sub-
     <Directory /websites/store/public>
         Allow from all
         Options -MultiViews
-        # Uncomment this if you're on Apache >= 2.4:
+        # Uncomment this if you're on Apache &ge; 2.4:
         #Require all granted
     </Directory>
 </VirtualHost>
@@ -1670,7 +1670,7 @@ ErrorDocument 504 /error504.html
     <th>Default</th>
     <td>
       PassengerSocketBacklog 1024 (&lt; 5.0.25)<br>
-      PassengerSocketBacklog 2048 (&gt;= 5.0.26)
+      PassengerSocketBacklog 2048 (&ge; 5.0.26)
     </td>
   </tr>
   <tr>

@@ -4,12 +4,13 @@ SUPPORTED_DEBIAN_VERSIONS = {
   "buster"  => "Debian 10",
   "stretch" => "Debian 9",
   "jessie"  => "Debian 8",
-  "disco"   => "Ubuntu 19.04",
+  "focal"   => "Ubuntu 20.04 LTS",
   "bionic"  => "Ubuntu 18.04 LTS",
   "xenial"  => "Ubuntu 16.04 LTS",
 }
 
 SUPPORTED_REDHAT_VERSIONS = {
+  "el8" => "Red Hat 8 / CentOS 8",
   "el7" => "Red Hat 7 / CentOS 7",
   "el6" => "Red Hat 6 / CentOS 6"
 }
@@ -152,7 +153,8 @@ module CustomHelpers
   end
 
   def dynamic_nginx_module_available?(distro)
-    SUPPORTED_DEBIAN_VERSIONS.keys.include?(distro) && !["jessie", "wheezy", "xenial", "trusty", "precise"].include?(distro)
+    (SUPPORTED_DEBIAN_VERSIONS.keys.include?(distro) && !["jessie", "wheezy", "xenial", "trusty", "precise"].include?(distro)) ||
+    (SUPPORTED_REDHAT_VERSIONS.keys.include?(distro) && "el6" != distro)
   end
 
   def debian_version_selection_options

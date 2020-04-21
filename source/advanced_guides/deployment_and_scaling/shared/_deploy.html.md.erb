@@ -278,7 +278,7 @@ Here is an example:
     &lt;Directory <span class="o">/path-to-your-app</span>/public&gt;
       Allow from all
       Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c"># Uncomment this if you're on Apache &ge; 2.4:</span>
       <span class="c">#Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
@@ -300,7 +300,7 @@ Here is an example:
     &lt;Directory <span class="o">/path-to-your-app</span>/public&gt;
       Allow from all
       Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c"># Uncomment this if you're on Apache &ge; 2.4:</span>
       <span class="c">#Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
@@ -327,7 +327,7 @@ Here is an example:
     &lt;Directory <span class="o">/path-to-your-app-package</span>/public&gt;
       Allow from all
       Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c"># Uncomment this if you're on Apache &ge; 2.4:</span>
       <span class="c">#Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
@@ -344,7 +344,7 @@ Here is an example:
     &lt;Directory <span class="o">/var/www/myapp/code</span>/public&gt;
       Allow from all
       Options -MultiViews
-      <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:</span>
+      <span class="c"># Uncomment this if you're on Apache &ge; 2.4:</span>
       <span class="c">#Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
@@ -377,7 +377,7 @@ You can also deploy an app to a sub-URI instead of the root URI. For example, su
     &lt;Directory /websites/phusion&gt;
         Allow from all
         Options -MultiViews
-        <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:
+        <span class="c"># Uncomment this if you're on Apache &ge; 2.4:
         #Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
@@ -389,7 +389,7 @@ And you want your application, located in `/websites/secondapp`, to be accessibl
  * Inside the Location block, set `PassengerBaseURI /{SUBURI}`.
  * Inside the Location block, set `PassengerAppRoot {PATH TO YOUR APPLICATION ROOT}`.
  * Create a `<Directory {PATH TO YOUR APPLICATION PUBLIC SUBDIRECTORY}>` block.
- * Inside the Directory block, set `Allow from all`, and (if you’re on Apache >= 2.4) `Require all granted`.
+ * Inside the Directory block, set `Allow from all`, and (if you’re on Apache &ge; 2.4) `Require all granted`.
  * Inside the Directory block, disable MultiViews.
 
 Here is an example:
@@ -400,7 +400,7 @@ Here is an example:
     &lt;Directory /websites/phusion&gt;
         Allow from all
         Options -MultiViews
-        <span class="c"># Uncomment this if you're on Apache >= 2.4:
+        <span class="c"># Uncomment this if you're on Apache &ge; 2.4:
         #Require all granted</span>
     &lt;/Directory&gt;
 
@@ -424,7 +424,7 @@ Here is an example:
     &lt;Directory <span class="o">/websites/secondapp</span>/public&gt;
         Allow from all
         Options -MultiViews
-        <span class="c"># Uncomment this if you're on Apache &gt;= 2.4:
+        <span class="c"># Uncomment this if you're on Apache &ge; 2.4:
         #Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;</pre>
@@ -543,7 +543,7 @@ Here is an example of what you may want to add to `/etc/rc.local`. If there is a
 <span class="c">#!/bin/sh</span>
 <% if locals[:os_config_type] == :tarball %>
 <span class="c"># Since you installed Passenger from tarball, add its `bin` directory to PATH.</span>
-<span class="nb">export</span> <span class="nv">PATH</span>=<span class="o">/path-to-passenger</span>/bin:<span class="nv">$PATH</span>
+<span class="nb">export</span> <span class="nv">PATH</span&ge;<span class="o">/path-to-passenger</span>/bin:<span class="nv">$PATH</span>
 
 <% end -%>
 <span class="c"># Change working directory to your webapp.</span>

@@ -53,8 +53,8 @@ brew upgrade <span class="formula_name">passenger</span></pre>
 <% if integration_mode_type == :nginx %>
   <div class="info">In July 2017, the Ubuntu 17.04 Zesty packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please remove it and install the new package with the system Nginx:<br>
     <ul>
-      <li>sudo apt-get remove nginx-extras (if that fails, use: sudo dpkg --remove --force-remove-reinstreq nginx-extras)</li>
-      <li>sudo apt-get update && sudo apt-get install -y <span class="module_name">libnginx-mod-http-passenger</span> nginx</li>
+      <li><code>sudo apt-get remove nginx-extras</code> (if that fails, use: <code>sudo dpkg --remove --force-remove-reinstreq nginx-extras</code>)</li>
+      <li><code>sudo apt-get update && sudo apt-get install -y <span class="module_name">libnginx-mod-http-passenger</span> nginx</code></li>
     </ul>
   </div>
 <% end %>
@@ -76,6 +76,14 @@ If you don't see any updates, then there are two possible reasons:
  2. If you are using a non-Long Term Support version of Ubuntu, then it is possible that we have [dropped support for that Ubuntu version](<%= url_for "/advanced_guides/install_and_upgrade/nginx/apt_repo.html" %>#limited-package-support-for-non-lts-ubuntu-versions).
 
 <h2 id="redhat_centos">RPM packages (Red Hat, CentOS)</h2>
+<% if integration_mode_type == :nginx %>
+  <div class="info">In April 2020, the CentOS 7 / RHEL 7 packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please remove it and install the new package with the system or EPEL Nginx:<br>
+    <ul>
+      <li><code>sudo yum remove nginx*</code></li>
+      <li><code>sudo yum update && sudo yum install -y <span class="module_name">nginx-mod-http-passenger</span> nginx</code></li>
+    </ul>
+  </div>
+<% end %>
 
 If <span class="edition_title">Passenger</span> was installed through the Phusion Passenger [YUM repository](<%= url_for "/advanced_guides/install_and_upgrade/nginx/yum_repo.html" %>), then you can upgrade <span class="edition_title">Passenger</span>
 <% if integration_mode_type != :standalone -%>

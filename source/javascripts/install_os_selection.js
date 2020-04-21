@@ -65,6 +65,8 @@ function debianVersionChanged() {
       $('.replace_nginx_package_message').hide();
     }
   }
+  $('.debian_hideable').hide();
+  $('.debian_hideable.'+selection).show();
   setDebianText();
   if(dynamic_module_supported()) {
     $('.dynamic_nginx_package').show();
@@ -84,13 +86,14 @@ function redhatVersionChanged() {
     $('.supported_redhat_instructions').show();
     $('.unsupported_redhat_instructions').hide();
   }
-  if (selection == 'el6') {
-    $('.el6').show();
-    $('.no_el6').hide();
+  if (window.localStorage.getItem('Integration').toLowerCase() === 'nginx' && selection == "el7") {
+      $('.replace_nginx_package_message').show();
   } else {
-    $('.el6').hide();
-    $('.no_el6').show();
+      $('.replace_nginx_package_message').hide();
   }
+  $('[class^="el"]').hide();
+  $('.'+selection).show();
+  $('.no_'+selection).hide();
   $('.redhat_distro_name').text(selection);
   $('.rhel_version').text(selection.replace('el',''));
   setRedhatText();
@@ -174,10 +177,14 @@ function dynamic_module_supported() {
   return [
     "buster",
     "stretch",
+    "focal",
+    "eoan",
     "disco",
     "cosmic",
     "bionic",
-    "artful"
+    "artful",
+    "el7",
+    "el8"
   ].includes($(`#${distro}_version_select`).val());
 }
 
@@ -196,12 +203,22 @@ function setRedhatText() {
         }
         break;
       case "nginx":
-        if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
-          packages = "nginx passenger"
-          packages_title = "Passenger Nginx"
+        if (dynamic_module_supported()) {
+          if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
+            packages = "nginx-mod-http-passenger"
+            packages_title = "Passenger dynamic Nginx module"
+          } else {
+            packages = "nginx-mod-http-passenger-enterprise"
+            packages_title = "Passenger Enterprise dynamic Nginx module"
+          }
         } else {
-          packages = "nginx passenger-enterprise"
-          packages_title = "Passenger Enterprise + Nginx"
+          if (window.localStorage.getItem('Edition').toLowerCase() === 'oss') {
+            packages = "nginx passenger"
+            packages_title = "Passenger Nginx"
+          } else {
+            packages = "nginx passenger-enterprise"
+            packages_title = "Passenger Enterprise + Nginx"
+          }
         }
         break;
       default:

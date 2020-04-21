@@ -6,8 +6,8 @@ when :stretch
   os_config_description = "on Debian 9 (with APT)"
 when :jessie
   os_config_description = "on Debian 8 (with APT)"
-when :disco
-  os_config_description = "on Ubuntu 19.04 (with APT)"
+when :focal
+  os_config_description = "on Ubuntu 20.04 LTS (with APT)"
 when :bionic
   os_config_description = "on Ubuntu 18.04 LTS (with APT)"
 when :xenial
@@ -53,7 +53,7 @@ end
 
 step = 0
 %>
-
+<% unless locals[:no_back_button] %>
 <h1>Installing <%= edition_title %><br>
 <small><%= os_config_description %></small></h1>
 <%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
@@ -66,8 +66,9 @@ step = 0
   <p><strong>Table of contents</strong></p>
   <ul class="toc-container"><li>Loading...</li></ul>
 </div>
-
-<% if os_config_type == :artful %>
+<% end %>
+<% unless os_config_description.include?("LTS") || os_config_description.include?("Debian") %>
+<div class="limited_package_support_for_non_lts_ubuntu warning">
   <h2>Heads up: limited package support for non-LTS Ubuntu versions</h2>
   <p>
     Before we continue, you should know that the Ubuntu version you selected is a non-LTS (Long Term Support) version. This means that Canonical &mdash; the company that created Ubuntu &mdash; only supports this particular Ubuntu version for 1 year.
@@ -82,6 +83,7 @@ step = 0
   <p>
     Now that you know this, let's move on.
   </p>
+</div>
 <% end %>
 
 <% if edition_type == :enterprise %>
@@ -98,7 +100,7 @@ step = 0
 <h2>Step <%= step %>: install Passenger packages</h2>
 
 <% if integration_mode_type == :nginx && os_config_type == :zesty %>
-  <div class="info">In July 2017, the Ubuntu 17.04 Zesty packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please uninstall it first:<br>
+  <div class="info replace_nginx_package_message">In July 2017, the Ubuntu 17.04 Zesty packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please uninstall it first:<br>
     <ul>
       <li>sudo apt-get remove nginx-extras (if that fails, use: sudo dpkg --remove --force-remove-reinstreq nginx-extras)</li>
     </ul>
@@ -219,7 +221,8 @@ http {
     After an update, you should restart all your Passenger instances so that the updates take effect.
   </p>
 <% end %>
-
+<% unless locals[:no_back_button] %>
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/install_and_upgrade/index.html" %>">Back</a>
 </div>
+<% end %>

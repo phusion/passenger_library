@@ -18,10 +18,10 @@ The Bundler support works as follows:
  * If you have a `.bundle/environment.rb` in your application directory, then Passenger will require that file before loading your application. This is a mechanism used by ancient versions of Bundler, but we still support it.
  * Otherwise, if you have a `Gemfile`, then Passenger will automatically call `Bundler.setup` before loading your application.
 
-It is possible that your application also calls `Bundler.setup` during loading, e.g. in `config.ru` or in `config/boot.rb`. This is the case with Rails >= 3. This leads to `Bundler.setup` being called twice, once before the application startup file
+It is possible that your application also calls `Bundler.setup` during loading, e.g. in `config.ru` or in `config/boot.rb`. This is the case with Rails &ge; 3. This leads to `Bundler.setup` being called twice, once before the application startup file
 is required and once during application startup. However this is harmless and doesn't have any negative effects.
 
-Passenger assumes that you're using Bundler >= 0.9.5. If you don't want Passenger to run its Bundler support code, e.g. because you need to use an older version of Bundler with an incompatible API or because you use a system other than Bundler, then you can override Passenger's Bundler support code by creating an empty file `config/setup_load_paths.rb`. If this file exists then Passenger will load that file instead of going through the Bundler loading procedure as documented above. In this file you can do whatever you need to setup Bundler or a similar system.
+Passenger assumes that you're using Bundler &ge; 0.9.5. If you don't want Passenger to run its Bundler support code, e.g. because you need to use an older version of Bundler with an incompatible API or because you use a system other than Bundler, then you can override Passenger's Bundler support code by creating an empty file `config/setup_load_paths.rb`. If this file exists then Passenger will load that file instead of going through the Bundler loading procedure as documented above. In this file you can do whatever you need to setup Bundler or a similar system.
 
 ## Does Passenger itself need to be added to the Gemfile?
 

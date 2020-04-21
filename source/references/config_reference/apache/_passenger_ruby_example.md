@@ -30,7 +30,7 @@ PassengerNodejs /usr/bin/node
     &lt;Directory /websites/blog/public&gt;
         Allow from all
         Options -MultiViews
-        <span class="c"># Uncomment this if you're on Apache >= 2.4:
+        <span class="c"># Uncomment this if you're on Apache &ge; 2.4:
         #Require all granted</span>
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;
