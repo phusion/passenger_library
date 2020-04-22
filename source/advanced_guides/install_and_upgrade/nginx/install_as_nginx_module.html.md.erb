@@ -37,10 +37,11 @@ Here is a full example that shows, given an Nginx source directory, how you can 
 
 Nginx 1.9.11 and later support [dynamic modules](https://www.nginx.com/blog/dynamic-modules-nginx-1-9-11/). Passenger 5.0.28 and later supports this. Like compiling Passenger as a static module, compiling Passenger as a dynamic module requires the Nginx source code.
 
-You can install Passenger as a dynamic module as follows:
+The general process to install Passenger as a dynamic module is as follows:
 
 <pre class="highlight"><span class="prompt">$ </span>cd /path-to-nginx-source-dir
 <span class="prompt">$ </span>./configure --prefix=/opt/nginx \
+  --with-some-configure-flag \
   --add-dynamic-module=$(passenger-config --nginx-addon-dir) \
   --add-module=/path-to-some-other-nginx-module
 <span class="prompt">$ </span>make
@@ -49,6 +50,32 @@ You can install Passenger as a dynamic module as follows:
 After running the above command, make sure that Nginx loads the Passenger module by specifying this in your Nginx configuration file:
 
     load_module modules/ngx_http_passenger_module.so;
+
+If you want to use the Nginx provided by the official Nginx Repos or Nginx Plus, you will need to do some work first to collect information and sources to use in the above process, as NGINX does not provide source packages via their repos. (This process should work for any Nginx provided as a binary instead of as sources.)
+
+First you must check the version of Nginx that was installed, for which you can use `nginx -V`, this will produce output similar to the following:
+
+~~~
+nginx version: nginx/1.18.0
+built by gcc 8.3.0 (Debian 8.3.0-6)
+built with OpenSSL 1.1.1d  10 Sep 2019
+TLS SNI support enabled
+configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-cc-opt='-g -O2 -fdebug-prefix-map=/data/builder/debuild/nginx-1.18.0/debian/debuild-base/nginx-1.18.0=. -fstack-protector-strong -Wformat -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -fPIC' --with-ld-opt='-Wl,-z,relro -Wl,-z,now -Wl,--as-needed -pie'
+~~~
+
+You will need the version as well as the list of configure arguments from the output. Next you will need to download the sources for your version of Nginx by putting together a url that looks like this:
+
+`https://nginx.org/download/nginx-${NGINX_VERSION_HERE}.tar.gz`
+
+Extract the sources from the downloaded tar file somewhere convienient. Next in order to be sure that you produce a compatible dynamic module you will need to extract the compatibility string from your Nginx executable with `strings $(which nginx) | grep '^.,.,.,'` (as some bits can be changed without being reflected in the configure arguments). This will produce output similar to the following:
+
+`8,4,8,0011111111010111001111111111111111`
+
+This is your compatibility string for your installed Nginx, it is composed of many configure flags all in a row. You will also need to lookup the reasons each of the flags could be set, at a url you build with your Nginx version:
+
+`https://github.com/nginx/nginx/blob/release-${NGINX_VERSION_HERE}/src/core/ngx_module.h`
+
+Once you have all of this you can go through each of the flags in the compatibility string, and find the related configure argument from the Nginx version output to add to your `./configure` command when you build the dynamic module. If a flag is set but not reflected in the configure arguments then the most common causes are that it was turned on by the `--with-compat` configure argument, or that the following hack was done to set the headers flag without passing the configure argument: `echo '#define NGX_HTTP_HEADERS 1' >> objs/ngx_auto_config.h`.
 
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/install_and_upgrade/index.html" %>">Back</a>
