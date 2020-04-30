@@ -174,7 +174,7 @@ sudo service ntpd start
 </p>
 
 <pre class="highlight shell"><code><span class="c unselectable"># Install various prerequisites</span>
-sudo yum install -y pygpgme curl
+sudo yum install -y <% if os_config_type.to_s.delete_prefix('el').to_i < 8 %>pygpgme<%end%> curl
 
 <span class="c unselectable"># Add our <span class="redhat_distro_name"><%= os_config_type %></span> YUM repository</span>
 <% if edition_type == :oss -%>

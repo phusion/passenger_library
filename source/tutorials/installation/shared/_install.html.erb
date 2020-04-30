@@ -135,7 +135,7 @@ sudo service ntpd start
     <h4>Install Passenger itself</h4>
 
     <pre class="highlight shell"><code><span class="c unselectable"># Install other prerequisites</span>
-sudo yum install -y pygpgme curl
+sudo yum install -y <span class="no_el8">pygpgme</span> curl
 
 <span class="c unselectable"># Add our <span class="redhat_distro_name"></span> YUM repository</span>
 sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
