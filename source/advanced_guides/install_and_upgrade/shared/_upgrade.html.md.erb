@@ -77,7 +77,7 @@ If you don't see any updates, then there are two possible reasons:
 
 <h2 id="redhat_centos">RPM packages (Red Hat, CentOS)</h2>
 <% if integration_mode_type == :nginx %>
-  <div class="info">In April 2020, the CentOS 7 / RHEL 7 packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please remove it and install the new package with the system or EPEL Nginx:<br>
+  <div class="info">In May 2020, the CentOS 7 / RHEL 7 packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please remove it and install the new package with the system or EPEL Nginx:<br>
     <ul>
       <li><code>sudo yum remove nginx*</code></li>
       <li><code>sudo yum update && sudo yum install -y <span class="module_name">nginx-mod-http-passenger</span> nginx</code></li>
