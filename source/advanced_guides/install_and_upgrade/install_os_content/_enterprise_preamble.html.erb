@@ -3,9 +3,6 @@ step = (locals[:initial_step] || 1) - 1
 step_format ||= "Step %s:"
 heading_level ||= 2
 
-def header(level, title)
-  "<h#{level}>#{title}</h#{level}>"
-end
 %>
 
 <% step += 1 %>

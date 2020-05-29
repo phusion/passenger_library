@@ -20,6 +20,10 @@ module CustomHelpers
     @globals ||= {}
   end
 
+  def header(level, title)
+    "<h#{level}>#{title}</h#{level}>"
+  end
+
   def h2(id_prefix, title)
     "<h2 id=\"#{id_prefix}#{slug(title)}\">#{title}</h2>"
   end
