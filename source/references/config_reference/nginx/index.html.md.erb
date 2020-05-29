@@ -117,6 +117,30 @@ Note that since version 5.0.0, `passenger_enabled` is inherited into subcontexts
 
 Specifies a timeout for the startup of application processes. If an application process fails to start within the timeout period then it will be forcefully killed with SIGKILL, and the error will be logged.
 
+### passenger_abort_on_startup_error
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_abort_on_startup_error <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_abort_on_startup_error off;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>3.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+When turned on, Passenger will shutdown if startup fails, primarily used internally by Passenger Standalone.
+
+
 ### passenger_ruby
 
 <table class="table table-bordered table-condensed">
@@ -1591,9 +1615,7 @@ error_page 504 /error504.html;
 <table class="table table-bordered table-condensed">
   <tr>
     <th>Syntax</th>
-    <td>
-      passenger_socket_backlog <em>size</em>;<br>
-    </td>
+    <td>passenger_socket_backlog <em>size</em>;</td>
   </tr>
   <tr>
     <th>Default</th>
@@ -1616,6 +1638,53 @@ The socket backlog is a queue of incoming connections (from Nginx) not yet ackno
 
 <i>connect() to unix:/tmp/passenger... failed (11: Resource temporarily unavailable) while connecting to upstream</i>
 
+
+### passenger_turbocaching
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_turbocaching <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_turbocaching on;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+When set of off, will disable Passenger's turbocache.
+
+
+### passenger_vary_turbocache_by_cookie
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_vary_turbocache_by_cookie <em>name</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_vary_turbocache_by_cookie _passenger_route;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+If set Passenger will treat requests as separate in the turbocache if the value of the cookie with the provided name is different.
 
 ## Security
 
@@ -2022,6 +2091,109 @@ end
 
 When `passenger_buffer_response` is turned on, Nginx will wait until the application is done sending the entire response before forwarding it to the client. The client will not receive anything for 10 seconds, after which it receives the entire response at once. When `passenger_buffer_response` is turned off, it works as expected: the client receives an "entry X" message every second for 10 seconds.
 
+### passenger_request_buffering
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_request_buffering <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_request_buffering on;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.0</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+When turned on, request body buffering will be disabled. This allows for streaming uploads, but is only supported when used with Nginx >= 1.15.3.
+
+
+### passenger_buffer_upload
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_buffer_upload <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_buffer_upload off;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.3</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+When enabled Passenger will buffer the upload from the client (useful if your app cannot handle chunked uploads).
+
+
+### passenger_spawn_dir
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_spawn_dir <em>path</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_spawn_dir /tmp|$TMPDIR;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.3</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+The directory in which Passenger will record progress during startup, which is specifically useful for users using sandbox tech such as CageFS, SElinux, or macOS sandboxes. The default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
+
+
+### passenger_temp_path
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_temp_path <em>path</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_temp_path see_below;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.5</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+The directory which Passenger will use for the disk backed response cache. Which is specifically useful for users using sandbox tech such as CageFS, SElinux, or macOS sandboxes.
+
+#### Default value
+
+The default value for this option is as follows:
+
+ * if you are on Debian/Ubuntu the default value is likely: `/var/lib/nginx/proxy`.
+ * if you are on RHEL/CentOS the default value is likely: `/var/lib/nginx/tmp/proxy`.
+ * if you are on macOS and installed via homebrew the default value is: `/usr/local/var/run/nginx/proxy_temp`.
+
 
 ## Request / response customization
 
@@ -2132,6 +2304,31 @@ If you have a load balancer in front end of Passenger, then you must configure s
 </table>
 
 Sets the name of the [sticky sessions](#passenger_sticky_sessions) cookie.
+
+
+### passenger_sticky_sessions_cookie_attributes
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_sticky_sessions_cookie_name <em>string</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_sticky_sessions_cookie_name "SameSite=Lax; Secure;";</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.5</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Sets the attributes of the [sticky sessions](#passenger_sticky_sessions) cookie.
+
 
 ### passenger_set_header
 
@@ -2786,6 +2983,31 @@ server {
 ~~~
 
 If a request to '/expensive_computation' takes more than 10 seconds, or if a request to any other URI takes more than 2 seconds, then the corresponding application process will be forced to shutdown.
+
+
+### passenger_read_timeout
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_read_timeout <em>milliseconds</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_read_timeout 60000;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.7</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+  <%= render_partial("/config/reference/enterprise_only") %>
+</table>
+
+Available for rare cases when server needs more than the default 10 minute timeout.
 
 
 ### passenger_memory_limit

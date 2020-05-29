@@ -1878,6 +1878,42 @@ If you customize the [Passenger Standalone Nginx config template](<%= url_for '/
 Disables [turbocaching](<%= url_for "/advanced_guides/developing_with_passenger/ruby/index.html" %>).
 
 
+### `--vary-turbocache-by-cookie` / "vary_turbocache_by_cookie"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --vary-turbocache-by-cookie <em>name</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"vary_turbocache_by_cookie": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_VARY_TURBOCACHE_BY_COOKIE=<em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Enabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.5</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+If set Passenger will treat requests as separate in the turbocache if the value of the cookie with the provided name is different.
+
+
 ### `--unlimited-concurrency-path` / "unlimited_concurrency_paths"
 
 <table class="table table-bordered table-striped table-condensed">
@@ -2227,7 +2263,40 @@ If you have a load balancer in front end of Passenger + Nginx, then you must con
 Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cookie.
 
 
+### `--sticky-sessions-cookie-attributes` / "sticky_sessions_cookie_attributes"
 
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --sticky-sessions-cookie-attributes <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"sticky_sessions_cookie_attributes": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_STICKY_SESSIONS_COOKIE_ATTRIBUTES=<em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>SameSite=Lax; Secure;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.5</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Sets the name of the [sticky sessions](#--sticky-sessions-sticky_sessions) cookie.
 
 
 ## Logging & troubleshooting

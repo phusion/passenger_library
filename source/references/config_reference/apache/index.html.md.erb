@@ -1686,6 +1686,30 @@ ErrorDocument 504 /error504.html
 The socket backlog is a queue of incoming connections (from Apache) not yet acknowledged by Passenger. This option can be raised if Apache manages to overflow the backlog queue, for example because Passenger is receiving insufficient server resources to accept connections into its internal queue.
 
 
+### PassengerTurbocaching
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerTurbocaching <em>on|off</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerTurbocaching on</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>5.0.0</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+When set of off, will disable Passenger's turbocache.
+
+
 ## Security
 
 ### PassengerUserSwitching
@@ -2225,6 +2249,30 @@ When using Passenger on a LVE-enabled kernel, a security check (enter) is run fo
 processes with UIDs equal to, or higher than, the specified value.
 
 
+### PassengerSpawnDir
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerSpawnDir <em>path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerSpawnDir /tmp|$TMPDIR;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.3</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config</td>
+  </tr>
+</table>
+
+The directory in which Passenger will record progress during startup, which is specifically useful for users using sandbox tech such as CageFS, SElinux, or macOS sandboxes. The default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
+
+
 ## Request / response customization
 
 ### PassengerBaseURI
@@ -2343,6 +2391,30 @@ If you have a load balancer in front end of Passenger + Apache, then you must co
 </table>
 
 Sets the name of the [sticky sessions](#passengerstickysessions) cookie.
+
+
+### PassengerStickySessionsCookieAttributes
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerStickySessionsCookieAttributes <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerStickySessionsCookieAttributes "SameSite=Lax; Secure;"</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.5</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+Sets the attributes of the [sticky sessions](#passengerstickysessions) cookie.
 
 
 ## Logging & troubleshooting
