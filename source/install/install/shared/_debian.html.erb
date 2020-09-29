@@ -111,7 +111,13 @@ sudo chmod 600 /etc/apt/auth.conf
 sudo apt-get update
 
 <span class="c unselectable"># Install <%= packages_title %></span>
-sudo apt-get install -y <%= packages %></code></pre>
+sudo apt-get install -y <%= packages %>
+
+# If you want to pin to a specific version, you need to specify both <%= packages_title %> and passenger.
+sudo apt-get install -y libnginx-mod-http-passenger=1:5.3.1-1~bionic1 passenger=1:5.3.1-1~bionic1
+
+
+</code></pre>
 
 <% if integration_mode_type == :apache %>
   <% step += 1 %>
