@@ -2137,6 +2137,28 @@ This option allows use of an intermediate proxy for the [Passenger anonymous tel
 The proxy client code uses libcurl, which supports the following values for <em>scheme</em>:<br>
 <em>http, socks5, socks5h, socks4, socks4a</em>
 
+### `--direct-instance-request-address` / "direct_instance_request_address"
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --direct-instance-request-address <em>ip</em>;</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"direct_instance_request_address":"<em>ip</em>"</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>passenger_direct_instance_request_address=<em>ip</em></td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.7</td>
+  </tr>
+</table>
+
+The port which Passenger will cause your ruby app to additionally bind to, to allow sending requests directly to specific app instances. Sending requests to specific app processes is detailed [here](<%= url_for("/advanced_guides/troubleshooting/standalone/request_individual_processes.html") %>).
 
 ## Request / response customization
 

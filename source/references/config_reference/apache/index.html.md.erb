@@ -2272,6 +2272,29 @@ processes with UIDs equal to, or higher than, the specified value.
 
 The directory in which Passenger will record progress during startup, which is specifically useful for users using sandbox tech such as CageFS, SElinux, or macOS sandboxes. The default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
 
+### PassengerDirectInstanceRequestAddress
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerDirectInstanceRequestAddress <em>ip</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerDirectInstanceRequestAddress 127.0.0.1</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.7</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory</td>
+  </tr>
+</table>
+
+The port which Passenger will cause your ruby app to additionally bind to, to allow sending requests directly to specific app instances. Sending requests to specific app processes is detailed [here](<%= url_for("/advanced_guides/troubleshooting/apache/request_individual_processes.html") %>).
+
 
 ## Request / response customization
 

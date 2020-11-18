@@ -2162,6 +2162,28 @@ When enabled Passenger will buffer the upload from the client (useful if your ap
 
 The directory in which Passenger will record progress during startup, which is specifically useful for users using sandbox tech such as CageFS, SElinux, or macOS sandboxes. The default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
 
+### passenger_direct_instance_request_address
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_direct_instance_request_address <em>ip</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_direct_instance_request_address 127.0.0.1;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.7</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+The port which Passenger will cause your ruby app to additionally bind to, to allow sending requests directly to specific app instances. Sending requests to specific app processes is detailed [here](<%= url_for("/advanced_guides/troubleshooting/nginx/request_individual_processes.html") %>).
 
 ### passenger_temp_path
 
