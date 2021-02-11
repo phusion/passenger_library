@@ -177,6 +177,7 @@ function dynamic_module_supported() {
   return [
     "buster",
     "stretch",
+    "groovy",
     "focal",
     "eoan",
     "disco",

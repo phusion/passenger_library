@@ -4,6 +4,7 @@ SUPPORTED_DEBIAN_VERSIONS = {
   "buster"  => "Debian 10",
   "stretch" => "Debian 9",
   "jessie"  => "Debian 8",
+  "groovy"  => "Ubuntu 20.10",
   "focal"   => "Ubuntu 20.04 LTS",
   "bionic"  => "Ubuntu 18.04 LTS",
   "xenial"  => "Ubuntu 16.04 LTS",
