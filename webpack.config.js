@@ -16,8 +16,17 @@ module.exports = {
         test: /\.js$/,
         include: path.resolve(__dirname, 'source/javascripts'),
         loader: 'babel-loader',
-        query: {
-          presets: ['es2015']
+        options: {
+          presets: [
+            '@babel/preset-env'
+          ]
+        }
+      },
+      {
+        test: /\.(gif|svg|jpg|png)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000
         }
       },
       {
@@ -29,7 +38,9 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: () => [autoprefixer()]
+              postcssOptions: {
+                plugins: () => [autoprefixer()]
+              }
             }
           },
           'sass-loader'
