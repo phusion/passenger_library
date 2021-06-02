@@ -177,13 +177,14 @@ function dynamic_module_supported() {
   return [
     "buster",
     "stretch",
-    "groovy",
-    "focal",
-    "eoan",
-    "disco",
-    "cosmic",
-    "bionic",
     "artful",
+    "bionic",
+    "cosmic",
+    "disco",
+    "eoan",
+    "focal",
+    "groovy",
+    "hirsute",
     "el7",
     "el8"
   ].includes($(`#${distro}_version_select`).val());
