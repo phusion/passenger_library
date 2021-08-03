@@ -116,10 +116,19 @@ sudo yum update -y
 
 date
 <span class="c unselectable"># if the output of date is wrong, please follow these instructions to install ntp</span>
+<span class="el7">
 sudo yum install -y ntp
 sudo chkconfig ntpd on
 sudo ntpdate pool.ntp.org
 sudo service ntpd start
+</span>
+<span class="el8">
+sudo yum -y install chrony
+sudo systemctl enable chronyd
+sudo firewall-cmd --permanent --add-service=ntp
+sudo firewall-cmd --reload
+sudo systemctl restart chronyd
+</span>
 </code></pre>
 
 <% step += 1 %>
