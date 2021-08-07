@@ -47,6 +47,8 @@ Insert:
   <span class="c1">// Replace "passenger_wsgi.py" with your app's WSGI entry point file.</span>
   <span class="s2">"app_type"</span><span class="p">:</span> <span class="s2">"wsgi"</span><span class="p">,</span>
   <span class="s2">"startup_file"</span><span class="p">:</span> <span class="o">"passenger_wsgi.py"</span><span class="p">,</span>
+  <span class="c1">// Replace "python3" with the <%= language_name %> interpreter you wish to use.</span>
+  <span class="s2">"python"</span><span class="p">:</span> <span class="s2">"python3"</span><span class="p">,</span>
 <% elsif language_type == :nodejs -%>
   <span class="c1">// Tell Passenger that this is a <%= language_name %> app.</span>
   <span class="c1">// Replace "app.js" with your app's entry point file.</span>
