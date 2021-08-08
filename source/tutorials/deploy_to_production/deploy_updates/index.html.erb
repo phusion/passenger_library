@@ -137,7 +137,9 @@ deploy_walkthrough:
   <p>
     Your application's gem dependencies may have changed, so we should install any updated gem dependencies. Run:
   </p>
-  <pre class="highlight"><span class="prompt">$ </span>bundle install --deployment --without development test</pre>
+  <pre class="highlight"><span class="prompt">$ </span>bundle config set --local deployment 'true'</pre>
+  <pre class="highlight"><span class="prompt">$ </span>bundle config set --local without 'development test'</pre>
+  <pre class="highlight"><span class="prompt">$ </span>bundle install</pre>
 </div>
 <div data-node_only>
   <p>
