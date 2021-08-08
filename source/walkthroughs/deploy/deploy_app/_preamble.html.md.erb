@@ -353,11 +353,11 @@ Your application has various dependencies.
 <% if language_type == :ruby -%>
 They must be installed. Most of these dependencies are gems in your Gemfile, managed by Bundler. You can install them in your app's directory by running:
 
-<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code
-<span class="prompt">$ </span>bundle config set --local deployment 'true'
-<span class="prompt">$ </span>bundle config set --local without 'development test'
-<span class="prompt">$ </span>bundle install
-</pre>
+<pre class="highlight"><span class="prompt">$ </span>cd /var/www/<span class="o">myapp</span>/code</pre>
+<pre class="highlight"><span class="prompt">$ </span>bundle config set --local deployment 'true'</pre>
+<pre class="highlight"><span class="prompt">$ </span>bundle config set --local without 'development test'</pre>
+<pre class="highlight"><span class="prompt">$ </span>bundle install</pre>
+
 
 Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this tutorial's scope.
 <% elsif language_type == :python -%>
