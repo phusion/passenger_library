@@ -101,9 +101,16 @@
   opacity: .8;
 }
 
-#header img {
+#header img.logo {
   max-height: 38px;
-  margin-right: 20px;
+}
+
+#header img.logo.phusion {
+  border-right: solid 1px #DDE3EC;
+  padding-right: 20px;
+}
+#header img.logo.passenger {
+  padding-left: 15px;
 }
 
 #header .light-button {

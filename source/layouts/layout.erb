@@ -86,7 +86,10 @@ end
     <header id="header">
       <div>
         <ul>
-          <a href="https://phusionpassenger.com/"><img src="<%= url_for "/images/passenger_logo.svg" %>" alt="home" /></a>
+          <div>
+            <a href="https://phusion.nl/"><img src="<%= url_for '/images/gradient_pinwheel_logo.png' %>" alt="Phusion logo" class="logo phusion" /></a>
+            <a href="https://phusionpassenger.com/"><img src="<%= url_for "/images/passenger_logo.svg" %>" alt="home" class="logo passenger" /></a>
+          </div>
           <li><%= nav_link('Tutorials', '/tutorials/what_is_passenger/index.html', options: 'header') %></li>
           <li><%= nav_link('Advanced Guides', '/advanced_guides/install_and_upgrade/index.html', options: 'header') %></li>
           <li><%= nav_link('References', '/references/config_reference/index.html', options: 'header') %></li>
