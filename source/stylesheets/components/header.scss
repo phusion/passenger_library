@@ -173,3 +173,20 @@
     }
   }
 }
+
+@media(max-width: 590px) {
+  #header .logos {
+    min-width: 51px;
+  }
+
+  #header img.logo {
+    max-height: 19px;
+  }
+
+  #header img.logo.phusion {
+    padding-right: 4px;
+  }
+  #header img.logo.passenger {
+    padding-left: 0px;
+  }
+}
