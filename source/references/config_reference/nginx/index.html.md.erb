@@ -2194,7 +2194,7 @@ The port which Passenger will cause your ruby app to additionally bind to, to al
   </tr>
   <tr>
     <th>Default</th>
-    <td>passenger_temp_path see_below;</td>
+    <td>passenger_temp_path passenger_temp;</td>
   </tr>
   <tr>
     <th>Since</th>
@@ -2207,14 +2207,6 @@ The port which Passenger will cause your ruby app to additionally bind to, to al
 </table>
 
 The directory which Passenger will use for the disk backed response cache. Which is specifically useful for users using sandbox tech such as CageFS, SElinux, or macOS sandboxes.
-
-#### Default value
-
-The default value for this option is as follows:
-
- * if you are on Debian/Ubuntu the default value is likely: `/var/lib/nginx/proxy`.
- * if you are on RHEL/CentOS the default value is likely: `/var/lib/nginx/tmp/proxy`.
- * if you are on macOS and installed via homebrew the default value is: `/usr/local/var/run/nginx/proxy_temp`.
 
 
 ## Request / response customization
