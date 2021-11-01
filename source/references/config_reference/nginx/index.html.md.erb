@@ -2456,6 +2456,30 @@ This option allows you to customize the HTTP status code that is sent back when 
 This option allows you to customize the HTTP status code that is sent back when a request remains in the queue for too long. See [passenger_max_request_queue_time](#passenger_max_request_queue_time) for more information.
 
 
+### passenger_spawn_exception_status_code
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_spawn_exception_status_code <em>code</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_spawn_exception_status_code 500;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.12</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+This option allows you to customize the HTTP status code that is sent back when an application fails to start.
+
+
 ### passenger_ignore_client_abort
 
 <table class="table table-bordered table-condensed">
