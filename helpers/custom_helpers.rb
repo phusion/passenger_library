@@ -1,9 +1,10 @@
 require_relative 'constants'
 
 SUPPORTED_DEBIAN_VERSIONS = {
+  "bullseye"=> "Debian 11",
   "buster"  => "Debian 10",
   "stretch" => "Debian 9",
-  "hirsute" => "Ubuntu 21.04",
+  "impish"  => "Ubuntu 21.10",
   "focal"   => "Ubuntu 20.04 LTS",
   "bionic"  => "Ubuntu 18.04 LTS",
   "xenial"  => "Ubuntu 16.04 LTS",

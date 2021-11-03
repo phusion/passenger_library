@@ -1,4 +1,4 @@
-// JavaScript for displaying OS-specific installation instructions
+hirsu// JavaScript for displaying OS-specific installation instructions
 // in the "Getting Started" tutorials.
 
 import $ from 'jquery';
@@ -177,6 +177,7 @@ function dynamic_module_supported() {
   return [
     "buster",
     "stretch",
+    "bullseye",
     "artful",
     "bionic",
     "cosmic",
@@ -185,6 +186,7 @@ function dynamic_module_supported() {
     "focal",
     "groovy",
     "hirsute",
+    "impish",
     "el7",
     "el8"
   ].includes($(`#${distro}_version_select`).val());

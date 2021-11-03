@@ -5,8 +5,8 @@ advanced_guides: true
 
 <%
   locals = locals.merge(INTEGRATION_MODE_APACHE)
-  locals = locals.merge(PASSENGER_OSS_EDITION)
-  locals = locals.merge(os_config_type: :hirsute)
+  locals = locals.merge(PASSENGER_ENTERPRISE_EDITION)
+  locals = locals.merge(os_config_type: :bullseye)
   integration_mode_type = locals[:integration_mode_type]
   edition_type = locals[:edition_type]
 %>

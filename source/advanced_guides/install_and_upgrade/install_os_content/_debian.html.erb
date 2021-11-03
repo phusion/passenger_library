@@ -1,11 +1,13 @@
 <%
 case os_config_type
+when :bullseye
+  os_config_description = "on Debian 11 (with APT)"
 when :buster
   os_config_description = "on Debian 10 (with APT)"
 when :stretch
   os_config_description = "on Debian 9 (with APT)"
-when :hirsute
-  os_config_description = "on Ubuntu 21.04 (with APT)"
+when :impish
+  os_config_description = "on Ubuntu 21.10 (with APT)"
 when :focal
   os_config_description = "on Ubuntu 20.04 LTS (with APT)"
 when :bionic
