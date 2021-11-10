@@ -1,4 +1,4 @@
-hirsu// JavaScript for displaying OS-specific installation instructions
+// JavaScript for displaying OS-specific installation instructions
 // in the "Getting Started" tutorials.
 
 import $ from 'jquery';
