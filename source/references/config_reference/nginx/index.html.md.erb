@@ -772,6 +772,32 @@ If this option is turned on, and the user's shell is `bash`, then applications a
 If this option is turned off, applications are loaded by running them directly from the `Passenger core` process.
 
 
+### passenger_preload_bundler
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_preload_bundler <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_preload_bundler off;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.13</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Enables or disables loading bundler before loading your Ruby app.
+
+If this option is turned on, Ruby will be instructed to load the bundler gem before loading your application. This can help with gem version conflicts due to order-of require issues.
+
+
 ### passenger_rolling_restarts
 
 <table class="table table-bordered table-condensed">

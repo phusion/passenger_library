@@ -1117,6 +1117,43 @@ Enables or disables the loading of shell environment variables before spawning t
 If this option is turned on, and the user's shell is `bash`, then applications are loaded by running them with `bash -l -c`. If this option is turned off, applications are loaded by running them directly from the `Passenger core` process.
 
 
+### `--preload-bundler` / "preload_bundler"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>passenger start --preload-bundler</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"preload_bundler": true</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_PRELOAD_BUNDLER=true</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.13</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Enables or disables loading bundler before loading your Ruby app.
+
+If this option is turned on, Ruby will be instructed to load the bundler gem before loading your application. This can help with gem version conflicts due to order-of require issues.
+
 ### `--defer-port-binding` / "defer_port_binding"
 
 <table class="table table-bordered table-striped table-condensed">
