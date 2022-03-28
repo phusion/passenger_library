@@ -42,7 +42,7 @@ Follow <%= link_to "these instructions", "/advanced_guides/install_and_upgrade/s
   </tr>
   <tr>
     <td>
-      Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
+      Red Hat, CentOS, Rocky, Alma, Fedora, Amazon Linux, Scientific Linux
     </td>
     <td>
       <pre class="highlight bash"><span class="prompt">$ </span>sudo yum update -y
@@ -396,7 +396,7 @@ ess_cert_id_chain = no  # Must the ESS cert id chain be included?
   </tr>
   <tr>
     <td>
-      Red Hat, CentOS, Fedora, Amazon Linux, Scientific Linux
+      Red Hat, CentOS, Rocky, Alma, Fedora, Amazon Linux, Scientific Linux
     </td>
     <td>
       <pre class="highlight shell"><code><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/etc/pki/tls/misc</code></pre>
@@ -444,7 +444,7 @@ The previous command will have created a new subdirectory called demoCA, you’l
   </tr>
   <tr>
     <td>
-      Fedora 19+, RHEL/CentOS 7+ Chrome:
+      Fedora 19+, RHEL/CentOS/Rocky/Alma 7+ Chrome:
     </td>
     <td>
       <pre class="highlight"><span class="prompt">$ </span>sudo cp <span class="si">~/certs/demoCA/cacert.pem</span> /etc/pki/ca-trust/source/anchors/

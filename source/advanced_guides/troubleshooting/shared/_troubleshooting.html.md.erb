@@ -291,7 +291,7 @@ Static assets are accelerated, i.e. they are served directly by Apache and do no
 
 ### Apache cannot access my app's files because of SELinux errors
 
-On Red Hat Enterprise Linux and CentOS, Apache is locked down by a security mechanism called SELinux. This security mechanism works on top of normal Unix permissions. In order for Apache to be able to access your app's files, you must set the proper SELinux labels on your files.
+On Enterprise Linux (Red Hat, CentOS, Rocky, Alma), Apache is locked down by a security mechanism called SELinux. This security mechanism works on top of normal Unix permissions. In order for Apache to be able to access your app's files, you must set the proper SELinux labels on your files.
 
 First, ensure that your app does not live in a home directory. It is not possible to allow Apache to read files from your home directory.
 

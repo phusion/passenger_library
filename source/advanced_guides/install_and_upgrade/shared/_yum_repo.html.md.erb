@@ -1,7 +1,7 @@
 # Passenger YUM repository (.rpm packages)
 <%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
-We provide YUM/RPM repositories for installing Passenger on Red Hat Enterprise Linux and CentOS systems. There are separate repositories for the open source and Enterprise versions.
+We provide YUM/RPM repositories for installing Passenger on Enterprise Linux (Red Hat, CentOS, Rocky, Alma) systems. There are separate repositories for the open source and Enterprise versions.
 
 <% if integration_mode_type == :nginx %>
   If you use these packages to install Passenger then you do not need to run `passenger-install-nginx-module`. These packages contain all the binaries that you need, including a Passenger-enabled Nginx binary. These packages also come with SELinux policy modules so that Passenger works nicely with SELinux.
@@ -12,7 +12,7 @@ We provide YUM/RPM repositories for installing Passenger on Red Hat Enterprise L
 <div class="note">
   <h3 class="notoc">No Amazon Linux support</h3>
   <p>
-    Our YUM repository may not be used with Amazon Linux. Amazon Linux is too different from RHEL and CentOS. If you are on Amazon Linux, you should use the <%= link_to "generic installation method through tarball or RubyGems", "/advanced_guides/install_and_upgrade/nginx/install/index.html" %>.
+    Our YUM repository may not be used with Amazon Linux. Amazon Linux is too different from Enterprise Linux. If you are on Amazon Linux, you should use the <%= link_to "generic installation method through tarball or RubyGems", "/advanced_guides/install_and_upgrade/nginx/install/index.html" %>.
   </p>
 </div>
 
@@ -24,7 +24,7 @@ We provide YUM/RPM repositories for installing Passenger on Red Hat Enterprise L
 
 ### Install latest Passenger <%= integration_mode_name_as_passenger_suffix %> from YUM
 
-Please read the <%= link_to "installation guide", "/advanced_guides/install_and_upgrade/nginx/install/index.html" %>. When asked to select an installation method, select <strong>"Red Hat, CentOS"</strong>.
+Please read the <%= link_to "installation guide", "/advanced_guides/install_and_upgrade/nginx/install/index.html" %>. When asked to select an installation method, select <strong>"Red Hat, CentOS, Rocky, Alma"</strong>.
 
 ### Upgrade an YUM-installed Passenger <%= integration_mode_name_as_passenger_suffix %>
 
@@ -46,7 +46,7 @@ Packages are available for the x86_64 architecture only.
 
 ### Supported distribution versions
 
-Our policy is to support all Red Hat and CentOS releases that still receive full updates by their vendors. The earliest Red Hat and CentOS version we support is version 7.
+Our policy is to support all Enterprise Linux (Red Hat, CentOS, Rocky, Alma) releases that still receive full updates by their vendors. The earliest Enterprise Linux version we support is version 7.
 
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/install_and_upgrade/index.html" %>">Back</a>

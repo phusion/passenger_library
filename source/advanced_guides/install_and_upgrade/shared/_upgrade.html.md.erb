@@ -75,7 +75,7 @@ If you don't see any updates, then there are two possible reasons:
  1. Our Debian packages haven't been released yet. When we release a new version of <span class="edition_title">Passenger</span>, it typically takes 1-2 hours for our server to build Debian packages.
  2. If you are using a non-Long Term Support version of Ubuntu, then it is possible that we have [dropped support for that Ubuntu version](<%= url_for "/advanced_guides/install_and_upgrade/nginx/apt_repo.html" %>#limited-package-support-for-non-lts-ubuntu-versions).
 
-<h2 id="redhat_centos">RPM packages (Red Hat, CentOS)</h2>
+<h2 id="redhat_centos">RPM packages (Enterprise Linux)</h2>
 <% if integration_mode_type == :nginx %>
   <div class="info">In May 2020, the CentOS 7 / RHEL 7 packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please remove it and install the new package with the system or EPEL Nginx:<br>
     <ul>

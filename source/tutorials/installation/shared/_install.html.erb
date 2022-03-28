@@ -2,7 +2,7 @@
   <select id="os_install_select">
     <option value="none" selected>Please select an operating system / installation method</option>
     <option value="debian">Debian, Ubuntu (with APT)</option>
-    <option value="redhat">Red Hat, CentOS (with RPM)</option>
+    <option value="redhat">Enterprise Linux: Red Hat, CentOS, Rocky, Alma (with RPM)</option>
     <option value="osx">macOS</option>
     <option value="other">Other / OS independent (generic installation method)</option>
   </select>
@@ -81,13 +81,13 @@ sudo apt-get install -y passenger</code></pre>
 
   <div class="supported_redhat_instructions">
     <div class="note">
-      <h3 class="notoc">Notes about RPMs on Red Hat and CentOS</h3>
+      <h3 class="notoc">Notes about RPMs on Enterprise Linux (Red Hat, CentOS, Rocky, Alma)</h3>
       <p>If you are using cPanel/WHM, note that it uses EasyApache whereas Passenger RPMs are designed for the official distro Apache. In this setup the gem installation method is likely a better fit, and you should ensure you have the correct apache tools installed: <code>yum remove httpd-tools && yum install ea-apache24-devel</code>. You will also likely need to disable SELinux when using the Passenger gem.</p>
-      <h3 class="notoc">Notes about SELinux on CentOS &ge; 7</h3>
+      <h3 class="notoc">Notes about SELinux on Enterprise Linux (Red Hat, CentOS, Rocky, Alma) &ge; 7</h3>
       <p>If you experience dependency errors related to selinux-policy while installing Passenger first try <code>yum clean all && yum update</code>, and if that doesn't resolve the issue, try enabling the CR repo: <code>sudo yum update && sudo yum-config-manager --enable cr</code>.</p>
     </div>
 
-    <p>You can install Passenger through YUM. But first you need to enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>. The instructions differ depending on whether you are on Red Hat or CentOS. The second step is only necessary on Red Hat.</p>
+    <p>You can install Passenger through YUM. But first you need to enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>. The instructions differ depending on whether you are on Red Hat or another Enterprise Linux. The second step is only necessary on Red Hat.</p>
 
     <h4 id="enable_epel_rhel">Enabling EPEL</h4>
     <table class="table table-bordered table-striped">
@@ -152,7 +152,7 @@ sudo yum install -y --enablerepo=epel passenger</code></pre>
   </div>
 
   <div class="unsupported_redhat_instructions warning">
-    Is your Red Hat or CentOS version not listed? Then sorry, we do not provide packages for this version at the moment. Please follow the <a href="<%= url_for "/advanced_guides/install_and_upgrade/nginx/install/enterprise/tarball.html" %>">generic installation instructions through tarball</a>.
+    Is your Enterprise Linux (Red Hat, CentOS, Rocky, Alma) version not listed? Then sorry, we do not provide packages for this version at the moment. Please follow the <a href="<%= url_for "/advanced_guides/install_and_upgrade/nginx/install/enterprise/tarball.html" %>">generic installation instructions through tarball</a>.
   </div>
 </div>
 

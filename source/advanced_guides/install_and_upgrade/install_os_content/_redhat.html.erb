@@ -1,7 +1,7 @@
 <%
 case os_config_type
 when :el8
-  os_config_description = "Red Hat 8 / CentOS 8 (with RPM)"
+  os_config_description = "Enterprise Linux 8: Red Hat, CentOS, Rocky, Alma (with RPM)"
 when :el7
   os_config_description = "Red Hat 7 / CentOS 7 (with RPM)"
 end
@@ -47,7 +47,7 @@ step = 0
 <div class="warning">
   <h3 class="notoc">No Amazon Linux RPMs</h3>
   <p>
-    Our YUM repository may not be used with Amazon Linux. Amazon Linux is too different from RHEL and CentOS. If you are on Amazon Linux, please <a href="../#select_os">go back to the operating system selection menu</a> and select "Other / OS independent (generic installation method)".
+    Our YUM repository may not be used with Amazon Linux. Amazon Linux is too different from Enterprise Linux. If you are on Amazon Linux, please <a href="../#select_os">go back to the operating system selection menu</a> and select "Other / OS independent (generic installation method)".
   </p>
 </div>
 
@@ -77,7 +77,7 @@ step = 0
 <% step += 1 %>
 <h2 id="enable_epel">Step <%= step %>: enable EPEL</h2>
 <p>
-   The instructions differ depending on whether you are on Red Hat or CentOS. The second step is only necessary on Red Hat.
+   The instructions differ depending on whether you are on Red Hat or another Enterprise Linux. The second step is only necessary on Red Hat.
 </p>
 
 <table class="table table-bordered table-striped">

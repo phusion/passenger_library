@@ -895,7 +895,7 @@ The instance directory is automatically removed when Apache shuts down.
 
 The default value for this option is as follows:
 
- * If you are on Red Hat and CentOS, and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/advanced_guides/install_and_upgrade/apache/yum_repo.html" %>), then the default value is `/var/run/passenger-instreg`.
+ * If you are on Red Hat, CentOS, Rocky, or Alma Linux and installed Passenger through [the RPMs provided by Phusion](<%= url_for "/advanced_guides/install_and_upgrade/apache/yum_repo.html" %>), then the default value is `/var/run/passenger-instreg`.
  * Otherwise, the default value is the value of the `$TMPDIR` environment variable. Or, if `$TMPDIR` is not set, `/tmp`.
 
 #### Note regarding command line tools
@@ -1740,7 +1740,7 @@ Whether to attempt to enable [user account sandboxing](<%= url_for "/advanced_gu
 </div>
 
 <div class="warning">
-  If you're on Red Hat or CentOS, be sure to read <a href="<%= url_for "/advanced_guides/deployment_and_scaling/apache/user_sandboxing.html" %>#red-hat-and-centos-caveats">the Red Hat and CentOS user account sandboxing caveats</a>.
+  If you're on Red Hat, CentOS, Rocky, or Alma Linux, be sure to read <a href="<%= url_for "/advanced_guides/deployment_and_scaling/apache/user_sandboxing.html" %>#red-hat-and-centos-caveats">the Enterprise Linux user account sandboxing caveats</a>.
 </div>
 
 

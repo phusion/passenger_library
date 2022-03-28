@@ -32,16 +32,13 @@ rm Precompiled.zip
 export PATH="$PATH:/opt/elixir/bin"
 ~~~
 
-### CentOS:
+### CentOS/Rocky/Alma:
 
 ~~~
-yum install -y epel-release yum-utils
+yum install -y epel-release yum-utils wget unzip
 yum-config-manager --enable epel
-yum install -y wget unzip
 
-wget https://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm
-rpm -Uvh erlang-solutions-1.0-1.noarch.rpm
-rm erlang-solutions-1.0-1.noarch.rpm
+rpm -Uvh https://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm
 yum install -y erlang
 
 mkdir -p /opt/elixir

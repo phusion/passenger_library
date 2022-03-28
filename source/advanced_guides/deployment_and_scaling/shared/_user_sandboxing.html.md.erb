@@ -121,7 +121,7 @@ The most likely reason why your application is started as `nobody` is probably b
 
 Whatever user your application runs as, it must have read access to the application root, and read/write access to the application's `logs` directory.
 
-## Red Hat and CentOS caveats
+## Enterprise Linux (Red Hat, CentOS, Rocky, Alma) caveats
 
 <div class="note">
   This information only applies if you <a href="<%= url_for "/advanced_guides/install_and_upgrade/standalone/yum_repo.html" %>">installed Passenger through the RPM packages provided by Phusion</a>. If you did not installed Passenger through the RPM packages provided by Phusion, then you can ignore this section.
@@ -195,4 +195,3 @@ User account sandboxing is the reason why, in all official Passenger Library doc
 <div class="back-button">
   <a class="dark-button" href="<%= url_for "/advanced_guides/deployment_and_scaling/index.html" %>">Back</a>
 </div>
-
