@@ -465,7 +465,6 @@ activate :relative_assets
 
 configure :development do
   set :url_root, DEVELOPMENT_URL_ROOT
-  activate :livereload, :port => 35730
   set :hiring_banner, false
 end
 
