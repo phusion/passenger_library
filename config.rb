@@ -102,7 +102,7 @@ end
 # Build-specific configuration
 configure :build do
   set :url_root, PRODUCTION_URL_ROOT
-  set :google_analytics, true
+  set :google_analytics, false
   set :hiring_banner, true
 
   activate :search_engine_sitemap
