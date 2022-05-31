@@ -19,10 +19,6 @@ end
         <a href="https://www.phusionpassenger.com/passenger6">Generic Language Support</a>. Or jump straight to the <a href="<%= url_for('/advanced_guides/gls/index.html') %>">GLS guides</a>.
       </p>
     </div>
-
-    <hr/>
-
-    <%= partial "/shared/feedback" %>
   </div>
 <% elsif item == :enterprise %>
   <div id="new-item">
@@ -36,10 +32,6 @@ end
         <a href="https://www.phusionpassenger.com/features#premium-features" target="_blank">Passenger Enterprise</a>
       </p>
     </div>
-
-    <hr />
-
-    <%= partial "/shared/feedback" %>
   </div>
 
 <% elsif item == :consultancy %>
@@ -52,10 +44,6 @@ end
       <strong>Experts at your service</strong>
       <p>Phusion can help you build secure and performant apps.</p>
     </div>
-
-    <hr />
-
-    <%= partial "/shared/feedback" %>
   </div>
 
 <% elsif item == :stream %>
@@ -76,9 +64,5 @@ end
         Join the coding livestream <br>&amp; AMA on Nov 1st or <a href="https://blog.phusion.nl/2018/10/19/livestreaming-from-phusion-hq-adding-a-feature-to-passenger/" target="_blank">learn more</a>!
       </p>
     </div>
-
-    <hr/>
-
-    <%= partial "/shared/feedback" %>
   </div>
 <% end %>
