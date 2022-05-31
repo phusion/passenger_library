@@ -31,8 +31,8 @@ function makeDropdown(dropdown_type, dropdown_items) {
     const value = format(self.value);
 
     array.forEach(function(item) {
-      if (item !== value && location.includes(item)) {
-        window.location = location.replace(item, value);
+      if (item !== value && location.includes(`/${item}/`)) {
+        window.location = location.replace(`/${item}/`, `/${value}/`);
       }
 
       array.forEach(needle => {
