@@ -161,6 +161,15 @@ module CustomHelpers
     SUPPORTED_REDHAT_VERSIONS.keys.include?(distro)
   end
 
+  def debian_new_apt_key_method?(distro)
+    label = SUPPORTED_DEBIAN_VERSIONS[distro]
+    if label.start_with?("Debian")
+      label.split(' ')[1].to_i > 10
+    else
+      label.split(' ')[1].to_f > 20.04
+    end
+  end
+
   def debian_version_selection_options
     result = ""
     maybe_selected = " selected"

@@ -135,9 +135,13 @@ step = 0
 </p>
 
 <pre class="highlight shell"><code><span class="c unselectable"># Install our PGP key and add HTTPS support for APT</span>
-sudo apt-get install -y dirmngr gnupg
+sudo apt-get install -y dirmngr gnupg apt-transport-https ca-certificates <% if debian_new_apt_key_method?(os_config_type.to_s) %>curl<% end %>
+
+  <% if !debian_new_apt_key_method?(os_config_type.to_s) %>
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
-sudo apt-get install -y apt-transport-https ca-certificates
+<% else %>
+curl https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/phusion.gpg >/dev/null
+<% end %>
 
 <span class="c unselectable"># Add our APT repository</span>
 <% if edition_type == :oss -%>
