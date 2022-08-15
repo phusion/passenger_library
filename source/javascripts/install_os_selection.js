@@ -187,8 +187,10 @@ function dynamic_module_supported() {
     "groovy",
     "hirsute",
     "impish",
+    "jammy",
     "el7",
-    "el8"
+    "el8",
+    "el9"
   ].includes($(`#${distro}_version_select`).val());
 }
 
