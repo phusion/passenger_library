@@ -188,6 +188,7 @@ function dynamic_module_supported() {
     "hirsute",
     "impish",
     "jammy",
+    "kinetic",
     "el7",
     "el8",
     "el9"

@@ -4,10 +4,10 @@ SUPPORTED_DEBIAN_VERSIONS = {
   "bullseye"=> "Debian 11",
   "buster"  => "Debian 10",
   "stretch" => "Debian 9",
+  "kinetic" => "Ubuntu 22.10",
   "jammy"   => "Ubuntu 22.04 LTS",
   "focal"   => "Ubuntu 20.04 LTS",
   "bionic"  => "Ubuntu 18.04 LTS",
-  "xenial"  => "Ubuntu 16.04 LTS",
 }
 
 SUPPORTED_REDHAT_VERSIONS = {
@@ -158,8 +158,7 @@ module CustomHelpers
   end
 
   def dynamic_nginx_module_available?(distro)
-    (SUPPORTED_DEBIAN_VERSIONS.keys.include?(distro) && "xenial" != distro) ||
-    SUPPORTED_REDHAT_VERSIONS.keys.include?(distro)
+    SUPPORTED_DEBIAN_VERSIONS.keys.include?(distro) || SUPPORTED_REDHAT_VERSIONS.keys.include?(distro)
   end
 
   def debian_new_apt_key_method?(distro)
