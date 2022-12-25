@@ -36,20 +36,20 @@ Follow these instructions on each server running Passenger Enterprise with a clo
     <% if integration_mode_type == :nginx -%>
     configuration to your Nginx configuration file:
 
-        passenger_ctl licensing_data_points_auto_send false;
+        passenger_ctl licensing_auto_send false;
 
     Then restart Nginx.
     <% elsif integration_mode_type == :apache -%>
     configuration to your Apache configuration file:
 
-        PassengerCtl licensing_data_points_auto_send false
+        PassengerCtl licensing_auto_send false
 
     Then restart Apache.
     <% else -%>
 
     parameter to your Passenger Standalone command invoation:
 
-        --ctl licensing_data_points_auto_send=false
+        --ctls licensing_auto_send=false
 
     Then restart Passenger Standalone.
     <% end -%>

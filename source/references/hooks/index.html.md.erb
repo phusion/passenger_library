@@ -26,9 +26,9 @@ Nginx
       passenger_ctl hook_<HOOK NAME> <COMMAND TO EXECUTE>;
 
 Standalone
-: You can define hooks using [`--ctl` / "ctls"](/references/config_reference/standalone/index.html#--ctls-ctls):
+: You can define hooks using [`--ctls` / "ctls"](/references/config_reference/standalone/index.html#--ctls-ctls):
 
-      --ctl hook_<HOOK NAME>=<COMMAND TO EXECUTE>
+      --ctls hook_<HOOK NAME>=<COMMAND TO EXECUTE>
 
 ## Example
 
@@ -60,7 +60,7 @@ And we define the hook in the configuration file:
   </tr>
   <tr>
     <td>Standalone</td>
-    <td><pre class="highlight">passenger start --ctl hook_attached_process=/home/phusion/attached.sh</pre></td>
+    <td><pre class="highlight">passenger start --ctls hook_attached_process=/home/phusion/attached.sh</pre></td>
   </tr>
 </table>
 
