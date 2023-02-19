@@ -1160,7 +1160,7 @@ Decreasing this value means that applications will have to be spawned more often
 
 The optimal value depends on the average time that a visitor spends on a single dynamic page. We recommend a value of `2 * x`, where `x` is the average number of seconds that a visitor spends on a single dynamic page. But your mileage may vary.
 
-When this value is set to `0`, application processes will not be shutdown unless it's really necessary. Here is a situation where Passenger seems necessary to shutdown an application process. Suppose that you have two apps on your server, foo and bar. If a user visits foo, but there are no processes for foo, and at the same time there are lots of application processes for bar (as many as the [pool limit](#passengermaxpoolsize)), then Passenger will wait until one of those bar processes is no longer handling a request. At time time, that process will be shutdown so that Passenger can spawn a foo process.
+When this value is set to `0`, application processes will not be shutdown unless it's really necessary. Here is a situation where Passenger seems necessary to shutdown an application process. Suppose that you have two apps on your server, foo and bar. If a user visits foo, but there are no processes for foo, and at the same time there are lots of application processes for bar (as many as the [pool limit](#passengermaxpoolsize)), then Passenger will wait until one of those bar processes is no longer handling a request. At this time, that process will be shutdown so that Passenger can spawn a foo process.
 
 Setting the value to 0 is recommended if you're on a non-shared host that's only running a few applications, each which must be available at all times.
 
