@@ -10,9 +10,17 @@ To use Passenger with Elixir, you'll need to use one of the many web frameworks 
 
 In this example we'll be using [Phoenix](http://www.phoenixframework.org/), because it is the most popular library.
 
-## Step 1: Install Elixir
+## Step 1: Install Elixir (Elixir Community Preferred Method)
 
-Unfortunately a sufficiently recent Elixir is not available from most OS' package managers, so manual installation is required. Additionally due to the package names and methods of distributing Elixir and Erlang, installing Elixir via the command line involves version numbers, and therefore these instructions are more fragile than for most other languages.
+Unfortunately a sufficiently recent Elixir version is not available from most OS' package managers, however the Elixir community generally install Elixir using [asdf-vm](https://asdf-vm.com), commonly referred to as the [asdf version manager](https://asdf-vm.com).
+
+asdf Version Manager, similar to [nvm](https://github.com/nvm-sh/nvm) for Node.js aficionados, offers many benefits to installing Elixir in this way, chief amongst those benefits is that asdf-vm allows you to conveniently manage multiple runtime versions on the same machine.
+
+For complete installation instructions using asdf-vm, head on across to the [asdf-vm documentation website](https://asdf-vm.com/#/core-manage-asdf-vm).
+
+## Step 2: Install Elixir (OS's Package Manager Method)
+
+If for some reason you would still prefer to use your operating system's packaged Elixir version, please refer to the appropriate installation instructions below.
 
 ### Debian & Ubuntu:
 
@@ -92,21 +100,22 @@ rm /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
 brew install elixir
 ~~~
 
-## Step 2: Install Phoenix
+## Step 3: Install Phoenix
 
 ~~~
 mix local.hex --force
 mix archive.install hex phx_new 1.4.0 --force
 ~~~
 
-## Step 3: Create your project
+## Step 4: Create your project
 Create the file and directories you'll use for this project and `cd` there.
 
 ~~~
 mix phx.new hello_world --no-webpack --no-ecto --no-html
+When asked if you would like to install the project dependencies, simply enter Y to enable them to be fetched and installed.
 ~~~
 
-## Step 4: Hello world
+## Step 5: Hello world
 Edit the `lib/hello_web/router.ex` file to contain the following contents:
 
 ~~~
@@ -137,7 +146,7 @@ defmodule HelloWorldWeb.PageController do
 end
 ~~~
 
-## Step 5: Build and run
+## Step 6: Build and run
 
 Run the following commands to run the web app, which will serve the web app on port 4000, then verify that your app is being served by sending a request to the web app from another terminal.
 
@@ -148,7 +157,7 @@ mix phx.server
 curl http://localhost:4000/
 ~~~
 
-## Step 6: Add Passenger
+## Step 7: Add Passenger
 
 You will need Passenger installed, for instructions on how to install Passenger [click here](https://www.phusionpassenger.com/docs/tutorials/installation/node/).
 
