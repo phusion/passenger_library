@@ -189,6 +189,7 @@ function dynamic_module_supported() {
     "impish",
     "jammy",
     "kinetic",
+    "lunar",
     "el7",
     "el8",
     "el9"
