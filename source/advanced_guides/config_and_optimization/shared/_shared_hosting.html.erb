@@ -1,0 +1,40 @@
+# Using Passenger when providing shared-hosting
+
+<%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
+
+There are special considerations that must be made when designinng a multi-tenant shared hosting system.
+
+This guide assumes that you are already familiar with installing and using Passenger. And serves as a prompt to consider issues particular to shared hosting.
+
+The information in this section applies equally to the open source version and to the Enterprise version.
+
+**Table of contents**
+
+<ul class="toc-container"><li>Loading...</li></ul>
+
+## Conceptual overview
+
+The main concerns to consider when setting up a shared hosting environment are as follows:
+
+1. Which configuration options allow customers to elevate privileges.
+2. Which configuration options will be provided to customers.
+
+## Step 1: Review the [configuration options](<%= url_for "/references/config_reference/" %>) for <%= integration_mode_web_server_name %>:
+
+Some options such as (but not limited to) <% if integration_mode_type == :nginx -%>
+[passenger_user_switching](<%= url_for "/references/config_reference/nginx/#passenger_user_switching" %>)
+<% elsif integration_mode_type == :apache -%>
+[PassengerUserSwitching](<%= url_for "/references/config_reference/apache/#passengeruserswitching" %>)
+<% else -%>
+[--user](<%= url_for "/references/config_reference/standalone/#--user-user" %>)
+<% end -%> allow a user to control what system user their app process runs as, and as such can be used to elevate privileges fairly trivially, or to interfere with other customers' processes. Therefore it is nessesary to evaluate all of the [configuration options](<%= url_for "/references/config_reference/" %>) provided by Passenger and whether they are safe to allow customers to control.
+
+## Step 2: Limit customer configuration to safe options:
+
+We highly recomend whitelisting the configuration options that a user can set <% if integration_mode_type == :apache -%>
+ using [AllowOverrideList](https://httpd.apache.org/docs/2.4/mod/core.html#allowoverridelist) or something similar.
+<% elsif integration_mode_type == :nginx -%>
+ by not [including](https://nginx.org/en/docs/ngx_core_module.html#include) any user controlled files/contents into your server's config.
+<% else -%>
+ by not [including](<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#nginx-configuration-template" %>) any user controlled [files](<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#mass-deployment-configuration" %>)/contents into your server's config.
+<% end -%>
