@@ -2,7 +2,7 @@
 
 <%= render_partial('/shared/current_selection', locals: { disabled_selections: [:lang] }) %>
 
-There are special considerations that must be made when designinng a multi-tenant shared hosting system.
+There are special considerations that must be made when designing a multi-tenant shared hosting system.
 
 This guide assumes that you are already familiar with installing and using Passenger. And serves as a prompt to consider issues particular to shared hosting.
 
@@ -27,11 +27,11 @@ Some options such as (but not limited to) <% if integration_mode_type == :nginx 
 [PassengerUserSwitching](<%= url_for "/references/config_reference/apache/#passengeruserswitching" %>)
 <% else -%>
 [--user](<%= url_for "/references/config_reference/standalone/#--user-user" %>)
-<% end -%> allow a user to control what system user their app process runs as, and as such can be used to elevate privileges fairly trivially, or to interfere with other customers' processes. Therefore it is nessesary to evaluate all of the [configuration options](<%= url_for "/references/config_reference/" %>) provided by Passenger and whether they are safe to allow customers to control.
+<% end -%> allow a user to control what system user their app process runs as, and as such can be used to elevate privileges fairly trivially, or to interfere with other customers' processes. Therefore it is necessary to evaluate all of the [configuration options](<%= url_for "/references/config_reference/" %>) provided by Passenger and whether they are safe to allow customers to control.
 
 ## Step 2: Limit customer configuration to safe options:
 
-We highly recomend whitelisting the configuration options that a user can set <% if integration_mode_type == :apache -%>
+We highly recommend whitelisting the configuration options that a user can set <% if integration_mode_type == :apache -%>
  using [AllowOverrideList](https://httpd.apache.org/docs/2.4/mod/core.html#allowoverridelist) or something similar.
 <% elsif integration_mode_type == :nginx -%>
  by not [including](https://nginx.org/en/docs/ngx_core_module.html#include) any user controlled files/contents into your server's config.
