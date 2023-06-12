@@ -160,6 +160,9 @@ sudo chmod 600 /etc/yum.repos.d/passenger.repo
 <% end -%>
 
 <span class="c unselectable"># Install <%= packages_title %></span>
+<% if integration_mode_type == :nginx %>
+sudo yum module enable -y nginx:$(sudo yum module list nginx | cut -d ' ' -f 2 | grep -Ee '^[0-9\.]+$' | sort -V | tail -1)
+<% end %>
 sudo yum install -y <%= packages %> || { sudo yum-config-manager --enable cr && sudo yum install -y <%= packages %> ; }</code></pre>
 <% if integration_mode_type == :apache %>
   <% step += 1 %>

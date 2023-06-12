@@ -77,6 +77,14 @@ If you don't see any updates, then there are two possible reasons:
 
 <h2 id="redhat_centos">RPM packages (Enterprise Linux)</h2>
 <% if integration_mode_type == :nginx %>
+  <div class="info">In June 2023, the Enterprise Linux 8 & 9 packages for Passenger were changed from building against the default system Nginx module package to the newest system Nginx module package. If you have the old module enabled, please remove it and enable the new module package:<br>
+    <ul>
+      <li><code>sudo yum remove nginx</code></li>
+      <li><code>sudo yum module reset nginx</code></li>
+      <li><code>sudo yum module enable -y nginx:$(sudo yum module list nginx | cut -d ' ' -f 2 | grep -Ee '^[0-9\.]+$' | sort -V | tail -1)</code></li>
+      <li><code>sudo yum install -y nginx-mod-http-passenger</code></li>
+    </ul>
+  </div>
   <div class="info">In May 2020, the CentOS 7 / RHEL 7 packages for Passenger were changed from a static to a dynamic module package. If you have the old package, please remove it and install the new package with the system or EPEL Nginx:<br>
     <ul>
       <li><code>sudo yum remove nginx*</code></li>
