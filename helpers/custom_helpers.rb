@@ -3,7 +3,6 @@ require_relative 'constants'
 SUPPORTED_DEBIAN_VERSIONS = {
   "bullseye"=> "Debian 11",
   "buster"  => "Debian 10",
-  "stretch" => "Debian 9",
   "lunar"   => "Ubuntu 23.04",
   "jammy"   => "Ubuntu 22.04 LTS",
   "focal"   => "Ubuntu 20.04 LTS",
