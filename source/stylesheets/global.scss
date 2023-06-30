@@ -1,10 +1,4 @@
-@import url('https://rsms.me/inter/inter-ui.css');
-
-/****************
- * FONTS.COM
- ****************/
-
-@import url("https://fast.fonts.net/t/1.css?apiType=css&projectid=da2a03d1-cfb1-47c9-86ba-605e80e9e9b1");
+@import './font-resources.scss';
 
 html {
   overflow-y: scroll;

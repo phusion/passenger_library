@@ -34,8 +34,7 @@ end
     <% else %>
       <title><%= site_title %></title>
     <% end %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css"
-/>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" /> -->
     <%= stylesheet_link_tag('bundle', relative: (not current_page.data.absolute_paths)).html_safe %>
     <% if current_page.data.skip_search || @skip_search %>
       <meta name="st:robots" content="noindex">
@@ -215,8 +214,9 @@ end
     </footer>
 
     <div id="end_of_page_js">
-    <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <%= javascript_include_tag 'docsearch.min' %>
     <% if !current_page.data.skip_default_javascript %>
+
     <%= javascript_include_tag 'bundle' %>
     <script type="text/javascript">
       function isIE() {

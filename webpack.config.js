@@ -45,6 +45,13 @@ module.exports = {
           },
           'sass-loader'
         ]
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name].[ext]?[hash]'
+        }
       }
     ]
   },
