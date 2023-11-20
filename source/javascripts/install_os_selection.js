@@ -190,6 +190,7 @@ function dynamic_module_supported() {
     "jammy",
     "kinetic",
     "lunar",
+    "mantic",
     "el7",
     "el8",
     "el9"

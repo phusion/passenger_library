@@ -3,10 +3,9 @@ require_relative 'constants'
 SUPPORTED_DEBIAN_VERSIONS = {
   "bullseye"=> "Debian 11",
   "buster"  => "Debian 10",
-  "lunar"   => "Ubuntu 23.04",
+  "mantic"  => "Ubuntu 23.10",
   "jammy"   => "Ubuntu 22.04 LTS",
   "focal"   => "Ubuntu 20.04 LTS",
-  "bionic"  => "Ubuntu 18.04 LTS",
 }
 
 SUPPORTED_REDHAT_VERSIONS = {
