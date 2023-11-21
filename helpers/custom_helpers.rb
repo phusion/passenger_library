@@ -1,6 +1,7 @@
 require_relative 'constants'
 
 SUPPORTED_DEBIAN_VERSIONS = {
+  "bookworm"=> "Debian 12",
   "bullseye"=> "Debian 11",
   "buster"  => "Debian 10",
   "mantic"  => "Ubuntu 23.10",

@@ -178,6 +178,7 @@ function dynamic_module_supported() {
     "buster",
     "stretch",
     "bullseye",
+    "bookworm",
     "artful",
     "bionic",
     "cosmic",

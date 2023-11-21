@@ -1,5 +1,7 @@
 <%
 case os_config_type
+when :bookworm
+  os_config_description = "on Debian 12 (with APT)"
 when :bullseye
   os_config_description = "on Debian 11 (with APT)"
 when :buster
