@@ -2532,6 +2532,32 @@ Normally, when the HTTP client aborts the connection (e.g. when the user clicked
 If this option is turned on then, upon a client abort, Passenger will continue to read the application process's response while discarding all the read data. This prevents EPIPE errors but it will also mean the application process will be unavailable for new requests until it is done sending its response.
 
 
+### passenger_custom_error_page
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_custom_error_page <em>path</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_custom_error_page "";</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.23</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+Replaces the default Passenger error page when there is an issue spawning an app.
+
+By default, Passenger either renders a friendly error page or a minimal error page depending on the <a href="#passenger_friendly_error_pages">passenger_friendly_error_pages</a> and <a href="#passenger_app_env">passenger_app_env</a> config options. This option overrides the error page with your own. The path should point to a static file which Passenger has permission to read.
+
+
 ### passenger_intercept_errors
 
 <table class="table table-bordered table-condensed">

@@ -2549,6 +2549,49 @@ This feature is very useful during application development and useful for less e
 You can use this option to explicitly enable or disable this feature. `--friendly-error-pages` always enables friendly error pages, and `--no-friendly-error-pages` always disables friendly error pages. Similarly, the `"friendly_error_pages": boolean` config option always enables or disables friendly error pages.
 
 
+### `--custom-error-page` / "custom_error_page"
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th>Command line syntax</th>
+    <td>
+      passenger start --custom-error-page <a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html#relative-path-handling" %>"><em>PATH</em></a><
+    </td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"custom_error_page": <em>string</em></td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_CUSTOM_ERROR_PAGE=<em>string</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>
+      <p>
+        Disabled
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.23</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
+    <td>Main, per-app</td>
+  </tr>
+</table>
+
+Replaces the default Passenger error page when there is an issue spawning an app.
+
+By default, Passenger either renders a friendly error page or a minimal error page depending on the [friendly error pages](#--friendly-error-pages---no-friendly-error-pages-friendly_error_pages) and [app environment](#--environment-environment) config options. This option overrides the error page with your own. The path should point to a static file which Passenger has permission to read.
+
 ### `--debugger` / "debugger"
 
 <table class="table table-bordered table-striped table-condensed">

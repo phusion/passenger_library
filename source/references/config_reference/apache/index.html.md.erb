@@ -2355,6 +2355,32 @@ Used to specify that the given URI is an distinct application that should be ser
   As of Version 5.2 there is a bug that prevents using both DocuemntRoot and a base uri at the same time in Passenger.
 </div>
 
+### PassengerCustomErrorPage
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerCustomErrorPage <em>file-path</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerCustomErrorPage ""</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.23</td>
+  </tr>
+  <tr>
+  <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory</td>
+  </tr>
+</table>
+
+Replaces the default Passenger error page when there is an issue spawning an app.
+
+By default, Passenger either renders a friendly error page or a minimal error page depending on the [PassengerFriendlyErrorPages](#passengerfriendlyerrorpages) and [PassengerAppEnv](#passengerappenv) config options. This option overrides the error page with your own. The path should point to a static file which Passenger has permission to read.
+
+
 ### PassengerErrorOverride
 
 <table class="table table-bordered table-condensed">
