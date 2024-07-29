@@ -3,8 +3,7 @@ require_relative 'constants'
 SUPPORTED_DEBIAN_VERSIONS = {
   "bookworm"=> "Debian 12",
   "bullseye"=> "Debian 11",
-  "buster"  => "Debian 10",
-  "mantic"  => "Ubuntu 23.10",
+  "noble"   => "Ubuntu 24.04 LTS",
   "jammy"   => "Ubuntu 22.04 LTS",
   "focal"   => "Ubuntu 20.04 LTS",
 }
@@ -12,7 +11,6 @@ SUPPORTED_DEBIAN_VERSIONS = {
 SUPPORTED_REDHAT_VERSIONS = {
   "el9" => "Enterprise Linux 9: Red Hat, CentOS, Rocky, Alma",
   "el8" => "Enterprise Linux 8: Red Hat, CentOS, Rocky, Alma",
-  "el7" => "Red Hat 7 / CentOS 7"
 }
 
 module CustomHelpers

@@ -47,11 +47,11 @@
     <p>You can install Passenger through APT:</p>
 
     <pre class="highlight shell"><code><span class="c unselectable"># Install our PGP key and add HTTPS support for APT</span>
-sudo apt-get install -y dirmngr gnupg apt-transport-https ca-certificates <span class="debian_hideable bullseye bookworm mantic kinetic jammy">curl</span>
-<span class="debian_hideable buster focal">
+sudo apt-get install -y dirmngr gnupg apt-transport-https ca-certificates <span class="debian_hideable bullseye bookworm noble jammy">curl</span>
+<span class="debian_hideable focal">
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
 </span>
-<span class="debian_hideable bullseye bookworm jammy kinetic mantic">
+<span class="debian_hideable bullseye bookworm jammy noble">
 curl https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/phusion.gpg >/dev/null
 </span>
 <span class="c unselectable"># Add our APT repository</span>
@@ -85,12 +85,12 @@ sudo apt-get install -y passenger</code></pre>
   <div class="supported_redhat_instructions">
     <div class="note">
       <h3 class="notoc">Notes about RPMs on Enterprise Linux (Red Hat, CentOS, Rocky, Alma)</h3>
-      <p>If you are using cPanel/WHM, note that it uses EasyApache whereas Passenger RPMs are designed for the official distro Apache. In this setup the gem installation method is likely a better fit, and you should ensure you have the correct apache tools installed: <code>yum remove httpd-tools && yum install ea-apache24-devel</code>. You will also likely need to disable SELinux when using the Passenger gem.</p>
+      <p>If you are using cPanel/WHM, note that it uses EasyApache whereas Passenger RPMs are designed for the official distro Apache. In this setup the gem installation method is likely a better fit, and you should ensure you have the correct apache tools installed: <code>dnf remove httpd-tools && dnf install ea-apache24-devel</code>. You will also likely need to disable SELinux when using the Passenger gem.</p>
       <h3 class="notoc">Notes about SELinux on Enterprise Linux (Red Hat, CentOS, Rocky, Alma) &ge; 7</h3>
-      <p>If you experience dependency errors related to selinux-policy while installing Passenger first try <code>yum clean all && yum update</code>, and if that doesn't resolve the issue, try enabling the CR repo: <code>sudo yum update && sudo yum-config-manager --enable cr</code>.</p>
+      <p>If you experience dependency errors related to selinux-policy while installing Passenger first try <code>dnf clean all && dnf update</code>, and if that doesn't resolve the issue, try enabling the CR repo: <code>sudo dnf update && sudo dnf config-manager --enable cr</code>.</p>
     </div>
 
-    <p>You can install Passenger through YUM. But first you need to enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>. The instructions differ depending on whether you are on Red Hat or another Enterprise Linux. The second step is only necessary on Red Hat.</p>
+    <p>You can install Passenger through DNF. But first you need to enable <a href="https://fedoraproject.org/wiki/EPEL">EPEL</a>. The instructions differ depending on whether you are on Red Hat or another Enterprise Linux. The second step is only necessary on Red Hat.</p>
 
     <h4 id="enable_epel_rhel">Enabling EPEL</h4>
     <table class="table table-bordered table-striped">
@@ -99,10 +99,10 @@ sudo apt-get install -y passenger</code></pre>
           <td><strong>Step 1:</strong><br>install EPEL package</td>
 
           <td>
-            <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y yum-utils
-<span class="prompt">$ </span>sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(< /etc/redhat-release tr -dc '0-9.'|cut -d \. -f1).noarch.rpm
-<span class="prompt">$ </span>sudo yum-config-manager --enable epel
-<span class="prompt">$ </span>sudo yum clean all && sudo yum update -y</pre>
+            <pre class="highlight"><span class="prompt">$ </span>sudo dnf install -y dnf-utils
+<span class="prompt">$ </span>sudo dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(< /etc/redhat-release tr -dc '0-9.'|cut -d \. -f1).noarch.rpm
+<span class="prompt">$ </span>sudo dnf config-manager --enable epel
+<span class="prompt">$ </span>sudo dnf clean all && sudo dnf update -y</pre>
           </td>
         </tr>
 
@@ -112,7 +112,7 @@ sudo apt-get install -y passenger</code></pre>
             enable the 'optional' repository
           </td>
           <td>
-            enable the <em>optional</em> repository (<em>rhel-<span class="el8">8</span><span class="el7">7</span>-server-optional-rpms</em>). this can be done by enabling the rhel optional <a href="https://access.redhat.com/kb/docs/doc-11313">subchannel</a> for rhn-classic. for certificate-based subscriptions see <a href="https://access.redhat.com/site/documentation/en-us/red_hat_subscription_management/1/html/rhsm/entitlements-and-yum.html#supplementary-repos">red hat subscription management guide</a>.
+            enable the <em>optional</em> repository (<em>rhel-<span class="el8">8</span><span class="el9">9</span>-server-optional-rpms</em>). this can be done by enabling the rhel optional <a href="https://access.redhat.com/kb/docs/doc-11313">subchannel</a> for rhn-classic. for certificate-based subscriptions see <a href="https://access.redhat.com/site/documentation/en-us/red_hat_subscription_management/1/html/rhsm/entitlements-and-yum.html#supplementary-repos">red hat subscription management guide</a>.
           </td>
         </tr>
       </tbody>
@@ -121,35 +121,27 @@ sudo apt-get install -y passenger</code></pre>
     <h4>Repair Potential System Issues</h4>
 
     <pre class="highlight shell"><code><span class="c unselectable"># Ensure curl and nss/openssl are sufficiently up-to-date to talk to the repo</span>
-sudo yum update -y
+sudo dnf update -y
 
 date
 <span class="c unselectable"># if the output of date is wrong, please follow these instructions to install ntp</span>
-<span class="el7">
-sudo yum install -y ntp
-sudo chkconfig ntpd on
-sudo ntpdate pool.ntp.org
-sudo service ntpd start
-</span>
-<span class="el8">
 sudo dnf -y install chrony
 sudo systemctl enable chronyd
 sudo firewall-cmd --permanent --add-service=ntp
 sudo firewall-cmd --reload
 sudo systemctl restart chronyd
-</span>
 </code></pre>
 
     <h4>Install Passenger itself</h4>
 
     <pre class="highlight shell"><code><span class="c unselectable"># Install other prerequisites</span>
-sudo yum install -y <span class="no_el8">pygpgme</span> curl
+sudo dnf install -y <span class="no_el8">pygpgme</span> curl
 
-<span class="c unselectable"># Add our <span class="redhat_distro_name"></span> YUM repository</span>
+<span class="c unselectable"># Add our <span class="redhat_distro_name"></span> RPM repository</span>
 sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 
 <span class="c unselectable"># Install Passenger</span>
-sudo yum install -y --enablerepo=epel passenger</code></pre>
+sudo dnf install -y --enablerepo=epel passenger</code></pre>
 
     <%= render_partial("/walkthroughs/start/postinstall_check.html") %>
   </div>

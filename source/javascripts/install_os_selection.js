@@ -86,11 +86,6 @@ function redhatVersionChanged() {
     $('.supported_redhat_instructions').show();
     $('.unsupported_redhat_instructions').hide();
   }
-  if (window.localStorage.getItem('Integration').toLowerCase() === 'nginx' && selection == "el7") {
-      $('.replace_nginx_package_message').show();
-  } else {
-      $('.replace_nginx_package_message').hide();
-  }
   $('[class^="el"]').hide();
   $('.'+selection).show();
   $('.no_'+selection).hide();
@@ -192,9 +187,11 @@ function dynamic_module_supported() {
     "kinetic",
     "lunar",
     "mantic",
+    "noble",
     "el7",
     "el8",
-    "el9"
+    "el9",
+    "el10"
   ].includes($(`#${distro}_version_select`).val());
 }
 
