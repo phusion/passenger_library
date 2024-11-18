@@ -1,7 +1,7 @@
 # Request load balancing
 <%= render_partial("/shared/current_selection", locals: { disabled_selections: [:integration] }) %>
 
-At its core, Passenger is a process manager and HTTP request router. In order to minimize response times, and to distribute load over multiple CPU cores for optimal performance, Passenger load balances requests over processes in a "least busy process first" manner. This article explains the implications and details of our request load balancing mechanism.
+At its core, Passenger is a process manager and HTTP request router. In order to minimize response times, and to distribute load over multiple CPU cores for optimal performance, Passenger load balances requests over processes in an intelligent manner. This article explains the implications and details of our request load balancing mechanism.
 
 **Table of contents**
 
@@ -15,15 +15,15 @@ At its core, Passenger is a process manager and HTTP request router. In order to
 <% else %>
   <%= language_name %> applications can only handle 1 request at the same time.
 <% end %>
-With Passenger this is improved by running multiple processes of the application using pooled application groups. For each request from the incoming request queue, a non-busy (free) application process is selected to handle the request.
+With Passenger this is improved by running multiple processes of the application using pooled application groups. For each request from the incoming request queue, a non-completely-busy (free) application process is selected to handle the request.
 
 <div><img class="request-load-balancing" src="<%= url_for "/images/request_load_balancing.png" %>" alt="request load balancing"></div>
 
 <% if language_type == :ruby %>
-  For thread-safe Ruby apps it is also possible to enable [multithreading](<%= url_for "/references/config_reference/nginx/#passenger_concurrency_model" %>), which allows the application processes to concurrently handle multiple requests at the same time -- up to the amount of threads configured. In this case, Passenger forwards the request to the instance that is currently handling the least number of requests.
+  For thread-safe Ruby apps it is also possible to enable [multithreading](<%= url_for "/references/config_reference/nginx/#passenger_concurrency_model" %>), which allows the application processes to concurrently handle multiple requests at the same time -- up to the amount of threads configured. In this case, Passenger forwards the request to the instance that meets the criteria described [below](#intelligent-routing).
 <% end %>
 
-If all application processes and threads are busy, Passenger spawns a new instance, up to the [process limit](<%= url_for "/references/config_reference/nginx/#passenger_concurrency_model" %>) for the group. The amount of processes of the groups combined may also not exceed the limit for the application pool. If either limit is reached, the request remains in the queue (which has its own [limit](#request-queue-overflow)).
+If all application processes and threads are completely busy, Passenger spawns a new instance, up to the [process limit](<%= url_for "/references/config_reference/nginx/#passenger_concurrency_model" %>) for the group. The amount of processes of the groups combined may also not exceed the limit for the application pool. If either limit is reached, the request remains in the queue (which has its own [limit](#request-queue-overflow)).
 
 <% elsif language_type == :nodejs || language_type == :meteor %>
 <%= language_name %> applications normally execute in a single thread/process, using a single CPU core. Passenger enables running multiple instances of the application (multiple processes) using pooled application groups, distributing requests to the process that is currently handling the least amount of requests.
@@ -58,31 +58,70 @@ A core concept in the load balancing algorithm is that of the **maximum process 
 
 For this reason, load balancing requests between multiple processes is beneficial.
 
-## Least-busy-process-first routing
+### App Generations
+
+Another core concept in the load balancing algorithm is that of the **app generations**. Every time Passenger is asked to [restart an app group](<%= url_for "/advanced_guides/troubleshooting/nginx/restart_app.html" %>), a counter is incremented. Processes created after the restart are labeled with a generation which is taken from this counter. Passenger usually performs a blocking restart, which means that there is only one generation of processes alive at a time, however if you initiate a [rolling restart](<%= url_for "/advanced_guides/deployment_and_scaling/nginx/zero_downtime_redeployments/ruby/index.html" %>), multiple generations can be alive at the same time, and Passenger will take this into account when load balancing requests.
+
+## Intelligent routing
 
 ### Algorithm summary
 
-Passenger keeps a list of application processes. For each application process, Passenger keeps track of how many requests it is currently handling. When a new request comes in, Passenger routes the request to the process that is handling the least number of requests (the one that is "least busy").
+Passenger keeps a list of application processes. For each application process, Passenger keeps track of: the app generation that resulted in it being started, when it was started, and how many requests it is currently handling. When a new request comes in, Passenger routes the request to the process that meets the following criteria:
+
+<ol>
+  <li>is not completely busy,</li>
+  <li>is part of the newest available app generation<sup>1</sup>  meeting the previous condition,</li>
+  <li>is the oldest process meeting the previous conditions,</li>
+  <li>is the least busy process meeting the previous conditions.</li>
+</ol>
+
+[1] Unless blocked by <a href="<%= url_for "/advanced_guides/deployment_and_scaling/standalone/deployment_error_resistance.html" %>">Deployment Error Resistance</a>.
 
 <a name="algorithm_ordered"></a>
 
-### First available process in the list has highest priority
+### Process with the highest app generation in the list has highest priority
 
-If there are multiple processes that have the least busyness, then Passenger will pick the first one in the list. For example, suppose that there are 3 application processes:
+If there are multiple processes that are not completely busy, then Passenger will pick one from the list with the highest app generation:
 
-    Process A: handling 1 request
-    Process B: handling 0 requests
-    Process C: handling 0 requests
+For example, suppose that there are 3 application processes:
 
-On the next request, Passenger will always pick B, never C.
+    Process A: gen 1, spawned 1s ago, handling 0 requests
+    Process B: gen 1, spawned 1s ago, handling 0 requests
+    Process C: gen 2, spawned 1s ago, handling 0 requests
 
-This property is used by the [dynamic process scaling](<%= url_for "/advanced_guides/in_depth/ruby/dynamic_scaling_of_app_processes/index.html" %>) algorithm. Dynamic process scaling works by shutting down processes that haven't received requests for a while (processes that are "idle"). By routing to the first process with least busyiness (instead of, say, a random one, using round-robin), Passenger gives other processes the chance to become idle and thus eligible for shutdown.
+Process C will be chosen for the next incoming request.
 
-Another advantage of picking the first process is that it improves application-level caching. Since the first process is the most likely candidate for load balancing, it will have the most chance to keep its cache warm. Examples of such caches include: in-memory hash tables, JIT caches, etc.
+This speeds the rate at which requests are handled by the newer generation of app processes.
+
+### Oldest available process in a generation has highest priority
+
+If there are multiple processes from the newest generation, that not completely busy; then Passenger will pick the one that was started first, from the list.
+
+For example, suppose that there are 3 application processes:
+
+    Process A: gen 2, spawned 30s ago, handling 0 requests
+    Process B: gen 3, spawned 20s ago, handling 0 requests
+    Process C: gen 3, spawned 10s ago, handling 0 requests
+
+Process B will be chosen for the next incoming request.
+
+This property is used by the [dynamic process scaling](<%= url_for "/advanced_guides/in_depth/ruby/dynamic_scaling_of_app_processes/index.html" %>) algorithm. Dynamic process scaling works by shutting down processes that haven't received requests for a while (processes that are "idle"). By routing to the oldest process that is not completely busy (instead of, say, a random one, using round-robin), Passenger gives other processes the chance to become idle and thus eligible for shutdown.
+
+Another advantage of picking the oldest process is that it improves caching. Since the oldest process is the most likely candidate for load balancing, it will have the most chance to keep its cache warm, and therefore process requests more quickly.
+
+### Least busy process as tie breaker
+
+If there are multiple processes that have met all the previous conditions, then Passenger will pick the least busy one. For example, suppose that there are 3 application processes:
+
+    Process A: gen 3, spawned 10s ago, handling 1 requests
+    Process B: gen 3, spawned 10s ago, handling 0 requests
+    Process C: gen 3, spawned 10s ago, handling 2 requests
+
+Process B will be chosen for the next incoming request.
 
 ### Traffic may appear unbalanced between processes
 
-Because Passenger [prefers to load balance to the first request](#algorithm_ordered), traffic may appear unbalanced between processes. Here is an example from `passenger-status`:
+Because Passenger [prefers to load balance to the oldest request in the generation](#algorithm_ordered), traffic may appear unbalanced between processes. Here is an example from `passenger-status`:
 
 ~~~
 /var/www/phusion_blog/current/public:
@@ -113,7 +152,7 @@ Instead, the Passenger implementation can be compared to using a single (shared)
 <% if language_min_concurrency == 1 %>
 ### Example with maximum concurrency 1
 
-Suppose that you have 3 application processes, and each process's maximum concurrency is 1. When the application is idle, none of the processes are handling any requests:
+Suppose that you have 3 application processes, spawned in order, and each process's maximum concurrency is 1. When the application is idle, none of the processes are handling any requests:
 
     Process A [ ]
     Process B [ ]
@@ -125,7 +164,7 @@ When a new request comes in (let's call this α), Passenger will decide to route
     Process B [ ]
     Process C [ ]
 
-Suppose that, while α is still in progress, a new requests comes in (which we call β). That request will be load balanced to process B because it is the least busy one:
+Suppose that, while α is still in progress, a new request comes in (which we call β). That request will be load balanced to process B because it is the oldest not-completely-busy process:
 
     Process A [α]
     Process B [β]
@@ -142,6 +181,8 @@ If another request comes in (which we call ɣ), that request will be routed to A
     Process A [ɣ]
     Process B [β]
     Process C [ ]
+
+This keeps process A's caches warm, and may allow process C to idle and be shutdown sooner.
 
 <% end %>
 <% if language_max_concurrency != 1 %>
@@ -163,15 +204,15 @@ When a new request comes in (which we call α, Passenger will decide to route th
     Process A [α   ]
     Process B [    ]
 
-Suppose that, while α is still in progress, 1 more request comes in (which we call β). That request will be load balanced to process B because it is the least busy one:
+Suppose that, while α is still in progress, 1 more request comes in (which we call β). That request will be load balanced to process A because it is the oldest not-completely-busy one:
 
-    Process A [α   ]
-    Process B [β   ]
+    Process A [αβ  ]
+    Process B [    ]
 
 Suppose that another request comes in (which we call ɣ). That will be load balanced to process A again, not to B:
 
-    Process A [αɣ  ]
-    Process B [β   ]
+    Process A [αβɣ ]
+    Process B [    ]
 
 <% end %>
 
