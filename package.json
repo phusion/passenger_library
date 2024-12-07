@@ -25,7 +25,7 @@
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
     "babel-loader": "^8.2.2",
-    "node-sass": "^9.0.0",
+    "sass": "^1.69.0",
     "sass-loader": "^13.3.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.62.1",
@@ -39,5 +39,10 @@
     "mini-css-extract-plugin": "^1.6.2",
     "postcss-loader": "^5.3.0",
     "uuid": "^3.4.0"
+  },
+  "overrides": {
+    "sass-loader": {
+      "node-sass": false
+    }
   }
 }
