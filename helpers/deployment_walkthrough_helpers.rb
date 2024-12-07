@@ -1,4 +1,4 @@
-require_relative 'constants'
+require_relative "constants"
 
 # Chapters:
 #
@@ -14,36 +14,36 @@ require_relative 'constants'
 
 module DeploymentWalkthroughHelpers
   DEPLOYMENT_WALKTHROUGH_INFRASTRUCTURES = [
-    { infrastructure_type: :aws,
-      infrastructure_name: "AWS",
-      infrastructure_name_with_determiner: "an AWS",
-      infrastructure_long_name: "Amazon Web Services",
-      infrastructure_has_launch_instructions: true,
-      infrastructure_needs_install_language_runtime: true },
-    { infrastructure_type: :cloud66,
-      infrastructure_name: "Cloud 66",
-      infrastructure_name_with_determiner: "a Cloud 66",
-      infrastructure_long_name: "Cloud 66",
-      infrastructure_has_launch_instructions: false,
-      infrastructure_needs_install_language_runtime: false },
-    { infrastructure_type: :digital_ocean,
-      infrastructure_name: "Digital Ocean",
-      infrastructure_name_with_determiner: "a Digital Ocean",
-      infrastructure_long_name: "Digital Ocean",
-      infrastructure_has_launch_instructions: true,
-      infrastructure_needs_install_language_runtime: true },
-    { infrastructure_type: :heroku,
-      infrastructure_name: "Heroku",
-      infrastructure_name_with_determiner: "a Heroku",
-      infrastructure_long_name: "Heroku",
-      infrastructure_has_launch_instructions: false,
-      infrastructure_needs_install_language_runtime: false },
-    { infrastructure_type: :ownserver,
-      infrastructure_name: "Linux/Unix",
-      infrastructure_name_with_determiner: "a Linux/Unix",
-      infrastructure_long_name: "Any hosting provider or infrastructure running Linux/Unix",
-      infrastructure_has_launch_instructions: false,
-      infrastructure_needs_install_language_runtime: true }
+    {infrastructure_type: :aws,
+     infrastructure_name: "AWS",
+     infrastructure_name_with_determiner: "an AWS",
+     infrastructure_long_name: "Amazon Web Services",
+     infrastructure_has_launch_instructions: true,
+     infrastructure_needs_install_language_runtime: true},
+    {infrastructure_type: :cloud66,
+     infrastructure_name: "Cloud 66",
+     infrastructure_name_with_determiner: "a Cloud 66",
+     infrastructure_long_name: "Cloud 66",
+     infrastructure_has_launch_instructions: false,
+     infrastructure_needs_install_language_runtime: false},
+    {infrastructure_type: :digital_ocean,
+     infrastructure_name: "Digital Ocean",
+     infrastructure_name_with_determiner: "a Digital Ocean",
+     infrastructure_long_name: "Digital Ocean",
+     infrastructure_has_launch_instructions: true,
+     infrastructure_needs_install_language_runtime: true},
+    {infrastructure_type: :heroku,
+     infrastructure_name: "Heroku",
+     infrastructure_name_with_determiner: "a Heroku",
+     infrastructure_long_name: "Heroku",
+     infrastructure_has_launch_instructions: false,
+     infrastructure_needs_install_language_runtime: false},
+    {infrastructure_type: :ownserver,
+     infrastructure_name: "Linux/Unix",
+     infrastructure_name_with_determiner: "a Linux/Unix",
+     infrastructure_long_name: "Any hosting provider or infrastructure running Linux/Unix",
+     infrastructure_has_launch_instructions: false,
+     infrastructure_needs_install_language_runtime: true}
   ]
 
   PASSENGER_OSS_EDITION = {
@@ -93,7 +93,6 @@ module DeploymentWalkthroughHelpers
     INTEGRATION_MODE_APACHE,
     INTEGRATION_MODE_STANDALONE
   ]
-
 
   def define_deployment_walkthrough_pages
     SUPPORTED_LANGUAGES.each do |lang_spec|
@@ -193,7 +192,6 @@ module DeploymentWalkthroughHelpers
     end
   end
 
-
   def infrastructure_supported?(locals)
     locals[:language_type] == :ruby || (locals[:infrastructure_type] != :heroku && locals[:infrastructure_type] != :cloud66)
   end
@@ -212,13 +210,12 @@ module DeploymentWalkthroughHelpers
     locals[:infrastructure_has_launch_instructions]
   end
 
-
   def available_integration_modes(locals)
     if !locals.has_key?(:infrastructure_type)
       nil
     elsif locals[:infrastructure_type] == :heroku || locals[:infrastructure_type] == :cloud66
-      [{ integration_mode_type: :standalone,
-         integration_mode_name: "Standalone" }]
+      [{integration_mode_type: :standalone,
+        integration_mode_name: "Standalone"}]
     else
       INTEGRATION_MODES
     end
@@ -240,7 +237,6 @@ module DeploymentWalkthroughHelpers
     end
   end
 
-
   def needs_install_language_runtime?(locals)
     if locals[:infrastructure_needs_install_language_runtime] == false # and not nil
       false
@@ -255,15 +251,14 @@ module DeploymentWalkthroughHelpers
     locals[:language_type] != :python
   end
 
-
   # Be sure to also update guides/install/shared/_os_selector.html.erb
   def available_os_configs(locals)
     result = [
-      { os_config_type: :tarball,
-        os_config_class: :tarball,
-        os_config_name: "source tarball",
-        os_config_description: "generic installation through source tarball",
-        os_config_description_with_preposition: "from source tarball" }
+      {os_config_type: :tarball,
+       os_config_class: :tarball,
+       os_config_name: "source tarball",
+       os_config_description: "generic installation through source tarball",
+       os_config_description_with_preposition: "from source tarball"}
     ]
     if locals[:language_type].nil? || locals[:language_type] == :ruby
       result << {
@@ -311,7 +306,6 @@ module DeploymentWalkthroughHelpers
     result
   end
 
-
   def deployment_walkthrough_probably_using_rvm?(locals)
     (locals[:infrastructure_has_launch_instructions] && !locals[:os_config_type] != :rubygems_norvm) ||
       locals[:os_config_type] == :rubygems_rvm
@@ -334,7 +328,7 @@ module DeploymentWalkthroughHelpers
       "deployment walkthrough with #{components[0]}"
     else
       last_component = components.pop
-      "deployment walkthrough with #{components.join(', ')} and #{last_component}"
+      "deployment walkthrough with #{components.join(", ")} and #{last_component}"
     end
   end
 
@@ -358,15 +352,15 @@ module DeploymentWalkthroughHelpers
       infrastructure_type = locals[:infrastructure_type] || available_infrastructures(locals)[0][:infrastructure_type]
       if available_integration_modes(locals).size == 1
         integration_mode_type = available_integration_modes(locals)[0][:integration_mode_type]
-        { url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/open_source_vs_enterprise.html"),
-          title: "Open source vs Enterprise",
-          long_title: "Open source vs Enterprise",
-          subsection: :open_source_vs_enterprise }
+        {url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/open_source_vs_enterprise.html"),
+         title: "Open source vs Enterprise",
+         long_title: "Open source vs Enterprise",
+         subsection: :open_source_vs_enterprise}
       else
-        { url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/integration_mode.html"),
-          title: "Pick integration mode",
-          long_title: "Pick an integration mode",
-          subsection: :integration_mode }
+        {url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/integration_mode.html"),
+         title: "Pick integration mode",
+         long_title: "Pick an integration mode",
+         subsection: :integration_mode}
       end
     else
       nil
@@ -379,10 +373,10 @@ module DeploymentWalkthroughHelpers
     integration_mode_type = locals[:integration_mode_type]
     edition_type = locals[:edition_type]
     if needs_launch_server?(locals)
-      { url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/launch_server.html"),
-        title: "Launch a server",
-        long_title: "Launching a server",
-        subsection: :launch_server }
+      {url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/launch_server.html"),
+       title: "Launch a server",
+       long_title: "Launching a server",
+       subsection: :launch_server}
     else
       deployment_walkthrough_next_step_after_launching_server(locals)
     end
@@ -395,10 +389,10 @@ module DeploymentWalkthroughHelpers
     edition_type = locals[:edition_type]
     if needs_install_language_runtime?(locals)
       language_runtime_name = locals[:language_runtime_name]
-      { url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_language_runtime.html"),
-        title: "Install #{language_runtime_name}",
-        long_title: "Installing #{language_runtime_name}",
-        subsection: :install_language_runtime }
+      {url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_language_runtime.html"),
+       title: "Install #{language_runtime_name}",
+       long_title: "Installing #{language_runtime_name}",
+       subsection: :install_language_runtime}
     else
       deployment_walkthrough_next_step_after_install_language_runtime(locals)
     end
@@ -410,27 +404,27 @@ module DeploymentWalkthroughHelpers
     integration_mode_type = locals[:integration_mode_type]
     edition_type = locals[:edition_type]
     if language_type == :ruby && integration_mode_type == :standalone
-      { url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/standalone/#{edition_type}/deploy_app_main.html"),
-        title: "Deploying the app",
-        long_title: "Deploying the application",
-        subsection: :deploy_app }
+      {url: url_for("/walkthroughs/deploy/ruby/#{infrastructure_type}/standalone/#{edition_type}/deploy_app_main.html"),
+       title: "Deploying the app",
+       long_title: "Deploying the application",
+       subsection: :deploy_app}
     else
-      { url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_passenger_main.html"),
-        title: "Install Passenger",
-        long_title: "Installing Passenger on the production server",
-        subsection: :install_passenger }
+      {url: url_for("/walkthroughs/deploy/#{language_type}/#{infrastructure_type}/#{integration_mode_type}/#{edition_type}/install_passenger_main.html"),
+       title: "Install Passenger",
+       long_title: "Installing Passenger on the production server",
+       subsection: :install_passenger}
     end
   end
 
   def deployment_walkthrough_next_html_after_edition(locals)
     if needs_launch_server?(locals)
-      return "launch_server.html"
+      "launch_server.html"
     elsif needs_install_language_runtime?(locals)
-      return "install_language_runtime.html"
+      "install_language_runtime.html"
     elsif locals[:language_type] == :ruby && locals[:integration_mode_type] == :standalone
-      return "deploy_app_main.html"
+      "deploy_app_main.html"
     else
-      return "install_passenger_main.html"
+      "install_passenger_main.html"
     end
   end
 end

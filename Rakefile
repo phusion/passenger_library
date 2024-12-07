@@ -1,4 +1,4 @@
-require_relative 'helpers/constants'
+require_relative "helpers/constants"
 
 desc "Build site"
 task :build do
@@ -10,17 +10,17 @@ task :server do
   sh "bundle exec middleman server"
 end
 
-task :rsync => :'rsync:production'
+task rsync: :"rsync:production"
 
 namespace :rsync do
   desc "Upload documentation to staging server"
-  task :staging => [:build] do
+  task staging: [:build] do
     sh "cd build && rsync -rv --progress --partial-dir=.rsync-partial --human-readable . " +
       "passenger_library@staging.phusionpassenger.com:/var/www/docs_2018/"
   end
 
   desc "Upload documentation to production server"
-  task :production => [:build] do
+  task production: [:build] do
     sh "cd build && rsync -rv --progress --partial-dir=.rsync-partial --human-readable . " +
       "passenger_library@www.phusionpassenger.com:/var/www/docs_2018/"
   end
