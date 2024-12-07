@@ -38,9 +38,10 @@ _By contributing, you agree to license your contribution under [CC BY SA 4.0](ht
 
 You will need Ruby installed in order to preview or generate the documentation website.
 
-Install the gem bundle:
+Install the gem bundle and npm modules:
 
     bundle install
+    npm install
 
 Then run Middleman:
 
