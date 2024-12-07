@@ -1,16 +1,16 @@
-require_relative 'constants'
+require_relative "constants"
 
 SUPPORTED_DEBIAN_VERSIONS = {
-  "bookworm"=> "Debian 12",
-  "bullseye"=> "Debian 11",
-  "noble"   => "Ubuntu 24.04 LTS",
-  "jammy"   => "Ubuntu 22.04 LTS",
-  "focal"   => "Ubuntu 20.04 LTS",
+  "bookworm" => "Debian 12",
+  "bullseye" => "Debian 11",
+  "noble" => "Ubuntu 24.04 LTS",
+  "jammy" => "Ubuntu 22.04 LTS",
+  "focal" => "Ubuntu 20.04 LTS"
 }
 
 SUPPORTED_REDHAT_VERSIONS = {
   "el9" => "Enterprise Linux 9: Red Hat, CentOS, Rocky, Alma",
-  "el8" => "Enterprise Linux 8: Red Hat, CentOS, Rocky, Alma",
+  "el8" => "Enterprise Linux 8: Red Hat, CentOS, Rocky, Alma"
 }
 
 module CustomHelpers
@@ -46,12 +46,12 @@ module CustomHelpers
     options[:class] ||= ""
     if current_page.data.is_404
       # do nothing
-    elsif options[:options] == 'header'
-      options[:class] << " active" if url.include?(current_page.url.split('/')[1])
-    elsif options[:options] == 'deploy' && current_page.url.split('/')[3]
-      options[:class] << " active" if url.include?(current_page.url.split('/')[3])
-    else
-      options[:class] << " active" if url.include?(current_page.url.split('/')[2])
+    elsif options[:options] == "header"
+      options[:class] << " active" if url.include?(current_page.url.split("/")[1])
+    elsif options[:options] == "deploy" && current_page.url.split("/")[3]
+      options[:class] << " active" if url.include?(current_page.url.split("/")[3])
+    elsif url.include?(current_page.url.split("/")[2])
+      options[:class] << " active"
     end
     link_to(link_text, url, options)
   end
@@ -123,7 +123,7 @@ module CustomHelpers
   end
 
   def should_use_bundle_exec_for_passenger?(locals)
-    (locals[:language_type] == :ruby || current_page.data.language_type == 'ruby') &&
+    (locals[:language_type] == :ruby || current_page.data.language_type == "ruby") &&
       (current_page.data.section == "start" ||
        current_page.data.section == "basics" ||
        locals[:integration_mode_type] == :standalone)
@@ -140,16 +140,16 @@ module CustomHelpers
   def passenger_command_prefix_html(locals, options = {})
     result = ""
     if options.fetch(:cd, true)
-      result << %Q{<span class="prompt">$ </span>cd /path-to-your-app\n}
+      result << %(<span class="prompt">$ </span>cd /path-to-your-app\n)
     end
-    if locals[:language_type] == :ruby || current_page.data.language_type == 'ruby'
+    result << if locals[:language_type] == :ruby || current_page.data.language_type == "ruby"
       if should_use_bundle_exec_for_passenger?(locals)
-        result << %Q{<span class="prompt">$ </span>bundle exec }
+        %(<span class="prompt">$ </span>bundle exec )
       else
-        result << %Q{<span class="prompt">$ </span>}
+        %(<span class="prompt">$ </span>)
       end
     else
-      result << %Q{<span class="prompt">$ </span>}
+      %(<span class="prompt">$ </span>)
     end
     result
   end
@@ -161,9 +161,9 @@ module CustomHelpers
   def debian_new_apt_key_method?(distro)
     label = SUPPORTED_DEBIAN_VERSIONS[distro]
     if label.start_with?("Debian")
-      label.split(' ')[1].to_i > 10
+      label.split(" ")[1].to_i > 10
     else
-      label.split(' ')[1].to_f > 20.04
+      label.split(" ")[1].to_f > 20.04
     end
   end
 
@@ -173,7 +173,7 @@ module CustomHelpers
     SUPPORTED_DEBIAN_VERSIONS.each_pair do |codename, name|
       stylized_codename = codename.dup
       stylized_codename[0..0] = stylized_codename[0..0].upcase
-      result << %Q{<option value="#{codename}"#{maybe_selected}>#{name} (#{stylized_codename})</option>}
+      result << %{<option value="#{codename}"#{maybe_selected}>#{name} (#{stylized_codename})</option>}
       maybe_selected = nil
     end
     result
@@ -184,7 +184,7 @@ module CustomHelpers
     SUPPORTED_DEBIAN_VERSIONS.each_pair do |codename, name|
       stylized_codename = codename.dup
       stylized_codename[0..0] = stylized_codename[0..0].upcase
-      result << %Q{<li><a href="#{codename}/#{next_page}">#{name} (#{stylized_codename})</a></li>}
+      result << %{<li><a href="#{codename}/#{next_page}">#{name} (#{stylized_codename})</a></li>}
     end
     result
   end
@@ -193,7 +193,7 @@ module CustomHelpers
     result = ""
     maybe_selected = " selected"
     SUPPORTED_REDHAT_VERSIONS.each_pair do |version, name|
-      result << %Q{<option value="#{version}"#{maybe_selected}>#{name}</option>}
+      result << %(<option value="#{version}"#{maybe_selected}>#{name}</option>)
       maybe_selected = nil
     end
     result
@@ -202,7 +202,7 @@ module CustomHelpers
   def redhat_version_list_options(next_page)
     result = ""
     SUPPORTED_REDHAT_VERSIONS.each_pair do |version, name|
-      result << %Q{<li><a href="#{version}/#{next_page}">#{name}</a></li>}
+      result << %(<li><a href="#{version}/#{next_page}">#{name}</a></li>)
     end
     result
   end
@@ -239,10 +239,10 @@ module CustomHelpers
       end
     end
 
-    if available
-      path = current_page_path
+    path = if available
+      current_page_path
     else
-      path = section_path
+      section_path
     end
     path.gsub(/(nginx|apache|standalone)/, other_integration_mode.to_s)
   end
@@ -256,10 +256,10 @@ module CustomHelpers
       end
     end
 
-    if available
-      path = current_page_path
+    path = if available
+      current_page_path
     else
-      path = section_path
+      section_path
     end
     path.gsub(/(oss|enterprise)/, other_edition.to_s)
   end
@@ -283,7 +283,7 @@ module CustomHelpers
   end
 
   def link_to_config_option(name, locals)
-    %Q{<a href="#{url_for_config_option(name, locals)}">#{resolve_config_option_name(name, locals)}</a>}
+    %(<a href="#{url_for_config_option(name, locals)}">#{resolve_config_option_name(name, locals)}</a>)
   end
 
   # Given a config option name such as `max_pool_size`, transforms it into a form
@@ -294,14 +294,14 @@ module CustomHelpers
     when :nginx
       "passenger_#{name}"
     when :apache
-      new_name = name.to_s.gsub(/_([a-z])/) { |match| match.sub('_', '').upcase }
+      new_name = name.to_s.gsub(/_([a-z])/) { |match| match.sub("_", "").upcase }
       new_name[0] = new_name[0].upcase
       "Passenger#{new_name}"
     when :standalone
-      cli_option = "--" + name.to_s.gsub('_', '-')
+      cli_option = "--" + name.to_s.tr("_", "-")
       "<code>#{h cli_option}</code> / \"#{h name}\""
     when nil
-      name.to_s.gsub('_', ' ')
+      name.to_s.tr("_", " ")
     else
       raise "Unknown itegration mode #{locals[:integration_mode_type]}"
     end
@@ -315,10 +315,10 @@ module CustomHelpers
     when :nginx
       url_for("/config/nginx/reference/index.html") + "#passenger_#{name}"
     when :apache
-      anchor = name.to_s.gsub(/_/, '').downcase
+      anchor = name.to_s.delete("_").downcase
       url_for("/config/apache/reference/index.html") + "#passenger#{anchor}"
     when :standalone
-      cli_option = "--" + name.to_s.gsub('_', '-')
+      cli_option = "--" + name.to_s.tr("_", "-")
       anchor = "#{cli_option}-#{name}"
       url_for("/config/standalone/reference/index.html") + "##{anchor}"
     when nil
@@ -342,7 +342,7 @@ module CustomHelpers
     limit_choices.each do |limit_choice|
       return false if choice[:val].eql? limit_choice[:choice_val]
     end
-    return true
+    true
   end
 
   def get_choices_as_jsarray(limit_choices)
@@ -353,6 +353,6 @@ module CustomHelpers
       jsarray << limit_choice[:choice_val]
     end
     jsarray << "']"
-    return jsarray
+    jsarray
   end
 end
