@@ -88,9 +88,8 @@ module CustomHelpers
   end
 
   def current_page_github_url
-    path = current_page.source_file.sub(/.*\/source\//, '')
-    branch = `git rev-parse --abbrev-ref HEAD`
-    "https://github.com/phusion/passenger_library/edit/#{branch}/source/#{path}"
+    path = current_page.source_file.sub(/.*\/source\//, "")
+    "https://github.com/phusion/passenger_library/edit/docs_2018/source/#{path}"
   end
 
   def has_sidebar?
