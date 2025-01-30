@@ -1712,6 +1712,30 @@ When set of off, will disable Passenger's turbocache.
 
 If set Passenger will treat requests as separate in the turbocache if the value of the cookie with the provided name is different.
 
+### passenger_old_routing
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_old_routing <em>on|off</em>;</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_old_routing off;</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.25</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http</td>
+  </tr>
+</table>
+
+Whether to revert to the old pre-6.0.24 routing behaviour. This option is provided temporarily and is intended for situations where the new routing causes issues. The new routing behaviour will be fixed and this option will then become a no-op.
+
+
 ## Security
 
 ### passenger_user_switching

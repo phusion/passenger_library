@@ -1994,6 +1994,40 @@ Use this option to tell Passenger that the application supports unlimited concur
 This option is functionally equivalent to setting [--force-max-concurrent-requests-per-process / "force_max_concurrent_requests_per_process](<%= url_for "/references/config_reference/standalone/#--force-max-concurrent-requests-per-process-force_max_concurrent_requests_per_process" %>) to 0, but only for the specify sub-URIs.
 
 
+### `--old_routing` / "old_routing"
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>--old-routing</td>
+  </tr>
+  <tr>
+    <th>Config file syntax</th>
+    <td>"old_routing": false</td>
+  </tr>
+  <tr>
+    <th>Environment variable syntax</th>
+    <td>PASSENGER_OLD_ROUTING=false</td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>Disabled</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.25</td>
+  </tr>
+  <tr>
+    <th>Engines</th>
+    <td>nginx, builtin</td>
+  </tr>
+  <tr>
+    <th><a href="<%= url_for "/advanced_guides/config_and_optimization/standalone/intro.html" %>">Mass deployment context</a></th>
+    <td>Main</td>
+  </tr>
+</table>
+
+Whether to revert to the old pre-6.0.24 routing behaviour. This option is provided temporarily and is intended for situations where the new routing causes issues. The new routing behaviour will be fixed and this option will then become a no-op.
 
 
 
