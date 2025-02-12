@@ -23,3 +23,13 @@ gem "middleman-search_engine_sitemap"
 gem "uuidtools"
 
 gem "standard"
+
+gem 'concurrent-ruby', '1.3.4'
+gem 'mutex_m'
+gem 'logger'
+gem 'benchmark'
+gem 'bigdecimal'
+gem 'ostruct'
+gem 'base64'
+gem 'csv'
+gem 'rdoc'
