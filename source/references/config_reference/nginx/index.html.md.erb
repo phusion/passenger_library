@@ -1636,7 +1636,28 @@ passenger_intercept_errors on;
 error_page 504 /error504.html;
 ~~~
 
-### passenger_socket_backlog
+### passenger_app_connect_timeout
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>passenger_app_connect_timeout <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>passenger_app_connect_timeout 30</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.27</td>
+  </tr>
+  <tr>
+    <th>Context</th>
+    <td>http, server, location, if</td>
+  </tr>
+</table>
+
+When a request has come in and Passenger needs to pass it to an app instance, it connects to the app's socket. In rare instances the connection may not succeed immediately. In this case Passenger waits asynchronously for the app socket to be ready. This configuration option allows you to control how long Passenger waits on the app before failing the request.### passenger_socket_backlog
 
 <table class="table table-bordered table-condensed">
   <tr>

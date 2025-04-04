@@ -1688,6 +1688,29 @@ PassengerErrorOverride on
 ErrorDocument 504 /error504.html
 ~~~
 
+### PassengerAppConnectTimeout
+
+<table class="table table-bordered table-condensed">
+  <tr>
+    <th>Syntax</th>
+    <td>PassengerAppConnectTimeout <em>integer</em></td>
+  </tr>
+  <tr>
+    <th>Default</th>
+    <td>PassengerAppConnectTimeout 30</td>
+  </tr>
+  <tr>
+    <th>Since</th>
+    <td>6.0.27</td>
+  </tr>
+  <tr>
+    <th><a href="http://httpd.apache.org/docs/2.4/mod/directive-dict.html#Context">Context</a></th>
+    <td>server config, virtual host, directory, .htaccess</td>
+  </tr>
+</table>
+
+When a request has come in and Passenger needs to pass it to an app instance, it connects to the app's socket. In rare instances the connection may not succeed immediately. In this case Passenger waits asynchronously for the app socket to be ready. This configuration option allows you to control how long Passenger waits on the app before failing the request.
+
 ### PassengerSocketBacklog
 
 <table class="table table-bordered table-condensed">
