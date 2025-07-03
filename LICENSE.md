@@ -1,4 +1,4 @@
-The Passenger Library is copyright (c) 2008-2015 Phusion Holding B.V., as well as all contributors to the Passenger Library.
+The Passenger Library is copyright (c) 2008-2015 Asynchronous B.V., as well as all contributors to the Passenger Library.
 
 All content is licensed [CC BY SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/), with some exceptions:
 
@@ -7,4 +7,4 @@ All content is licensed [CC BY SA 4.0](http://creativecommons.org/licenses/by-sa
 
 Also, `source/images/tab_info.gif` and `tab_note.gif` are from the Ruby on Rails Guides.
 
-"Phusion", "Phusion Passenger", "Passenger" and the Phusion pinwheel logo are registered trademarks of Phusion Holding B.V.
+"Phusion", "Phusion Passenger", "Passenger" and the Phusion pinwheel logo are registered trademarks of Asynchronous B.V.
