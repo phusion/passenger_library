@@ -4,6 +4,7 @@ SUPPORTED_DEBIAN_VERSIONS = {
   "trixie"   => "Debian 13",
   "bookworm" => "Debian 12",
   "bullseye" => "Debian 11",
+  "plucky" => "Ubuntu 25.04",
   "noble" => "Ubuntu 24.04 LTS",
   "jammy" => "Ubuntu 22.04 LTS",
   "focal" => "Ubuntu 20.04 LTS"

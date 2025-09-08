@@ -1,18 +1,5 @@
 <%
-case os_config_type
-when :trixie
-  os_config_description = "on Debian 13 (with APT)"
-when :bookworm
-  os_config_description = "on Debian 12 (with APT)"
-when :bullseye
-  os_config_description = "on Debian 11 (with APT)"
-when :noble
-  os_config_description = "on Ubuntu 24.04 LTS (with APT)"
-when :jammy
-  os_config_description = "on Ubuntu 22.04 LTS (with APT)"
-when :focal
-  os_config_description = "on Ubuntu 20.04 LTS (with APT)"
-end
+os_config_description = "on #{SUPPORTED_DEBIAN_VERSIONS[os_config_type]} (with APT)"
 
 case integration_mode_type
 when :apache
