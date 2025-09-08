@@ -10,6 +10,7 @@ SUPPORTED_DEBIAN_VERSIONS = {
 }
 
 SUPPORTED_REDHAT_VERSIONS = {
+  "el10" => "Enterprise Linux 10: Red Hat, CentOS, Rocky, Alma",
   "el9" => "Enterprise Linux 9: Red Hat, CentOS, Rocky, Alma",
   "el8" => "Enterprise Linux 8: Red Hat, CentOS, Rocky, Alma"
 }
