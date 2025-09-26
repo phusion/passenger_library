@@ -1,5 +1,7 @@
 <%
 case os_config_type
+when :trixie
+  os_config_description = "on Debian 13 (with APT)"
 when :bookworm
   os_config_description = "on Debian 12 (with APT)"
 when :bullseye
@@ -135,6 +137,8 @@ sudo apt-get install -y dirmngr gnupg apt-transport-https ca-certificates <% if 
 
   <% if !debian_new_apt_key_method?(os_config_type.to_s) %>
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
+<% elsif os_config_type == :trixie %>
+curl https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key-2025.txt | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/phusion.gpg >/dev/null
 <% else %>
 curl https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/phusion.gpg >/dev/null
 <% end %>

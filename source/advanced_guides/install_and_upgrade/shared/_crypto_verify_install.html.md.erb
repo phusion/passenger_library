@@ -36,7 +36,16 @@ This key is stored at [our server](https://oss-binaries.phusionpassenger.com/aut
 
     gpg --keyserver hkp://keyserver.ubuntu.com:80 --search-keys 0x2AC745A50A212A8C
 
-The Phusion Software Signing key is only used for manually signing software, and the Phusion Automated Software Signing key is only used for automatically signing software & our repositories. They're never used for signing emails or for encrypting files, so please be suspicious if you encounter usage of these keys outside the context of signing software or our repositories, and alert us at [security@phusion.nl](mailto:security@phusion.nl). Include "notspam" in the message to bypass our spam filter.
+Phusion Automated Software Signing (Used by automated tools to sign software packages, SHA256 signature) <auto-software-signing@phusion.nl><br>
+Short Key ID: 0x3FB45BD1<br>
+Long Key ID: 0xD870AB033FB45BD1<br>
+Fingerprint: C6F4 48ED 4BC8 0A4E 9525  7250 D870 AB03 3FB4 5BD1
+
+This key is stored at [our server](https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key-2025.txt). You can import it to your keyring with this command:
+
+    curl https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key-2025.txt | gpg --import
+
+The Phusion Software Signing key is only used for manually signing software, and the Phusion Automated Software Signing keys are only used for automatically signing software & our repositories. They're never used for signing emails or for encrypting files, so please be suspicious if you encounter usage of these keys outside the context of signing software or our repositories, and alert us at [security@phusion.nl](mailto:security@phusion.nl). Include "notspam" in the message to bypass our spam filter.
 
 The email addresses [software-signing@phusion.nl](mailto:software-signing@phusion.nl) and [auto-software-signing@phusion.nl](auto-software-signing@phusion.nl) redirect to [info@phusion.nl](mailto:info@phusion.nl) so it's safe to send email there.
 

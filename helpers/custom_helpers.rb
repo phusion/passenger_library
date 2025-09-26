@@ -1,6 +1,7 @@
 require_relative "constants"
 
 SUPPORTED_DEBIAN_VERSIONS = {
+  "trixie"   => "Debian 13",
   "bookworm" => "Debian 12",
   "bullseye" => "Debian 11",
   "noble" => "Ubuntu 24.04 LTS",
