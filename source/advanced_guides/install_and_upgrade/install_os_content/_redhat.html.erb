@@ -143,7 +143,7 @@ sudo chmod 600 /etc/yum.repos.d/passenger.repo
 
 <span class="c unselectable"># Install <%= packages_title %></span>
 <% if integration_mode_type == :nginx %>
-sudo dnf module enable -y nginx:$(sudo dnf module list nginx | cut -d ' ' -f 2 | grep -Ee '^[0-9\.]+$' | sort -V | tail -1)
+sudo dnf module enable -y nginx:$(sudo dnf module list nginx | grep -Ee '^nginx.*[0-9\.]+' | cut -d ' ' -f 2 | sort -V | tail -1)
 <% end %>
 sudo dnf install -y <%= packages %> || { sudo dnf config-manager --enable cr && sudo dnf install -y <%= packages %> ; }</code></pre>
 <% if integration_mode_type == :apache %>
