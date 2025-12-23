@@ -192,6 +192,7 @@ function dynamic_module_supported() {
     "oracular",
     "plucky",
     "questing",
+    "questing",
     "el7",
     "el8",
     "el9",
