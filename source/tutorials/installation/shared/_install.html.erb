@@ -49,12 +49,9 @@
     <pre class="highlight shell"><code><span class="c unselectable"># Install our PGP key and add HTTPS support for APT</span>
 sudo apt-get install -y dirmngr gnupg apt-transport-https ca-certificates <span class="debian_hideable bullseye bookworm trixie noble jammy questing">curl</span>
 <span class="debian_hideable focal">
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D870AB033FB45BD1
 </span>
 <span class="debian_hideable trixie bullseye bookworm jammy noble questing">
-curl https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/phusion.gpg >/dev/null
-</span
-<span class="debian_hideable trixie">
 curl https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key-2025.txt | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/phusion.gpg >/dev/null
 </span>
 <span class="c unselectable"># Add our APT repository</span>
