@@ -170,11 +170,13 @@ function setDebianText() {
 function dynamic_module_supported() {
   const distro = $('#os_install_select').val();
   return [
+    // debian
     "buster",
     "stretch",
     "bullseye",
     "bookworm",
     "trixie",
+    // ubuntu
     "artful",
     "bionic",
     "cosmic",
@@ -192,7 +194,8 @@ function dynamic_module_supported() {
     "oracular",
     "plucky",
     "questing",
-    "questing",
+    "resolute",
+    // enterprise linux
     "el7",
     "el8",
     "el9",
