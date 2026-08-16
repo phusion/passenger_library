@@ -16,7 +16,10 @@ gem "wdm", "~> 0.1.0", platforms: [:windows]
 gem "tzinfo-data", platforms: [:windows]
 
 gem "kramdown"
-gem "middleman-syntax"
+
+# Using Git and locking rouge to ~> 4 because of https://github.com/middleman/middleman-syntax/issues/96
+gem "middleman-syntax", git: "https://github.com/middleman/middleman-syntax.git"
+gem "rouge", "~> 4"
 
 gem "middleman-search_engine_sitemap"
 
