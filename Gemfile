@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby ">= 3.2"
+ruby ">= 3.4"
 
 gem "rake"
 
@@ -10,10 +10,10 @@ gem "middleman", "~>4"
 gem "middleman-livereload", "~> 3.4.0"
 
 # For faster file watcher updates on Windows:
-gem "wdm", "~> 0.1.0", platforms: [:mswin, :mingw]
+gem "wdm", "~> 0.1.0", platforms: [:windows]
 
 # Windows does not come with time zone data
-gem "tzinfo-data", platforms: [:mswin, :mingw]
+gem "tzinfo-data", platforms: [:windows]
 
 gem "kramdown"
 gem "middleman-syntax"
