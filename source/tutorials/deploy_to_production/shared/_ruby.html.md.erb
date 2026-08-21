@@ -114,8 +114,8 @@ To install Node.js:
       Red Hat, CentOS, Rocky, Alma, Fedora, Amazon Linux, Scientific Linux
     </td>
     <td>
-      <pre class="highlight"><span class="prompt">$ </span>sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(< /etc/redhat-release tr -dc '0-9.'|cut -d \. -f1).noarch.rpm
-<span class="prompt">$ </span>sudo yum install -y --enablerepo=epel nodejs npm</pre>
+      <pre class="highlight"><span class="prompt">$ </span>sudo dnf install -y "https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm"
+<span class="prompt">$ </span>sudo dnf install -y --enablerepo=epel nodejs npm</pre>
     </td>
   </tr>
   <tr>
