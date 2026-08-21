@@ -133,7 +133,7 @@ sudo systemctl restart chronyd
 sudo dnf install -y <span class="no_el8">pygpgme</span> curl
 
 <span class="c unselectable"># Add our <span class="redhat_distro_name"></span> RPM repository</span>
-sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+sudo dnf config-manager --add-repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 
 <span class="c unselectable"># Install Passenger</span>
 sudo dnf install -y --enablerepo=epel passenger</code></pre>

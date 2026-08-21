@@ -128,7 +128,7 @@ sudo dnf install -y <% if os_config_type.to_s.delete_prefix('el').to_i < 8 %>pyg
 
 <span class="c unselectable"># Add our <span class="redhat_distro_name"><%= os_config_type %></span> RPM repository</span>
 <% if edition_type == :oss -%>
-sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+sudo dnf config-manager --add-repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 <% else -%>
 unset HISTFILE
 sudo curl --fail -sSL -u download:<span class="si">YOUR_DOWNLOAD_TOKEN</span> -o /etc/yum.repos.d/passenger.repo https://www.phusionpassenger.com/enterprise_yum/el-passenger-enterprise.repo
