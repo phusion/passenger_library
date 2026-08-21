@@ -35,11 +35,11 @@ export PATH="$PATH:/opt/elixir/bin"
 ### CentOS/Rocky/Alma:
 
 ~~~
-yum install -y epel-release yum-utils wget unzip
+dnf install -y epel-release yum-utils wget unzip
 yum-config-manager --enable epel
 
 rpm -Uvh https://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm
-yum install -y erlang
+dnf install -y erlang
 
 mkdir -p /opt/elixir
 cd /opt/elixir
@@ -54,13 +54,13 @@ export PATH="$PATH:/opt/elixir/bin"
 ~~~
 subscription-manager register --username $USERNAME_EMAIL --password $PASSWORD --auto-attach
 subscription-manager repos --enable rhel-*-devtools-rpms --enable "rhel-*-optional-rpms" --enable "rhel-*-extras-rpms"
-yum install -y wget unzip https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+dnf install -y wget unzip https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 rpm --import http://binaries.erlang-solutions.com/debian/erlang_solutions.asc
 cd /etc/yum.repos.d
 wget http://packages.erlang-solutions.com/rpm/centos/erlang_solutions.repo
 sed 's/$releasever/7/g' -i erlang_solutions.repo
-yum install -y erlang
+dnf install -y erlang
 
 mkdir -p /opt/elixir
 cd /opt/elixir

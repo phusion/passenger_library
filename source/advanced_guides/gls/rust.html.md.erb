@@ -23,7 +23,7 @@ No `cargo` package is available, though `rustc` is, please see [this page](https
 ### CentOS/Rocky/Alma:
 
 ~~~
-yum install -y rust-toolset
+dnf install -y rust-toolset
 ~~~
 
 ### RHEL:
@@ -32,7 +32,7 @@ yum install -y rust-toolset
 subscription-manager register --username $USERNAME_EMAIL --password $PASSWORD --auto-attach
 subscription-manager repos --enable rhel-7-server-devtools-rpms
 yum-config-manager --enable rhel-server-rhscl-7-rpms
-yum install -y rust-toolset-7
+dnf install -y rust-toolset-7
 scl enable rust-toolset-7 bash
 ~~~
 

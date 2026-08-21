@@ -45,12 +45,12 @@ Follow <%= link_to "these instructions", "/advanced_guides/install_and_upgrade/s
       Red Hat, CentOS, Rocky, Alma, Fedora, Amazon Linux, Scientific Linux
     </td>
     <td>
-      <pre class="highlight bash"><span class="prompt">$ </span>sudo yum update -y
-<span class="prompt">$ </span>sudo yum install -y openssl dnsmasq openssl-perl
+      <pre class="highlight bash"><span class="prompt">$ </span>sudo dnf update -y
+<span class="prompt">$ </span>sudo dnf install -y openssl dnsmasq openssl-perl
 <% if locals[:integration_mode_type] == :apache %>
-<span class="prompt">$ </span>sudo yum install -y httpd24 mod24_ssl
+<span class="prompt">$ </span>sudo dnf install -y httpd24 mod24_ssl
 <% elsif locals[:integration_mode_type] == :nginx %>
-<span class="prompt">$ </span>sudo yum install -y nginx
+<span class="prompt">$ </span>sudo dnf install -y nginx
 <% end %>
 </pre>
     </td>

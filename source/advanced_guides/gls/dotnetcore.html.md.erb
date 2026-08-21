@@ -40,11 +40,11 @@ apt install -y dotnet-sdk-2.2
 ### CentOS/Rocky/Alma:
 
 ~~~
-yum install -y epel-release
-yum install -y lttng-ust openssl-libs krb5-libs libicu zlib
+dnf install -y epel-release
+dnf install -y lttng-ust openssl-libs krb5-libs libicu zlib
 rpm -Uvh https://packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm
-yum update -y
-yum install -y dotnet-sdk-2.1
+dnf update -y
+dnf install -y dotnet-sdk-2.1
 ~~~
 
 ### RHEL:
@@ -52,7 +52,7 @@ yum install -y dotnet-sdk-2.1
 ~~~
 subscription-manager register --username $USERNAME_EMAIL --password $PASSWORD --auto-attach
 subscription-manager repos --enable=rhel-7-server-dotnet-rpms
-yum install -y rh-dotnet22 scl-utils
+dnf install -y rh-dotnet22 scl-utils
 scl enable rh-dotnet22 bash
 ~~~
 

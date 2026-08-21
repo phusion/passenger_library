@@ -23,7 +23,7 @@ apt install -y golang-go
 ### CentOS/Rocky/Alma:
 
 ~~~
-yum install -y go-toolset
+dnf install -y go-toolset
 ~~~
 
 ### RHEL:
@@ -32,7 +32,7 @@ yum install -y go-toolset
 subscription-manager register --username $USERNAME_EMAIL --password $PASSWORD --auto-attach
 subscription-manager repos --enable rhel-7-server-devtools-rpms
 yum-config-manager --enable rhel-server-rhscl-7-rpms
-yum install -y go-toolset-7
+dnf install -y go-toolset-7
 scl enable go-toolset-7 bash
 ~~~
 

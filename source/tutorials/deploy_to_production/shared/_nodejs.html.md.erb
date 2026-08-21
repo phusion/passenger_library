@@ -47,20 +47,20 @@ Before you can deploy your app on the production server, you need to install Nod
 <span class="prompt">$ </span>sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(< /etc/redhat-release tr -dc '0-9.'|cut -d \. -f1).noarch.rpm
 <span class="prompt">$ </span>curl --fail -sSL -o setup-nodejs https://rpm.nodesource.com/setup_<% if language_type == :nodejs %>6.x<% end %><% if language_type == :meteor %>0.10<% end %>
 <span class="prompt">$ </span>sudo bash setup-nodejs
-<span class="prompt">$ </span>sudo yum install -y nodejs gcc-c++ make</pre>
+<span class="prompt">$ </span>sudo dnf install -y nodejs gcc-c++ make</pre>
       <% if language_type == :meteor %>
         <pre class="highlight meteor v14"><span class="prompt">$ </span>sudo yum install -y curl
 <span class="prompt">$ </span>sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(< /etc/redhat-release tr -dc '0-9.'|cut -d \. -f1).noarch.rpm
 <span class="prompt">$ </span>curl --fail -sSL -o setup-nodejs https://rpm.nodesource.com/setup_4.x
 <span class="prompt">$ </span>sudo bash setup-nodejs
-<span class="prompt">$ </span>sudo yum install -y nodejs gcc-c++ make</pre>
+<span class="prompt">$ </span>sudo dnf install -y nodejs gcc-c++ make</pre>
       <% end %>
       <% if language_type == :meteor %>
         <pre class="highlight meteor v16"><span class="prompt">$ </span>sudo yum install -y curl
 <span class="prompt">$ </span>sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(< /etc/redhat-release tr -dc '0-9.'|cut -d \. -f1).noarch.rpm
 <span class="prompt">$ </span>curl --fail -sSL -o setup-nodejs https://rpm.nodesource.com/setup_8.9.4
 <span class="prompt">$ </span>sudo bash setup-nodejs
-<span class="prompt">$ </span>sudo yum install -y nodejs gcc-c++ make</pre>
+<span class="prompt">$ </span>sudo dnf install -y nodejs gcc-c++ make</pre>
       <% end %>
     </td>
   </tr>
