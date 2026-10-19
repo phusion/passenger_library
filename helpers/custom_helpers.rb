@@ -161,7 +161,9 @@ module CustomHelpers
 
   def debian_new_apt_key_method?(distro)
     label = SUPPORTED_DEBIAN_VERSIONS[distro]
-    if label.start_with?("Debian")
+    if label.nil?
+      false
+    elsif label.start_with?("Debian")
       label.split(" ")[1].to_i > 10
     else
       label.split(" ")[1].to_f > 20.04

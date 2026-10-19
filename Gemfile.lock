@@ -196,6 +196,7 @@ GEM
     tilt (2.8.0)
     toml (0.3.0)
       parslet (>= 1.8.0, < 3.0.0)
+    tsort (0.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.1)
@@ -238,6 +239,7 @@ DEPENDENCIES
   rdoc
   rouge (~> 4)
   standard
+  tsort (~> 0.2.0)
   tzinfo-data
   uuidtools
   wdm (~> 0.1.0)

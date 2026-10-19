@@ -36,3 +36,5 @@ gem 'ostruct'
 gem 'base64'
 gem 'csv'
 gem 'rdoc'
+
+gem "tsort", "~> 0.2.0"
