@@ -195,6 +195,7 @@ function dynamic_module_supported() {
     "plucky",
     "questing",
     "resolute",
+    "stonking",
     // enterprise linux
     "el7",
     "el8",
